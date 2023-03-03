@@ -18,7 +18,8 @@ class PawFragmentVM : ViewModel() {
 
 
     companion object {
-//        val web3 = Web3j.build(HttpService("http://183.97.128.216:7545/")) // defaults to http://localhost:8545/
+        //        val web3 = Web3j.build(HttpService("http://183.97.128.216:7545/")) // defaults to http://localhost:8545/
+        const val TAG: String = "PawFragmentVM"
 
         // 2849717dc6944af6a40ccf1540bdcb91
         val web3 =

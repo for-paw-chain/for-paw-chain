@@ -17,7 +17,7 @@ class LoginVM : ViewModel() {
     val openEvent: LiveData<Event<ActivityCode>> get() = _openEvent
 
     companion object {
-        const val TAG: String = "로그"
+        const val TAG: String = "LoginVM"
     }
 
     val id = MutableLiveData<String>()
@@ -27,11 +27,15 @@ class LoginVM : ViewModel() {
 //    val pw: LiveData<String> get() = _pw
 
 
-    fun loginButton_onClick() {
-        Log.d(
-            TAG,
-            "LoginActivity - loginVM - 버튼 클릭 ${id.value} , ${pw.value}"
-        )
+    fun kakaoLogin_onClick() {
+        _openEvent.value = Event(ActivityCode.MAIN_ACTIVITY)
+    }
+
+    fun googleLogin_onClick() {
+        _openEvent.value = Event(ActivityCode.MAIN_ACTIVITY)
+    }
+
+    fun naverLogin_onClick() {
         _openEvent.value = Event(ActivityCode.MAIN_ACTIVITY)
     }
 

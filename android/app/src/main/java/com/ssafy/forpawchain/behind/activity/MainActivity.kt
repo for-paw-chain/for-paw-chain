@@ -1,4 +1,5 @@
 package com.ssafy.forpawchain.behind.activity
+
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,10 @@ import com.ssafy.forpawchain.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-//    private lateinit var binding: ActivityMainBinding
+    //    private lateinit var binding: ActivityMainBinding
+    companion object {
+        const val TAG: String = "MainActivity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

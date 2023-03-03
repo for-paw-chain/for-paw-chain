@@ -3,13 +3,14 @@ package com.ssafy.forpawchain.behind.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
-import com.ssafy.forpawchain.viewmodel.activity.LoginVM
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
+import com.ssafy.forpawchain.viewmodel.activity.LoginVM
 
 class LoginActivity : AppCompatActivity() {
     companion object {
@@ -32,7 +33,8 @@ class LoginActivity : AppCompatActivity() {
 //        }
 
         initObserve()
-
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.hide()
     }
 
     private fun initObserve() {
