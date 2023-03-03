@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_paw"
+        android:icon="@drawable/paw_solid"
+        android:title="1" />
+
+    <item
+        android:id="@+id/navigation_house"
+        android:icon="@drawable/house_solid"
+        android:title="2" />
+
+    <item
+        android:id="@+id/navigation_user"
+        android:icon="@drawable/user_solid"
+        android:title="3" />
+
+</menu>
