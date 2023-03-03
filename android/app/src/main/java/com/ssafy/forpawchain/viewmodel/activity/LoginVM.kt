@@ -28,14 +28,17 @@ class LoginVM : ViewModel() {
 
 
     fun kakaoLogin_onClick() {
+        Log.d(TAG, "카카오 로그인")
         _openEvent.value = Event(ActivityCode.MAIN_ACTIVITY)
     }
 
     fun googleLogin_onClick() {
+        Log.d(TAG, "구글 로그인")
         _openEvent.value = Event(ActivityCode.MAIN_ACTIVITY)
     }
 
     fun naverLogin_onClick() {
+        Log.d(TAG, "네이버 로그인")
         _openEvent.value = Event(ActivityCode.MAIN_ACTIVITY)
     }
 
