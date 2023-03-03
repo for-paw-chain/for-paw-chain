@@ -61,8 +61,8 @@ public class Contract_sol_Storage extends Contract {
     public RemoteCall<TransactionReceipt> store(BigInteger num) {
         final Function function = new Function(
                 FUNC_STORE,
-                Arrays.<Type>asList(new Uint256(num)),
-                Collections.<TypeReference<?>>emptyList());
+                Collections.singletonList(new Uint256(num)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
