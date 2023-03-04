@@ -1,13 +1,18 @@
 package com.ssafy.forpawchain.behind.fragment
 
-import androidx.lifecycle.ViewModelProvider
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.FragmentHouseBinding
 import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
+
 
 class HouseFragment : Fragment() {
     private lateinit var viewModel: HouseFragmentVM
@@ -21,6 +26,7 @@ class HouseFragment : Fragment() {
         const val TAG: String = "HouseFragment"
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,7 +40,6 @@ class HouseFragment : Fragment() {
         }
 
         val root: View = binding.root
-
         return root
     }
 
