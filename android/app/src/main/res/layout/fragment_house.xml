@@ -73,6 +73,7 @@
                             android:background="@android:color/transparent"
                             android:fontFamily="@font/kakao_regular"
                             android:hint="@string/search_edit_text_hint"
+                            android:imeOptions="actionDone"
                             android:singleLine="true"
                             android:text="@={viewModel.searchEditText}"
                             android:textSize="15sp" />

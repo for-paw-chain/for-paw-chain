@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.View.OnFocusChangeListener
+import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -42,20 +43,41 @@ class HouseFragment : Fragment() {
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }
-        Thread {
-            binding.searchEditText.onFocusChangeListener =
-                OnFocusChangeListener { v, gainFocus ->
-                    //포커스가 주어졌을 때 동작
-                    if (gainFocus) {
-                        //to do
-                        //원하는 동작
-                        Log.d(TAG, "포커스 온")
-                    } else {
-                        //원하는 동작
-                        Log.d(TAG, "포커스 아웃")
-                    }
+
+
+        binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    // 엔터키가 눌렸을 때 처리할 코드 작성
+                    val searchList = mutableListOf<SearchResultDTO>()
+                    // TODO: Dummy Data
+                    searchList.add(SearchResultDTO("깡지", "여아", "견과", "말티즈", "X"))
+                    val recyclerView = binding.recycler
+
+                    val newsAdapter = SearchResultAdapter(searchList)
+
+                    recyclerView.adapter = newsAdapter
+                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                    recyclerView.setHasFixedSize(true)
+                    Log.d(TAG,"오 눌렸어~")
+                    true
                 }
+                else -> false
+            }
         }
+        binding.searchEditText.onFocusChangeListener =
+            OnFocusChangeListener { v, gainFocus ->
+                //포커스가 주어졌을 때 동작
+                if (gainFocus) {
+                    //to do
+                    //원하는 동작
+                    Log.d(TAG, "포커스 온")
+                } else {
+                    //원하는 동작
+                    Log.d(TAG, "포커스 아웃")
+                }
+
+            }
 
         val root: View = binding.root
         return root
@@ -77,6 +99,7 @@ class HouseFragment : Fragment() {
                     Log.d(TAG, "열림")
                     val recyclerView = binding.recycler
                     val searchList = mutableListOf<SearchResultDTO>()
+                    // TODO: Dummy Data
                     searchList.add(SearchResultDTO("별이1", "여아", "견과", "말티즈", "O"))
                     searchList.add(SearchResultDTO("별이2", "여아", "견과", "말티즈", "X"))
                     searchList.add(SearchResultDTO("별이3", "여아", "견과", "말티즈", "O"))
