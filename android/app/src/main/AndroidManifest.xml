@@ -28,11 +28,12 @@
         <activity
             android:name=".behind.activity.LoginActivity"
             android:exported="false"
-            android:noHistory="true"/>
+            android:noHistory="true" />
 
         <activity
             android:name=".behind.activity.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>
