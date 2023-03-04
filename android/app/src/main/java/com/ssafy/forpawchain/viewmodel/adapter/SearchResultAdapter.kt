@@ -10,12 +10,7 @@ class SearchResultViewHolder(
     private val binding: ControllSearchResultListBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(searchResult: SearchResultDTO) {
-        binding.name.text = searchResult.name
-        binding.sex.text = searchResult.sex
-        binding.species.text = searchResult.species
-        binding.kind.text = searchResult.kind
-        binding.neutered.text = searchResult.neutered
-
+        binding.item = searchResult
     }
 }
 

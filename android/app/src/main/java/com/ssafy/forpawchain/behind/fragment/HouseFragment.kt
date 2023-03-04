@@ -69,7 +69,7 @@ class HouseFragment : Fragment() {
 
     private fun scrollEvent() {
 //        binding.appBarLayout.overScrollMode = View.OVER_SCROLL_NEVER
-        binding.appBarLayout.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             //  Vertical offset == 0 indicates appBar is fully expanded.
 //            Log.d(TAG, "${Math.abs(verticalOffset)}")
             if (Math.abs(verticalOffset) > 1300) {
@@ -102,7 +102,7 @@ class HouseFragment : Fragment() {
                 }
                 invalidateOptionsMenu((activity as MainActivity))
             }
-        })
+        }
 
 
     }
