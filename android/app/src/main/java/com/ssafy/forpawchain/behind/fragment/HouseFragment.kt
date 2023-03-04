@@ -2,14 +2,10 @@ package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+import android.view.View.OnFocusChangeListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
-import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.FragmentHouseBinding
 import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
 
@@ -38,7 +34,18 @@ class HouseFragment : Fragment() {
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }
-
+        Thread{
+            binding.searchEditText.onFocusChangeListener =
+                OnFocusChangeListener { v, gainFocus ->
+                    //포커스가 주어졌을 때 동작
+                    if (gainFocus) {
+                        //to do
+                        //원하는 동작
+                    } else {
+                        //원하는 동작
+                    }
+                }
+        }
         val root: View = binding.root
         return root
     }

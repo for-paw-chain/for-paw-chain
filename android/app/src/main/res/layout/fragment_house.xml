@@ -16,18 +16,21 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <!-- parallax: 스크롤 시 접힘 -->
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="256dp"
+                    android:layout_height="384dp"
+                    android:layout_marginBottom="64dp"
                     android:background="@color/white"
                     android:fontFamily="@font/kakao_bold"
                     android:gravity="center"
@@ -80,6 +83,7 @@
                 android:background="@drawable/layout_redius_background"
                 android:orientation="horizontal"
                 android:weightSum="1"
+                android:gravity="top"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.35">
@@ -91,6 +95,7 @@
                     android:src="@drawable/logo_img_color_shadow" />
 
                 <EditText
+                    android:id="@+id/searchEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
