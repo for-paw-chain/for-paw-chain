@@ -15,6 +15,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white">
@@ -38,25 +39,45 @@
                     android:textSize="30sp"
                     app:layout_collapseMode="parallax" />
 
-
-                <!-- pin: 스크롤 시 고정 -->
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    app:layout_collapseMode="parallax">
+                    app:layout_collapseMode="pin">
 
-                    <TextView
-                        android:id="@+id/textView"
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:fontFamily="@font/kakao_regular"
-                        android:gravity="center"
-                        android:text="@string/house_search_text"
-                        android:textSize="32sp" />
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/layout_redius_background"
+                        android:gravity="top"
+                        android:orientation="horizontal"
+                        android:weightSum="1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0">
 
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:src="@drawable/logo_img_color_shadow" />
+
+                        <EditText
+                            android:id="@+id/searchEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/kakao_regular"
+                            android:hint="@string/search_edit_text_hint"
+                            android:text="@={viewModel.searchEditText}"
+                            android:textSize="15sp" />
+                    </LinearLayout>
                 </androidx.appcompat.widget.Toolbar>
+
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -70,40 +91,23 @@
 
         <!-- 뷰페이저 (layout_behavior를 "@string/appbar_scrolling_view_behavior"로 설정해야함! ) -->
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/layout_redius_background"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:gravity="top"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.35">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/logo_img_color_shadow" />
-
-                <EditText
-                    android:id="@+id/searchEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/kakao_regular"
-                    android:hint="@string/search_edit_text_hint"
-                    android:text="@={viewModel.searchEditText}"
-                    android:textSize="15sp" />
-            </LinearLayout>
+            </androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
