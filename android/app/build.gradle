@@ -70,8 +70,11 @@ dependencies {
     // java 8 TODO: 집에서는 이거 없어도 잘 되는데...
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0'
 
+    // Palette
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
 
-
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
     // default
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

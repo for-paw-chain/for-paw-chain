@@ -4,16 +4,16 @@
     <item
         android:id="@+id/navigation_paw"
         android:icon="@drawable/paw_solid"
-        android:title="1" />
+        android:title="유기동물" />
 
     <item
         android:id="@+id/navigation_house"
         android:icon="@drawable/house_solid"
-        android:title="2" />
+        android:title="홈" />
 
     <item
         android:id="@+id/navigation_user"
         android:icon="@drawable/user_solid"
-        android:title="3" />
+        android:title="내 정보" />
 
 </menu>

@@ -13,5 +13,9 @@ import kotlin.concurrent.thread
 
 
 class UserFragmentVM : ViewModel() {
+    companion object {
+        const val TAG: String = "UserFragmentVM"
+    }
+
     val message = MutableLiveData<String>("유저 프래그먼트입니다!")
 }

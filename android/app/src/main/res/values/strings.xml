@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">ForPawChain</string>
+    <string name="splash_body">믿을 수 있는\n동물 의료 기록 추적 서비스</string>
+    <string name="house_search_text">동물등록번호 검색</string>
+    <string name="search_edit_text_hint">동물 칩에 등록된 동물등록번호를 입력해주세요.</string>
 </resources>

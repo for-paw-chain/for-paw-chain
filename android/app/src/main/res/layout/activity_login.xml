@@ -5,6 +5,7 @@
     tools:context=".behind.activity.LoginActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.ssafy.forpawchain.viewmodel.activity.LoginVM" />
@@ -14,68 +15,61 @@
         android:id="@+id/login_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:background="@color/white">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="400dp"
-            android:layout_height="50dp"
-            android:text="일반 글씨체입니다."
-            android:textSize="30sp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:src="@drawable/logo_color_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="400dp"
-            android:layout_height="50dp"
-            android:textSize="30sp"
-            android:fontFamily="@font/kakao_bold"
-            android:text="카카오 글씨체입니다."
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        <LinearLayout
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
             android:layout_width="350dp"
-            android:layout_height="100dp"
+            android:layout_height="88dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:layout_constraintVertical_bias="0.2">
 
-            <EditText
-                android:id="@+id/idEditText"
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:text="@={viewModel.id}"
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:onClick="@{()->viewModel.kakaoLogin_onClick()}"
+                android:src="@drawable/icon_kakao" />
 
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:onClick="@{()->viewModel.googleLogin_onClick()}"
+                android:src="@drawable/icon_google" />
 
-            <EditText
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:layout_weight="1"
+                android:onClick="@{()->viewModel.naverLogin_onClick()}"
+                android:src="@drawable/icon_naver" />
 
-                android:id="@+id/pwEditText"
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:text="@={viewModel.pw}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/loginButton"
-                android:layout_width="80dp"
-                android:layout_height="75dp"
-                android:onClick="@{() -> viewModel.loginButton_onClick()}"
-                android:text="Login"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

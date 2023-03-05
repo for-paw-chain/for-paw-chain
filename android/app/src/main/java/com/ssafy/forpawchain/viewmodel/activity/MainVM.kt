@@ -9,5 +9,7 @@ import com.ssafy.basictemplate.util.Event
 import java.util.*
 
 class MainVM : ViewModel() {
-
+    companion object {
+        const val TAG: String = "MainVM"
+    }
 }

@@ -1,5 +1,9 @@
 package com.ssafy.forpawchain.behind.activity
+
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,8 +15,12 @@ import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private var backPressedTime: Long = 0
 
-//    private lateinit var binding: ActivityMainBinding
+    //    private lateinit var binding: ActivityMainBinding
+    companion object {
+        const val TAG: String = "MainActivity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,12 +34,29 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_paw, R.id.navigation_paw
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        val appBarConfiguration = AppBarConfiguration(
+//            setOf(
+//                R.id.navigation_house, R.id.navigation_house
+//            )
+//        )
+//        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+//        val actionBar: ActionBar? = supportActionBar
+//        actionBar?.hide()
+    }
+
+    override fun onBackPressed() {
+        // 뒤로가기 버튼 클릭
+        Log.d(TAG, "뒤로가기")
+
+        // 2초내 다시 클릭하면 앱 종료
+        if (System.currentTimeMillis() - backPressedTime < 2000) {
+            android.os.Process.killProcess(android.os.Process.myPid());
+            return
+        }
+        // 처음 클릭 메시지
+        Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+        backPressedTime = System.currentTimeMillis()
     }
 }
