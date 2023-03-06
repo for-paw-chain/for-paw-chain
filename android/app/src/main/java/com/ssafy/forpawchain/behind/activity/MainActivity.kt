@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.behind.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         super.onCreate(savedInstanceState)
 
 //        binding = ActivityMainBinding.inflate(layoutInflater)

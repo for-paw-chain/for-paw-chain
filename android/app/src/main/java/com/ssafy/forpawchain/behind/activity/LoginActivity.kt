@@ -3,6 +3,7 @@ package com.ssafy.forpawchain.behind.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
@@ -26,6 +27,11 @@ class LoginActivity : AppCompatActivity() {
 
     private val viewModel: LoginVM by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+
         super.onCreate(savedInstanceState)
         val binding =
             DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
