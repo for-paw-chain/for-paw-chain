@@ -4,8 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.Event
+import com.ssafy.forpawchain.model.service.TestService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginVM : ViewModel() {
     /*
@@ -18,6 +23,7 @@ class LoginVM : ViewModel() {
 
     companion object {
         const val TAG: String = "LoginVM"
+        val testService: TestService = TestService()
     }
 
     val id = MutableLiveData<String>()
@@ -29,6 +35,23 @@ class LoginVM : ViewModel() {
 
     fun kakaoLogin_onClick() {
         Log.d(TAG, "카카오 로그인")
+        testService.test("ddd").enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if(response.isSuccessful){
+                    // 정상적으로 통신이 성고된 경우
+                    var result: JsonObject? = response.body()
+                    Log.d("YMC", "onResponse 성공: " + result?.toString());
+                }else{
+                    // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                    Log.d("YMC", "onResponse 실패")
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                Log.d("YMC", "onFailure 에러: " + t.message.toString());
+            }
+        })
         _openEvent.value = Event(ActivityCode.MAIN_ACTIVITY)
     }
 

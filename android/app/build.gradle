@@ -37,7 +37,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dataBinding{
+    dataBinding {
         // 데이터 바인딩 활성화
         enabled true
     }
@@ -75,6 +75,16 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    // Retrofit 라이브러리
+    implementation 'com.squareup.retrofit2:retrofit:2.6.4'
+
+    // Gson 변환기 라이브러리
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.4'
+
+    // Scalars 변환기 라이브러리
+    implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
+
     // default
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
