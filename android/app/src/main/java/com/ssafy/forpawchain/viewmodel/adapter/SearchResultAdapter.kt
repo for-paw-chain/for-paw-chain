@@ -8,7 +8,8 @@ import com.ssafy.forpawchain.databinding.ControllSearchResultListBinding
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 
 class SearchResultAdapter(
-    private var mydataSet: List<SearchResultDTO>
+    private var mydataSet: List<SearchResultDTO>,
+    val onClickQrButton: (pos: SearchResultDTO) -> Unit
 ) : RecyclerView.Adapter<SearchResultAdapter.SearchRestulViewHolder>() {
 
     class SearchRestulViewHolder(val binding: ControllSearchResultListBinding) :
@@ -28,15 +29,16 @@ class SearchResultAdapter(
     override fun onBindViewHolder(
         todoViewHolder: SearchRestulViewHolder,
         position: Int
-    ) {//item을 화면에 표시해주는
+    ) {
+        //item을 화면에 표시해주는
         if (mydataSet.isNotEmpty()) {
             val listposition = mydataSet[position]
             todoViewHolder.binding.item = listposition
-        }
 
-//        todoViewHolder.binding.deleteImage.setOnClickListener {
-//            onClickDeleteIcon.invoke(listposition) //눌렀을때 listposition를 전달하면서 함수를 실행한다.
-//        }
+            todoViewHolder.binding.qrBtn.setOnClickListener {
+                onClickQrButton.invoke(listposition) //눌렀을때 listposition를 전달하면서 함수를 실행한다.
+            }
+        }
     }
 
     override fun getItemCount(): Int = mydataSet.size

@@ -49,9 +49,11 @@ class HouseFragment : Fragment() {
         val searchList = mutableListOf<SearchResultDTO>()
 
 
-        val newsAdapter = SearchResultAdapter(searchList)
 
-        recyclerView.adapter = newsAdapter
+        recyclerView.adapter = SearchResultAdapter(searchList,
+            onClickQrButton = {
+                viewModel.deleteTask(it)
+            })
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
