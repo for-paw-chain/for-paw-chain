@@ -8,6 +8,7 @@ import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
@@ -44,22 +45,29 @@ class HouseFragment : Fragment() {
             binding.lifecycleOwner = this
         }
 
+        val recyclerView = binding.recycler
+        val searchList = mutableListOf<SearchResultDTO>()
+
+
+        val newsAdapter = SearchResultAdapter(searchList)
+
+        recyclerView.adapter = newsAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
+
+        viewModel.todoLiveData.observe(
+            requireActivity(),
+            Observer { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
+                (binding.recycler.adapter as SearchResultAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
+
+            })
 
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     // 엔터키가 눌렸을 때 처리할 코드 작성
-                    val searchList = mutableListOf<SearchResultDTO>()
-                    // TODO: Dummy Data
-                    searchList.add(SearchResultDTO("깡지", "여아", "견과", "말티즈", "X"))
-                    val recyclerView = binding.recycler
 
-                    val newsAdapter = SearchResultAdapter(searchList)
-
-                    recyclerView.adapter = newsAdapter
-                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                    recyclerView.setHasFixedSize(true)
-                    Log.d(TAG,"오 눌렸어~")
+                    Log.d(TAG, "오 눌렸어~")
                     true
                 }
                 else -> false
@@ -97,30 +105,20 @@ class HouseFragment : Fragment() {
             if (Math.abs(verticalOffset) > 1300) {
                 if (!isOpenSearch) {
                     Log.d(TAG, "열림")
-                    val recyclerView = binding.recycler
-                    val searchList = mutableListOf<SearchResultDTO>()
-                    // TODO: Dummy Data
-                    searchList.add(SearchResultDTO("별이1", "여아", "견과", "말티즈", "O"))
-                    searchList.add(SearchResultDTO("별이2", "여아", "견과", "말티즈", "X"))
-                    searchList.add(SearchResultDTO("별이3", "여아", "견과", "말티즈", "O"))
-                    searchList.add(SearchResultDTO("별이4", "여아", "견과", "말티즈", "X"))
-                    searchList.add(SearchResultDTO("별이5", "여아", "견과", "말티즈", "X"))
-                    searchList.add(SearchResultDTO("별이6", "여아", "견과", "말티즈", "X"))
-
-                    val newsAdapter = SearchResultAdapter(searchList)
-
-                    recyclerView.adapter = newsAdapter
-                    recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                    recyclerView.setHasFixedSize(true)
+                    // TODO: DUMMY DATA
+                    viewModel.addTask(SearchResultDTO("별이1", "여아", "견과", "말티즈", "X"))
+                    viewModel.addTask(SearchResultDTO("별이2", "여아", "견과", "말티즈", "O"))
+                    viewModel.addTask(SearchResultDTO("별이3", "여아", "견과", "말티즈", "O"))
+                    viewModel.addTask(SearchResultDTO("별이4", "여아", "견과", "말티즈", "O"))
+                    viewModel.addTask(SearchResultDTO("별이5", "여아", "견과", "말티즈", "X"))
+                    viewModel.addTask(SearchResultDTO("별이6", "여아", "견과", "말티즈", "X"))
                     isOpenSearch = true
                 }
                 invalidateOptionsMenu((activity as MainActivity))
             } else if (Math.abs(verticalOffset) < 100) {
                 if (isOpenSearch) {
-                    val recyclerView = binding.recycler
-                    val newsAdapter = SearchResultAdapter(emptyList())
-                    recyclerView.adapter = newsAdapter;
                     Log.d(TAG, "닫힘")
+                    viewModel.clearTask()
                     isOpenSearch = false
                 }
                 invalidateOptionsMenu((activity as MainActivity))

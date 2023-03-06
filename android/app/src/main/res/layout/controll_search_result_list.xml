@@ -7,12 +7,13 @@
         <variable
             name="item"
             type="com.ssafy.forpawchain.model.domain.SearchResultDTO" />
+
     </data>
 
     <LinearLayout
-        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_margin="16dp"
         android:orientation="horizontal"
         android:weightSum="5">
 
@@ -20,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
-            android:src="@drawable/paw_solid"/>
+            android:src="@drawable/paw_solid" />
 
         <LinearLayout
             android:layout_width="0dp"
