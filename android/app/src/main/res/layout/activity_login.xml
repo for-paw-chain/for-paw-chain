@@ -30,10 +30,9 @@
             app:layout_constraintVertical_bias="0.3" />
 
         <LinearLayout
-
             android:layout_width="350dp"
-            android:layout_height="88dp"
-            android:orientation="horizontal"
+            android:layout_height="250dp"
+            android:orientation="vertical"
             android:weightSum="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,33 +40,106 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView2"
             app:layout_constraintVertical_bias="0.2">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_margin="16dp"
                 android:layout_weight="1"
-                android:onClick="@{()->viewModel.kakaoLogin_onClick()}"
-                android:src="@drawable/icon_kakao" />
+                android:background="#FEE500">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:onClick="@{()->viewModel.kakaoLogin_onClick()}"
+                    android:src="@drawable/icon_kakao"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kakao_bold"
+                    android:gravity="center"
+                    android:onClick="@{()->viewModel.kakaoLogin_onClick()}"
+                    android:text="카카오로 로그인"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/imageView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_margin="16dp"
                 android:layout_weight="1"
-                android:onClick="@{()->viewModel.googleLogin_onClick()}"
-                android:src="@drawable/icon_google" />
+                android:background="#2BC73B">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:onClick="@{()->viewModel.kakaoLogin_onClick()}"
+                    android:src="@drawable/icon_naver"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kakao_bold"
+                    android:gravity="center"
+                    android:onClick="@{()->viewModel.kakaoLogin_onClick()}"
+                    android:text="네이버로 로그인"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/imageView1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_margin="16dp"
                 android:layout_weight="1"
-                android:onClick="@{()->viewModel.naverLogin_onClick()}"
-                android:src="@drawable/icon_naver" />
+                android:background="#F0F0F0">
 
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:onClick="@{()->viewModel.kakaoLogin_onClick()}"
+                    android:src="@drawable/icon_google"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/kakao_bold"
+                    android:gravity="center"
+                    android:onClick="@{()->viewModel.kakaoLogin_onClick()}"
+                    android:text="구글로 로그인"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/imageView3" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
