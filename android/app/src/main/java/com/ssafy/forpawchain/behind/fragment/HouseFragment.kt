@@ -104,7 +104,7 @@ class HouseFragment : Fragment() {
         binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             //  Vertical offset == 0 indicates appBar is fully expanded.
 //            Log.d(TAG, "${Math.abs(verticalOffset)}")
-            if (Math.abs(verticalOffset) > 1300) {
+            if (Math.abs(verticalOffset) > 1200) {
                 if (!isOpenSearch) {
                     Log.d(TAG, "열림")
                     // TODO: DUMMY DATA
