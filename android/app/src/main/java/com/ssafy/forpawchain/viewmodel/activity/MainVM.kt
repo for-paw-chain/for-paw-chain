@@ -10,6 +10,7 @@ import java.util.*
 
 class MainVM : ViewModel() {
     companion object {
-        const val TAG: String = "MainVM"
+        val TAG: String? = this::class.qualifiedName
+
     }
 }
