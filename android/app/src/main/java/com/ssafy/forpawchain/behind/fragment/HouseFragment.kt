@@ -28,7 +28,7 @@ class HouseFragment : Fragment() {
     private val binding get() = _binding!!
 
     companion object {
-        const val TAG: String = "HouseFragment"
+        val TAG: String? = this::class.qualifiedName
     }
 
     @SuppressLint("ResourceAsColor")

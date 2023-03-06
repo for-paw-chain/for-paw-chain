@@ -11,7 +11,7 @@ import com.ssafy.forpawchain.R
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     companion object {
-        const val TAG: String = "SplashActivity"
+        val TAG: String? = this::class.qualifiedName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

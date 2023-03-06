@@ -13,7 +13,8 @@ import retrofit2.http.Field
 
 class TestService {
     companion object {
-        const val TAG: String = "TestService"
+        val TAG: String? = this::class.qualifiedName
+
         const val baseUrl: String = "http://192.168.56.1:8080"
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -22,7 +23,7 @@ class TestService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun test(@Field("idx") idx: String): Call<JsonObject> {
+    fun test(@Field("msg") msg: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer qwerqwer")
@@ -37,6 +38,6 @@ class TestService {
             .build()
         service = retrofit.create(RetrofitService::class.java);
 
-        return service.test("kkkkkkkk")
+        return service.test(msg)
     }
 }

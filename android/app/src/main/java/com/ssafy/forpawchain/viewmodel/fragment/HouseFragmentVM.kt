@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 
 class HouseFragmentVM : ViewModel() {
     companion object {
-        const val TAG: String = "HouseFragmentVM"
+        val TAG: String? = this::class.qualifiedName
     }
 
     val searchEditText = MutableLiveData<String>()

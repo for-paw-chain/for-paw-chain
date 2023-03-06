@@ -20,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
     private var backPressedTime: Long = 0
 
     companion object {
-        const val TAG: String = "LoginActivity"
+        val TAG: String? = this::class.qualifiedName
     }
     // Log.d(TAG, "LoginActivity - loginVM - pwEditText 라이브 데이터 값 변경 : $it")
 

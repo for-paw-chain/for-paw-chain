@@ -1,7 +1,6 @@
 package com.ssafy.forpawchain.model.service.retrofit
 
 import com.google.gson.JsonObject
-import com.ssafy.forpawchain.model.domain.PostResult
 import retrofit2.Call
 import retrofit2.http.*
 

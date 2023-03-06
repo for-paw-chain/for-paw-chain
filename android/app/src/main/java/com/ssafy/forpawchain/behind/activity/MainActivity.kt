@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     //    private lateinit var binding: ActivityMainBinding
     companion object {
-        const val TAG: String = "MainActivity"
+        val TAG: String? = this::class.qualifiedName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

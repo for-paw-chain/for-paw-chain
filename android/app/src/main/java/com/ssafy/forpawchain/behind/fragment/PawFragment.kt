@@ -18,7 +18,7 @@ class PawFragment : Fragment() {
     private val binding get() = _binding!!
 
     companion object {
-        const val TAG: String = "PawFragment"
+        val TAG: String? = this::class.qualifiedName
     }
 
     override fun onCreateView(
