@@ -42,8 +42,9 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_gravity="bottom"
+                    android:background="#9871FF"
                     app:layout_collapseMode="pin">
 
                     <LinearLayout
@@ -69,13 +70,15 @@
 
                         <EditText
                             android:id="@+id/searchEditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@android:color/transparent"
+                            android:layout_width="300dp"
+                            android:layout_height="45dp"
+                            android:background="@color/white"
                             android:fontFamily="@font/kakao_regular"
                             android:hint="@string/search_edit_text_hint"
                             android:imeOptions="actionDone"
                             android:singleLine="true"
+                            android:gravity="center"
+                            android:layout_gravity="center"
                             android:text="@={viewModel.searchEditText}"
                             android:textSize="15sp" />
                     </LinearLayout>
