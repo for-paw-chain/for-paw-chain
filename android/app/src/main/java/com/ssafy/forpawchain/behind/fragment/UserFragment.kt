@@ -19,7 +19,7 @@ class UserFragment : Fragment() {
     private val binding get() = _binding!!
 
     companion object {
-        const val TAG: String = "UserFragment"
+        val TAG: String? = this::class.qualifiedName
     }
 
     override fun onCreateView(

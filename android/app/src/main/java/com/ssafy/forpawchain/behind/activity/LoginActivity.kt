@@ -3,6 +3,7 @@ package com.ssafy.forpawchain.behind.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
@@ -20,12 +21,17 @@ class LoginActivity : AppCompatActivity() {
     private var backPressedTime: Long = 0
 
     companion object {
-        const val TAG: String = "LoginActivity"
+        val TAG: String? = this::class.qualifiedName
     }
     // Log.d(TAG, "LoginActivity - loginVM - pwEditText 라이브 데이터 값 변경 : $it")
 
     private val viewModel: LoginVM by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+
         super.onCreate(savedInstanceState)
         val binding =
             DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
