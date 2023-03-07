@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="search_top">#9871FF</color>
+    <color name="search_bottom">#B99FFF</color>
     <!--Indigo 500-->
     <color name="primary_500">#3F51B5</color>
     <!--Indigo 700-->

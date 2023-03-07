@@ -6,6 +6,8 @@ import com.ssafy.forpawchain.model.domain.SearchResultDTO
 
 
 class HouseFragmentVM : ViewModel() {
+    val isOpenSearch = MutableLiveData<Boolean>(false)
+
     companion object {
         val TAG: String? = this::class.qualifiedName
     }

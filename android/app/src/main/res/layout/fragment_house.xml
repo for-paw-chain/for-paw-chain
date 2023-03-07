@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_gravity="bottom"
-                    android:background="#9871FF"
+                    android:background="@{viewModel.isOpenSearch ? @color/search_top : @color/search_bottom }"
                     app:layout_collapseMode="pin">
 
                     <LinearLayout
@@ -72,13 +72,13 @@
                             android:id="@+id/searchEditText"
                             android:layout_width="300dp"
                             android:layout_height="45dp"
+                            android:layout_gravity="center"
                             android:background="@color/white"
                             android:fontFamily="@font/kakao_regular"
+                            android:gravity="center"
                             android:hint="@string/search_edit_text_hint"
                             android:imeOptions="actionDone"
                             android:singleLine="true"
-                            android:gravity="center"
-                            android:layout_gravity="center"
                             android:text="@={viewModel.searchEditText}"
                             android:textSize="15sp" />
                     </LinearLayout>

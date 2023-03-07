@@ -22,7 +22,6 @@ import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
 class HouseFragment : Fragment() {
     private lateinit var viewModel: HouseFragmentVM
     private var _binding: FragmentHouseBinding? = null
-    private var isOpenSearch: Boolean = false
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -105,7 +104,7 @@ class HouseFragment : Fragment() {
             //  Vertical offset == 0 indicates appBar is fully expanded.
 //            Log.d(TAG, "${Math.abs(verticalOffset)}")
             if (Math.abs(verticalOffset) > 1200) {
-                if (!isOpenSearch) {
+                if (!viewModel.isOpenSearch.value!!) {
                     Log.d(TAG, "열림")
                     // TODO: DUMMY DATA
                     viewModel.addTask(SearchResultDTO("별이1", "여아", "견과", "말티즈", "X"))
@@ -114,14 +113,14 @@ class HouseFragment : Fragment() {
                     viewModel.addTask(SearchResultDTO("별이4", "여아", "견과", "말티즈", "O"))
                     viewModel.addTask(SearchResultDTO("별이5", "여아", "견과", "말티즈", "X"))
                     viewModel.addTask(SearchResultDTO("별이6", "여아", "견과", "말티즈", "X"))
-                    isOpenSearch = true
+                    viewModel.isOpenSearch.value = true
                 }
                 invalidateOptionsMenu((activity as MainActivity))
             } else if (Math.abs(verticalOffset) < 100) {
-                if (isOpenSearch) {
+                if (viewModel.isOpenSearch.value!!) {
                     Log.d(TAG, "닫힘")
                     viewModel.clearTask()
-                    isOpenSearch = false
+                    viewModel.isOpenSearch.value = false
                 }
                 invalidateOptionsMenu((activity as MainActivity))
             }
