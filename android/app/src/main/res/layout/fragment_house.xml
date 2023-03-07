@@ -61,7 +61,7 @@
                         android:layout_height="50dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
-                        android:background="@drawable/layout_redius_background"
+                        android:background="@drawable/background_layout_redius"
                         android:gravity="top"
                         android:orientation="horizontal"
                         android:weightSum="1"
