@@ -6,7 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.FragmentUserBinding
+import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
+import com.ssafy.forpawchain.model.domain.SearchResultDTO
+import com.ssafy.forpawchain.viewmodel.adapter.MyPageMenuAdapter
+import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.UserFragmentVM
 
@@ -20,6 +27,8 @@ class UserFragment : Fragment() {
 
     companion object {
         val TAG: String? = this::class.qualifiedName
+
+
     }
 
     override fun onCreateView(
@@ -35,7 +44,64 @@ class UserFragment : Fragment() {
         }
 
         val root: View = binding.root
+        val recyclerView = binding.recycler
+        val searchList = mutableListOf<MyPageMenuDTO>()
 
+        recyclerView.adapter = MyPageMenuAdapter(searchList,
+            onClickQrButton = {
+                viewModel.deleteTask(it)
+            })
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
+
+        viewModel.todoLiveData.observe(
+            requireActivity(),
+            Observer { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
+                (binding.recycler.adapter as MyPageMenuAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
+
+            })
+
+        viewModel.addTask(
+            MyPageMenuDTO(
+                resources.getDrawable(R.drawable.icon_dog_emoji),
+                "나의 반려 동물"
+            )
+        )
+
+        viewModel.addTask(
+            MyPageMenuDTO(
+                resources.getDrawable(R.drawable.icon_doctor_emoji),
+                "의사 면허 등록"
+            )
+        )
+
+        viewModel.addTask(
+            MyPageMenuDTO(
+                resources.getDrawable(R.drawable.icon_handshake_emoji),
+                "내가 쓴 글"
+            )
+        )
+
+        viewModel.addTask(
+            MyPageMenuDTO(
+                resources.getDrawable(R.drawable.icon_android_emoji),
+                "버전 확인"
+            )
+        )
+
+        viewModel.addTask(
+            MyPageMenuDTO(
+                resources.getDrawable(R.drawable.icon_broken_heart_emoji),
+                "회원 탈퇴"
+            )
+        )
+
+        viewModel.addTask(
+            MyPageMenuDTO(
+                resources.getDrawable(R.drawable.icon_logout_emoji),
+                "로그아웃"
+            )
+        )
         return root
     }
 
