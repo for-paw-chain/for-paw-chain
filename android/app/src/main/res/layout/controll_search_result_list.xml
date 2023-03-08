@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/whitesmoke">
+    android:background="@drawable/background_layout_search_result_redius">
 
     <data>
 
@@ -13,7 +13,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="125dp"
         android:layout_margin="16dp"
         android:orientation="horizontal"
         android:weightSum="5">
@@ -21,6 +21,7 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:layout_weight="1.5"
             android:src="@drawable/icon_paw_solid" />
 
@@ -41,43 +42,61 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="#F3F0FD"
                     android:fontFamily="@font/kakao_bold"
                     android:text="이름" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="#F3F0FD"
+
                     android:fontFamily="@font/kakao_bold"
+
                     android:text="성별" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="#F3F0FD"
+
                     android:fontFamily="@font/kakao_bold"
+
                     android:text="견과" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="#F3F0FD"
+
                     android:fontFamily="@font/kakao_bold"
+
                     android:text="말티즈" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="#F3F0FD"
+
                     android:fontFamily="@font/kakao_bold"
+
                     android:text="중성화" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:orientation="vertical"
                 android:weightSum="5">
 
@@ -85,40 +104,55 @@
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="@drawable/background_layout_search_result_info_redius"
                     android:fontFamily="@font/kakao_regular"
+
                     android:text="@{item.name}" />
 
                 <TextView
                     android:id="@+id/sex"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="@drawable/background_layout_search_result_info_redius"
                     android:fontFamily="@font/kakao_regular"
+
                     android:text="@{item.sex}" />
 
                 <TextView
                     android:id="@+id/species"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="@drawable/background_layout_search_result_info_redius"
                     android:fontFamily="@font/kakao_regular"
+
                     android:text="@{item.species}" />
 
                 <TextView
                     android:id="@+id/kind"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="@drawable/background_layout_search_result_info_redius"
                     android:fontFamily="@font/kakao_regular"
+
                     android:text="@{item.kind}" />
 
                 <TextView
                     android:id="@+id/neutered"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"
+                    android:background="@drawable/background_layout_search_result_info_redius"
                     android:fontFamily="@font/kakao_regular"
+
                     android:text="@{item.neutered}" />
             </LinearLayout>
         </LinearLayout>
@@ -127,6 +161,7 @@
             android:id="@+id/qr_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:text="QR" />
