@@ -39,6 +39,4 @@ class UserFragmentVM : ViewModel() {
 
     val name = MutableLiveData<String>("홍길동")
     val code = MutableLiveData<String>("#043261")
-
-    val message = MutableLiveData<String>("유저 프래그먼트입니다!")
 }

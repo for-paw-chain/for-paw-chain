@@ -60,6 +60,12 @@ class UserFragment : Fragment() {
                 (binding.recycler.adapter as MyPageMenuAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
 
             })
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
 
         viewModel.addTask(
             MyPageMenuDTO(
@@ -102,11 +108,11 @@ class UserFragment : Fragment() {
                 "로그아웃"
             )
         )
-        return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        viewModel.clearTask()
+//        _binding = null // TODO: 왜 이이거 하면 다시 페이지를 로딩 했을 떄 에러가 나는지 의문
     }
 }
