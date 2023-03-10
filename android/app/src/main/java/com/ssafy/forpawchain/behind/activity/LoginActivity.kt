@@ -65,6 +65,9 @@ class LoginActivity : AppCompatActivity() {
             when (obj) {
                 ActivityCode.MAIN_ACTIVITY -> intent = Intent(this, MainActivity::class.java)
                 ActivityCode.LOGIN_ACTIVITY -> intent = Intent(this, LoginActivity::class.java)
+                else -> {
+                    null
+                }
             }
 
             startActivity(intent)
