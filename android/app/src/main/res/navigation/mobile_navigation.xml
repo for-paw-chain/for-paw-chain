@@ -27,4 +27,10 @@
         android:name="com.ssafy.forpawchain.behind.fragment.DoctorCertFragment"
         android:label="UserFragment"
         tools:layout="@layout/fragment_doctor_cert" />
+
+    <fragment
+        android:id="@+id/navigation_my_paw_list"
+        android:name="com.ssafy.forpawchain.behind.fragment.MyPawFragment"
+        android:label="UserFragment"
+        tools:layout="@layout/fragment_my_paw" />
 </navigation>

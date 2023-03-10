@@ -8,6 +8,8 @@ import androidx.appcompat.app.ActionBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -17,6 +19,7 @@ import com.ssafy.forpawchain.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private var backPressedTime: Long = 0
+    private lateinit var navController: NavController
 
     //    private lateinit var binding: ActivityMainBinding
     companion object {
@@ -24,7 +27,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
 
         super.onCreate(savedInstanceState)
 
@@ -34,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 //        val appBarConfiguration = AppBarConfiguration(
@@ -52,14 +58,18 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // 뒤로가기 버튼 클릭
         Log.d(TAG, "뒤로가기")
-
-        // 2초내 다시 클릭하면 앱 종료
-        if (System.currentTimeMillis() - backPressedTime < 2000) {
-            android.os.Process.killProcess(android.os.Process.myPid());
-            return
+        if (navController.backQueue.size == 0) {
+            // 2초내 다시 클릭하면 앱 종료
+            if (System.currentTimeMillis() - backPressedTime < 2000) {
+                android.os.Process.killProcess(android.os.Process.myPid());
+                return
+            }
+            // 처음 클릭 메시지
+            Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+            backPressedTime = System.currentTimeMillis()
+        } else {
+            navController.navigateUp()
+//            navController.popBackStack()
         }
-        // 처음 클릭 메시지
-        Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
-        backPressedTime = System.currentTimeMillis()
     }
 }

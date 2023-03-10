@@ -52,8 +52,11 @@ class UserFragment : Fragment() {
 
         recyclerView.adapter = MyPageMenuAdapter(searchList,
             onClickQrButton = {
-                if (it.title.equals("의사 면허 등록")){
+                if (it.title.equals("의사 면허 등록")) {
                     navController.navigate(R.id.navigation_doctor_cert)
+
+                } else if (it.title.equals("나의 반려 동물")) {
+                    navController.navigate(R.id.navigation_my_paw_list)
                 }
 //                viewModel.deleteTask(it)
             })
