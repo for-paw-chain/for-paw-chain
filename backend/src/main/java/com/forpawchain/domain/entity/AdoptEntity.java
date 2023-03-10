@@ -12,7 +12,6 @@ import javax.persistence.*;
 public class AdoptEntity {
     @Id
     private String pid;
-
     @Column(nullable = false)
     private long uid;
     private String tel;
@@ -20,10 +19,14 @@ public class AdoptEntity {
     private String profile1;
     private String profile2;
     private String etc;
-    @ManyToOne(targetEntity = User.class)
+
+    @ManyToOne
     @JoinColumn(name = "uid")
-    private User user;
-//    @OneToOne
-//    @JoinColumn(name = "pet")
-//    private PetEntity pet;
+    @MapsId("uid")
+    private UserEntity user;
+
+    @OneToOne
+    @JoinColumn(name = "pid")
+    @MapsId("pid")
+    private PetEntity pet;
 }

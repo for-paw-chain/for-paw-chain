@@ -13,12 +13,18 @@ import javax.persistence.*;
 @Getter
 public class PetEntity {
     @Id
-    private String pid;
+    private String pet;
     @Column(nullable = false)
     private String ca;
     @Column(nullable = false)
     private boolean lost;
 
-//    @OneToOne(mappedBy = "pid")
-//    AdoptEntity adopt;
+    @OneToOne(mappedBy = "pet")
+    private PetInfoEntity petInfo;
+    @OneToOne(mappedBy = "pet")
+    private PetRegEntity petReg;
+    @OneToOne(mappedBy = "pet")
+    private AdoptEntity adopt;
+    @OneToMany(mappedBy = "pet")
+    List<AuthenticationEntity> authList;
 }

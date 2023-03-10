@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "USER")
 @Builder
 @Getter
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long uid;
@@ -26,5 +26,8 @@ public class User {
     @Column(nullable = false)
     private boolean del;
     @OneToMany(mappedBy = "user")
-    List<AdoptEntity> adoptList = new ArrayList<>();
+    List<AdoptEntity> adoptList;// = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    List<AuthenticationEntity> authList;// = new ArrayList<>();
 }
