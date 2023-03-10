@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // 뒤로가기 버튼 클릭
         Log.d(TAG, "뒤로가기")
-        if (navController.backQueue.size == 0) {
+        if (navController.backQueue.size <= 1) {
             // 2초내 다시 클릭하면 앱 종료
             if (System.currentTimeMillis() - backPressedTime < 2000) {
                 android.os.Process.killProcess(android.os.Process.myPid());

@@ -1,30 +1,44 @@
 package com.ssafy.forpawchain.viewmodel.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.ControllMyPawListBinding
-import com.ssafy.forpawchain.databinding.ControllSearchResultListBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
-import com.ssafy.forpawchain.model.domain.SearchResultDTO
 
 class MyPawListAdapter(
     private var mydataSet: List<MyPawListDTO>,
     val onClickQrButton: (pos: MyPawListDTO) -> Unit
 ) : RecyclerView.Adapter<MyPawListAdapter.MyPawListViewHolder>() {
 
+    companion object {
+        val TAG: String? = this::class.qualifiedName
+
+    }
+
     class MyPawListViewHolder(val binding: ControllMyPawListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
     }
 
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MyPawListViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.controll_my_paw_list, viewGroup, false) //내가 각아이템에 사용하는 view
+        val bind = ControllMyPawListBinding.bind(view)
+        val holder = MyPawListViewHolder(bind)
+        view.setOnClickListener({
+            Log.d(TAG, "${mydataSet.get(holder.adapterPosition)} 나의 반려동물, 상세 페이지로 이동")
 
-        return MyPawListViewHolder(ControllMyPawListBinding.bind(view))
+        })
+
+        view.setOnLongClickListener {
+            Log.d(TAG, "${mydataSet.get(holder.adapterPosition)} 나의 반려동물, 삭제 여부")
+            return@setOnLongClickListener true
+        }
+
+        return holder
     }
 
 
