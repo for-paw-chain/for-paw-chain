@@ -1,12 +1,21 @@
 package com.forpawchain.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.web3j.crypto.CipherException;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthAccounts;
+import org.web3j.protocol.http.HttpService;
 // import org.web3j.protocol.Web3j;
 // import org.web3j.protocol.core.DefaultBlockParameter;
 // import org.web3j.protocol.core.methods.response.EthAccounts;
@@ -42,7 +51,37 @@ public class Web3jService {
 
 	// 지정된 주소의 계정
 	public EthAccounts getEthAccounts() throws ExecutionException, InterruptedException {
+		System.out.println("------------");
+		System.out.println(web3j.ethAccounts().sendAsync());
+		System.out.println("------------");
 		return web3j.ethAccounts().sendAsync().get();
+	}
+
+	/**
+	 * 지갑 생성
+	 * private key만 있으면 사용 가능.
+	 * private key를 프론트에 전달해주기. db에는 저장 안함
+	 */
+	public void createWallet() throws
+		CipherException,
+		IOException,
+		InvalidAlgorithmParameterException,
+		NoSuchAlgorithmException,
+		NoSuchProviderException {
+		// Connect to Ethereum client using HTTP provider
+		Web3j web3j = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ccbf710f49e54b2c867e185af221ffa9"));
+
+		// Generate a new wallet file using a password
+		String password = "myPassword";
+		String fileName = WalletUtils.generateNewWalletFile(password, new File("C:\\Users\\SSAFY\\Desktop\\wallet"));
+
+		// Load the wallet from file using the password
+		String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
+		Credentials credentials = WalletUtils.loadCredentials(password, walletFilePath);
+
+		// Print the wallet address and private key
+		System.out.println("Wallet address: " + credentials.getAddress());
+		System.out.println("Wallet private key: " + credentials.getEcKeyPair().getPrivateKey().toString(16));
 	}
 
 	// // 계좌 거래 건수

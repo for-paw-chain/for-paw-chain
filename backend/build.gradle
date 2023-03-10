@@ -48,7 +48,7 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
 
-	implementation 'org.web3j:core:5.0.0'
+	implementation 'org.web3j:core:5.0.0'	// web3j
 }
 
 dependencyManagement {
