@@ -13,10 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.FragmentUserBinding
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
-import com.ssafy.forpawchain.model.domain.SearchResultDTO
 import com.ssafy.forpawchain.viewmodel.adapter.MyPageMenuAdapter
-import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
-import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.UserFragmentVM
 
 class UserFragment : Fragment() {
@@ -51,7 +48,7 @@ class UserFragment : Fragment() {
         val searchList = mutableListOf<MyPageMenuDTO>()
 
         recyclerView.adapter = MyPageMenuAdapter(searchList,
-            onClickQrButton = {
+            onClickEnterButton = {
                 if (it.title.equals("의사 면허 등록")) {
                     navController.navigate(R.id.navigation_doctor_cert)
 

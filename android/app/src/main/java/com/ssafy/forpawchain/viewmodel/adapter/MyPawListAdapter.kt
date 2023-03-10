@@ -10,7 +10,9 @@ import com.ssafy.forpawchain.model.domain.MyPawListDTO
 
 class MyPawListAdapter(
     private var mydataSet: List<MyPawListDTO>,
-    val onClickQrButton: (pos: MyPawListDTO) -> Unit
+    val onClickQrButton: (pos: MyPawListDTO) -> Unit,
+    val onClickDelButton: (pos: MyPawListDTO) -> Unit,
+    val onClickDetailButton: (pos: MyPawListDTO) -> Unit,
 ) : RecyclerView.Adapter<MyPawListAdapter.MyPawListViewHolder>() {
 
     companion object {
@@ -29,12 +31,18 @@ class MyPawListAdapter(
         val bind = ControllMyPawListBinding.bind(view)
         val holder = MyPawListViewHolder(bind)
         view.setOnClickListener({
-            Log.d(TAG, "${mydataSet.get(holder.adapterPosition)} 나의 반려동물, 상세 페이지로 이동")
+            if (holder.adapterPosition != -1) {
 
+                onClickDetailButton.invoke(mydataSet.get(holder.adapterPosition))
+                Log.d(TAG, "${mydataSet.get(holder.adapterPosition)} 나의 반려동물, 상세 페이지로 이동")
+            }
         })
 
         view.setOnLongClickListener {
-            Log.d(TAG, "${mydataSet.get(holder.adapterPosition)} 나의 반려동물, 삭제 여부")
+            if (holder.adapterPosition != -1) {
+                onClickDelButton.invoke(mydataSet.get(holder.adapterPosition))
+//            Log.d(TAG, "${mydataSet.get(holder.adapterPosition)} 나의 반려동물, 삭제 여부")
+            }
             return@setOnLongClickListener true
         }
 
