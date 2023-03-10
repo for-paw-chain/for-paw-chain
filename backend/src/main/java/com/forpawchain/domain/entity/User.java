@@ -1,13 +1,16 @@
 package com.forpawchain.domain.entity;
 
-import lombok.Builder;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "USER")
 @Builder
-public class UserEntity {
+@Getter
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long uid;
@@ -22,4 +25,6 @@ public class UserEntity {
     private String wa;
     @Column(nullable = false)
     private boolean del;
+    @OneToMany(mappedBy = "user")
+    List<AdoptEntity> adoptList = new ArrayList<>();
 }
