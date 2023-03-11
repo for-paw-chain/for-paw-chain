@@ -47,12 +47,14 @@ class UserFragment : Fragment() {
         val recyclerView = binding.recycler
         val searchList = mutableListOf<MyPageMenuDTO>()
 
-        recyclerView.adapter = MyPageMenuAdapter(searchList,
+        recyclerView.adapter = MyPageMenuAdapter(
             onClickEnterButton = {
                 if (it.title.equals("의사 면허 등록")) {
+                    // TODO: navController
                     navController.navigate(R.id.navigation_doctor_cert)
 
                 } else if (it.title.equals("나의 반려 동물")) {
+                    // TODO: navController
                     navController.navigate(R.id.navigation_my_paw_list)
                 }
 //                viewModel.deleteTask(it)

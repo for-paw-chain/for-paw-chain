@@ -55,6 +55,7 @@ class MyPawFragment : Fragment() {
                 viewModel.deleteTask(it)
             }, {
                 // detail
+                // TODO: navController
                 navController.navigate(R.id.navigation_permission_paw)
 
             })
