@@ -1,17 +1,17 @@
 package com.ssafy.forpawchain.viewmodel.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.databinding.ControllMyPawListBinding
 import com.ssafy.forpawchain.databinding.ControllMypageMenuBinding
-import com.ssafy.forpawchain.databinding.ControllSearchResultListBinding
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
-import com.ssafy.forpawchain.model.domain.SearchResultDTO
 
 class MyPageMenuAdapter(
     private var mydataSet: List<MyPageMenuDTO>,
-    val onClickQrButton: (pos: MyPageMenuDTO) -> Unit
+    val onClickEnterButton: (pos: MyPageMenuDTO) -> Unit
 ) : RecyclerView.Adapter<MyPageMenuAdapter.MyPageMenuViewHolder>() {
 
     class MyPageMenuViewHolder(val binding: ControllMypageMenuBinding) :
@@ -23,8 +23,19 @@ class MyPageMenuAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): MyPageMenuViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.controll_mypage_menu, viewGroup, false) //내가 각아이템에 사용하는 view
+        val bind = ControllMypageMenuBinding.bind(view)
+        val holder = MyPageMenuViewHolder(bind)
+        view.setOnClickListener({
+            if (holder.adapterPosition != -1) {
 
-        return MyPageMenuViewHolder(ControllMypageMenuBinding.bind(view))
+                onClickEnterButton.invoke(mydataSet.get(holder.adapterPosition))
+                Log.d(
+                    MyPawListAdapter.TAG,
+                    "${mydataSet.get(holder.adapterPosition)} 나의 반려동물, 상세 페이지로 이동"
+                )
+            }
+        })
+        return holder
     }
 
 
@@ -37,9 +48,6 @@ class MyPageMenuAdapter(
             val listposition = mydataSet[position]
             todoViewHolder.binding.item = listposition
 
-            todoViewHolder.binding.enterBtn.setOnClickListener {
-                onClickQrButton.invoke(listposition) //눌렀을때 listposition를 전달하면서 함수를 실행한다.
-            }
         }
     }
 
