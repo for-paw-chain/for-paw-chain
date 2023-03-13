@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class AdoptServiceImpl implements AdoptService {
 
 	// private final AdoptRepository adoptRepository;
-	//
+
 	@Override
 	public List<AdoptListResDto>  getAdoptList(int pageNo, int type, int kind, int sex) {
 		//adoptRepository.

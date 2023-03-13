@@ -17,19 +17,19 @@ import org.web3j.protocol.http.HttpService;
 @Configuration
 public class Web3jConfig {
 
-	@Value("${infura.API_URL}")
-	private String INFURA_API_URL;
+	// @Value("${infura.API_URL}")
+	// private String INFURA_API_URL;
+	//
+	// @Value("${metamask.PRIVATE_KEY}")
+	// private String PRIVATE_KEY;
+	//
+	// @Value("${metamask.CONTRACT_ADDRESS}")
+	// private String CONTRACT_ADDRESS;
 
-	@Value("${metamask.PRIVATE_KEY}")
-	private String PRIVATE_KEY;
-
-	@Value("${metamask.CONTRACT_ADDRESS}")
-	private String CONTRACT_ADDRESS;
-
-	@Bean
-	public Web3j web3j() {
-		return Web3j.build(new HttpService(INFURA_API_URL));
-	}
+	// @Bean
+	// public Web3j web3j() {
+	// 	return Web3j.build(new HttpService(INFURA_API_URL));
+	// }
 
 	// @Bean
 	// public Credentials credentials() {
