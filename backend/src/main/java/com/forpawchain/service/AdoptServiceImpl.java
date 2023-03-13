@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class AdoptServiceImpl implements AdoptService {
 
-	// private final AdoptRepository adoptRepository;
+	private final AdoptRepository adoptRepository;
 
 	@Override
 	public List<AdoptListResDto>  getAdoptList(int pageNo, int type, int kind, int sex) {
@@ -25,6 +25,7 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public List<AdoptListResDto>  getAdoptAd() {
+		List<AdoptListResDto> list = adoptRepository.findTop10ByRand();
 		return null;
 	}
 

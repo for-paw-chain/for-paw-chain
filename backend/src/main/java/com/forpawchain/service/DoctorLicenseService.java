@@ -98,9 +98,8 @@ public class DoctorLicenseService {
 			String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
 			Credentials credentials = WalletUtils.loadCredentials(password, walletFilePath);
 
-			// Print the wallet address and private key
+			// Print the wallet address
 			System.out.println("Wallet address: " + credentials.getAddress());
-			System.out.println("Wallet private key: " + credentials.getEcKeyPair().getPrivateKey().toString(16));
 
 			privateKey = credentials.getEcKeyPair().getPrivateKey().toString(16);
 		}
