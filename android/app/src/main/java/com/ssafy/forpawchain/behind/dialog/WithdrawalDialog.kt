@@ -2,13 +2,11 @@ package com.ssafy.forpawchain.behind.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.ssafy.forpawchain.databinding.DialogPermissionDeleteBinding
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 
-class PermissionDialog(context: Context, dialogInterface: IPermissionDelete) :
+class WithdrawalDialog(context: Context, dialogInterface: IPermissionDelete) :
     Dialog(context) {
     private var mBinding: DialogPermissionDeleteBinding? = null
     private val binding get() = mBinding!!
