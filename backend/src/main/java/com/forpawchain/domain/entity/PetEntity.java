@@ -32,8 +32,8 @@ public class PetEntity {
 
     @OneToOne(mappedBy = "pet")
     private PetInfoEntity petInfo;
-    // @OneToOne(mappedBy = "pet")
-    // private AdoptEntity adopt;
+    @OneToOne(mappedBy = "pet")
+    private AdoptEntity adopt;
     @OneToMany(mappedBy = "pet")
     List<AuthenticationEntity> authList;
 }

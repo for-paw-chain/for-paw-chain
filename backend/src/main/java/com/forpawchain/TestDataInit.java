@@ -100,9 +100,9 @@ public class TestDataInit {
 		// 	.pet(petEntity)
 		// 	.build();
 
-		// petEntity.setAdopt(adoptEntity);
+		petEntity.setAdopt(adoptEntity);
 		System.out.println("----------------");
-		// adoptEntity.setPet(petEntity);
+		adoptEntity.setPet(petEntity);
 		System.out.println("----------------");
 		adoptEntity.setUser(userRepository.findByUid(1));
 		System.out.println("----------------");
