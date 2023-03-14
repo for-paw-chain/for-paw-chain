@@ -16,7 +16,7 @@ public class AdoptListResDto {
 	private String profile1;
 	private String type;
 	private String kind;
-	private boolean spayed;
+	private Integer spayed;
 
 	// profile: String
 	// type: String

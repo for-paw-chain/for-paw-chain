@@ -1,5 +1,6 @@
 package com.forpawchain.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -24,8 +25,13 @@ public class AdoptServiceImpl implements AdoptService {
 	}
 
 	@Override
-	public List<AdoptListResDto>  getAdoptAd() {
+	public List<AdoptListResDto> getAdoptAd() {
 		List<AdoptListResDto> list = adoptRepository.findTop10ByRand();
+
+		for (Object item : list) {
+			System.out.println(item.getClass());
+		}
+
 		return null;
 	}
 
