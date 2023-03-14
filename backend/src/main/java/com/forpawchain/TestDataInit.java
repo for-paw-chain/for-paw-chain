@@ -51,66 +51,46 @@ public class TestDataInit {
 			.build();
 
 		userRepository.save(userEntity);
-		//
-		// // 동물 정부 데이터 추가
-		// PetRegEntity petRegEntity = PetRegEntity.builder()
-		// 	.pid("410000000000000")
-		// 	.sex(Sex.FEMALE)
-		// 	.spayed(false)
-		// 	.name("멍뭉이")
-		// 	.type("type")
-		// 	.kind("kind")
-		// 	.build();
-		//
-		// petRegRepository.save(petRegEntity);
 
-		// 동물 추가
-		// PetEntity petEntity = PetEntity.builder()
-		// 	.pid("410000000000000")
-		// 	.ca("12312")
-		// 	.lost(false)
-		// 	// .petInfo()
-		// 	// .petReg()
-		// 	// .adopt()
-		// 	// .authList()
-		// 	.build();
+		// 동물 정보 20개 추가
+		for (int i = 0; i < 20; i++) {
+			// 동물 정부 데이터 추가
+			PetRegEntity petRegEntity = PetRegEntity.builder()
+				.pid("4100000000000" + Integer.toString(i))
+				.sex(Sex.FEMALE)
+				.spayed(false)
+				.name("멍뭉이" + Integer.toString(i))
+				.type("type")
+				.kind("kind")
+				.build();
 
-		PetEntity petEntity = new PetEntity();
-		petEntity.setPid("410000000000000");
-		petEntity.setCa("23123");
-		petEntity.setLost(false);
+			petRegRepository.save(petRegEntity);
 
+			// 동물(Pet) 추가
+			PetEntity petEntity = PetEntity.builder()
+				.pid("4100000000000" + Integer.toString(i))
+				.ca("12312")
+				.lost(true)
+				// .petInfo()
+				// .petReg()
+				// .adopt()
+				// .authList()
+				.build();
 
-		// System.out.println("----------------");
-		System.out.println("----------------");
-		// System.out.println(petRepository.findByPid("410000000000000").getCa());
-		// System.out.println(adoptRepository.findByPid("410000000000000").getPid());
+			petRepository.save(petEntity);
 
-		// 유기견 추가
-		AdoptEntity adoptEntity = new AdoptEntity();
-		adoptEntity.setPid("410000000000000");
-		adoptEntity.setUid(1);
-		adoptEntity.setProfile1("https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg");
+			// 유기견 추가
+			AdoptEntity adoptEntity = AdoptEntity.builder()
+				.pid("4100000000000" + Integer.toString(i))
+				.uid(1)
+				.profile1(
+					"https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg")
+				.pet(petEntity)
+				.user(userRepository.findByUid(1))
+				.build();
 
-		// AdoptEntity adoptEntity = AdoptEntity.builder()
-		// 	.pid("410000000000000")
-		// 	.uid(1)
-		// 	.profile1(
-		// 		"https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg")
-		// 	.pet(petEntity)
-		// 	.build();
-
-		petEntity.setAdopt(adoptEntity);
-		System.out.println("----------------");
-		adoptEntity.setPet(petEntity);
-		System.out.println("----------------");
-		adoptEntity.setUser(userRepository.findByUid(1));
-		System.out.println("----------------");
-
-		petRepository.save(petEntity);
-		System.out.println("----------------");
-		adoptRepository.save(adoptEntity);
-
+			adoptRepository.save(adoptEntity);
+		}
 
 		// PetInfoEntity petInfoEntity = PetInfoEntity.builder()
 		// 	.pid("410000000000000")
