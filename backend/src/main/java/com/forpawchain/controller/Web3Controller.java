@@ -14,19 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.web3j.crypto.CipherException;
 
 import com.forpawchain.domain.dto.request.LicenseReqDto;
-import com.forpawchain.repository.DoctorLicenseRepository;
-import com.forpawchain.service.DoctorLicenseService;
+import com.forpawchain.service.Web3Service;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/license")
-public class DoctorLicenseController {
+@RequestMapping("/web3")
+public class Web3Controller {
 
-	private final DoctorLicenseService doctorLicenseService;
+	private final Web3Service doctorLicenseService;
 
-	@PostMapping
+	/**
+	 * 의사 지갑 생성
+	 */
+	@PostMapping("/license")
 	public ResponseEntity<String> authDoctor(@RequestBody LicenseReqDto licenseReqDto) throws
 		InvalidAlgorithmParameterException,
 		CipherException,
@@ -42,4 +44,12 @@ public class DoctorLicenseController {
 			return new ResponseEntity<String>(privateKey, HttpStatus.CREATED);
 		}
 	}
+
+	/**
+	 * 서버 지갑에서
+	 * 요청으로 받은 private key 지갑으로
+	 * 이더 전송
+	 */
+	@PostMapping("eth")
+	public void chargeEth() {}
 }

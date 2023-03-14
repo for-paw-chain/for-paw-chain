@@ -6,16 +6,12 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.EthAccounts;
 import org.web3j.protocol.http.HttpService;
 
 import com.forpawchain.domain.dto.request.LicenseReqDto;
@@ -33,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 // @RequiredArgsConstructor
 @Service
 @RequiredArgsConstructor
-public class DoctorLicenseService {
+public class Web3Service {
 
 	private final DoctorLicenseRepository doctorLicenseRepository;
 	// private final NFT nft;
@@ -98,9 +94,8 @@ public class DoctorLicenseService {
 			String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
 			Credentials credentials = WalletUtils.loadCredentials(password, walletFilePath);
 
-			// Print the wallet address and private key
+			// Print the wallet address
 			System.out.println("Wallet address: " + credentials.getAddress());
-			System.out.println("Wallet private key: " + credentials.getEcKeyPair().getPrivateKey().toString(16));
 
 			privateKey = credentials.getEcKeyPair().getPrivateKey().toString(16);
 		}

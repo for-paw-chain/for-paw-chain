@@ -1,7 +1,9 @@
 package com.forpawchain.domain.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -9,11 +11,13 @@ import javax.persistence.*;
 @Table(name = "PET_REG")
 @Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PetRegEntity {
     @Id
     private String pid;
     @Column(nullable = false)
-    private String sex;
+    private Sex sex;
     @Column(nullable = false)
     private boolean spayed;
     @Column(nullable = false)
@@ -21,10 +25,5 @@ public class PetRegEntity {
     @Column(nullable = false)
     private String type;
     private String kind;
-
-    @OneToOne
-    @JoinColumn(name = "pid")
-    @MapsId("pid")
-    private PetEntity pet;
 
 }
