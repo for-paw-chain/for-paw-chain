@@ -1,7 +1,7 @@
 package com.ssafy.forpawchain.behind.fragment
 
-import android.R
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -10,10 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.dialog.PermissionDialog
 import com.ssafy.forpawchain.databinding.FragmentMyPawBinding
 import com.ssafy.forpawchain.databinding.FragmentPermissionPawBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.PermissionUserDTO
+import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.PermissionPawListAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
@@ -25,6 +28,7 @@ class PermissionPawFragment : Fragment() {
     private lateinit var viewModel: PermissionPawFragmentVM
     private var _binding: FragmentPermissionPawBinding? = null
     private lateinit var navController: NavController
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -49,11 +53,18 @@ class PermissionPawFragment : Fragment() {
         val recyclerView = binding.recycler
         val searchList = mutableListOf<PermissionUserDTO>()
 
-        recyclerView.adapter = PermissionPawListAdapter(searchList,
-            {
-                // del
-                viewModel.deleteTask(it)
+        recyclerView.adapter = PermissionPawListAdapter(
+            searchList
+        ) {
+            // del
+            val dialog = PermissionDialog(requireContext(), object : IPermissionDelete {
+                override fun onDeleteBtnClick() {
+                    viewModel.deleteTask(it)
+                }
             })
+
+            dialog.show()
+        }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 

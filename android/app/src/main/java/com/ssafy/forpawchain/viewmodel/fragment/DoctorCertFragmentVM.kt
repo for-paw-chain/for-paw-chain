@@ -39,6 +39,11 @@ class DoctorCertFragmentVM : ViewModel() {
     val phoneCompany = MutableLiveData<Int>()
 
     fun summit_onClick() {
+        Log.d(
+            TAG,
+            "${name.value} 님이 ${socialSecurityNumberFront.value}-${socialSecurityNumberBack.value} 주민번호에\n" +
+                    "${phoneCompany.value} 통신사에 ${phoneNumber.value}로 가입"
+        )
         _openEvent.value = Event(ActivityCode.FRAGMENT_USER)
     }
 }
