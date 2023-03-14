@@ -9,8 +9,10 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.dialog.PermissionDialog
 import com.ssafy.forpawchain.databinding.FragmentPermissionPawBinding
 import com.ssafy.forpawchain.model.domain.PermissionUserDTO
+import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.viewmodel.adapter.PermissionPawListAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.PermissionPawFragmentVM
 
@@ -48,7 +50,13 @@ class PermissionPawFragment : Fragment() {
             searchList
         ) {
             // del
-            viewModel.deleteTask(it)
+            val dialog = PermissionDialog(requireContext(), object : IPermissionDelete {
+                override fun onDeleteBtnClick() {
+                    viewModel.deleteTask(it)
+                }
+            })
+
+            dialog.show()
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
