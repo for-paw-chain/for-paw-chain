@@ -10,6 +10,8 @@ import com.forpawchain.domain.entity.AdoptEntity;
 
 public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 
-	@Query(value = "SELECT * FROM adopt order by RAND() limit 10",nativeQuery = true)
+	@Query(value = "SELECT * FROM adopt order by RAND() limit 10", nativeQuery = true)
 	List<AdoptListResDto> findTop10ByRand();
+
+	AdoptEntity findByPid(String pid);
 }

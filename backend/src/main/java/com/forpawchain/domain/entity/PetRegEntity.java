@@ -26,5 +26,4 @@ public class PetRegEntity {
     private String type;
     private String kind;
 
-
 }
