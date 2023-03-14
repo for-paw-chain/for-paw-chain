@@ -57,20 +57,14 @@ class PermissionPawFragment : Fragment() {
             searchList
         ) {
             // del
-            val dialog = PermissionDialog(requireContext(), object : IPermissionDelete {
-                override fun onDeleteBtnClick() {
-                    viewModel.deleteTask(it)
-                }
-            })
-
-            dialog.show()
+            viewModel.deleteTask(it)
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
         viewModel.addTask(
             PermissionUserDTO(
-                resources.getDrawable(com.ssafy.forpawchain.R.drawable.icon_default),
+                resources.getDrawable(R.drawable.icon_default),
                 "김아무개",
                 "#123421"
             )
@@ -78,7 +72,7 @@ class PermissionPawFragment : Fragment() {
 
         viewModel.addTask(
             PermissionUserDTO(
-                resources.getDrawable(com.ssafy.forpawchain.R.drawable.icon_default),
+                resources.getDrawable(R.drawable.icon_default),
                 "홍길동",
                 "#543532"
             )
@@ -86,7 +80,7 @@ class PermissionPawFragment : Fragment() {
 
         viewModel.addTask(
             PermissionUserDTO(
-                resources.getDrawable(com.ssafy.forpawchain.R.drawable.icon_default),
+                resources.getDrawable(R.drawable.icon_default),
                 "사용자",
                 "#000000"
             )
@@ -94,7 +88,7 @@ class PermissionPawFragment : Fragment() {
 
         viewModel.addTask(
             PermissionUserDTO(
-                resources.getDrawable(com.ssafy.forpawchain.R.drawable.icon_default),
+                resources.getDrawable(R.drawable.icon_default),
                 "최진우",
                 "#123432"
             )
@@ -102,7 +96,7 @@ class PermissionPawFragment : Fragment() {
 
         viewModel.todoLiveData.observe(
             requireActivity(),
-            Observer { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
+            { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
                 (binding.recycler.adapter as PermissionPawListAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
 
             })
