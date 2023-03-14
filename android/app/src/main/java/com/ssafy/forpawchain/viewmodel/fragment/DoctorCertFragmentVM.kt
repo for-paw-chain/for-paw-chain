@@ -27,7 +27,16 @@ class DoctorCertFragmentVM : ViewModel() {
     private val _openEvent = MutableLiveData<Event<ActivityCode>>()
     val openEvent: LiveData<Event<ActivityCode>> get() = _openEvent
 
-    val doctorNumberText = MutableLiveData<String>()
+
+    val name = MutableLiveData<String>()
+
+    val socialSecurityNumberFront = MutableLiveData<String>()
+
+    val socialSecurityNumberBack = MutableLiveData<String>()
+
+    val phoneNumber = MutableLiveData<String>()
+
+    val phoneCompany = MutableLiveData<Int>()
 
     fun summit_onClick() {
         _openEvent.value = Event(ActivityCode.FRAGMENT_USER)
