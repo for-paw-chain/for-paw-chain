@@ -39,14 +39,14 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-	implementation 'mysql:mysql-connector-java:8.0.32'
+//	implementation 'mysql:mysql-connector-java:8.0.32'
 	runtimeOnly 'com.h2database:h2'
 	implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
 

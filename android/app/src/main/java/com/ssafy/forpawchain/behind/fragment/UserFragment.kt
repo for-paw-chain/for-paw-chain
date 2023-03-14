@@ -2,24 +2,27 @@ package com.ssafy.forpawchain.behind.fragment
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.dialog.PermissionDialog
 import com.ssafy.forpawchain.databinding.FragmentUserBinding
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
-import com.ssafy.forpawchain.model.domain.SearchResultDTO
+import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.viewmodel.adapter.MyPageMenuAdapter
-import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
-import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.UserFragmentVM
 
 class UserFragment : Fragment() {
     private lateinit var viewModel: UserFragmentVM
     private var _binding: FragmentUserBinding? = null
+    private lateinit var navController: NavController
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -47,9 +50,25 @@ class UserFragment : Fragment() {
         val recyclerView = binding.recycler
         val searchList = mutableListOf<MyPageMenuDTO>()
 
-        recyclerView.adapter = MyPageMenuAdapter(searchList,
-            onClickQrButton = {
-                viewModel.deleteTask(it)
+        recyclerView.adapter = MyPageMenuAdapter(
+            onClickEnterButton = {
+                if (it.title.equals("의사 면허 등록")) {
+                    // TODO: navController
+                    navController.navigate(R.id.navigation_doctor_cert)
+
+                } else if (it.title.equals("나의 반려 동물")) {
+                    // TODO: navController
+                    navController.navigate(R.id.navigation_my_paw_list)
+                } else if (it.title.equals("회원 탈퇴")) {
+                    val dialog = PermissionDialog(requireContext(), object : IPermissionDelete {
+                        override fun onDeleteBtnClick() {
+                            Log.d(TAG, "회원탈퇴 완료")
+                        }
+                    })
+
+                    dialog.show()
+                }
+//                viewModel.deleteTask(it)
             })
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -66,6 +85,7 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = Navigation.findNavController(requireView())
 
         viewModel.addTask(
             MyPageMenuDTO(
