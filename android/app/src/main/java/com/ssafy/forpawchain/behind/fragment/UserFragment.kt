@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.behind.fragment
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.activity.LoginActivity
+import com.ssafy.forpawchain.behind.activity.MainActivity
 import com.ssafy.forpawchain.behind.dialog.WithdrawalDialog
 import com.ssafy.forpawchain.databinding.FragmentUserBinding
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
@@ -67,6 +71,10 @@ class UserFragment : Fragment() {
                     })
 
                     dialog.show()
+                } else if (it.title.equals("로그아웃")) {
+                    requireActivity().finish()
+                    var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
                 }
 //                viewModel.deleteTask(it)
             })
