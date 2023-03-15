@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
-import com.forpawchain.service.AdoptService;
 import com.forpawchain.service.AdoptServiceImpl;
 
 import io.swagger.annotations.ApiOperation;
@@ -52,7 +51,8 @@ public class AdoptController {
     public ResponseEntity<Void> registAdopt(@RequestHeader("Access-Token") String accessToken, @RequestBody
         AdoptDetailReqDto adoptDetailReqDto) {
 
-        adoptService.registAdopt(adoptDetailReqDto);
+        Long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
+        adoptService.registAdopt(adoptDetailReqDto, uid);
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
@@ -77,8 +77,7 @@ public class AdoptController {
     @GetMapping("/article")
 	@ApiOperation(value = "내가 쓴 입양 공고 조회")
     public ResponseEntity<List<AdoptListResDto>> getAdoptMyList(@RequestHeader("Access-Token") String accessToken) {
-
-        String uid = "";
+        Long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
         List<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptMyList(uid);
         return new ResponseEntity<List<AdoptListResDto>>(adoptListResDtoList, HttpStatus.OK);
     }

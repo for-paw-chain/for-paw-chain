@@ -10,12 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AdoptDetailReqDto {
-	private String name;
-	private String sex;
+	private String pid;
 	private String profile1;
 	private String profile2;
-	private String type;
-	private String kind;
-	private boolean spayed;
+	private String etc;
 	private String tel;
 }

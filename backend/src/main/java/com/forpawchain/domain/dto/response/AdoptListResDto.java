@@ -1,26 +1,15 @@
 package com.forpawchain.domain.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+public interface AdoptListResDto {
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class AdoptListResDto {
+	String getPid();
 
-	private String pid;
-	private String profile1;
-	private String type;
-	private String kind;
-	private Integer spayed;
+	String getProfile1();
 
-	// profile: String
-	// type: String
-	// kind: String
-	// spayed: boolean
+	String getType();
+
+	String getKind();
+
+	Boolean getSpayed();
 
 }

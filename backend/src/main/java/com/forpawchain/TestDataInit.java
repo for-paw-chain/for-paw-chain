@@ -82,7 +82,7 @@ public class TestDataInit {
 			// 유기견 추가
 			AdoptEntity adoptEntity = AdoptEntity.builder()
 				.pid("4100000000000" + Integer.toString(i))
-				.uid(1)
+				.uid(1L)
 				.profile1(
 					"https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg")
 				.pet(petEntity)
