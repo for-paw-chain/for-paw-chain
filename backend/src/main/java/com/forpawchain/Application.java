@@ -16,7 +16,6 @@ import com.forpawchain.repository.UserRepository;
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass=true)
 public class Application {
-
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 
@@ -27,5 +26,4 @@ public class Application {
 		UserRepository userRepository, AdoptRepository adoptRepository, PetRegRepository petRegRepository, PetInfoRepository petInfoRepository) {
 		return new TestDataInit(doctorLicenseRepository, petRepository, userRepository, adoptRepository, petRegRepository, petInfoRepository);
 	}
-
 }
