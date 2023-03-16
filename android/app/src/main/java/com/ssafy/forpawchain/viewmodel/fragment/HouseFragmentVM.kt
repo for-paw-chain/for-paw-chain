@@ -1,7 +1,10 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ssafy.basictemplate.util.ActivityCode
+import com.ssafy.basictemplate.util.Event
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 
 
@@ -12,8 +15,10 @@ class HouseFragmentVM : ViewModel() {
         val TAG: String? = this::class.qualifiedName
     }
 
-    val searchEditText = MutableLiveData<String>()
+    private val _openEvent = MutableLiveData<Event<ActivityCode>>()
+    val openEvent: LiveData<Event<ActivityCode>> get() = _openEvent
 
+    val searchEditText = MutableLiveData<String>()
 
     //추가 시작
     val todoLiveData = MutableLiveData<List<SearchResultDTO>>() //변경/관찰가능한 List
