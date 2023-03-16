@@ -1,5 +1,6 @@
 package com.forpawchain.domain.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,7 +19,7 @@ public class PetInfoEntity {
     private String region;
     private String etc;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "pid")
     @MapsId("pid")
     private PetEntity pet;

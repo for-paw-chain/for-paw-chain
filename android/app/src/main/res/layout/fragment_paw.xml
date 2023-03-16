@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-z
+
         <variable
             name="viewModel"
             type="com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM" />
