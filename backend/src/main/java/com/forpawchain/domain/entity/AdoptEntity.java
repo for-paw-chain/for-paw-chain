@@ -1,7 +1,10 @@
 package com.forpawchain.domain.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,6 +12,9 @@ import javax.persistence.*;
 @Table(name = "ADOPT")
 @Builder
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AdoptEntity {
     @Id
     private String pid;
@@ -20,13 +26,12 @@ public class AdoptEntity {
     private String profile2;
     private String etc;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pid")
+    @MapsId("pid")
+    private PetEntity pet;
     @ManyToOne
     @JoinColumn(name = "uid")
     @MapsId("uid")
     private UserEntity user;
-
-    @OneToOne
-    @JoinColumn(name = "pid")
-    @MapsId("pid")
-    private PetEntity pet;
 }

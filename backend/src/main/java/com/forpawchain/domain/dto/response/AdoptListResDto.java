@@ -6,11 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-// @Data
-// @AllArgsConstructor
-// @NoArgsConstructor
-// @Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class AdoptListResDto {
+
+	private String pid;
+	private String profile1;
+	private String type;
+	private String kind;
+	private boolean spayed;
 
 	// profile: String
 	// type: String

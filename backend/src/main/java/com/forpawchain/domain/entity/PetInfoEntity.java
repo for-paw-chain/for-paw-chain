@@ -19,7 +19,7 @@ public class PetInfoEntity {
     private String region;
     private String etc;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "pid")
     @MapsId("pid")
     private PetEntity pet;
