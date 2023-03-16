@@ -1,14 +1,31 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ssafy.forpawchain.viewmodel.activity.LoginVM
-import com.ssafy.forpawchain.blockchain.Contract_sol_Storage
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
+import com.ssafy.forpawchain.blockchain.Forpawchain_sol_Storage
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.FunctionReturnDecoder;
+import org.web3j.abi.TypeReference;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthCall;
+import org.web3j.protocol.http.HttpService;
 import org.web3j.protocol.infura.InfuraHttpService
-import java.math.BigInteger
+import org.web3j.tx.gas.DefaultGasProvider;
+import org.web3j.utils.Numeric;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import android.util.Log
 import kotlin.concurrent.thread
 
 
@@ -30,7 +47,7 @@ class PawFragmentVM : ViewModel() {
         val web3ClientVersion = web3.web3ClientVersion().sendAsync().get()
 
         // contract address
-        val contractAddress = "0x8442d3ef77b8fEEE80A422C951c0BDEb600bb748"
+        val contractAddress = "0x8B15E3A60F8B9A447FA3E306562345AE64964A48"
 
         // gas limit
         val gasLimit: BigInteger = BigInteger.valueOf(3000000)
@@ -45,37 +62,48 @@ class PawFragmentVM : ViewModel() {
 
     fun writeBtn_onClick() {
         Log.d(
-            LoginVM.TAG,
+            TAG,
             "MainFragment - MainFragmentVM - 버튼 클릭"
         )
 
         val contract =
-            Contract_sol_Storage.load(contractAddress, web3, credentials, gasPrice, gasLimit)
+            Forpawchain_sol_Storage.load(contractAddress, web3, credentials, gasPrice, gasLimit)
 
         thread {
             val data =
-                contract.store(numberValue.value?.let { BigInteger.valueOf(it.toLong()) })
-                    .sendAsync()
-            Log.d(LoginVM.TAG, "send result ${data.get().blockNumber}, ${data.get().gasUsed}")
+                contract.store(
+                    BigInteger("100"),
+                    BigInteger("100"), "title100", "content100", "hash100-0", "hash100-1"
+                ).sendAsync()
+
+            Log.d(TAG, "send result ${data.get().blockNumber}, ${data.get().gasUsed}")
             numberValue.postValue("0")
         }
     }
 
     fun readBtn_onClick() {
         Log.d(
-            LoginVM.TAG,
+            TAG,
             "MainFragment - MainFragmentVM - 버튼 클릭"
         )
 
         val contract =
-            Contract_sol_Storage.load(contractAddress, web3, credentials, gasPrice, gasLimit)
+            Forpawchain_sol_Storage.load(contractAddress, web3, credentials, gasPrice, gasLimit)
 
         thread {
             // 값 읽기는 어떻게 읽는거냐-
-            val temp = contract.retrieve().sendAsync()
-            val value = temp.get()
-            statusText.postValue(value.toString())
-            Log.d(LoginVM.TAG, "recv result ${value}")
+            val number = contract.getNumber(BigInteger("0")).sendAsync().get()
+            val date = contract.getDate(BigInteger("0")).sendAsync().get()
+            val title = contract.getTitle(BigInteger("0")).sendAsync().get()
+            val content = contract.getContent(BigInteger("0")).sendAsync().get()
+            val hash1 = contract.getHash1(BigInteger("0")).sendAsync().get()
+            val hash2 = contract.getHash2(BigInteger("0")).sendAsync().get()
+            val size = contract.getSize().sendAsync().get()
+            Log.d(TAG, "")
+//            statusText.postValue(value.toString())
+//            Log.d(TAG, "recv result ${value}")
         }
+
+
     }
 }
