@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.9'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+//	id "org.web3j" version "4.8.7"
 }
 
 group = 'com.forpawchain'
@@ -16,6 +17,9 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'https://jitpack.io'
+	}
 }
 
 ext {
@@ -26,26 +30,31 @@ ext {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework:spring-aop'
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
+	implementation "io.springfox:springfox-swagger-ui:3.0.0"
 
 	compileOnly 'org.projectlombok:lombok'
-	testCompileOnly 'org.projectlombok:lombok:1.18.24'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-	implementation 'mysql:mysql-connector-java:8.0.32'
+//	implementation 'mysql:mysql-connector-java:8.0.32'
 	runtimeOnly 'com.h2database:h2'
 	implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
+
+	implementation 'org.web3j:core:5.0.0'	// web3j
+	implementation 'com.github.ipfs:java-ipfs-http-client:1.4.0'
 }
 
 dependencyManagement {
