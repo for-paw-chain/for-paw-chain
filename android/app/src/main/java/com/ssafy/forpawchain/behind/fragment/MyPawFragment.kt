@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -10,8 +11,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.dialog.WithdrawalAnimalDialog
+import com.ssafy.forpawchain.behind.dialog.WithdrawalDialog
 import com.ssafy.forpawchain.databinding.FragmentMyPawBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
+import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
@@ -52,7 +56,15 @@ class MyPawFragment : Fragment() {
 //                viewModel.deleteTask(it)
             }, {
                 // del
-                viewModel.deleteTask(it)
+                val dialog = WithdrawalAnimalDialog(requireContext(), object : IPermissionDelete {
+                    override fun onDeleteBtnClick() {
+                        viewModel.deleteTask(it)
+                        Log.d(TAG, "반려동물 삭제 완료")
+                    }
+                })
+
+                dialog.show()
+//                viewModel.deleteTask(it)
             }, {
                 // detail
                 // TODO: navController
