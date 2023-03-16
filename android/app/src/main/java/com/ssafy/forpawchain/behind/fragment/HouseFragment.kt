@@ -102,8 +102,8 @@ class HouseFragment : Fragment() {
 //        binding.appBarLayout.overScrollMode = View.OVER_SCROLL_NEVER
         binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             //  Vertical offset == 0 indicates appBar is fully expanded.
-//            Log.d(TAG, "${Math.abs(verticalOffset)}")
-            if (Math.abs(verticalOffset) > 1200) {
+            //Log.d(TAG, "${verticalOffset}, ${appBarLayout.totalScrollRange}, ${appBarLayout.height}")
+            if (-verticalOffset >= appBarLayout.totalScrollRange-1) {
                 if (!viewModel.isOpenSearch.value!!) {
                     Log.d(TAG, "열림")
                     // TODO: DUMMY DATA
@@ -116,7 +116,7 @@ class HouseFragment : Fragment() {
                     viewModel.isOpenSearch.value = true
                 }
                 invalidateOptionsMenu((activity as MainActivity))
-            } else if (Math.abs(verticalOffset) < 100) {
+            } else {
                 if (viewModel.isOpenSearch.value!!) {
                     Log.d(TAG, "닫힘")
                     viewModel.clearTask()
@@ -125,8 +125,6 @@ class HouseFragment : Fragment() {
                 invalidateOptionsMenu((activity as MainActivity))
             }
         }
-
-
     }
 
     override fun onDestroyView() {
