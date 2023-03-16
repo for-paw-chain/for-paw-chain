@@ -4,11 +4,12 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import com.ssafy.forpawchain.databinding.DialogPermissionDeleteBinding
+import com.ssafy.forpawchain.databinding.DialogWithdrawalBinding
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 
-class PermissionDialog(context: Context, dialogInterface: IPermissionDelete) :
+class WithdrawalDialog(context: Context, dialogInterface: IPermissionDelete) :
     Dialog(context) {
-    private var mBinding: DialogPermissionDeleteBinding? = null
+    private var mBinding: DialogWithdrawalBinding? = null
     private val binding get() = mBinding!!
 
     private var dialogInterface: IPermissionDelete? = null
@@ -19,7 +20,7 @@ class PermissionDialog(context: Context, dialogInterface: IPermissionDelete) :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DialogPermissionDeleteBinding.inflate(layoutInflater)
+        mBinding = DialogWithdrawalBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 배경 투명하게

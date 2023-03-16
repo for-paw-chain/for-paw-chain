@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.behind.fragment
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -11,8 +12,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.forpawchain.R
-import com.ssafy.forpawchain.behind.dialog.PermissionDialog
+import com.ssafy.forpawchain.behind.activity.LoginActivity
+import com.ssafy.forpawchain.behind.activity.MainActivity
+import com.ssafy.forpawchain.behind.dialog.WithdrawalDialog
 import com.ssafy.forpawchain.databinding.FragmentUserBinding
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
@@ -60,13 +64,17 @@ class UserFragment : Fragment() {
                     // TODO: navController
                     navController.navigate(R.id.navigation_my_paw_list)
                 } else if (it.title.equals("회원 탈퇴")) {
-                    val dialog = PermissionDialog(requireContext(), object : IPermissionDelete {
+                    val dialog = WithdrawalDialog(requireContext(), object : IPermissionDelete {
                         override fun onDeleteBtnClick() {
                             Log.d(TAG, "회원탈퇴 완료")
                         }
                     })
 
                     dialog.show()
+                } else if (it.title.equals("로그아웃")) {
+                    requireActivity().finish()
+                    var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
                 }
 //                viewModel.deleteTask(it)
             })

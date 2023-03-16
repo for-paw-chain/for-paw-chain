@@ -1,26 +1,19 @@
 package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.behind.dialog.PermissionDialog
-import com.ssafy.forpawchain.databinding.FragmentMyPawBinding
 import com.ssafy.forpawchain.databinding.FragmentPermissionPawBinding
-import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.PermissionUserDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
-import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.PermissionPawListAdapter
-import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
-import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.PermissionPawFragmentVM
 
 
@@ -57,7 +50,13 @@ class PermissionPawFragment : Fragment() {
             searchList
         ) {
             // del
-            viewModel.deleteTask(it)
+            val dialog = PermissionDialog(requireContext(), object : IPermissionDelete {
+                override fun onDeleteBtnClick() {
+                    viewModel.deleteTask(it)
+                }
+            })
+
+            dialog.show()
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -95,11 +94,11 @@ class PermissionPawFragment : Fragment() {
         )
 
         viewModel.todoLiveData.observe(
-            requireActivity(),
-            { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
-                (binding.recycler.adapter as PermissionPawListAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
+            requireActivity()
+        ) { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
+            (binding.recycler.adapter as PermissionPawListAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
 
-            })
+        }
 
 
         val root: View = binding.root
