@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.ssafy.basictemplate.util.ActivityCode
@@ -21,7 +22,6 @@ import com.ssafy.forpawchain.databinding.FragmentHouseBinding
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
-
 
 class HouseFragment : Fragment() {
     private lateinit var viewModel: HouseFragmentVM
@@ -52,11 +52,13 @@ class HouseFragment : Fragment() {
         val recyclerView = binding.recycler
         val searchList = mutableListOf<SearchResultDTO>()
 
-
-
         recyclerView.adapter = SearchResultAdapter(searchList,
             onClickQrButton = {
                 viewModel.deleteTask(it)
+            },{
+                // detail
+                // TODO(): navController
+                navController.navigate(R.id.navigation_search_result)
             })
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -100,7 +102,7 @@ class HouseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        navController = Navigation.findNavController(requireView())
         scrollEvent()
     }
 

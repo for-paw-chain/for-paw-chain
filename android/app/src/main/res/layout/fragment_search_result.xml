@@ -2,9 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_main">
+    android:background="@drawable/background_layout_search_result_redius">
 
     <data>
+        <variable
+            name="item"
+            type="com.ssafy.forpawchain.model.domain.SearchResultDTO" />
 
     </data>
 
@@ -16,45 +19,9 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
-                android:id="@+id/idSearchBar"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/background_layout_redius"
-                android:gravity="top"
-                android:orientation="horizontal"
-                android:weightSum="1"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/logo_img_color_shadow" />
-
-                <EditText
-                    android:id="@+id/searchEditText"
-                    android:layout_width="300dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:background="@color/white"
-                    android:fontFamily="@font/kakao_regular"
-                    android:gravity="center"
-                    android:hint="@string/search_edit_text_hint"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true"
-                    android:text="@={}"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/idSearchResult"
-                android:layout_width="378dp"
-                android:layout_height="127dp"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
                 android:layout_margin="16dp"
                 android:orientation="horizontal"
                 android:weightSum="5"
@@ -62,7 +29,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/idSearchBar"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0">
 
                 <ImageView
@@ -156,7 +123,7 @@
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
 
-                            android:text="@{}" />
+                            android:text="@{item.name}" />
 
                         <TextView
                             android:id="@+id/sex"
@@ -167,7 +134,7 @@
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
 
-                            android:text="@{}" />
+                            android:text="@{item.sex}" />
 
                         <TextView
                             android:id="@+id/species"
@@ -178,7 +145,7 @@
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
 
-                            android:text="@{}" />
+                            android:text="@{item.species}" />
 
                         <TextView
                             android:id="@+id/kind"
@@ -189,7 +156,7 @@
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
 
-                            android:text="@{}" />
+                            android:text="@{item.kind}" />
 
                         <TextView
                             android:id="@+id/neutered"
@@ -200,7 +167,7 @@
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
 
-                            android:text="@{}" />
+                            android:text="@{item.neutered}" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -216,7 +183,7 @@
 
             <LinearLayout
                 android:id="@+id/idSearchResultDetail"
-                android:layout_width="378dp"
+                android:layout_width="match_parent"
                 android:layout_height="127dp"
                 android:layout_margin="16dp"
                 android:orientation="horizontal"

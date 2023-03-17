@@ -14,7 +14,7 @@
         android:id="@+id/navigation_house"
         android:name="com.ssafy.forpawchain.behind.fragment.HouseFragment"
         android:label="HouseFragment"
-        tools:layout="@layout/fragment_paw" />
+        tools:layout="@layout/fragment_paw"/>
 
     <fragment
         android:id="@+id/navigation_user"
@@ -39,4 +39,11 @@
         android:name="com.ssafy.forpawchain.behind.fragment.PermissionPawFragment"
         android:label="UserFragment"
         tools:layout="@layout/fragment_permission_paw" />
+
+    <fragment
+        android:id="@+id/navigation_search_result"
+        android:name="com.ssafy.forpawchain.behind.fragment.SearchResultFragment"
+        android:label="SearchResult"
+        tools:layout="@layout/fragment_search_result" />
+
 </navigation>

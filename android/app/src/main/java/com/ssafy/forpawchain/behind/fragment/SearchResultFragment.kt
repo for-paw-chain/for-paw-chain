@@ -35,12 +35,12 @@ class SearchResultFragment : Fragment() {
         _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
         activity?.let {
             viewModel = ViewModelProvider(it).get(SearchResultFragmentVM::class.java)
-            binding.viewModel = viewModel
+            //binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }
 
         val root: View = binding.root
-        initObserve()
+//        initObserve()
         return root
     }
 
@@ -54,7 +54,6 @@ class SearchResultFragment : Fragment() {
                     null
                 }
             }
-
         }
     }
 }
