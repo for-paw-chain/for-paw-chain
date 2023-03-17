@@ -23,15 +23,15 @@ class PawFragmentVM : ViewModel() {
         val TAG: String? = this::class.qualifiedName
 
 
-        // 2849717dc6944af6a40ccf1540bdcb91
+        // https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91
         val web3 =
-            Web3j.build(InfuraHttpService("https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91"))
+            Web3j.build(InfuraHttpService("http://3.39.235.238:8545"))
 
         //        val web3 = Web3jFactory.build()
         val web3ClientVersion = web3.web3ClientVersion().sendAsync().get()
 
         // contract address
-        val contractAddress = "0xBdbF4c7aAc399930C772E31a83Dd6b8DDe85C40C"
+        val contractAddress = "0x2396007A802a0381891fD1308C4b7e3c2655FdB5"
 
         // gas limit
         val gasLimit: BigInteger = BigInteger.valueOf(3000000)
@@ -41,7 +41,7 @@ class PawFragmentVM : ViewModel() {
 
         // create credentials w/ your private key
         val credentials =
-            Credentials.create("cbbfa9f3fac6ffcbd8ab8431e645c737c3a796b1eebce200499c180615e39787")
+            Credentials.create("6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544")
     }
 
     fun writeBtn_onClick() {
@@ -52,12 +52,17 @@ class PawFragmentVM : ViewModel() {
 
         val contract =
             Forpawchain_sol_Storage.load(contractAddress, web3, credentials, gasPrice, gasLimit)
+        val num = numberValue.value.toString()
 
         thread {
             val data =
                 contract.store(
-                    BigInteger("100"),
-                    BigInteger("100"), "title100", "content100", "hash100-0", "hash100-1"
+                    BigInteger(num),
+                    BigInteger("${num}"),
+                    "title${num}",
+                    "content${num}",
+                    "hash${num}-0",
+                    "hash${num}-1"
                 ).sendAsync()
 
             Log.d(TAG, "send result ${data.get().blockNumber}, ${data.get().gasUsed}")
@@ -73,12 +78,13 @@ class PawFragmentVM : ViewModel() {
 
         val contract =
             Forpawchain_sol_Storage.load(contractAddress, web3, credentials, gasPrice, gasLimit)
+        val num = numberValue.value.toString()
 
         thread {
             // 값 읽기는 어떻게 읽는거냐-
             val size = contract.getSize().sendAsync().get()
 
-            val remoteCall = contract.retrieve(BigInteger("1"))
+            val remoteCall = contract.retrieve(BigInteger(num))
             val result = remoteCall.send()
             val value1 = result[0] as Uint256
             val value2 = result[1] as Uint256
