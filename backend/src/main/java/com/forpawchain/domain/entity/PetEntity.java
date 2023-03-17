@@ -30,6 +30,7 @@ public class PetEntity {
     @Column(nullable = false)
     private boolean lost;
 
+    // OneToOne쓰면 안됨 바꿔야됨 + 양방향을 단방향으로 바꾸기
     @OneToOne(mappedBy = "pet")
     private PetInfoEntity petInfo;
     // @OneToOne(mappedBy = "pet")

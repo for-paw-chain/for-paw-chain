@@ -15,7 +15,6 @@ public class AuthenticationEntity {
     @Column(nullable = false)
     private String type;
     @Column(nullable = false)
-
     private LocalDate regTime;
 
     @ManyToOne
