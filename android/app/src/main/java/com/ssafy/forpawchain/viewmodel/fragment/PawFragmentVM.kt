@@ -1,31 +1,15 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ssafy.forpawchain.blockchain.Forpawchain_sol_Storage
-import org.web3j.abi.FunctionEncoder;
-import org.web3j.abi.FunctionReturnDecoder;
-import org.web3j.abi.TypeReference;
-import org.web3j.abi.datatypes.Function;
-import org.web3j.abi.datatypes.Type;
-import org.web3j.abi.datatypes.generated.Uint256;
-import org.web3j.crypto.Credentials;
-import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameterName;
-import org.web3j.protocol.core.methods.request.Transaction;
-import org.web3j.protocol.core.methods.response.EthCall;
-import org.web3j.protocol.http.HttpService;
+import org.web3j.abi.datatypes.Utf8String
+import org.web3j.abi.datatypes.generated.Uint256
+import org.web3j.crypto.Credentials
+import org.web3j.protocol.Web3j
 import org.web3j.protocol.infura.InfuraHttpService
-import org.web3j.tx.gas.DefaultGasProvider;
-import org.web3j.utils.Numeric;
-
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import android.util.Log
+import java.math.BigInteger
 import kotlin.concurrent.thread
 
 
@@ -47,7 +31,7 @@ class PawFragmentVM : ViewModel() {
         val web3ClientVersion = web3.web3ClientVersion().sendAsync().get()
 
         // contract address
-        val contractAddress = "0x8B15E3A60F8B9A447FA3E306562345AE64964A48"
+        val contractAddress = "0xBdbF4c7aAc399930C772E31a83Dd6b8DDe85C40C"
 
         // gas limit
         val gasLimit: BigInteger = BigInteger.valueOf(3000000)
@@ -92,13 +76,16 @@ class PawFragmentVM : ViewModel() {
 
         thread {
             // 값 읽기는 어떻게 읽는거냐-
-            val number = contract.getNumber(BigInteger("0")).sendAsync().get()
-            val date = contract.getDate(BigInteger("0")).sendAsync().get()
-            val title = contract.getTitle(BigInteger("0")).sendAsync().get()
-            val content = contract.getContent(BigInteger("0")).sendAsync().get()
-            val hash1 = contract.getHash1(BigInteger("0")).sendAsync().get()
-            val hash2 = contract.getHash2(BigInteger("0")).sendAsync().get()
             val size = contract.getSize().sendAsync().get()
+
+            val remoteCall = contract.retrieve(BigInteger("1"))
+            val result = remoteCall.send()
+            val value1 = result[0] as Uint256
+            val value2 = result[1] as Uint256
+            val value3 = result[2] as Utf8String
+            val value4 = result[3] as Utf8String
+            val value5 = result[4] as Utf8String
+            val value6 = result[5] as Utf8String
             Log.d(TAG, "")
 //            statusText.postValue(value.toString())
 //            Log.d(TAG, "recv result ${value}")
