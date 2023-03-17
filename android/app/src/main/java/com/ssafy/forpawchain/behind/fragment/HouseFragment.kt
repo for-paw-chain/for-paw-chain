@@ -55,10 +55,14 @@ class HouseFragment : Fragment() {
         recyclerView.adapter = SearchResultAdapter(searchList,
             onClickQrButton = {
                 viewModel.deleteTask(it)
-            },{
+            },
+            onClickDetailButton = {
                 // detail
                 // TODO(): navController
-                navController.navigate(R.id.navigation_search_result)
+                val bundle = Bundle().apply {
+                    putParcelable("search_result", it)
+                }
+                navController.navigate(R.id.navigation_search_result, bundle)
             })
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
