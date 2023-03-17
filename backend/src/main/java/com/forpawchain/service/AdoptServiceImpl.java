@@ -1,6 +1,9 @@
 package com.forpawchain.service;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class AdoptServiceImpl implements AdoptService {
 
 	private final AdoptRepository adoptRepository;
@@ -75,6 +79,12 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public void removeAdopt(String pid) {
+		// Pet의 lost 여부 변경
+		PetEntity petEntity = petRepository.findByPid(pid);
+		petEntity.setLost(false);
+		petRepository.save(petEntity);
+
+		// 분양 공고 삭제
 		adoptRepository.deleteByPid(pid);
 	}
 

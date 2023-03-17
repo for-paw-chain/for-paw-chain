@@ -32,7 +32,7 @@ public class PetEntity {
 
     @OneToOne(mappedBy = "pet")
     private PetInfoEntity petInfo;
-    @OneToOne(mappedBy = "pet")
+    @OneToMany(mappedBy = "pet")
     private AdoptEntity adopt;
     @OneToMany(mappedBy = "pet")
     List<AuthenticationEntity> authList;
