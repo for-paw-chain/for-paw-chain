@@ -21,6 +21,7 @@ public class AdoptController {
 
     private final AdoptServiceImpl adoptService;
 
+    // 완
     @GetMapping("/ad")
 	@ApiOperation(value = "입양 광고 랜덤 목록 10개 조회")
     public ResponseEntity<List<AdoptListResDto>> getAdoptAd() {
@@ -46,6 +47,7 @@ public class AdoptController {
         return new ResponseEntity<AdoptDetailResDto>(adoptDetailResDto, HttpStatus.OK);
     }
 
+    // 완
     @PostMapping
 	@ApiOperation(value = "입양 공고 작성")
     public ResponseEntity<Void> registAdopt(@RequestHeader("Access-Token") String accessToken, @RequestBody
@@ -74,6 +76,7 @@ public class AdoptController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
+    // 완
     @GetMapping("/article")
 	@ApiOperation(value = "내가 쓴 입양 공고 조회")
     public ResponseEntity<List<AdoptListResDto>> getAdoptMyList(@RequestHeader("Access-Token") String accessToken) {

@@ -75,7 +75,7 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public void removeAdopt(String pid) {
-
+		adoptRepository.deleteByPid(pid);
 	}
 
 	@Override

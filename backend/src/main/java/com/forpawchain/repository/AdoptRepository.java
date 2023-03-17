@@ -24,4 +24,6 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 		+ "FROM adopt a, pet_reg pr\n"
 		+ "WHERE a.pid = pr.pid and a.uid = :uid", nativeQuery = true)
 	List<AdoptListResDto> findByUid(@Param("uid") Long uid);
+
+	void deleteByPid(String pid);
 }
