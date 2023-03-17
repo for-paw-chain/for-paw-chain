@@ -12,6 +12,7 @@ import com.forpawchain.domain.entity.PetInfoEntity;
 import com.forpawchain.domain.entity.PetRegEntity;
 import com.forpawchain.domain.entity.Sex;
 import com.forpawchain.domain.entity.Social;
+import com.forpawchain.domain.entity.Type;
 import com.forpawchain.domain.entity.UserEntity;
 import com.forpawchain.repository.AdoptRepository;
 import com.forpawchain.repository.DoctorLicenseRepository;
@@ -60,7 +61,7 @@ public class TestDataInit {
 				.sex(Sex.FEMALE)
 				.spayed(false)
 				.name("멍뭉이" + Integer.toString(i))
-				.type("type")
+				.type(Type.DOG)
 				.kind("kind")
 				.build();
 

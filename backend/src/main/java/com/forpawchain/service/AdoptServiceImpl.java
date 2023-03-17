@@ -1,11 +1,11 @@
 package com.forpawchain.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.springframework.security.core.parameters.P;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
@@ -30,9 +30,17 @@ public class AdoptServiceImpl implements AdoptService {
 	private final PetRepository petRepository;
 
 	@Override
-	public List<AdoptListResDto> getAdoptList(int pageNo, int type, int kind, int sex) {
-		//adoptRepository.
-		return null;
+	public Page<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex) {
+		PageRequest pageRequest = PageRequest.of(pageNo, 10);
+		Page<AdoptListResDto> adoptListResDtos = null;
+
+		// 전체 검색
+		// if (type.isBlank() && spayed == null && sex.isBlank() ) {
+		// 	adoptListResDtos = adoptRepository.findAll(pageRequest);
+		// }
+
+
+		return adoptListResDtos;
 	}
 
 	@Override
@@ -43,7 +51,10 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public AdoptDetailResDto getAdoptDetail(String pid) {
-		return null;
+
+		AdoptDetailResDto adoptDetailResDto = adoptRepository.findDetailByPid(pid);
+
+		return adoptDetailResDto;
 	}
 
 	@Override
@@ -74,7 +85,13 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public void modifyAdopt(AdoptDetailReqDto adoptDetailReqDto) {
+		String pid = adoptDetailReqDto.getPid();
+		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
 
+		adoptEntity.setProfile1(adoptDetailReqDto.getProfile1());
+		adoptEntity.setProfile2(adoptDetailReqDto.getProfile2());
+		adoptEntity.setEtc(adoptDetailReqDto.getEtc());
+		adoptEntity.setTel(adoptDetailReqDto.getTel());
 	}
 
 	@Override

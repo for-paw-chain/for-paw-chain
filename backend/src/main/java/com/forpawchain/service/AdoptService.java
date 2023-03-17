@@ -2,13 +2,15 @@ package com.forpawchain.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
 
 public interface AdoptService {
 
-	List<AdoptListResDto> getAdoptList(int pageNo, int type, int kind, int sex);
+	Page<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex);
 
 	List<AdoptListResDto> getAdoptAd();
 

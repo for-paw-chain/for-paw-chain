@@ -23,7 +23,7 @@ public class PetRegEntity {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private String type;
+    private Type type;
     private String kind;
 
 }
