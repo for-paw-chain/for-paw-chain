@@ -23,7 +23,6 @@ public class IPFSController {
     @GetMapping("/file/{hash}")
     public ResponseEntity<byte[]> loadFile(@PathVariable("hash")String hash) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Content-type", MediaType.IMAGE_PNG_VALUE);
         httpHeaders.add("Content-type", MediaType.IMAGE_JPEG_VALUE);
         byte[] bytes = ipfsService.loadFile(hash);
         return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(bytes);
