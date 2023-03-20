@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
+import com.forpawchain.service.AdoptService;
 import com.forpawchain.service.AdoptServiceImpl;
 
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/adopt")
 public class AdoptController {
 
-    private final AdoptServiceImpl adoptService;
+    private final AdoptService adoptService;
 
     @GetMapping("/ad")
 	@ApiOperation(value = "입양 광고 랜덤 목록 10개 조회", notes = "랜덤으로 입양 공고문 10개 리스트를 반환한다. 광고용이다.")
