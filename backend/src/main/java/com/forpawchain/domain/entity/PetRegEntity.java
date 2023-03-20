@@ -8,11 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PET_REG")
+@Table(name = "PET_REG")@Getter
 @Builder
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class PetRegEntity {
     @Id
     private String pid;
