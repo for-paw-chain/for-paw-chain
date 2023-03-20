@@ -8,12 +8,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "DOCTOR_LICENSE")
-@Data
+@Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class DoctorLicenseEntity {
 	@Id
@@ -45,10 +49,4 @@ public class DoctorLicenseEntity {
 	@Column(name = "telecomgubun", nullable = false)
 	private int telecom;
 
-	public DoctorLicenseEntity(String name, String registnum, String tel, int telecom) {
-		this.name = name;
-		this.registnum = registnum;
-		this.tel = tel;
-		this.telecom = telecom;
-	}
 }

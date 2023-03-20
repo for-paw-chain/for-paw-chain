@@ -12,6 +12,7 @@ import com.forpawchain.domain.entity.PetInfoEntity;
 import com.forpawchain.domain.entity.PetRegEntity;
 import com.forpawchain.domain.entity.Sex;
 import com.forpawchain.domain.entity.Social;
+import com.forpawchain.domain.entity.Type;
 import com.forpawchain.domain.entity.UserEntity;
 import com.forpawchain.repository.AdoptRepository;
 import com.forpawchain.repository.DoctorLicenseRepository;
@@ -40,7 +41,7 @@ public class TestDataInit {
 	@EventListener(ApplicationReadyEvent.class)
 	public void initData() {
 		// 의사 면허 정보 추가 (실제 서비스에서는 정부 db로 대체됨)
-		doctorLicenseRepository.save(new DoctorLicenseEntity("김의사", "1234561234567", "01012341234", 1));
+		doctorLicenseRepository.save(new DoctorLicenseEntity(1L, "김의사", "1234561234567", "01012341234", 1));
 
 		// 유저 추가
 		UserEntity userEntity = UserEntity.builder()
@@ -60,7 +61,7 @@ public class TestDataInit {
 				.sex(Sex.FEMALE)
 				.spayed(false)
 				.name("멍뭉이" + Integer.toString(i))
-				.type("type")
+				.type(Type.DOG)
 				.kind("kind")
 				.build();
 
@@ -82,7 +83,7 @@ public class TestDataInit {
 			// 유기견 추가
 			AdoptEntity adoptEntity = AdoptEntity.builder()
 				.pid("4100000000000" + Integer.toString(i))
-				.uid(1)
+				.uid(1L)
 				.profile1(
 					"https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg")
 				.pet(petEntity)
