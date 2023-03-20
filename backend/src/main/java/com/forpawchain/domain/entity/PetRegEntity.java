@@ -17,13 +17,15 @@ public class PetRegEntity {
     @Id
     private String pid;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Sex sex;
     @Column(nullable = false)
     private boolean spayed;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
     private String kind;
 
 }

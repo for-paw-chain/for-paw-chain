@@ -31,6 +31,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Web3Service {
 
+	// private final String NETWORK = "https://sepolia.infura.io/v3/ccbf710f49e54b2c867e185af221ffa9";
+	private final String NETWORK = "http://j8a207.p.ssafy.io:30303";
+
 	private final DoctorLicenseRepository doctorLicenseRepository;
 	// private final NFT nft;
 
@@ -84,14 +87,17 @@ public class Web3Service {
 		// 의사 계정이 맞는지 확인
 		if (checkLicense(licenseReqDto)) {
 			// Connect to Ethereum client using HTTP provider
-			Web3j web3j = Web3j.build(new HttpService("https://sepolia.infura.io/v3/ccbf710f49e54b2c867e185af221ffa9"));
+			Web3j web3j = Web3j.build(new HttpService(NETWORK));
 
 			// Generate a new wallet file using a password
 			String password = "myPassword";
-			String fileName = WalletUtils.generateNewWalletFile(password, new File("C:\\Users\\SSAFY\\Desktop\\wallet"));
+			String fileName = WalletUtils.generateNewWalletFile(password,
+				// new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
+				new File("\\home\\ubuntu\\dev\\eth\\keystore"));
 
 			// Load the wallet from file using the password
-			String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
+			// String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
+			String walletFilePath = "\\home\\ubuntu\\dev\\eth\\keystore" + fileName;
 			Credentials credentials = WalletUtils.loadCredentials(password, walletFilePath);
 
 			// Print the wallet address
@@ -101,6 +107,11 @@ public class Web3Service {
 		}
 
 		return privateKey;
+	}
+
+	public void sendEth() {
+		// 돈 받을 지갑 private key : d3fc417e3c921dd41924019324a61b4471e8169f3fbd3558de1306a23e9776b0
+
 	}
 /////////////////////////////////////////////
 	// // 계좌 거래 건수

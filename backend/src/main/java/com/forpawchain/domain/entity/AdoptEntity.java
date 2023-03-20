@@ -26,7 +26,7 @@ public class AdoptEntity {
     private String profile2;
     private String etc;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "pid")
     @MapsId("pid")
     private PetEntity pet;
