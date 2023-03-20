@@ -19,6 +19,7 @@ import com.ssafy.forpawchain.model.domain.AdoptDTO
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.interfaces.IAdoptCRUD
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
+import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
@@ -80,9 +81,9 @@ class PawFragment : Fragment() {
             })
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
-        viewModel.addTask(AdoptDTO("개과", "말티즈", "O"))
-        viewModel.addTask(AdoptDTO("개과", "리트리버", "O"))
-        viewModel.addTask(AdoptDTO("고양이과", "메인쿤", "X"))
+
+        // TODO: Dummy Data
+        Log.d(TAG, AdoptService().getAdoptList().toString())
 
         viewModel.todoLiveData.observe(
             requireActivity()
