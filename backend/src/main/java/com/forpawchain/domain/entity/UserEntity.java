@@ -1,6 +1,5 @@
 package com.forpawchain.domain.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 

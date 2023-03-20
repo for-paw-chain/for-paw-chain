@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 @Entity
-@Table(name = "PET_INFO")@Getter
+@Table(name = "PET_INFO")
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
