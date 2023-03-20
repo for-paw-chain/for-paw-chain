@@ -41,7 +41,7 @@ public class TestDataInit {
 	@EventListener(ApplicationReadyEvent.class)
 	public void initData() {
 		// 의사 면허 정보 추가 (실제 서비스에서는 정부 db로 대체됨)
-		doctorLicenseRepository.save(new DoctorLicenseEntity("김의사", "1234561234567", "01012341234", 1));
+		doctorLicenseRepository.save(new DoctorLicenseEntity(1L, "김의사", "1234561234567", "01012341234", 1));
 
 		// 유저 추가
 		UserEntity userEntity = UserEntity.builder()
