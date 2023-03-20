@@ -9,6 +9,7 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
 
     /**
      * 타인에게 권한을 주는 경우
+     * 타인의 권한 값 변경
      */
 
     /**
