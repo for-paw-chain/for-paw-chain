@@ -3,16 +3,17 @@ package com.ssafy.forpawchain.behind.dialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import com.ssafy.forpawchain.databinding.DialogAdoptCrudBinding
 import com.ssafy.forpawchain.databinding.DialogPermissionDeleteBinding
 import com.ssafy.forpawchain.model.interfaces.IAdoptCRUD
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 
-class PermissionDialog(context: Context, dialogInterface: IPermissionDelete) :
+class AdoptCRUDDialog(context: Context, dialogInterface: IAdoptCRUD) :
     Dialog(context) {
-    private var mBinding: DialogPermissionDeleteBinding? = null
+    private var mBinding: DialogAdoptCrudBinding? = null
     private val binding get() = mBinding!!
 
-    private var dialogInterface: IPermissionDelete? = null
+    private var dialogInterface: IAdoptCRUD? = null
 
     init {
         this.dialogInterface = dialogInterface
@@ -20,19 +21,20 @@ class PermissionDialog(context: Context, dialogInterface: IPermissionDelete) :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DialogPermissionDeleteBinding.inflate(layoutInflater)
+        mBinding = DialogAdoptCrudBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 배경 투명하게
-//        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        binding.updateBtn.setOnClickListener {
+            this.dialogInterface?.onUpdateBtnClick()
+            dismiss()
+        }
 
         binding.deleteBtn.setOnClickListener {
             this.dialogInterface?.onDeleteBtnClick()
             dismiss()
 
         }
-        binding.cancelBtn.setOnClickListener {
-            dismiss()
-        }
+
     }
 }
