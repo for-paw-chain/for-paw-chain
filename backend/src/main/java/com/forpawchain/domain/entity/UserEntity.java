@@ -1,6 +1,5 @@
 package com.forpawchain.domain.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 
@@ -8,10 +7,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "USER")
-@Builder
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +26,4 @@ public class UserEntity {
     private String wa;
     @Column(nullable = false)
     private boolean del;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<AdoptEntity> adoptList;// = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    List<AuthenticationEntity> authList;// = new ArrayList<>();
 }

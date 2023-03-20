@@ -85,8 +85,6 @@ public class TestDataInit {
 				.uid(1)
 				.profile1(
 					"https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg")
-				.pet(petEntity)
-				.user(userRepository.findByUid(1))
 				.build();
 
 			adoptRepository.save(adoptEntity);

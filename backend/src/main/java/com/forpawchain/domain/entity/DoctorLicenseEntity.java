@@ -7,13 +7,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Table(name = "DOCTOR_LICENSE")
-@Data
+@Table(name = "DOCTOR_LICENSE")@Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class DoctorLicenseEntity {
 	@Id
