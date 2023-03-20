@@ -33,4 +33,8 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     List<AuthenticationEntity> authList;// = new ArrayList<>();
+
+    public void updateWa(String wa) {
+        this.wa = wa;
+    }
 }

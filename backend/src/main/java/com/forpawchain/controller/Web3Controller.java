@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import com.forpawchain.domain.dto.request.LicenseReqDto;
 import com.forpawchain.service.Web3Service;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -47,7 +49,10 @@ public class Web3Controller {
 		NoSuchAlgorithmException,
 		NoSuchProviderException {
 
-		String privateKey = web3Service.createWallet(licenseReqDto);
+		// accesstoken으로 uid 값 받아와야됨
+		Long uid = 1L;
+
+		String privateKey = web3Service.createWallet(uid, licenseReqDto);
 
 		if (privateKey == null) {
 			return new ResponseEntity<String>("", HttpStatus.UNAUTHORIZED);
@@ -57,13 +62,19 @@ public class Web3Controller {
 	}
 
 	/**
-	 * 서버 지갑에서
-	 * 요청으로 받은 private key 지갑으로
+	 * 서버 지갑에
+	 * 로그인 유저의 지갑으로
 	 * 이더 전송
 	 */
 	@PostMapping("eth")
+	@ApiOperation(value = "이더 충전", notes = "로그인 유저의 지갑으로 이더를 충전해준다.")
 	public void sendEth() throws Exception {
-		String toAddress = "0x4ba7a38538d48f05816909e572fedc18cc3ab7bb";
+		// String toAddress = "0x4ba7a38538d48f05816909e572fedc18cc3ab7bb";
+		// accesstoken으로 uid 값 받아와야됨
+		Long uid = 1L;
+
+		String toAddress = web3Service.getAddress(uid);
+		System.out.println("지갑 주소 : " + toAddress);
 		web3Service.sendEth(toAddress);
 	}
 }

@@ -33,7 +33,9 @@ import org.web3j.utils.Numeric;
 
 import com.forpawchain.domain.dto.request.LicenseReqDto;
 import com.forpawchain.domain.entity.DoctorLicenseEntity;
+import com.forpawchain.domain.entity.UserEntity;
 import com.forpawchain.repository.DoctorLicenseRepository;
+import com.forpawchain.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 // import org.web3j.protocol.Web3j;
@@ -51,6 +53,7 @@ public class Web3Service {
 	// private final String NETWORK = "https://sepolia.infura.io/v3/ccbf710f49e54b2c867e185af221ffa9";
 	private final String NETWORK = "http://3.39.235.238:8545";
 	private final DoctorLicenseRepository doctorLicenseRepository;
+	private final UserRepository userRepository;
 	private Web3j web3j = Web3j.build(new HttpService(NETWORK));
 	private long CHAINID = 666L;
 
@@ -94,7 +97,7 @@ public class Web3Service {
 	 * private key만 있으면 사용 가능.
 	 * private key를 프론트에 전달해주기. db에는 저장 안함
 	 */
-	public String createWallet(LicenseReqDto licenseReqDto) throws
+	public String createWallet(long uid, LicenseReqDto licenseReqDto) throws
 		CipherException,
 		IOException,
 		InvalidAlgorithmParameterException,
@@ -121,6 +124,12 @@ public class Web3Service {
 			// Print the wallet address
 			System.out.println("Wallet address: " + credentials.getAddress());
 
+			// 지갑 주소를 DB에 저장
+			UserEntity userEntity = userRepository.findByUid(uid);
+			userEntity.updateWa(credentials.getAddress());
+			userRepository.save(userEntity);
+
+			// 지갑의 프라이빗 키
 			privateKey = credentials.getEcKeyPair().getPrivateKey().toString(16);
 		}
 
@@ -149,7 +158,16 @@ public class Web3Service {
 		// System.out.println(ethSendTransaction.getTransactionHash());
 	}
 
-/////////////////////////////////////////////
+	/**
+	 * 해당 유저의 지갑 주소를 DB에서 조회한다.
+	 * @param uid
+	 */
+	public String getAddress(long uid) {
+		UserEntity userEntity = userRepository.findByUid(uid);
+		return userEntity.getWa();
+	}
+
+	/////////////////////////////////////////////
 	// // 계좌 거래 건수
 	// public EthGetTransactionCount getTransactionCount() throws ExecutionException, InterruptedException {
 	// 	EthGetTransactionCount result = new EthGetTransactionCount();
