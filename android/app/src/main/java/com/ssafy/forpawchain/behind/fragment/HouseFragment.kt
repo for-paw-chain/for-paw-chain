@@ -10,18 +10,23 @@ import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.ssafy.basictemplate.util.ActivityCode
+import com.ssafy.basictemplate.util.eventObserve
+import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.behind.activity.MainActivity
 import com.ssafy.forpawchain.databinding.FragmentHouseBinding
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
 
-
 class HouseFragment : Fragment() {
     private lateinit var viewModel: HouseFragmentVM
     private var _binding: FragmentHouseBinding? = null
+    private lateinit var navController: NavController
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -47,11 +52,13 @@ class HouseFragment : Fragment() {
         val recyclerView = binding.recycler
         val searchList = mutableListOf<SearchResultDTO>()
 
-
-
         recyclerView.adapter = SearchResultAdapter(searchList,
             onClickQrButton = {
                 viewModel.deleteTask(it)
+            },{
+                // detail
+                // TODO(): navController
+                navController.navigate(R.id.navigation_search_result)
             })
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -89,12 +96,13 @@ class HouseFragment : Fragment() {
             }
 
         val root: View = binding.root
+        initObserve()
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        navController = Navigation.findNavController(requireView())
         scrollEvent()
     }
 
@@ -102,8 +110,8 @@ class HouseFragment : Fragment() {
 //        binding.appBarLayout.overScrollMode = View.OVER_SCROLL_NEVER
         binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             //  Vertical offset == 0 indicates appBar is fully expanded.
-//            Log.d(TAG, "${Math.abs(verticalOffset)}")
-            if (Math.abs(verticalOffset) > 1200) {
+            //Log.d(TAG, "${verticalOffset}, ${appBarLayout.totalScrollRange}, ${appBarLayout.height}")
+            if (-verticalOffset >= appBarLayout.totalScrollRange-1) {
                 if (!viewModel.isOpenSearch.value!!) {
                     Log.d(TAG, "열림")
                     // TODO: DUMMY DATA
@@ -116,7 +124,7 @@ class HouseFragment : Fragment() {
                     viewModel.isOpenSearch.value = true
                 }
                 invalidateOptionsMenu((activity as MainActivity))
-            } else if (Math.abs(verticalOffset) < 100) {
+            } else {
                 if (viewModel.isOpenSearch.value!!) {
                     Log.d(TAG, "닫힘")
                     viewModel.clearTask()
@@ -125,8 +133,20 @@ class HouseFragment : Fragment() {
                 invalidateOptionsMenu((activity as MainActivity))
             }
         }
+    }
 
+    private fun initObserve() {
+        viewModel.openEvent.eventObserve(this) { obj ->
 
+            when (obj) {
+                // TODO: navController
+                ActivityCode.FRAGMENT_USER -> navController.navigate(R.id.navigation_user)
+                else -> {
+                    null
+                }
+            }
+
+        }
     }
 
     override fun onDestroyView() {
