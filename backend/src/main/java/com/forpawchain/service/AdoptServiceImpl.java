@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +31,18 @@ public class AdoptServiceImpl implements AdoptService {
 	private final PetRepository petRepository;
 
 	@Override
-	public Page<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex) {
+	public PageImpl<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex) {
 		PageRequest pageRequest = PageRequest.of(pageNo, 10);
-		Page<AdoptListResDto> adoptListResDtos = null;
+		PageImpl<AdoptListResDto> adoptListResDtos = null;
 
-		// 중성화여부만 빼고
-		adoptListResDtos = adoptRepository.findByTypeContainingAndSexContaining(type, sex, pageRequest);
+		// 중성화여부가 null 일 때
+		if (spayed == null) {
+			adoptListResDtos = adoptRepository.findByTypeAndSex(type, sex, pageRequest);
+		}
+		// 중성화여부 조건 검색을 할 때
+		else {
+			adoptListResDtos = adoptRepository.findByTypeAndSexAndSpayed(type, sex, spayed, pageRequest);
+		}
 
 
 		return adoptListResDtos;
