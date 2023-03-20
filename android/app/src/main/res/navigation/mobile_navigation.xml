@@ -39,4 +39,16 @@
         android:name="com.ssafy.forpawchain.behind.fragment.PermissionPawFragment"
         android:label="UserFragment"
         tools:layout="@layout/fragment_permission_paw" />
+
+    <fragment
+        android:id="@+id/navigation_adopt_add"
+        android:name="com.ssafy.forpawchain.behind.fragment.AdoptAddFragment"
+        android:label="PawFragment"
+        tools:layout="@layout/fragment_adopt_add" />
+
+    <fragment
+        android:id="@+id/navigation_adopt_update"
+        android:name="com.ssafy.forpawchain.behind.fragment.AdoptUpdateFragment"
+        android:label="PawFragment"
+        tools:layout="@layout/fragment_adopt_update" />
 </navigation>

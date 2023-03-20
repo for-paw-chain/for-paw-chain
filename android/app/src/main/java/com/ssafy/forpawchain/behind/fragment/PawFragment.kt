@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.behind.dialog.AdoptCRUDDialog
 import com.ssafy.forpawchain.behind.dialog.PermissionDialog
 import com.ssafy.forpawchain.databinding.FragmentPawBinding
@@ -63,8 +64,8 @@ class PawFragment : Fragment() {
                 val dialog = AdoptCRUDDialog(requireContext(), object : IAdoptCRUD {
                     override fun onUpdateBtnClick() {
                         // 공고 수정으로 이동
-                        // TODO: 공고 수정 이동 필요
                         Log.d(TAG, "공고 수정으로")
+                        navController.navigate(R.id.navigation_adopt_update)
                     }
 
                     override fun onDeleteBtnClick() {
@@ -92,6 +93,7 @@ class PawFragment : Fragment() {
 
         binding.fab.setOnClickListener { view ->
             // TODO: 공고 추가
+            navController.navigate(R.id.navigation_adopt_add)
             Log.d(TAG, "공고 추가")
         }
         return root
