@@ -17,6 +17,7 @@ public class AuthenticationEntity {
     @EmbeddedId
     private AuthenticationId aid;
     @Column(nullable = false)
+    @Enumerated
     private String type;
     @Column(nullable = false)
     private LocalDate regTime;
