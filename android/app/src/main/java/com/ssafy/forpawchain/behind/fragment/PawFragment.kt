@@ -55,7 +55,7 @@ class PawFragment : Fragment() {
         recyclerView.adapter = AdoptRecyclerViewAdapter(
             {
                 // TODO: Detail
-//                navController.navigate(R.id.navigation_permission_paw)
+                navController.navigate(R.id.navigation_adopt_view)
                 Log.d(TAG, "입분양 디테일 뷰")
             },
             {
