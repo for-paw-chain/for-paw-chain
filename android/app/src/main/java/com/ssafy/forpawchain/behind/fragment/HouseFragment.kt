@@ -41,13 +41,24 @@ class HouseFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View ? {
         _binding = FragmentHouseBinding.inflate(inflater, container, false)
+
         activity?.let {
             viewModel = ViewModelProvider(it).get(HouseFragmentVM::class.java)
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }
+
+        val root: View = binding.root
+        initObserve()
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(requireView())
+        scrollEvent()
 
         val recyclerView = binding.recycler
         val searchList = mutableListOf<SearchResultDTO>()
@@ -59,11 +70,10 @@ class HouseFragment : Fragment() {
             onClickDetailButton = {
                 // detail
                 // TODO(): navController
-                val bundle = Bundle().apply {
-                    putParcelable("search_result", it)
-                }
-                navController.navigate(R.id.navigation_search_result, bundle)
-            })
+                navController.navigate(R.id.navigation_search_result)
+            },
+        )
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
@@ -99,15 +109,7 @@ class HouseFragment : Fragment() {
 
             }
 
-        val root: View = binding.root
-        initObserve()
-        return root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(requireView())
-        scrollEvent()
     }
 
     private fun scrollEvent() {

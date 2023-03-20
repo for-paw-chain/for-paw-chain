@@ -1,8 +1,10 @@
 package com.ssafy.forpawchain.viewmodel.adapter
 
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.ControllSearchResultListBinding
@@ -27,6 +29,7 @@ class SearchResultAdapter(
             .inflate(R.layout.controll_search_result_list, viewGroup, false) //내가 각아이템에 사용하는 view
         val bind = ControllSearchResultListBinding.bind(view)
         val holder = SearchRestulViewHolder(bind)
+
         view.setOnClickListener({
             if(holder.adapterPosition != -1){
             onClickDetailButton.invoke(mydataSet.get(holder.adapterPosition))
