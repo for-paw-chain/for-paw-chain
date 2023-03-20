@@ -3,6 +3,7 @@ package com.forpawchain.repository;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,6 +36,8 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 	AdoptDetailResDto findDetailByPid(@Param("pid") String pid);
 
 	void deleteByPid(String pid);
+
+	PageImpl<AdoptListResDto> findByTypeContainingAndSexContaining(String type, String sex, PageRequest pageRequest);
 
 	// Page<AdoptListResDto> findAll(Pageable pageable);
 }

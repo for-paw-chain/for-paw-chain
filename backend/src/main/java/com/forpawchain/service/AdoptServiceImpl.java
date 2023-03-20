@@ -34,10 +34,8 @@ public class AdoptServiceImpl implements AdoptService {
 		PageRequest pageRequest = PageRequest.of(pageNo, 10);
 		Page<AdoptListResDto> adoptListResDtos = null;
 
-		// 전체 검색
-		// if (type.isBlank() && spayed == null && sex.isBlank() ) {
-		// 	adoptListResDtos = adoptRepository.findAll(pageRequest);
-		// }
+		// 중성화여부만 빼고
+		adoptListResDtos = adoptRepository.findByTypeContainingAndSexContaining(type, sex, pageRequest);
 
 
 		return adoptListResDtos;
@@ -77,7 +75,7 @@ public class AdoptServiceImpl implements AdoptService {
 			.build();
 
 		if (adoptDetailReqDto.getProfile2() != null) {
-			adoptEntity.setProfile2(adoptDetailReqDto.getProfile2());
+			// adoptEntity.setProfile2(adoptDetailReqDto.getProfile2());
 		}
 
 		adoptRepository.save(adoptEntity);
@@ -88,17 +86,19 @@ public class AdoptServiceImpl implements AdoptService {
 		String pid = adoptDetailReqDto.getPid();
 		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
 
-		adoptEntity.setProfile1(adoptDetailReqDto.getProfile1());
-		adoptEntity.setProfile2(adoptDetailReqDto.getProfile2());
-		adoptEntity.setEtc(adoptDetailReqDto.getEtc());
-		adoptEntity.setTel(adoptDetailReqDto.getTel());
+		String profile1 = adoptDetailReqDto.getProfile1();
+		String profile2 = adoptDetailReqDto.getProfile2();
+		String etc = adoptDetailReqDto.getEtc();
+		String tel = adoptDetailReqDto.getTel();
+
+		adoptEntity.updateAdopt(profile1, profile2, etc, tel);
 	}
 
 	@Override
 	public void removeAdopt(String pid) {
 		// Pet의 lost 여부 변경
 		PetEntity petEntity = petRepository.findByPid(pid);
-		petEntity.setLost(false);
+		petEntity.updatePetLost(false);
 		petRepository.save(petEntity);
 
 		// 분양 공고 삭제

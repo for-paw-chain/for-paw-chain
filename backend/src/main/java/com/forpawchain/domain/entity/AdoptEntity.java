@@ -34,4 +34,11 @@ public class AdoptEntity {
     @JoinColumn(name = "uid")
     @MapsId("uid")
     private UserEntity user;
+
+    public void updateAdopt(String profile1, String profile2, String etc, String tel) {
+        this.profile1 = profile1;
+        this.profile2 = profile2;
+        this.etc = etc;
+        this.tel = tel;
+    }
 }

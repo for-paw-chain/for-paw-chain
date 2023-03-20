@@ -37,4 +37,8 @@ public class PetEntity {
     // private AdoptEntity adopt;
     @OneToMany(mappedBy = "pet")
     List<AuthenticationEntity> authList;
+
+    public void updatePetLost(boolean lost) {
+        this.lost = lost;
+    }
 }

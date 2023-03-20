@@ -1,6 +1,8 @@
 package com.forpawchain;
 
+import static com.forpawchain.domain.entity.Sex.*;
 import static com.forpawchain.domain.entity.Social.*;
+import static com.forpawchain.domain.entity.Type.*;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -58,10 +60,10 @@ public class TestDataInit {
 			// 동물 정부 데이터 추가
 			PetRegEntity petRegEntity = PetRegEntity.builder()
 				.pid("4100000000000" + Integer.toString(i))
-				.sex(Sex.FEMALE)
+				.sex(FEMALE)
 				.spayed(false)
 				.name("멍뭉이" + Integer.toString(i))
-				.type(Type.DOG)
+				.type(DOG)
 				.kind("kind")
 				.build();
 
