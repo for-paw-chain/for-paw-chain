@@ -31,22 +31,21 @@ public class AdoptController {
     public ResponseEntity<List<AdoptListResDto>> getAdoptAd() {
 
         List<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptAd();
-        return new ResponseEntity<List<AdoptListResDto>>(adoptListResDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(adoptListResDtoList, HttpStatus.OK);
     }
 
     @GetMapping
 	@ApiOperation(value = "입양 공고 목록 조회")
     public ResponseEntity<PageImpl<AdoptListResDto>> getAdoptList(
         @Parameter(description = "페이지 번호") @RequestParam("pageno") int pageNo,
-        @Parameter(description = "중성화여부. null:전체 1:true 0:false")
-        @RequestParam(value = "spayed",required = false) Integer spayed,
+        @Parameter(description = "중성화여부. null:전체 1:true 0:false") @RequestParam(value = "spayed",required = false) Integer spayed,
         @Parameter(description = "종류. null:전체 'DOG':강아지 'CAT':고양이 'ETC':기타")
         @RequestParam(value = "type", required = false) String type,
         @Parameter(description = "성별. null:전체 'MALE':남아 'FEMALE':여아")
         @RequestParam(value = "sex", required = false) String sex) {
 
         PageImpl<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptList(pageNo, type, spayed, sex);
-        return new ResponseEntity<PageImpl<AdoptListResDto>>(adoptListResDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(adoptListResDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/{pid}")
@@ -55,7 +54,7 @@ public class AdoptController {
 
         // 해당 pid가 분양 공고 등록되어 있는지 확인해야됨
         AdoptDetailResDto adoptDetailResDto = adoptService.getAdoptDetail(pid);
-        return new ResponseEntity<AdoptDetailResDto>(adoptDetailResDto, HttpStatus.OK);
+        return new ResponseEntity<>(adoptDetailResDto, HttpStatus.OK);
     }
 
     @PostMapping
@@ -65,7 +64,7 @@ public class AdoptController {
 
         Long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
         adoptService.registAdopt(adoptDetailReqDto, uid);
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -75,7 +74,7 @@ public class AdoptController {
 
         // 글을 쓴 본인이 맞는지 검증하는 과정 필요
         adoptService.modifyAdopt(adoptDetailReqDto);
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{pid}")
@@ -84,7 +83,7 @@ public class AdoptController {
         @PathVariable("pid") String pid) {
 
         adoptService.removeAdopt(pid);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/article")
@@ -92,6 +91,6 @@ public class AdoptController {
     public ResponseEntity<List<AdoptListResDto>> getAdoptMyList(@RequestHeader("Access-Token") String accessToken) {
         Long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
         List<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptMyList(uid);
-        return new ResponseEntity<List<AdoptListResDto>>(adoptListResDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(adoptListResDtoList, HttpStatus.OK);
     }
 }

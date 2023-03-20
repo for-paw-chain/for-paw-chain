@@ -2,17 +2,34 @@ package com.forpawchain.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
+import org.web3j.crypto.Keys;
+import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.request.Transaction;
+import org.web3j.protocol.core.methods.response.EthBlockNumber;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.protocol.exceptions.TransactionException;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.RawTransactionManager;
+import org.web3j.tx.TransactionManager;
+import org.web3j.tx.Transfer;
+import org.web3j.tx.gas.DefaultGasProvider;
+import org.web3j.utils.Convert;
+import org.web3j.utils.Numeric;
 
 import com.forpawchain.domain.dto.request.LicenseReqDto;
 import com.forpawchain.domain.entity.DoctorLicenseEntity;
@@ -32,15 +49,17 @@ import lombok.RequiredArgsConstructor;
 public class Web3Service {
 
 	// private final String NETWORK = "https://sepolia.infura.io/v3/ccbf710f49e54b2c867e185af221ffa9";
-	private final String NETWORK = "http://j8a207.p.ssafy.io:30303";
-
+	private final String NETWORK = "http://3.39.235.238:8545";
 	private final DoctorLicenseRepository doctorLicenseRepository;
-	// private final NFT nft;
+	private Web3j web3j = Web3j.build(new HttpService(NETWORK));
+	private long CHAINID = 666L;
 
-	// 현재 블록 번호
-	// public EthBlockNumber getBlockNumber() throws ExecutionException, InterruptedException {
-	// 	return web3j.ethBlockNumber().sendAsync().get();
-	// }
+	/**
+	 * 현재 블록 번호
+ 	 */
+	public EthBlockNumber getBlockNumber() throws ExecutionException, InterruptedException {
+		return web3j.ethBlockNumber().sendAsync().get();
+	}
 
 	/**
 	 * 의사가 맞는지 확인
@@ -86,18 +105,17 @@ public class Web3Service {
 
 		// 의사 계정이 맞는지 확인
 		if (checkLicense(licenseReqDto)) {
-			// Connect to Ethereum client using HTTP provider
-			Web3j web3j = Web3j.build(new HttpService(NETWORK));
+
 
 			// Generate a new wallet file using a password
 			String password = "myPassword";
 			String fileName = WalletUtils.generateNewWalletFile(password,
-				// new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
-				new File("\\home\\ubuntu\\dev\\eth\\keystore"));
+				new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
+				// new File("\\home\\ubuntu\\dev\\eth\\keystore"));
 
 			// Load the wallet from file using the password
-			// String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
-			String walletFilePath = "\\home\\ubuntu\\dev\\eth\\keystore" + fileName;
+			String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
+			// String walletFilePath = "\\home\\ubuntu\\dev\\eth\\keystore" + fileName;
 			Credentials credentials = WalletUtils.loadCredentials(password, walletFilePath);
 
 			// Print the wallet address
@@ -109,10 +127,28 @@ public class Web3Service {
 		return privateKey;
 	}
 
-	public void sendEth() {
-		// 돈 받을 지갑 private key : d3fc417e3c921dd41924019324a61b4471e8169f3fbd3558de1306a23e9776b0
+	public void sendEth(String toAddress) throws Exception {
+		// String fromAddress = "0xe6789b017d43395270ff98de364306b427ad6ee2";
+		String fromPrivateKey = "cdffd26312e73fbf366864c56d2397c4413d1abb1d4ee089d5aef2cc6c66c0db";
+		
+		// 목적지 주소로 보내려는 이더의 양
+		BigInteger value = Convert.toWei("1.0", Convert.Unit.ETHER).toBigInteger();
+		
+		// sender에 대한 정보
+		Credentials credentials = Credentials.create(fromPrivateKey);
+		
+		// 트랜잭션 매니저 생성
+		TransactionManager transactionManager = new RawTransactionManager(
+			web3j, credentials, CHAINID);
+		
+		// 트랜잭션 전송
+		EthSendTransaction ethSendTransaction = transactionManager.sendTransaction(DefaultGasProvider.GAS_PRICE,
+			DefaultGasProvider.GAS_LIMIT, toAddress, "",
+			value);
 
+		// System.out.println(ethSendTransaction.getTransactionHash());
 	}
+
 /////////////////////////////////////////////
 	// // 계좌 거래 건수
 	// public EthGetTransactionCount getTransactionCount() throws ExecutionException, InterruptedException {
