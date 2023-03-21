@@ -63,7 +63,7 @@ public class AdoptController {
     public ResponseEntity<Void> registAdopt(@RequestHeader("Access-Token") String accessToken, @RequestBody
         AdoptDetailReqDto adoptDetailReqDto) {
 
-        Long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
+        long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
         adoptService.registAdopt(adoptDetailReqDto, uid);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -90,7 +90,7 @@ public class AdoptController {
     @GetMapping("/article")
 	@ApiOperation(value = "내가 쓴 입양 공고 조회", notes = "access token에서 uid 값을 추출해서, 해당 사용자가 쓴 분양 공고글 리스트를 반환한다.")
     public ResponseEntity<HashMap<String, List<AdoptListResDto>>> getAdoptMyList(@RequestHeader("Access-Token") String accessToken) {
-        Long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
+        long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
         List<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptMyList(uid);
 
         HashMap<String, List<AdoptListResDto>> map = new HashMap<>();
