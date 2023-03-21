@@ -16,7 +16,7 @@ import com.forpawchain.domain.entity.AdoptEntity;
 
 public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 
-	@Query(value = "SELECT a.pid, a.profile1, pr.type, pr.kind, pr.spayed\n"
+	@Query(value = "SELECT a.pid, a.profile, pr.type, pr.kind, pr.spayed\n"
 		+ "FROM adopt a, pet_reg pr\n"
 		+ "WHERE a.pid = pr.pid\n"
 		+ "ORDER BY RAND() \n"
@@ -25,19 +25,19 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 
 	AdoptEntity findByPid(String pid);
 
-	@Query(value = "SELECT a.pid, a.profile1, pr.type, pr.kind, pr.spayed\n"
+	@Query(value = "SELECT a.pid, a.profile, pr.type, pr.kind, pr.spayed\n"
 		+ "FROM adopt a, pet_reg pr\n"
 		+ "WHERE a.pid = pr.pid and a.uid = :uid", nativeQuery = true)
 	List<AdoptListResDto> findByUid(@Param("uid") Long uid);
 
-	@Query(value = "SELECT pr.name, pr.sex, a.profile1, a.profile2, pr.type, pr.kind, pr.spayed, a.tel\n"
+	@Query(value = "SELECT pr.name, pr.sex, a.profile, pr.type, pr.kind, pr.spayed, a.tel, a.etc\n"
 		+ "FROM adopt a, pet_reg pr\n"
 		+ "WHERE a.pid = pr.pid and a.pid = :pid", nativeQuery = true)
 	AdoptDetailResDto findDetailByPid(@Param("pid") String pid);
 
 	void deleteByPid(String pid);
 
-	@Query(value = "SELECT a.pid, a.profile1, pr.type, pr.kind, pr.spayed\n"
+	@Query(value = "SELECT a.pid, a.profile, pr.type, pr.kind, pr.spayed\n"
 		+ "FROM adopt a, pet_reg pr\n"
 		+ "WHERE a.pid = pr.pid and pr.type LIKE COALESCE(:type, '%')\n"
 		+ "and pr.sex LIKE COALESCE(:sex, '%')\n"
@@ -46,7 +46,7 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 	PageImpl<AdoptListResDto> findByTypeAndSexAndSpayed(@Param("type") String type, @Param("sex") String sex,
 		@Param("spayed") int spayed, PageRequest pageRequest);
 
-	@Query(value = "SELECT a.pid, a.profile1, pr.type, pr.kind, pr.spayed\n"
+	@Query(value = "SELECT a.pid, a.profile, pr.type, pr.kind, pr.spayed\n"
 		+ "FROM adopt a, pet_reg pr\n"
 		+ "WHERE a.pid = pr.pid and pr.type LIKE COALESCE(:type, '%')\n"
 		+ "and pr.sex LIKE COALESCE(:sex, '%')"

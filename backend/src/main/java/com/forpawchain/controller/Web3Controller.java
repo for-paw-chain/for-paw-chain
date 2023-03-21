@@ -42,6 +42,7 @@ public class Web3Controller {
 	 * 의사 지갑 생성
 	 */
 	@PostMapping("/license")
+	@ApiOperation(value = "의사 인증", notes = "입력한 의사 정보가 정부 DB에 들어있으면 의사임이 인증된다. 지갑이 생성되고 private key가 반환된다.")
 	public ResponseEntity<String> authDoctor(@RequestBody LicenseReqDto licenseReqDto) throws
 		InvalidAlgorithmParameterException,
 		CipherException,
@@ -79,8 +80,9 @@ public class Web3Controller {
 	}
 	
 	@PostMapping("contract/{pid}")
-	@ApiOperation(value = "컨트랙트 배포", notes = "하나의 동물 당 하나의 컨트랙트를 배포한다.")
-	public void deployContract(@PathVariable("pid") String pid) throws Exception {
-		web3Service.deployContract(pid);
+	@ApiOperation(value = "컨트랙트 주소 조회", notes = "해당 동물의 컨트랙트 주소를 반환한다. 컨트랜트 주소가 없으면 새 컨트랙트를 배포한다.")
+	public ResponseEntity<String> deployContract(@PathVariable("pid") String pid) throws Exception {
+		String ca = web3Service.deployContract(pid);
+		return new ResponseEntity<>(ca, HttpStatus.OK);
 	}
 }
