@@ -22,4 +22,11 @@ public class PetEntity {
     private String ca;
     @Column(nullable = false)
     private boolean lost;
+
+    public void updatePetLost(boolean lost) {
+        this.lost = lost;
+    }
+    public void updatePetCa(String ca) {
+        this.ca = ca;
+    }
 }

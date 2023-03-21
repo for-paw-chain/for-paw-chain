@@ -6,4 +6,6 @@ import com.forpawchain.domain.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	UserEntity findByUid(long uid);
+
+	String findWaByUid(long uid);
 }

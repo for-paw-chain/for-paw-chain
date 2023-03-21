@@ -3,6 +3,7 @@ package com.forpawchain.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
@@ -10,7 +11,7 @@ import com.forpawchain.domain.dto.response.AdoptListResDto;
 
 public interface AdoptService {
 
-	Page<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex);
+	PageImpl<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex);
 
 	List<AdoptListResDto> getAdoptAd();
 
