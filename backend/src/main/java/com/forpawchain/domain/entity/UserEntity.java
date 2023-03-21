@@ -1,6 +1,5 @@
 package com.forpawchain.domain.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 
@@ -27,8 +26,7 @@ public class UserEntity {
     private String wa;
     @Column(nullable = false)
     private boolean del;
-    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<AdoptEntity> adoptList;// = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

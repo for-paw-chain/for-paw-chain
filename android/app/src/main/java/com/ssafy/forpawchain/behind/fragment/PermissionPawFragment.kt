@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -9,9 +10,12 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.dialog.AdoptCRUDDialog
 import com.ssafy.forpawchain.behind.dialog.PermissionDialog
+import com.ssafy.forpawchain.behind.dialog.PermissionSetDialog
 import com.ssafy.forpawchain.databinding.FragmentPermissionPawBinding
 import com.ssafy.forpawchain.model.domain.PermissionUserDTO
+import com.ssafy.forpawchain.model.interfaces.IAdoptCRUD
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.viewmodel.adapter.PermissionPawListAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.PermissionPawFragmentVM
@@ -41,6 +45,19 @@ class PermissionPawFragment : Fragment() {
             viewModel = ViewModelProvider(it).get(PermissionPawFragmentVM::class.java)
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
+        }
+
+
+        binding.floatingBtn.setOnClickListener { view ->
+            val dialog = PermissionSetDialog(requireContext(), object : IPermissionDelete {
+                override fun onDeleteBtnClick() {
+                    Log.d(TAG, "set 권한 부여")
+                }
+            })
+
+            dialog.show()
+
+            Log.d(PawFragment.TAG, "열람 권한 부여")
         }
 
         val recyclerView = binding.recycler

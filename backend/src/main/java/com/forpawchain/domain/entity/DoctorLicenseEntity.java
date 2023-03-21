@@ -9,7 +9,6 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -49,4 +48,10 @@ public class DoctorLicenseEntity {
 	@Column(name = "telecomgubun", nullable = false)
 	private int telecom;
 
+	public DoctorLicenseEntity(String name, String registnum, String tel, int telecom) {
+		this.name = name;
+		this.registnum = registnum;
+		this.tel = tel;
+		this.telecom = telecom;
+	}
 }
