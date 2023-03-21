@@ -1,7 +1,7 @@
 package com.forpawchain.domain.dto.request;
 
-import com.forpawchain.domain.entity.Social;
-import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.domain.Entity.Social;
+import com.forpawchain.domain.Entity.UserEntity;
 
 import lombok.Data;
 

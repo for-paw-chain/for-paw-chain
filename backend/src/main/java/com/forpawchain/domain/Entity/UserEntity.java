@@ -1,4 +1,4 @@
-package com.forpawchain.domain.entity;
+package com.forpawchain.domain.Entity;
 
 import java.util.List;
 import lombok.*;
