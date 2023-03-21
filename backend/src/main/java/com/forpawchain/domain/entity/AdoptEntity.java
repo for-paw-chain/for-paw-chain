@@ -19,9 +19,8 @@ public class AdoptEntity {
     @Column(nullable = false)
     private long uid;
     private String tel;
-    @Column(nullable = false)
-    private String profile1;
-    private String profile2;
+    @Column(nullable = false, length = 1000)
+    private String profile;
     private String etc;
 
     @ManyToOne
@@ -33,9 +32,8 @@ public class AdoptEntity {
     @MapsId("uid")
     private UserEntity user;
 
-    public void updateAdopt(String profile1, String profile2, String etc, String tel) {
-        this.profile1 = profile1;
-        this.profile2 = profile2;
+    public void updateAdopt(String profile, String etc, String tel) {
+        this.profile = profile;
         this.etc = etc;
         this.tel = tel;
     }

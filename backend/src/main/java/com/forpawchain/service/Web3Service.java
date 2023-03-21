@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.stereotype.Service;
+import org.web3j.abi.datatypes.Address;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
@@ -76,22 +77,28 @@ public class Web3Service {
 	/**
 	 * 스마트 컨트랙트 배포
 	 */
-	public void deployContract(String pid) throws Exception {
+	public String deployContract(String pid) throws Exception {
 
-		MyContract contract = MyContract.deploy(
-			web3j,
-			transactionManager,
-			DefaultGasProvider.GAS_PRICE,
-			DefaultGasProvider.GAS_LIMIT
-		).send();
+		PetEntity petEntity = petRepository.findByPid(pid);
+		if (petEntity.getCa() == null) {
+			MyContract contract = MyContract.deploy(
+				web3j,
+				transactionManager,
+				DefaultGasProvider.GAS_PRICE,
+				DefaultGasProvider.GAS_LIMIT
+			).send();
 
-		String ca = contract.getContractAddress();
-		System.out.println("컨트랙트 주소 : " + ca);
+			String invalidAddr = contract.getContractAddress();
+			String validAddr = Keys.toChecksumAddress(invalidAddr);
+			System.out.println("컨트랙트 주소 : " + validAddr);
 
-		//배포된 컨트랙트 주소를 Pet DB에 저장
-		// PetEntity petEntity = petRepository.findByPid(pid);
-		// petEntity.updatePetCa(ca);
-		// petRepository.save(petEntity);
+			//배포된 컨트랙트 주소를 Pet DB에 저장
+
+			petEntity.updatePetCa(validAddr);
+			petRepository.save(petEntity);
+		}
+
+		return petEntity.getCa();
 	}
 
 	/**

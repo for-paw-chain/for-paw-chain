@@ -44,7 +44,6 @@ public class AdoptServiceImpl implements AdoptService {
 			adoptListResDtos = adoptRepository.findByTypeAndSexAndSpayed(type, sex, spayed, pageRequest);
 		}
 
-
 		return adoptListResDtos;
 	}
 
@@ -73,17 +72,12 @@ public class AdoptServiceImpl implements AdoptService {
 		AdoptEntity adoptEntity = AdoptEntity.builder()
 			.pid(adoptDetailReqDto.getPid())
 			.uid(uid)
-			.profile1(adoptDetailReqDto.getProfile1())
-			.profile2(adoptDetailReqDto.getProfile2())
+			.profile(adoptDetailReqDto.getProfile())
 			.tel(adoptDetailReqDto.getTel())
 			.etc(adoptDetailReqDto.getEtc())
 			.pet(petEntity)
 			.user(userEntity)
 			.build();
-
-		if (adoptDetailReqDto.getProfile2() != null) {
-			// adoptEntity.setProfile2(adoptDetailReqDto.getProfile2());
-		}
 
 		adoptRepository.save(adoptEntity);
 	}
@@ -93,12 +87,11 @@ public class AdoptServiceImpl implements AdoptService {
 		String pid = adoptDetailReqDto.getPid();
 		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
 
-		String profile1 = adoptDetailReqDto.getProfile1();
-		String profile2 = adoptDetailReqDto.getProfile2();
+		String profile = adoptDetailReqDto.getProfile();
 		String etc = adoptDetailReqDto.getEtc();
 		String tel = adoptDetailReqDto.getTel();
 
-		adoptEntity.updateAdopt(profile1, profile2, etc, tel);
+		adoptEntity.updateAdopt(profile, etc, tel);
 	}
 
 	@Override
