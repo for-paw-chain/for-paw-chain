@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -12,9 +11,9 @@ import org.springframework.stereotype.Service;
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
-import com.forpawchain.domain.entity.AdoptEntity;
-import com.forpawchain.domain.entity.PetEntity;
-import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.domain.Entity.AdoptEntity;
+import com.forpawchain.domain.Entity.PetEntity;
+import com.forpawchain.domain.Entity.UserEntity;
 import com.forpawchain.repository.AdoptRepository;
 import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
