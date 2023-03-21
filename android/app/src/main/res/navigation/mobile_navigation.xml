@@ -8,13 +8,19 @@
         android:id="@+id/navigation_paw"
         android:name="com.ssafy.forpawchain.behind.fragment.PawFragment"
         android:label="PawFragment"
-        tools:layout="@layout/fragment_house" />
+        tools:layout="@layout/fragment_paw" />
+
+    <fragment
+        android:id="@+id/navigation_my_paw_history"
+        android:name="com.ssafy.forpawchain.behind.fragment.MyPawHistoryFragment"
+        android:label="MyPawHistoryFragment"
+        tools:layout="@layout/fragment_my_paw_history" />
 
     <fragment
         android:id="@+id/navigation_house"
         android:name="com.ssafy.forpawchain.behind.fragment.HouseFragment"
         android:label="HouseFragment"
-        tools:layout="@layout/fragment_paw"/>
+        tools:layout="@layout/fragment_house" />
 
     <fragment
         android:id="@+id/navigation_user"

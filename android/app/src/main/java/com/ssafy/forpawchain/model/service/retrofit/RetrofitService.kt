@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.model.service.retrofit
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.*
@@ -25,5 +26,10 @@ interface RetrofitService {
         @Query("sex") sex: String?,
         @Query("spayed") spayed: Boolean?,
         @Query("type") type: String?
+    ): Call<JsonObject>
+
+    @GET("/adopt/article")
+    fun getMyPawHistoryList(
+
     ): Call<JsonObject>
 }
