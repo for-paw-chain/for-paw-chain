@@ -57,7 +57,7 @@
         android:name="com.ssafy.forpawchain.behind.fragment.AdoptViewFragment"
         android:label="PawFragment"
         tools:layout="@layout/fragment_adopt_view" />
-    
+
     <fragment
         android:id="@+id/navigation_search_result"
         android:name="com.ssafy.forpawchain.behind.fragment.SearchResultFragment"
