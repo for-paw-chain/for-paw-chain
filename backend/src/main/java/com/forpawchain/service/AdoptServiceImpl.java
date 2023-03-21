@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
-import com.forpawchain.domain.Entity.AdoptEntity;
-import com.forpawchain.domain.Entity.PetEntity;
-import com.forpawchain.domain.Entity.UserEntity;
+import com.forpawchain.domain.entity.AdoptEntity;
+import com.forpawchain.domain.entity.PetEntity;
+import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.exception.BaseException;
+import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.repository.AdoptRepository;
 import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
@@ -54,21 +56,37 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public AdoptDetailResDto getAdoptDetail(String pid) {
-
 		AdoptDetailResDto adoptDetailResDto = adoptRepository.findDetailByPid(pid);
+
+		//존재하지 않는 pid 이거나, 해당 pid에 쓰인 입양 공고가 없을 경우
+		if (adoptDetailResDto == null) {
+			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
+		}
 
 		return adoptDetailResDto;
 	}
 
 	@Override
-	public void registAdopt(AdoptDetailReqDto adoptDetailReqDto, Long uid) {
+	public void registAdopt(AdoptDetailReqDto adoptDetailReqDto, long uid) {
 
 		String pid = adoptDetailReqDto.getPid();
+		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
+
+		//이미 입양 공고글이 작성되어 있을 경우
+		if (adoptEntity != null) {
+			throw new BaseException(ErrorMessage.EXIST_CONTENT);
+		}
+
 		PetEntity petEntity = petRepository.findByPid(pid);
 		UserEntity userEntity = userRepository.findByUid(uid);
 
-		// 유기견 추가
-		AdoptEntity adoptEntity = AdoptEntity.builder()
+		//존재하지 않는 pid 이거나 uid
+		if (petEntity == null || userEntity == null) {
+			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
+		}
+
+		// 분양 공고 추가
+		adoptEntity = AdoptEntity.builder()
 			.pid(adoptDetailReqDto.getPid())
 			.uid(uid)
 			.profile(adoptDetailReqDto.getProfile())
@@ -82,9 +100,19 @@ public class AdoptServiceImpl implements AdoptService {
 	}
 
 	@Override
-	public void modifyAdopt(AdoptDetailReqDto adoptDetailReqDto) {
+	public void modifyAdopt(AdoptDetailReqDto adoptDetailReqDto, long uid) {
 		String pid = adoptDetailReqDto.getPid();
 		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
+
+		//글이 존재해야 수정할 수 있다.
+		if (adoptEntity == null) {
+			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
+		}
+
+		//글을 쓴 본인만이 수정할 수 있다.
+		if (adoptEntity.getUid() != uid) {
+			throw new BaseException(ErrorMessage.NOT_PERMISSION_EXCEPTION);
+		}
 
 		String profile = adoptDetailReqDto.getProfile();
 		String etc = adoptDetailReqDto.getEtc();
@@ -94,7 +122,20 @@ public class AdoptServiceImpl implements AdoptService {
 	}
 
 	@Override
-	public void removeAdopt(String pid) {
+	public void removeAdopt(String pid, long uid) {
+
+		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
+
+		//글이 존재해야 삭제할 수 있다.
+		if (adoptEntity == null) {
+			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
+		}
+
+		//글을 쓴 본인만이 수정할 수 있다.
+		if (adoptEntity.getUid() != uid) {
+			throw new BaseException(ErrorMessage.NOT_PERMISSION_EXCEPTION);
+		}
+
 		// Pet의 lost 여부 변경
 		PetEntity petEntity = petRepository.findByPid(pid);
 		petEntity.updatePetLost(false);
@@ -106,6 +147,14 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public List<AdoptListResDto> getAdoptMyList(Long uid) {
+
+		UserEntity userEntity = userRepository.findByUid(uid);
+
+		//존재하지 않는 유저일 경우
+		if (userEntity == null || userEntity.isDel()) {
+			throw new BaseException(ErrorMessage.NOT_USER_INFO);
+		}
+
 		List<AdoptListResDto> list = adoptRepository.findByUid(uid);
 		return list;
 	}

@@ -44,7 +44,7 @@ public class Web3Controller {
 	 */
 	@PostMapping("/license")
 	@ApiOperation(value = "의사 인증", notes = "입력한 의사 정보가 정부 DB에 들어있으면 의사임이 인증된다. 지갑이 생성되고 private key가 반환된다.")
-	public ResponseEntity<String> authDoctor(@RequestBody LicenseReqDto licenseReqDto) throws
+	public ResponseEntity<HashMap<String, String>> authDoctor(@RequestBody LicenseReqDto licenseReqDto) throws
 		InvalidAlgorithmParameterException,
 		CipherException,
 		IOException,
@@ -55,11 +55,13 @@ public class Web3Controller {
 		Long uid = 1L;
 
 		String privateKey = web3Service.createWallet(uid, licenseReqDto);
+		HashMap<String, String> map = new HashMap<>();
+		map.put("content", privateKey);
 
 		if (privateKey == null) {
-			return new ResponseEntity<String>("", HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(map, HttpStatus.UNAUTHORIZED);
 		} else {
-			return new ResponseEntity<String>(privateKey, HttpStatus.CREATED);
+			return new ResponseEntity<>(map, HttpStatus.CREATED);
 		}
 	}
 
@@ -85,7 +87,7 @@ public class Web3Controller {
 	public ResponseEntity<HashMap<String, String>> deployContract(@PathVariable("pid") String pid) throws Exception {
 		HashMap<String, String> map = new HashMap<>();
 		String ca = web3Service.deployContract(pid);
-		map.put("ca", ca);
+		map.put("content", ca);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 }

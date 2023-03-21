@@ -17,7 +17,6 @@ import com.forpawchain.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor

@@ -12,6 +12,8 @@ import com.forpawchain.repository.PetInfoRepository;
 import com.forpawchain.repository.PetRegRepository;
 import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
+import com.forpawchain.service.AuthenticationServiceImpl;
+import com.forpawchain.service.Web3Service;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass=true)
@@ -22,11 +24,11 @@ public class ForpawchainApplication {
 
 	}
 
-	// @Bean
-	// public TestDataInit testDataInit(DoctorLicenseRepository doctorLicenseRepository, PetRepository petRepository,
-	// 	UserRepository userRepository, AdoptRepository adoptRepository, PetRegRepository petRegRepository,
-	// 	PetInfoRepository petInfoRepository, AuthenticationRepository authenticationRepository) {
-	// 	return new TestDataInit(doctorLicenseRepository, petRepository, userRepository, adoptRepository,
-	// 		petRegRepository, petInfoRepository, authenticationRepository);
-	// }
+	@Bean
+	public TestDataInit testDataInit(DoctorLicenseRepository doctorLicenseRepository, PetRepository petRepository,
+		UserRepository userRepository, AdoptRepository adoptRepository, PetRegRepository petRegRepository,
+		PetInfoRepository petInfoRepository, AuthenticationServiceImpl authenticationService, Web3Service web3Service) {
+		return new TestDataInit(doctorLicenseRepository, petRepository, userRepository, adoptRepository,
+			petRegRepository, petInfoRepository, authenticationService, web3Service);
+	}
 }
