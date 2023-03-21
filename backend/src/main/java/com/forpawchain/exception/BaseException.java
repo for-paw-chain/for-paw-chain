@@ -1,4 +1,4 @@
 package com.forpawchain.exception;
 
-public class a {
+public class BaseException {
 }

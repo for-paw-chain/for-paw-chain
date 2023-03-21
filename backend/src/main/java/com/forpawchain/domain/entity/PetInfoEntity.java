@@ -3,13 +3,16 @@ package com.forpawchain.domain.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 @Entity
 @Table(name = "PET_INFO")
-@Builder
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PetInfoEntity {
     @Id
     private String pid;

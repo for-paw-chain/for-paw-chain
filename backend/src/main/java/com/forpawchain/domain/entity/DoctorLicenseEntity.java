@@ -8,12 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "DOCTOR_LICENSE")
-@Data
+@Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class DoctorLicenseEntity {
 	@Id
