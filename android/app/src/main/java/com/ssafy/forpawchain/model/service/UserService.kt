@@ -3,6 +3,7 @@ package com.ssafy.forpawchain.model.service
 import android.util.Log
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
 import com.ssafy.forpawchain.viewmodel.activity.LoginVM
 import okhttp3.OkHttpClient
@@ -17,7 +18,7 @@ class UserService {
     companion object {
         val TAG: String? = this::class.qualifiedName
 
-        const val baseUrl: String = "http://70.12.246.152:8080/api/"
+        const val baseUrl: String = "http://j8a207.p.ssafy.io:8080/api/"
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -41,5 +42,23 @@ class UserService {
         service = retrofit.create(RetrofitService::class.java);
 
         return service.getMyPawHistoryList()
+    }
+
+    fun setDoctor(doctorDTO: RequestDoctorDTO): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Access-Token", "Bearer qwerqwer")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
+        retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        service = retrofit.create(RetrofitService::class.java);
+
+        return service.setDoctor(doctorDTO)
     }
 }
