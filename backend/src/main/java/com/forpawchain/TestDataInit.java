@@ -1,6 +1,8 @@
 package com.forpawchain;
 
+import static com.forpawchain.domain.entity.Sex.*;
 import static com.forpawchain.domain.entity.Social.*;
+import static com.forpawchain.domain.entity.Type.*;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -53,17 +55,48 @@ public class TestDataInit {
 
 		userRepository.save(userEntity);
 
-		// 동물 정보 20개 추가
-		for (int i = 0; i < 20; i++) {
+		// 동물 정보 50개 추가
+		for (int i = 0; i < 50; i++) {
 			// 동물 정부 데이터 추가
-			PetRegEntity petRegEntity = PetRegEntity.builder()
-				.pid("4100000000000" + Integer.toString(i))
-				.sex(Sex.FEMALE)
-				.spayed(false)
-				.name("멍뭉이" + Integer.toString(i))
-				.type(Type.DOG)
-				.kind("kind")
-				.build();
+			PetRegEntity petRegEntity = null;
+			if (i % 4 == 0) {
+				petRegEntity = PetRegEntity.builder()
+					.pid("4100000000000" + Integer.toString(i))
+					.sex(FEMALE)
+					.spayed(false)
+					.name("멍뭉이" + Integer.toString(i))
+					.type(DOG)
+					.kind("푸들")
+					.build();
+			} else if (i % 4 == 1) {
+				petRegEntity = PetRegEntity.builder()
+					.pid("4100000000000" + Integer.toString(i))
+					.sex(FEMALE)
+					.spayed(true)
+					.name("야옹이" + Integer.toString(i))
+					.type(CAT)
+					.kind("푸들")
+					.build();
+			} else if (i % 4 == 2) {
+				petRegEntity = PetRegEntity.builder()
+					.pid("4100000000000" + Integer.toString(i))
+					.sex(MALE)
+					.spayed(false)
+					.name("돼지" + Integer.toString(i))
+					.type(ETC)
+					.kind("리본돼지")
+					.build();
+			} else if (i % 4 == 3) {
+				petRegEntity = PetRegEntity.builder()
+					.pid("4100000000000" + Integer.toString(i))
+					.sex(MALE)
+					.spayed(true)
+					.name("멍뭉이" + Integer.toString(i))
+					.type(DOG)
+					.kind("리트리버")
+					.build();
+			}
+
 
 			petRegRepository.save(petRegEntity);
 
@@ -71,7 +104,7 @@ public class TestDataInit {
 			PetEntity petEntity = PetEntity.builder()
 				.pid("4100000000000" + Integer.toString(i))
 				.ca("12312")
-				.lost(true)
+				.lost(false)
 				// .petInfo()
 				// .petReg()
 				// .adopt()
@@ -81,14 +114,25 @@ public class TestDataInit {
 			petRepository.save(petEntity);
 
 			// 유기견 추가
-			AdoptEntity adoptEntity = AdoptEntity.builder()
-				.pid("4100000000000" + Integer.toString(i))
-				.uid(1L)
-				.profile1(
-					"https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg")
-				.build();
+			if (i % 3 == 1) {
+				AdoptEntity adoptEntity = AdoptEntity.builder()
+					.pid("4100000000000" + Integer.toString(i))
+					.uid(1L)
+					.profile1(
+						"https://images.mypetlife.co.kr/content/uploads/2021/10/22152410/IMG_2087-scaled-e1634883900174-1024x739.jpg")
+					.pet(petEntity)
+					.user(userRepository.findByUid(1))
+					.build();
 
-			adoptRepository.save(adoptEntity);
+				petEntity.updatePetLost(true);
+
+				adoptRepository.save(adoptEntity);
+			}
+
+			petRepository.save(petEntity);
+
+
+
 		}
 
 		// PetInfoEntity petInfoEntity = PetInfoEntity.builder()
