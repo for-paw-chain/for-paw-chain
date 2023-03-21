@@ -7,6 +7,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.AdoptDTO
 import com.ssafy.forpawchain.model.service.AdoptService
+import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.ImageLoader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,7 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class PawFragmentVM : ViewModel() {
+class MyPawHistoryFragmentVM : ViewModel() {
     val selectedKind = MutableLiveData<Int>()
     val selectedNeutered = MutableLiveData<Int>()
     val selectedSex = MutableLiveData<Int>()
@@ -47,7 +48,7 @@ class PawFragmentVM : ViewModel() {
 
     suspend fun initData() {
         val response = withContext(Dispatchers.IO) {
-            AdoptService().getAdoptList().enqueue(object :
+            UserService().getPawHistory().enqueue(object :
                 Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     if (response.isSuccessful) {
@@ -69,10 +70,10 @@ class PawFragmentVM : ViewModel() {
                             }
 
                         }
-                        Log.d(TAG, "onResponse 성공: $result");
+                        Log.d(PawFragmentVM.TAG, "onResponse 성공: $result");
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        Log.d(TAG, "onResponse 실패")
+                        Log.d(PawFragmentVM.TAG, "onResponse 실패")
                     }
                 }
 
