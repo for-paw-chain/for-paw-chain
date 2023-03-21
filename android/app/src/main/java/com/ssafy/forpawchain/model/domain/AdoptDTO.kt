@@ -3,6 +3,7 @@ package com.ssafy.forpawchain.model.domain
 import android.graphics.drawable.Drawable
 
 data class AdoptDTO(
+    var pid: String,
     var profile: Drawable?,
 
     // 종
