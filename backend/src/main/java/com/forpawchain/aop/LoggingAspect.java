@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class LoggingAspect {
-    @Before("execution(* com.forpawchain...*(..))")
     public void somethingBefore(ProceedingJoinPoint pjp) throws Throwable{
         log.info(">>> ");
     }
