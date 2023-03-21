@@ -1,5 +1,7 @@
 package com.forpawchain.controller;
 
+import static com.forpawchain.exception.ErrorMessage.*;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
+import com.forpawchain.exception.BaseException;
 import com.forpawchain.service.AdoptService;
 import com.forpawchain.service.AdoptServiceImpl;
 
@@ -39,11 +42,32 @@ public class AdoptController {
 	@ApiOperation(value = "입양 공고 목록 조회")
     public ResponseEntity<PageImpl<AdoptListResDto>> getAdoptList(
         @Parameter(description = "페이지 번호") @RequestParam("pageno") int pageNo,
-        @Parameter(description = "중성화여부. null:전체 1:true 0:false") @RequestParam(value = "spayed",required = false) Integer spayed,
+        @Parameter(description = "중성화여부. null:전체 1:true 0:false")
+        @RequestParam(value = "spayed",required = false) Integer spayed,
         @Parameter(description = "종류. null:전체 'DOG':강아지 'CAT':고양이 'ETC':기타")
         @RequestParam(value = "type", required = false) String type,
         @Parameter(description = "성별. null:전체 'MALE':남아 'FEMALE':여아")
         @RequestParam(value = "sex", required = false) String sex) {
+
+        //요청하는 페이지 번호가 0보다 작으면 안 된다.
+        if (pageNo < 0) {
+            throw new BaseException(VALIDATION_FAIL_EXCEPTION);
+        }
+
+        //검색 조건으로 '중성화 여부'를 받아올 경우, 이 값은 0 또는 1이어야 한다.
+        if (spayed != null && spayed != 0 && spayed != 1) {
+            throw new BaseException(VALIDATION_FAIL_EXCEPTION);
+        }
+
+        //검색 조건으로 '타입'을 받아올 경우, 이 값은 'DOG' 또는 'CAT' 또는 'ETC'이어야 한다.
+        if (type != null && type != "DOG" && type != "CAT" && type != "ETC") {
+            throw new BaseException(VALIDATION_FAIL_EXCEPTION);
+        }
+
+        //검색 조건으로 '성별'을 받아올 경우, 이 값은 'MALE' 또는 'FEMALE'이어야 한다.
+        if (sex != null && sex != "MALE" && sex != "FEMALE") {
+            throw new BaseException(VALIDATION_FAIL_EXCEPTION);
+        }
 
         PageImpl<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptList(pageNo, type, spayed, sex);
         return new ResponseEntity<>(adoptListResDtoList, HttpStatus.OK);
@@ -52,8 +76,6 @@ public class AdoptController {
     @GetMapping("/{pid}")
 	@ApiOperation(value = "입양 공고 상세 조회", notes = "동물등록번호(pid)를 요청하면 해당 동물의 입양 공고 상세 내용을 반환한다.")
     public ResponseEntity<AdoptDetailResDto> getAdoptDetail(@PathVariable("pid") String pid) {
-
-        // 해당 pid가 분양 공고 등록되어 있는지 확인해야됨
         AdoptDetailResDto adoptDetailResDto = adoptService.getAdoptDetail(pid);
         return new ResponseEntity<>(adoptDetailResDto, HttpStatus.OK);
     }
@@ -73,8 +95,10 @@ public class AdoptController {
     public ResponseEntity<Void> modifyAdopt(@RequestHeader("Access-Token") String accessToken, @RequestBody
     AdoptDetailReqDto adoptDetailReqDto) {
 
+        long uid = 1L;
+
         // 글을 쓴 본인이 맞는지 검증하는 과정 필요
-        adoptService.modifyAdopt(adoptDetailReqDto);
+        adoptService.modifyAdopt(adoptDetailReqDto, uid);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -83,7 +107,9 @@ public class AdoptController {
     public ResponseEntity<Void> removeAdopt(@RequestHeader("Access-Token") String accessToken,
         @PathVariable("pid") String pid) {
 
-        adoptService.removeAdopt(pid);
+        long uid = 1L;
+
+        adoptService.removeAdopt(pid, uid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
