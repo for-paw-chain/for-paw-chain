@@ -4,9 +4,16 @@ import static com.forpawchain.domain.entity.Sex.*;
 import static com.forpawchain.domain.entity.Social.*;
 import static com.forpawchain.domain.entity.Type.*;
 
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.web3j.crypto.CipherException;
 
+import com.forpawchain.domain.dto.request.LicenseReqDto;
 import com.forpawchain.domain.entity.AdoptEntity;
 import com.forpawchain.domain.entity.DoctorLicenseEntity;
 import com.forpawchain.domain.entity.PetEntity;
@@ -23,6 +30,8 @@ import com.forpawchain.repository.PetInfoRepository;
 import com.forpawchain.repository.PetRegRepository;
 import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
+import com.forpawchain.service.AuthenticationService;
+import com.forpawchain.service.Web3Service;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -37,17 +46,22 @@ public class TestDataInit {
 	private final AdoptRepository adoptRepository;
 	private final PetRegRepository petRegRepository;
 	private final PetInfoRepository petInfoRepository;
-	private final AuthenticationRepository authenticationRepository;
+	private final AuthenticationService authenticationService;
+	private final Web3Service web3Service;
 
 	/**
 	 * 초기 데이터 추가
 	 */
 	@EventListener(ApplicationReadyEvent.class)
-	public void initData() {
+	public void initData() throws
+		InvalidAlgorithmParameterException,
+		CipherException,
+		IOException,
+		NoSuchAlgorithmException,
+		NoSuchProviderException {
 		// 의사 면허 정보 추가 (실제 서비스에서는 정부 db로 대체됨)
 		doctorLicenseRepository.save(new DoctorLicenseEntity(1L, "김의사", "1234561234567", "01012341234", 1));
-
-
+		doctorLicenseRepository.save(new DoctorLicenseEntity(2L, "이리나", "1234561234567", "01012341234", 1));
 
 		// 유저 추가
 		String[] names = new String[6];
@@ -67,6 +81,9 @@ public class TestDataInit {
 				.build();
 			userRepository.save(userEntity);
 		}
+
+		// uid 6L 회원을 의사로
+		web3Service.createWallet(6L, new LicenseReqDto("이리나", "1234561234567", "01012341234", 1));
 
 		// 동물 정보 50개 추가
 		for (int i = 0; i < 50; i++) {
@@ -215,7 +232,7 @@ public class TestDataInit {
 			petRepository.save(petEntity);
 
 			// 권한 추가
-			// authenticationRepository.
+			// authenticationService.giveMasterAuthentication(6L, 2L, "41000000000000");
 
 		}
 
