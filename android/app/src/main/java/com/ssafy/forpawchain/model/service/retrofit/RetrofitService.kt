@@ -32,4 +32,7 @@ interface RetrofitService {
     fun getMyPawHistoryList(
 
     ): Call<JsonObject>
+
+    @GET("adopt/{pid}")
+    fun getDetailAdopt(@Path("pid") pid: String): Call<JsonObject>
 }

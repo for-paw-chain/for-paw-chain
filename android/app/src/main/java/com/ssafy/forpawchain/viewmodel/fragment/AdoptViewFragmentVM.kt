@@ -1,26 +1,32 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ssafy.basictemplate.util.ActivityCode
-import com.ssafy.basictemplate.util.Event
-import com.ssafy.forpawchain.blockchain.Forpawchain_sol_Storage
-import com.ssafy.forpawchain.model.domain.AdoptDTO
+import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
-import org.web3j.abi.datatypes.Utf8String
-import org.web3j.abi.datatypes.generated.Uint256
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
-import org.web3j.protocol.infura.InfuraHttpService
-import java.math.BigInteger
+import com.ssafy.forpawchain.model.service.AdoptService
+import com.ssafy.forpawchain.util.ImageLoader
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.concurrent.thread
 
 
 class AdoptViewFragmentVM : ViewModel() {
-    val extra = MutableLiveData<String>("초기 특이사항이예요\n별이 잘부탁드려요~!!!\n카와이 별쨩!")
+    val extra = MutableLiveData<String>()
+
+    var pawInfo: MyPawListDTO = MyPawListDTO(
+        MutableLiveData(null),
+        MutableLiveData(""),
+        MutableLiveData(""),
+        MutableLiveData(""),
+        MutableLiveData(""),
+        MutableLiveData("")
+    )
 
     //추가 시작
     val todoLiveData = MutableLiveData<List<DiagnosisHistoryDTO>>() //변경/관찰가능한 List
@@ -45,5 +51,38 @@ class AdoptViewFragmentVM : ViewModel() {
     fun clearTask() {
         data.clear()
         todoLiveData.value = data
+    }
+
+    suspend fun initInfo(pid: String) {
+        val response = withContext(Dispatchers.IO) {
+            AdoptService().getDetailAdopt(pid).enqueue(object :
+                Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성고된 경우
+                        var result: JsonObject? = response.body()
+                        ImageLoader().loadDrawableFromUrl(result!!["profile"].asString) { drawable ->
+                            pawInfo.profile.postValue(drawable)
+                            pawInfo.name.postValue(result["name"].asString)
+                            pawInfo.sex.postValue(result["sex"].asString)
+                            pawInfo.species.postValue(result["type"].asString)
+                            pawInfo.kind.postValue(result["kind"].asString)
+                            pawInfo.neutered.postValue(result["spayed"].asString)
+                            extra.postValue(result["etc"].asString)
+                        }
+
+                        Log.d(TAG, "onResponse 성공: $result");
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        Log.d(TAG, "onResponse 실패")
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                    Log.d(PawFragmentVM.TAG, "onFailure 에러: " + t.message.toString());
+                }
+            })
+        }
     }
 }

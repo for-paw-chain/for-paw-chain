@@ -51,15 +51,16 @@ class PawFragmentVM : ViewModel() {
                 Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     if (response.isSuccessful) {
-                        // 정상적으로 통신이 성고된 경우
+                        // 정상적으로 통신이 성공된 경우
                         var result: JsonObject? = response.body()
                         val items = result?.get("content") as JsonArray
                         for (item in items.asJsonArray) {
                             val item = item.asJsonObject
-                            ImageLoader().loadDrawableFromUrl(item["profile1"].asString) { drawable ->
+                            ImageLoader().loadDrawableFromUrl(item["profile"].asString) { drawable ->
                                 // drawable 객체 사용
                                 addTask(
                                     AdoptDTO(
+                                        item["pid"].asString,
                                         drawable,
                                         item["type"].asString,
                                         item["kind"].asString,
