@@ -30,13 +30,13 @@ class MyPawListAdapter(
             .inflate(R.layout.controll_my_paw_list, viewGroup, false) //내가 각아이템에 사용하는 view
         val bind = ControllMyPawListBinding.bind(view)
         val holder = MyPawListViewHolder(bind)
-        view.setOnClickListener({
+        view.setOnClickListener {
             if (holder.adapterPosition != -1) {
 
                 onClickDetailButton.invoke(mydataSet.get(holder.adapterPosition))
                 Log.d(TAG, "${mydataSet.get(holder.adapterPosition)} 나의 반려동물, 상세 페이지로 이동")
             }
-        })
+        }
 
         view.setOnLongClickListener {
             if (holder.adapterPosition != -1) {
