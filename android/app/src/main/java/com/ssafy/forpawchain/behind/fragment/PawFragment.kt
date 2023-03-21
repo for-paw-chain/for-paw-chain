@@ -59,7 +59,7 @@ class PawFragment : Fragment() {
             {
                 // TODO: Detail
                 val bundle = Bundle()
-                bundle.putString("pid", it.pid.toString())
+                bundle.putString("pid", it.pid)
                 navController.navigate(R.id.navigation_adopt_view, bundle)
                 Log.d(TAG, "입분양 디테일 뷰")
             },
