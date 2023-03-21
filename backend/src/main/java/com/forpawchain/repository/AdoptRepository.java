@@ -2,17 +2,15 @@ package com.forpawchain.repository;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
-import com.forpawchain.domain.entity.AdoptEntity;
+import com.forpawchain.domain.Entity.AdoptEntity;
 
 public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 

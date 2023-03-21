@@ -1,7 +1,5 @@
 package com.forpawchain.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,9 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
-import com.forpawchain.domain.entity.PetEntity;
-import com.forpawchain.repository.AdoptRepository;
-import com.forpawchain.repository.PetRegRepository;
+import com.forpawchain.domain.Entity.PetEntity;
 import com.forpawchain.repository.PetRepository;
 
 @SpringBootTest

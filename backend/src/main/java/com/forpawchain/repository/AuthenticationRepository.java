@@ -1,12 +1,11 @@
 package com.forpawchain.repository;
 
-import com.forpawchain.domain.entity.AuthenticationEntity;
-import com.forpawchain.domain.entity.AuthenticationId;
-import com.forpawchain.domain.entity.AuthenticationType;
+import com.forpawchain.domain.Entity.AuthenticationEntity;
+import com.forpawchain.domain.Entity.AuthenticationId;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Map;
 
 public interface AuthenticationRepository extends JpaRepository<AuthenticationEntity, AuthenticationId> {
     List<AuthenticationEntity> findAllByAid(AuthenticationId aid);

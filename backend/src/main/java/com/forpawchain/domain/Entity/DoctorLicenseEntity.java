@@ -1,4 +1,4 @@
-package com.forpawchain.domain.entity;
+package com.forpawchain.domain.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
