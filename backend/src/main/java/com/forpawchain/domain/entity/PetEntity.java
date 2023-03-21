@@ -19,7 +19,6 @@ import javax.persistence.*;
 public class PetEntity {
     @Id
     private String pid;
-    @Column(nullable = false)
     private String ca;
     @Column(nullable = false)
     private boolean lost;
