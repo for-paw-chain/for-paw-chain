@@ -14,13 +14,13 @@ interface RetrofitService {
     // @Query("msg") msg: String
 
 
-    @GET("/test")
+    @GET("test")
     fun test(): Call<JsonObject>
 
-    @GET("/query/{msg}")
+    @GET("query/{msg}")
     fun test(@Path("msg") msg: String): Call<JsonObject>
 
-    @GET("/adopt")
+    @GET("adopt")
     fun getAdoptList(
         @Query("pageno") pageno: Int,
         @Query("sex") sex: String?,
@@ -28,7 +28,7 @@ interface RetrofitService {
         @Query("type") type: String?
     ): Call<JsonObject>
 
-    @GET("/adopt/article")
+    @GET("adopt/article")
     fun getMyPawHistoryList(
 
     ): Call<JsonObject>

@@ -14,7 +14,7 @@ class AdoptService {
     companion object {
         val TAG: String? = this::class.qualifiedName
 
-        const val baseUrl: String = "http://70.12.246.152:8080"
+        const val baseUrl: String = "http://70.12.246.152:8080/api/"
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
