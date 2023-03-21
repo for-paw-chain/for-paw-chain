@@ -1,6 +1,12 @@
 package com.ssafy.forpawchain.model.service
 
+import android.util.Log
+import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
+import com.ssafy.forpawchain.viewmodel.activity.LoginVM
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -16,7 +22,7 @@ class AdoptService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun getAdoptList() {
+    fun getAdoptList(): Call<JsonObject> {
         retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -25,5 +31,6 @@ class AdoptService {
         service = retrofit.create(RetrofitService::class.java);
 
         return service.getAdoptList(0, null, null, null)
+
     }
 }

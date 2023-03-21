@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
+import kotlinx.coroutines.launch
 
 class PawFragment : Fragment() {
     private var _binding: FragmentPawBinding? = null
@@ -82,8 +84,10 @@ class PawFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-        // TODO: Dummy Data
-        Log.d(TAG, AdoptService().getAdoptList().toString())
+
+        lifecycleScope.launch {
+            viewModel.initData()
+        }
 
         viewModel.todoLiveData.observe(
             requireActivity()

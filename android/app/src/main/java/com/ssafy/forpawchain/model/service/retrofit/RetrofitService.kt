@@ -25,5 +25,5 @@ interface RetrofitService {
         @Query("sex") sex: String?,
         @Query("spayed") spayed: Boolean?,
         @Query("type") type: String?
-    )
+    ): Call<JsonObject>
 }
