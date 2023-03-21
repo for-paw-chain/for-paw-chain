@@ -33,12 +33,13 @@ public class PetEntity {
     // OneToOne쓰면 안됨 바꿔야됨 + 양방향을 단방향으로 바꾸기
     @OneToOne(mappedBy = "pet")
     private PetInfoEntity petInfo;
-    // @OneToOne(mappedBy = "pet")
-    // private AdoptEntity adopt;
     @OneToMany(mappedBy = "pet")
     List<AuthenticationEntity> authList;
 
     public void updatePetLost(boolean lost) {
         this.lost = lost;
+    }
+    public void updatePetCa(String ca) {
+        this.ca = ca;
     }
 }

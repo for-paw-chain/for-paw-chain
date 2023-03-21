@@ -35,8 +35,10 @@ import org.web3j.utils.Numeric;
 import com.forpawchain.MyContract;
 import com.forpawchain.domain.dto.request.LicenseReqDto;
 import com.forpawchain.domain.entity.DoctorLicenseEntity;
+import com.forpawchain.domain.entity.PetEntity;
 import com.forpawchain.domain.entity.UserEntity;
 import com.forpawchain.repository.DoctorLicenseRepository;
+import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -51,15 +53,19 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class Web3Service {
-
-	private final String NETWORK = "http://3.39.235.238:8545";
 	private final DoctorLicenseRepository doctorLicenseRepository;
 	private final UserRepository userRepository;
+	private final PetRepository petRepository;
+
+	private final String NETWORK = "http://3.39.235.238:8545";
 	private Web3j web3j = Web3j.build(new HttpService(NETWORK));
-	private long CHAINID = 666L;
+	private long CHAINID = 2424L;
 	// String fromAddress = "0xe6789b017d43395270ff98de364306b427ad6ee2";
 	private String fromPrivateKey = "cdffd26312e73fbf366864c56d2397c4413d1abb1d4ee089d5aef2cc6c66c0db";
 	private Credentials credentials = Credentials.create(fromPrivateKey);
+	// 트랜잭션 매니저 생성
+	private TransactionManager transactionManager = new RawTransactionManager(
+		web3j, credentials, CHAINID);
 
 	/**
 	 * 현재 블록 번호
@@ -71,113 +77,22 @@ public class Web3Service {
 	/**
 	 * 스마트 컨트랙트 배포
 	 */
-	public void deployContract() {
-		String BINARY = "[\n"
-			+ "\t{\n"
-			+ "\t\t\"inputs\": [],\n"
-			+ "\t\t\"name\": \"getSize\",\n"
-			+ "\t\t\"outputs\": [\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"uint256\",\n"
-			+ "\t\t\t\t\"name\": \"\",\n"
-			+ "\t\t\t\t\"type\": \"uint256\"\n"
-			+ "\t\t\t}\n"
-			+ "\t\t],\n"
-			+ "\t\t\"stateMutability\": \"view\",\n"
-			+ "\t\t\"type\": \"function\"\n"
-			+ "\t},\n"
-			+ "\t{\n"
-			+ "\t\t\"inputs\": [\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"uint256\",\n"
-			+ "\t\t\t\t\"name\": \"idx\",\n"
-			+ "\t\t\t\t\"type\": \"uint256\"\n"
-			+ "\t\t\t}\n"
-			+ "\t\t],\n"
-			+ "\t\t\"name\": \"retrieve\",\n"
-			+ "\t\t\"outputs\": [\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"uint256\",\n"
-			+ "\t\t\t\t\"name\": \"\",\n"
-			+ "\t\t\t\t\"type\": \"uint256\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"uint256\",\n"
-			+ "\t\t\t\t\"name\": \"\",\n"
-			+ "\t\t\t\t\"type\": \"uint256\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"string\",\n"
-			+ "\t\t\t\t\"name\": \"\",\n"
-			+ "\t\t\t\t\"type\": \"string\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"string\",\n"
-			+ "\t\t\t\t\"name\": \"\",\n"
-			+ "\t\t\t\t\"type\": \"string\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"string\",\n"
-			+ "\t\t\t\t\"name\": \"\",\n"
-			+ "\t\t\t\t\"type\": \"string\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"string\",\n"
-			+ "\t\t\t\t\"name\": \"\",\n"
-			+ "\t\t\t\t\"type\": \"string\"\n"
-			+ "\t\t\t}\n"
-			+ "\t\t],\n"
-			+ "\t\t\"stateMutability\": \"view\",\n"
-			+ "\t\t\"type\": \"function\"\n"
-			+ "\t},\n"
-			+ "\t{\n"
-			+ "\t\t\"inputs\": [\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"uint256\",\n"
-			+ "\t\t\t\t\"name\": \"num\",\n"
-			+ "\t\t\t\t\"type\": \"uint256\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"uint256\",\n"
-			+ "\t\t\t\t\"name\": \"d\",\n"
-			+ "\t\t\t\t\"type\": \"uint256\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"string\",\n"
-			+ "\t\t\t\t\"name\": \"t\",\n"
-			+ "\t\t\t\t\"type\": \"string\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"string\",\n"
-			+ "\t\t\t\t\"name\": \"c\",\n"
-			+ "\t\t\t\t\"type\": \"string\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"string\",\n"
-			+ "\t\t\t\t\"name\": \"hash1\",\n"
-			+ "\t\t\t\t\"type\": \"string\"\n"
-			+ "\t\t\t},\n"
-			+ "\t\t\t{\n"
-			+ "\t\t\t\t\"internalType\": \"string\",\n"
-			+ "\t\t\t\t\"name\": \"hash2\",\n"
-			+ "\t\t\t\t\"type\": \"string\"\n"
-			+ "\t\t\t}\n"
-			+ "\t\t],\n"
-			+ "\t\t\"name\": \"store\",\n"
-			+ "\t\t\"outputs\": [],\n"
-			+ "\t\t\"stateMutability\": \"nonpayable\",\n"
-			+ "\t\t\"type\": \"function\"\n"
-			+ "\t}\n"
-			+ "]";
+	public void deployContract(String pid) throws Exception {
 
-		Contract.deployRemoteCall(
-			MyContract.class,
+		MyContract contract = MyContract.deploy(
 			web3j,
-			credentials,
+			transactionManager,
 			DefaultGasProvider.GAS_PRICE,
-			DefaultGasProvider.GAS_LIMIT,
-			"바이너리 코드",
-			"encoded constructor");
+			DefaultGasProvider.GAS_LIMIT
+		).send();
+
+		String ca = contract.getContractAddress();
+		System.out.println("컨트랙트 주소 : " + ca);
+
+		//배포된 컨트랙트 주소를 Pet DB에 저장
+		// PetEntity petEntity = petRepository.findByPid(pid);
+		// petEntity.updatePetCa(ca);
+		// petRepository.save(petEntity);
 	}
 
 	/**
@@ -253,10 +168,6 @@ public class Web3Service {
 	public void sendEth(String toAddress) throws Exception {
 		// 목적지 주소로 보내려는 이더의 양
 		BigInteger value = Convert.toWei("1.0", Convert.Unit.ETHER).toBigInteger();
-
-		// 트랜잭션 매니저 생성
-		TransactionManager transactionManager = new RawTransactionManager(
-			web3j, credentials, CHAINID);
 		
 		// 트랜잭션 전송
 		EthSendTransaction ethSendTransaction = transactionManager.sendTransaction(DefaultGasProvider.GAS_PRICE,

@@ -77,4 +77,10 @@ public class Web3Controller {
 		System.out.println("지갑 주소 : " + toAddress);
 		web3Service.sendEth(toAddress);
 	}
+	
+	@PostMapping("contract/{pid}")
+	@ApiOperation(value = "컨트랙트 배포", notes = "하나의 동물 당 하나의 컨트랙트를 배포한다.")
+	public void deployContract(@PathVariable("pid") String pid) throws Exception {
+		web3Service.deployContract(pid);
+	}
 }
