@@ -60,8 +60,7 @@ public class Web3Service {
 	private final String NETWORK = "http://3.39.235.238:8545";
 	private Web3j web3j = Web3j.build(new HttpService(NETWORK));
 	private long CHAINID = 2424L;
-	// String fromAddress = "0xe6789b017d43395270ff98de364306b427ad6ee2";
-	private String fromPrivateKey = "cdffd26312e73fbf366864c56d2397c4413d1abb1d4ee089d5aef2cc6c66c0db";
+	private String fromPrivateKey = "32f246287b10f0e9ac71f6655047b35431f125f97abee915d0244d1cdd74f758";
 	private Credentials credentials = Credentials.create(fromPrivateKey);
 	// 트랜잭션 매니저 생성
 	private TransactionManager transactionManager = new RawTransactionManager(
