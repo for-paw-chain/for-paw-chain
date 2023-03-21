@@ -8,13 +8,19 @@
         android:id="@+id/navigation_paw"
         android:name="com.ssafy.forpawchain.behind.fragment.PawFragment"
         android:label="PawFragment"
-        tools:layout="@layout/fragment_house" />
+        tools:layout="@layout/fragment_paw" />
+
+    <fragment
+        android:id="@+id/navigation_my_paw_history"
+        android:name="com.ssafy.forpawchain.behind.fragment.MyPawHistoryFragment"
+        android:label="MyPawHistoryFragment"
+        tools:layout="@layout/fragment_my_paw_history" />
 
     <fragment
         android:id="@+id/navigation_house"
         android:name="com.ssafy.forpawchain.behind.fragment.HouseFragment"
         android:label="HouseFragment"
-        tools:layout="@layout/fragment_paw"/>
+        tools:layout="@layout/fragment_house" />
 
     <fragment
         android:id="@+id/navigation_user"
@@ -39,6 +45,24 @@
         android:name="com.ssafy.forpawchain.behind.fragment.PermissionPawFragment"
         android:label="UserFragment"
         tools:layout="@layout/fragment_permission_paw" />
+
+    <fragment
+        android:id="@+id/navigation_adopt_add"
+        android:name="com.ssafy.forpawchain.behind.fragment.AdoptAddFragment"
+        android:label="PawFragment"
+        tools:layout="@layout/fragment_adopt_add" />
+
+    <fragment
+        android:id="@+id/navigation_adopt_update"
+        android:name="com.ssafy.forpawchain.behind.fragment.AdoptUpdateFragment"
+        android:label="PawFragment"
+        tools:layout="@layout/fragment_adopt_update" />
+
+    <fragment
+        android:id="@+id/navigation_adopt_view"
+        android:name="com.ssafy.forpawchain.behind.fragment.AdoptViewFragment"
+        android:label="PawFragment"
+        tools:layout="@layout/fragment_adopt_view" />
 
     <fragment
         android:id="@+id/navigation_search_result"

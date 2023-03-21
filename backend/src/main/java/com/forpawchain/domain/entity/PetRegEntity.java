@@ -9,10 +9,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "PET_REG")
-@Builder
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class PetRegEntity {
     @Id
     private String pid;

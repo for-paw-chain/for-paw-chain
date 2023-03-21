@@ -4,9 +4,13 @@ public interface AdoptListResDto {
 
 	String getPid();
 
-	String getProfile1();
+	String getProfile();
 
 	String getType();
+
+	String getEtc();
+
+	String getTel();
 
 	String getKind();
 

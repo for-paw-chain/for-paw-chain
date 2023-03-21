@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.9'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-//	id "org.web3j" version "4.8.7"
 }
 
 group = 'com.forpawchain'
@@ -17,6 +16,9 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'https://jitpack.io'
+	}
 }
 
 ext {
@@ -50,9 +52,8 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
 
-	implementation 'org.web3j:core:5.0.0'	// web3j
-
-
+	implementation 'org.web3j:core:4.9.7'	// web3j
+	implementation 'com.github.ipfs:java-ipfs-http-client:1.4.0'
 }
 
 dependencyManagement {

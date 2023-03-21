@@ -9,7 +9,6 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DoctorLicenseEntity {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Column(name = "dsnm", nullable = false)
@@ -49,4 +48,10 @@ public class DoctorLicenseEntity {
 	@Column(name = "telecomgubun", nullable = false)
 	private int telecom;
 
+	public DoctorLicenseEntity(String name, String registnum, String tel, int telecom) {
+		this.name = name;
+		this.registnum = registnum;
+		this.tel = tel;
+		this.telecom = telecom;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -30,15 +31,18 @@ public class AdoptServiceImpl implements AdoptService {
 	private final PetRepository petRepository;
 
 	@Override
-	public Page<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex) {
+	public PageImpl<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex) {
 		PageRequest pageRequest = PageRequest.of(pageNo, 10);
-		Page<AdoptListResDto> adoptListResDtos = null;
+		PageImpl<AdoptListResDto> adoptListResDtos = null;
 
-		// 전체 검색
-		// if (type.isBlank() && spayed == null && sex.isBlank() ) {
-		// 	adoptListResDtos = adoptRepository.findAll(pageRequest);
-		// }
-
+		// 중성화여부가 null 일 때
+		if (spayed == null) {
+			adoptListResDtos = adoptRepository.findByTypeAndSex(type, sex, pageRequest);
+		}
+		// 중성화여부 조건 검색을 할 때
+		else {
+			adoptListResDtos = adoptRepository.findByTypeAndSexAndSpayed(type, sex, spayed, pageRequest);
+		}
 
 		return adoptListResDtos;
 	}
@@ -68,17 +72,12 @@ public class AdoptServiceImpl implements AdoptService {
 		AdoptEntity adoptEntity = AdoptEntity.builder()
 			.pid(adoptDetailReqDto.getPid())
 			.uid(uid)
-			.profile1(adoptDetailReqDto.getProfile1())
-			.profile2(adoptDetailReqDto.getProfile2())
+			.profile(adoptDetailReqDto.getProfile())
 			.tel(adoptDetailReqDto.getTel())
 			.etc(adoptDetailReqDto.getEtc())
 			.pet(petEntity)
 			.user(userEntity)
 			.build();
-
-		if (adoptDetailReqDto.getProfile2() != null) {
-			adoptEntity.setProfile2(adoptDetailReqDto.getProfile2());
-		}
 
 		adoptRepository.save(adoptEntity);
 	}
@@ -88,17 +87,18 @@ public class AdoptServiceImpl implements AdoptService {
 		String pid = adoptDetailReqDto.getPid();
 		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
 
-		adoptEntity.setProfile1(adoptDetailReqDto.getProfile1());
-		adoptEntity.setProfile2(adoptDetailReqDto.getProfile2());
-		adoptEntity.setEtc(adoptDetailReqDto.getEtc());
-		adoptEntity.setTel(adoptDetailReqDto.getTel());
+		String profile = adoptDetailReqDto.getProfile();
+		String etc = adoptDetailReqDto.getEtc();
+		String tel = adoptDetailReqDto.getTel();
+
+		adoptEntity.updateAdopt(profile, etc, tel);
 	}
 
 	@Override
 	public void removeAdopt(String pid) {
 		// Pet의 lost 여부 변경
 		PetEntity petEntity = petRepository.findByPid(pid);
-		petEntity.setLost(false);
+		petEntity.updatePetLost(false);
 		petRepository.save(petEntity);
 
 		// 분양 공고 삭제

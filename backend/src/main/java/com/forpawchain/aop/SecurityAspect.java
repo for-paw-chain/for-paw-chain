@@ -1,4 +1,4 @@
 package com.forpawchain.aop;
 
-public class a {
+public class SecurityAspect {
 }
