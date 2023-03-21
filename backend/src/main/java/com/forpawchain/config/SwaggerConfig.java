@@ -24,19 +24,11 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * http://localhost:8080/swagger-ui/
+ * http://localhost:8080/api/swagger-ui/
  */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-	// @Bean
-	// public Docket api() {
-	// 	return new Docket(DocumentationType.SWAGGER_2)
-	// 		.select()
-	// 		.apis(RequestHandlerSelectors.any())
-	// 		.paths(PathSelectors.any())
-	// 		.build();
-	// }
 	private String version = "V1";
 	private String title = "A208 API " + version;
 
