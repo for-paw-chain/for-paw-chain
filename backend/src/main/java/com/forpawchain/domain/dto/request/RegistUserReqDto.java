@@ -15,7 +15,7 @@ public class RegistUserReqDto {
 	public UserEntity toEntity() {
 		return UserEntity.builder()
 			.id(id)
-			.sociasl(social)
+			.social(social)
 			.name(name)
 			.profile(profile)
 			.build();
