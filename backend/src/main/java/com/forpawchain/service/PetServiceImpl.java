@@ -22,10 +22,10 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class PetServiceImpl implements PetService {
-	private PetRepository petRepository;
-	private PetInfoRepository petInfoRepository;
-	private PetRegRepository petRegRepository;
-	private AuthenticationRepository authenticationRepository;
+	private final PetRepository petRepository;
+	private final PetInfoRepository petInfoRepository;
+	private final PetRegRepository petRegRepository;
+	private final AuthenticationRepository authenticationRepository;
 
 	@Override
 	public List<PetDefaultInfoResDto> getMyPetList(Long userId) {
