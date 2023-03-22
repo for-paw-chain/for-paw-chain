@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_layout_search_result_redius">
@@ -8,6 +8,10 @@
         <variable
             name="item"
             type="com.ssafy.forpawchain.model.domain.SearchResultDTO" />
+
+        <variable
+            name="viewModel"
+            type="com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM" />
 
     </data>
 
@@ -317,4 +321,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</layout>
