@@ -53,6 +53,12 @@
         tools:layout="@layout/fragment_adopt_add" />
 
     <fragment
+        android:id="@+id/navigation_adopt_create"
+        android:name="com.ssafy.forpawchain.behind.fragment.CreateDoctorHistoryFragment"
+        android:label="PawFragment"
+        tools:layout="@layout/fragment_create_doctor_history" />
+
+    <fragment
         android:id="@+id/navigation_adopt_update"
         android:name="com.ssafy.forpawchain.behind.fragment.AdoptUpdateFragment"
         android:label="PawFragment"

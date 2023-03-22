@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
+import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.service.AdoptService
@@ -49,6 +50,14 @@ class AdoptViewFragmentVM : ViewModel() {
     }
 
     fun clearTask() {
+        pawInfo.profile.value = null
+        pawInfo.name.value = ""
+        pawInfo.sex.value = ""
+        pawInfo.species.value = ""
+        pawInfo.kind.value = ""
+        pawInfo.neutered.value = ""
+        extra.value = ""
+
         data.clear()
         todoLiveData.value = data
     }

@@ -3,6 +3,7 @@ package com.ssafy.forpawchain.model.service.retrofit
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -39,4 +40,7 @@ interface RetrofitService {
 
     @POST("web3/license")
     fun setDoctor(@Body doctor: RequestDoctorDTO): Call<JsonObject>
+
+    @POST("upload")
+    fun setUpload(@Part filePart:MultipartBody.Part): Call<JsonObject>
 }
