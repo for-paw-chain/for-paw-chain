@@ -25,9 +25,9 @@ import org.web3j.utils.Convert;
 
 import com.forpawchain.MyContract;
 import com.forpawchain.domain.dto.request.LicenseReqDto;
-import com.forpawchain.domain.entity.DoctorLicenseEntity;
-import com.forpawchain.domain.entity.PetEntity;
-import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.domain.Entity.DoctorLicenseEntity;
+import com.forpawchain.domain.Entity.PetEntity;
+import com.forpawchain.domain.Entity.UserEntity;
 import com.forpawchain.exception.BaseException;
 import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.repository.DoctorLicenseRepository;
