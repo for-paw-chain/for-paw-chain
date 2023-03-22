@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
 import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
@@ -14,11 +15,12 @@ import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 
 class AdoptViewFragment : Fragment() {
     private var _binding: FragmentAdoptViewBinding? = null
     private lateinit var viewModel: AdoptViewFragmentVM
-    private lateinit var item: MyPawListDTO
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,15 +36,25 @@ class AdoptViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAdoptViewBinding.inflate(inflater, container, false)
-        item = MyPawListDTO("별이", "여아", "개과", "말티즈", "O")
+
+
+
         activity?.let {
             viewModel = ViewModelProvider(it).get(AdoptViewFragmentVM::class.java)
             binding.viewModel = viewModel
-            binding.item = item
             binding.lifecycleOwner = this
         }
 
         val root: View = binding.root
+
+        val bundle = arguments
+
+        lifecycleScope.launch {
+            bundle?.getString("pid")?.let {
+                viewModel.initInfo(it)
+                binding.item = viewModel.pawInfo
+            }
+        }
 
         val recyclerView = binding.recycler
 

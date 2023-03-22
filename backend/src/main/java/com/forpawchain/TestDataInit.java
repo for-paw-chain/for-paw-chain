@@ -1,8 +1,8 @@
 package com.forpawchain;
 
-import static com.forpawchain.domain.entity.Sex.*;
-import static com.forpawchain.domain.entity.Social.*;
-import static com.forpawchain.domain.entity.Type.*;
+import static com.forpawchain.domain.Entity.Sex.*;
+import static com.forpawchain.domain.Entity.Social.*;
+import static com.forpawchain.domain.Entity.Type.*;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -34,8 +34,6 @@ import com.forpawchain.repository.UserRepository;
 import com.forpawchain.service.AuthenticationService;
 import com.forpawchain.service.Web3Service;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

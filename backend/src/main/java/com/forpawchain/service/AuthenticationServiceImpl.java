@@ -1,7 +1,7 @@
 package com.forpawchain.service;
 
 import com.forpawchain.domain.dto.response.UserResDto;
-import com.forpawchain.domain.entity.*;
+import com.forpawchain.domain.Entity.*;
 import com.forpawchain.repository.AuthenticationRepository;
 import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
