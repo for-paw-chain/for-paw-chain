@@ -2,7 +2,6 @@ package com.forpawchain.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-	private final UserService userService;
-	private AuthController authController;
+	private UserService userService;
 
 	// 회원가입
 	@PostMapping("/")
@@ -40,7 +38,8 @@ public class UserController {
 	// 회원 정보 조회 (회원 프로필)
 	@GetMapping("/")
 	public ResponseEntity<?> getUserInfo(@RequestHeader(value = "accessToken") String accessToken) {
-		Long userId = authController.getUser(accessToken);
+		// long userId = authController.getUser(accessToken);
+		long userId = 1L;
 
 		UserInfoResDto userInfo = userService.getUserInfo(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(userInfo);
@@ -49,7 +48,8 @@ public class UserController {
 	// 회원 탈퇴
 	@DeleteMapping("/")
 	public ResponseEntity<?> removeUser(@RequestHeader(value = "accessToken") String accessToken) {
-		Long userId = authController.getUser(accessToken);
+		// long userId = authController.getUser(accessToken);
+		long userId = 7L;
 
 		userService.removeUser(userId);
 
