@@ -13,6 +13,9 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
     List<AuthenticationEntity> findAllByAidUid(long uid);
     List<AuthenticationEntity> findAllByAidPid(String pid);
 
+    @Query("select a.type from AuthenticationEntity a where a.aid.uid = :userId and a.aid.pid = :petId")
+    String findTypeByUidAndPid(@Param("userId")Long uid, @Param("petId")String pid);
+
     /**
      * 타인에게 권한을 주는 경우
      * 타인의 권한 값 변경 -> save
