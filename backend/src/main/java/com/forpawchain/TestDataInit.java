@@ -20,19 +20,15 @@ import com.forpawchain.domain.Entity.DoctorLicenseEntity;
 import com.forpawchain.domain.Entity.PetEntity;
 import com.forpawchain.domain.Entity.PetInfoEntity;
 import com.forpawchain.domain.Entity.PetRegEntity;
-import com.forpawchain.domain.Entity.Sex;
-import com.forpawchain.domain.Entity.Social;
-import com.forpawchain.domain.Entity.Type;
 import com.forpawchain.domain.Entity.UserEntity;
 import com.forpawchain.repository.AdoptRepository;
-import com.forpawchain.repository.AuthenticationRepository;
 import com.forpawchain.repository.DoctorLicenseRepository;
 import com.forpawchain.repository.PetInfoRepository;
 import com.forpawchain.repository.PetRegRepository;
 import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
 import com.forpawchain.service.AuthenticationService;
-import com.forpawchain.service.Web3Service;
+import com.forpawchain.service.Web3ServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,7 +42,7 @@ public class TestDataInit {
 	private final PetRegRepository petRegRepository;
 	private final PetInfoRepository petInfoRepository;
 	private final AuthenticationService authenticationService;
-	private final Web3Service web3Service;
+	private final Web3ServiceImpl web3Service;
 
 	/**
 	 * 초기 데이터 추가
@@ -58,6 +54,7 @@ public class TestDataInit {
 		IOException,
 		NoSuchAlgorithmException,
 		NoSuchProviderException {
+
 		// 의사 면허 정보 추가 (실제 서비스에서는 정부 db로 대체됨)
 		doctorLicenseRepository.save(new DoctorLicenseEntity(1L, "CJW", "1234561234567", "01012341234", 1));
 		doctorLicenseRepository.save(new DoctorLicenseEntity(2L, "이리나", "1234561234567", "01012341234", 1));
@@ -206,73 +203,58 @@ public class TestDataInit {
 				petEtc = "염소고기 맛있어요.";
 			}
 
-
 			petRegRepository.save(petRegEntity);
 
-			// 동물(Pet) 추가
-			PetEntity petEntity = PetEntity.builder()
-				.pid(pid)
-				// .ca()
-				.lost(false)
-				// .petInfo()
-				// .petReg()
-				// .adopt()
-				// .authList()
-				.build();
-
-			petRepository.save(petEntity);
-
-			// 유기견 추가
-			if (i % 3 == 1) {
-				AdoptEntity adoptEntity = AdoptEntity.builder()
+			// 동물(Pet) 추가 (10의 배수인 애들은 우리 DB에 저장 안 된 애들)
+			if (i % 10 != 0) {
+				PetEntity petEntity = PetEntity.builder()
 					.pid(pid)
-					.uid(1L)
-					.profile(petImgUrl)
-					.etc(petEtc)
-					.tel("01012341234")
-					.pet(petEntity)
-					.user(userRepository.findByUid(1))
+					.lost(false)
 					.build();
+				petRepository.save(petEntity);
 
-				petEntity.updatePetLost(true);
+				// 유기동물 (petInfo 없음) -> 3의 배수인 애들은 유기동물
+				if (i % 3 == 0) {
+					AdoptEntity adoptEntity = AdoptEntity.builder()
+						.pid(pid)
+						.uid(1L)
+						.profile(petImgUrl)
+						.etc(petEtc)
+						.tel("01012341234")
+						.pet(petEntity)
+						.user(userRepository.findByUid(1))
+						.build();
 
-				adoptRepository.save(adoptEntity);
+					petEntity.updatePetLost(true);
+
+					adoptRepository.save(adoptEntity);
+				}
+				// 펫 부가정보 추가 -> 3으로 나눈 나머지가 1인 애들은 petInfo 있음 (2인 애들은 유기동물이 아니지만 petInfo 없음)
+				else if (i % 3 == 1) {
+					PetInfoEntity petInfoEntity = PetInfoEntity.builder()
+						.pid(pid)
+						.tel("01023411243")
+						.profile(petImgUrl)
+						.birth(LocalDate.of(2023, 5, 19))
+						.region("서울시 관악구")
+						.etc("귀염둥이입니당")
+						.pet(petEntity)
+						.build();
+
+					petInfoRepository.save(petInfoEntity);
+				}
+				petRepository.save(petEntity);
 			}
-			// 유기견이 아니면 펫 부가정보 추가
-			else {
-				PetInfoEntity petInfoEntity = PetInfoEntity.builder()
-					.pid(pid)
-					.tel("01023411243")
-					.profile(petImgUrl)
-					.birth(LocalDate.of(2023, 5, 19))
-					.region("서울시 관악구")
-					.etc("귀염둥이입니당")
-					.pet(petEntity)
-					.build();
-
-				petInfoRepository.save(petInfoEntity);
-			}
-
-			petRepository.save(petEntity);
-
-
-
 		}
 
 		// 주인 권한 추가
-		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000000");
 		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000001");
 		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000002");
+		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000003");
 
-		authenticationService.giveFriendAuthentication(2L, "41000000000000");
-		authenticationService.giveFriendAuthentication(3L, "41000000000000");
-		authenticationService.giveFriendAuthentication(4L, "41000000000000");
-		authenticationService.giveFriendAuthentication(5L, "41000000000000");
-
-		// PetInfoEntity petInfoEntity = PetInfoEntity.builder()
-		// 	.pid("410000000000000")
-		// 	.build();
-		//
-		// petInfoRepository.save(petInfoEntity);
+		authenticationService.giveFriendAuthentication(2L, "41000000000001");
+		authenticationService.giveFriendAuthentication(3L, "41000000000001");
+		authenticationService.giveFriendAuthentication(4L, "41000000000001");
+		authenticationService.giveFriendAuthentication(5L, "41000000000001");
 	}
 }

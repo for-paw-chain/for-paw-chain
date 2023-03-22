@@ -20,13 +20,16 @@ import org.web3j.protocol.core.methods.response.EthBlockNumber;
 
 import com.forpawchain.domain.dto.request.LicenseReqDto;
 import com.forpawchain.service.Web3Service;
+import com.forpawchain.service.Web3ServiceImpl;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/web3")
+@Api(tags = "스마트 컨트랙트 및 지갑 API")
 public class Web3Controller {
 
 	private final Web3Service web3Service;
