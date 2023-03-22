@@ -8,21 +8,22 @@ import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.time.LocalDate;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.web3j.crypto.CipherException;
 
 import com.forpawchain.domain.dto.request.LicenseReqDto;
-import com.forpawchain.domain.entity.AdoptEntity;
-import com.forpawchain.domain.entity.DoctorLicenseEntity;
-import com.forpawchain.domain.entity.PetEntity;
-import com.forpawchain.domain.entity.PetInfoEntity;
-import com.forpawchain.domain.entity.PetRegEntity;
-import com.forpawchain.domain.entity.Sex;
-import com.forpawchain.domain.entity.Social;
-import com.forpawchain.domain.entity.Type;
-import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.domain.Entity.AdoptEntity;
+import com.forpawchain.domain.Entity.DoctorLicenseEntity;
+import com.forpawchain.domain.Entity.PetEntity;
+import com.forpawchain.domain.Entity.PetInfoEntity;
+import com.forpawchain.domain.Entity.PetRegEntity;
+import com.forpawchain.domain.Entity.Sex;
+import com.forpawchain.domain.Entity.Social;
+import com.forpawchain.domain.Entity.Type;
+import com.forpawchain.domain.Entity.UserEntity;
 import com.forpawchain.repository.AdoptRepository;
 import com.forpawchain.repository.AuthenticationRepository;
 import com.forpawchain.repository.DoctorLicenseRepository;
@@ -85,7 +86,7 @@ public class TestDataInit {
 
 		// 동물 정보 50개 추가
 		for (int i = 0; i < 50; i++) {
-
+			String pid = "4100000000000" + Integer.toString(i);
 			String petImgUrl = "";
 			String petEtc = "위치는 서울시 관악구입니다.\n"
 				+ "길에서 발견되어 보호하게 되었습니다.\n"
@@ -95,7 +96,7 @@ public class TestDataInit {
 			PetRegEntity petRegEntity = null;
 			if (i % 10 == 0) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(FEMALE)
 					.spayed(false)
 					.name("김엘리자베스")
@@ -107,7 +108,7 @@ public class TestDataInit {
 					+ "발견하면 제발 연락주세요";
 			} else if (i % 10 == 1) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(FEMALE)
 					.spayed(true)
 					.name("똥똥이")
@@ -119,7 +120,7 @@ public class TestDataInit {
 					+ "저만 껴안을 수 있으니 조심하세요.";
 			} else if (i % 10 == 2) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(MALE)
 					.spayed(false)
 					.name("최진우")
@@ -131,7 +132,7 @@ public class TestDataInit {
 					+ "ㅠㅠ,,, 이쁘게 잘 키워주세요";
 			} else if (i % 10 == 3) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(MALE)
 					.spayed(true)
 					.name("똑똑이")
@@ -142,7 +143,7 @@ public class TestDataInit {
 				petEtc = "우리집 부처님이예요. 애기가 볼꼬집고 등에 타면서 노는데도 참 착해요!!!";
 			} else if (i % 10 == 4) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(FEMALE)
 					.spayed(false)
 					.name("도지")
@@ -152,7 +153,7 @@ public class TestDataInit {
 				petImgUrl = "https://t1.daumcdn.net/cfile/tistory/9949E333598C76C229";
 			} else if (i % 10 == 5) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(MALE)
 					.spayed(false)
 					.name("비닐봉지")
@@ -162,7 +163,7 @@ public class TestDataInit {
 				petImgUrl = "https://post-phinf.pstatic.net/MjAxOTEyMjZfMjg4/MDAxNTc3MzQ4MDk0OTg3.enPaZdNz18Qodom0-FVoGTxKsK7XVuB-0xlDVhy7lDYg.0ysMSYYiTvGa2z2__No32752OyRbAi79c6hDe-xNmlMg.JPEG/EMKK3hcXsAAMAOG.jpg?type=w1200";
 			} else if (i % 10 == 6) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(MALE)
 					.spayed(true)
 					.name("치즈")
@@ -174,7 +175,7 @@ public class TestDataInit {
 					+ "치츠냥은 성격이 그냥 고양이 완전 그 자체예요";
 			} else if (i % 10 == 7) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(FEMALE)
 					.spayed(false)
 					.name("도넛")
@@ -184,7 +185,7 @@ public class TestDataInit {
 				petImgUrl = "https://img.freepik.com/premium-photo/close-up-photo-of-asian-palm-civet_266258-1376.jpg";
 			} else if (i % 10 == 8) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(MALE)
 					.spayed(false)
 					.name("따라쟁이")
@@ -194,7 +195,7 @@ public class TestDataInit {
 				petImgUrl = "https://blog.kakaocdn.net/dn/v4EQA/btrrP3WtDNK/Qk4LdFXibQv1OKjaHGh8ek/img.jpg";
 			} else if (i % 10 == 9) {
 				petRegEntity = PetRegEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.sex(FEMALE)
 					.spayed(true)
 					.name("민지")
@@ -210,7 +211,7 @@ public class TestDataInit {
 
 			// 동물(Pet) 추가
 			PetEntity petEntity = PetEntity.builder()
-				.pid("4100000000000" + Integer.toString(i))
+				.pid(pid)
 				// .ca()
 				.lost(false)
 				// .petInfo()
@@ -224,7 +225,7 @@ public class TestDataInit {
 			// 유기견 추가
 			if (i % 3 == 1) {
 				AdoptEntity adoptEntity = AdoptEntity.builder()
-					.pid("4100000000000" + Integer.toString(i))
+					.pid(pid)
 					.uid(1L)
 					.profile(petImgUrl)
 					.etc(petEtc)
@@ -236,6 +237,20 @@ public class TestDataInit {
 				petEntity.updatePetLost(true);
 
 				adoptRepository.save(adoptEntity);
+			}
+			// 유기견이 아니면 펫 부가정보 추가
+			else {
+				PetInfoEntity petInfoEntity = PetInfoEntity.builder()
+					.pid(pid)
+					.tel("01023411243")
+					.profile(petImgUrl)
+					.birth(LocalDate.of(2023, 5, 19))
+					.region("서울시 관악구")
+					.etc("귀염둥이입니당")
+					.pet(petEntity)
+					.build();
+
+				petInfoRepository.save(petInfoEntity);
 			}
 
 			petRepository.save(petEntity);
