@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AuthenticationEntity {
     @EmbeddedId
-    private AuthenticationId aid;
+    private AuthenticationId authId;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AuthenticationType type;
@@ -26,7 +26,6 @@ public class AuthenticationEntity {
     @JoinColumn(name = "uid")
     @MapsId("uid")
     private UserEntity user;
-
     @ManyToOne
     @JoinColumn(name = "pid")
     @MapsId("pid")

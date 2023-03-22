@@ -2,18 +2,17 @@ package com.forpawchain.repository;
 
 import com.forpawchain.domain.entity.AuthenticationEntity;
 import com.forpawchain.domain.entity.AuthenticationId;
-import com.forpawchain.domain.entity.AuthenticationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 public interface AuthenticationRepository extends JpaRepository<AuthenticationEntity, AuthenticationId> {
-    List<AuthenticationEntity> findAllByAid(AuthenticationId aid);
-    AuthenticationEntity findByAidUidAndAidPid(long uid, String pid);
-    List<AuthenticationEntity> findAllByAidUid(long uid);
-    List<AuthenticationEntity> findAllByAidPid(String pid);
-
+    Optional<AuthenticationEntity> findByAuthId(AuthenticationId id);
+    Optional<AuthenticationEntity> findByAuthIdUidAndAuthIdPid(long uid, String pid);
+    List<AuthenticationEntity> findAllByAuthIdUid(long uid);
+    List<AuthenticationEntity> findAllByAuthIdPid(String pid);
+    void deleteByAuthIdUidAndAuthIdPid(long uid, String pid);
     /**
      * 타인에게 권한을 주는 경우
      * 타인의 권한 값 변경 -> save
@@ -23,7 +22,6 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
      * 권한 삭제 (나의 강아지는 삭제 불가)
      * delete
      */
-    void deleteByAidUidAndAidPid(long uid, String pid);
 
     /**
      * 반려동물에게 권한이 있는 사용자 목록 조회

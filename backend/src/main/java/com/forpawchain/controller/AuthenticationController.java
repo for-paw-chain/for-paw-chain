@@ -1,7 +1,6 @@
 package com.forpawchain.controller;
 
 import com.forpawchain.domain.dto.response.UserResDto;
-import com.forpawchain.domain.entity.UserEntity;
 import com.forpawchain.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,7 +45,8 @@ public class AuthenticationController {
     @PutMapping("/hand")
     public ResponseEntity<?> giveMasterAuthentication(String pid, long receiver) {
         try {
-            authService.giveFriendAuthentication(receiver, pid);
+            long uid = 1l; // token 되기 전까지
+            authService.giveMasterAuthentication(uid, receiver, pid);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();

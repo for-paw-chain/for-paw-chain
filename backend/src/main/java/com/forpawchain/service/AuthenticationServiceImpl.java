@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,23 +29,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     @Override
     public void giveFriendAuthentication(long to, String pid) {
+        Optional<AuthenticationEntity> orgEntity = authenticationRepository.findByAuthIdUidAndAuthIdPid(to, pid);
 
-        UserEntity userEntity = userRepository.findByUid(to);
-        PetEntity petEntity = petRepository.findByPid(pid);
+        AuthenticationId authID = new AuthenticationId(to, pid);
+        AuthenticationEntity newEntity;
+        // pid에 대한 권한이 존재하는 사람일 경우
+        if (orgEntity.isPresent()) {
+            newEntity = AuthenticationEntity
+                    .builder()
+                    .authId(authID)
+                    .type(AuthenticationType.FRIEND) // FRIEND 권한으로 변경된다.
+                    .regTime(LocalDate.now())
+                    .user(orgEntity.get().getUser())
+                    .pet(orgEntity.get().getPet())
+                    .build();
 
-        // 받는 사람의 현재 권한
-        // 받는 사람의 권한을 FRINED로 변경
-        AuthenticationEntity newEntity = AuthenticationEntity
-                .builder()
-                .aid(new AuthenticationId(to, pid))
-                .type(AuthenticationType.FRIEND) // FRIEND 권한으로 변경된다.
-                .regTime(LocalDate.now())
-                .user(userEntity)
-                .pet(petEntity)
-                .build();
+        }
+        // pid에 대한 권한이 존재하지 않는 경우
+        else {
+            UserEntity userEntity = userRepository.findByUid(to);
+            PetEntity petEntity = petRepository.findByPid(pid);
 
+            newEntity = AuthenticationEntity
+                    .builder()
+                    .authId(authID)
+                    .type(AuthenticationType.FRIEND) // FRIEND 권한으로 변경된다.
+                    .regTime(LocalDate.now())
+                    .user(userEntity)
+                    .pet(petEntity)
+                    .build();
+        }
+        // 받 는 사람의 권한을 FRINED로 변경
         authenticationRepository.save(newEntity);
-    }
+     }
 
     /**
      *
@@ -54,7 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void removeAuthentication(long uid, String pid) {
         // uid, pid인 권한 삭제   
-        authenticationRepository.deleteByAidUidAndAidPid(uid, pid);
+        authenticationRepository.deleteByAuthIdUidAndAuthIdPid(uid, pid);
     }
 
     /**
@@ -66,7 +83,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public List<UserResDto> getAllAuthenicatedUser(String pid) {
         List<UserResDto> userList = new ArrayList<>();
         // pid에 대한 권한을 갖고 있는 모든 사람
-        for (AuthenticationEntity authenticationEntity : authenticationRepository.findAllByAidPid(pid)) {
+        for (AuthenticationEntity authenticationEntity : authenticationRepository.findAllByAuthIdPid(pid)) {
             UserEntity userEntity = authenticationEntity.getUser();
             UserResDto userResDto = UserResDto
                     .builder().name(userEntity.getName())
@@ -90,22 +107,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     @Override
     public void giveMasterAuthentication(long frm, long to, String pid) {
+
+        List<AuthenticationEntity> aidList = authenticationRepository.findAllByAuthIdUid(to);
+        List<AuthenticationEntity> pidList = authenticationRepository.findAllByAuthIdPid(pid);
         // 현재 주인 정보
         UserEntity fromEntity = userRepository.findByUid(frm);
         
         // pid에 대한 권한 받을 사람의 권한 조회
-        AuthenticationEntity authentication = authenticationRepository.findByAidUidAndAidPid(to, pid);
+        Optional<AuthenticationEntity> authentication = authenticationRepository.findById(new AuthenticationId(to, pid));
         // 권한을 받을 사람 정보
         UserEntity userEntity = userRepository.findByUid(to);
         PetEntity petEntity = petRepository.findByPid(pid);
         // 기존에 어떠한 권한이라도 있었다면 갱신되지 않음
         // 권한이 없다가 권한이 생긴 경우에는 현재 시간으로 저장된다
-        LocalDate newDate = authentication == null ? LocalDate.now() : authentication.getRegTime();
+        LocalDate newDate = authentication == null ? LocalDate.now() : authentication.get().getRegTime();
 
         // 권할 받을 사람의 권한을 master로 변경
         AuthenticationEntity newEntity = AuthenticationEntity
                 .builder()
-                .aid(new AuthenticationId(to, pid))
+                .authId(new AuthenticationId(to, pid))
                 .type(AuthenticationType.MASTER) // MASTER로 설정
                 .regTime(newDate)
                 .user(userEntity)
@@ -114,7 +134,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authenticationRepository.save(newEntity);
 
         // 의사가 아니면 권한을 주는 사람의 권한 제거
-        if (fromEntity.getWa().isEmpty()) {
+        if ("".equals(fromEntity.getWa())) {
             removeAuthentication(frm, pid);
         }
     }
