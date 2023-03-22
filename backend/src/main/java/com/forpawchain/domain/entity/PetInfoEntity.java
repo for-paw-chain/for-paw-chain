@@ -17,6 +17,7 @@ public class PetInfoEntity {
     @Id
     private String pid;
     private String tel;
+    @Column(length = 1000)
     private String profile;
     private LocalDate birth;
     private String region;
