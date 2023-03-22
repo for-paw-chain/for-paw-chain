@@ -1,7 +1,5 @@
 package com.forpawchain.domain.dto.response;
 
-import com.forpawchain.domain.entity.UserEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

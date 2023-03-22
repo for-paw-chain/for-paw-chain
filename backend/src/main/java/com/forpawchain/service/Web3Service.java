@@ -2,7 +2,6 @@ package com.forpawchain.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
@@ -11,33 +10,26 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.stereotype.Service;
-import org.web3j.abi.datatypes.Address;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
-import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
-import org.web3j.crypto.RawTransaction;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.protocol.exceptions.TransactionException;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.Contract;
 import org.web3j.tx.RawTransactionManager;
 import org.web3j.tx.TransactionManager;
-import org.web3j.tx.Transfer;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Convert;
-import org.web3j.utils.Numeric;
 
 import com.forpawchain.MyContract;
 import com.forpawchain.domain.dto.request.LicenseReqDto;
 import com.forpawchain.domain.entity.DoctorLicenseEntity;
 import com.forpawchain.domain.entity.PetEntity;
 import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.exception.BaseException;
+import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.repository.DoctorLicenseRepository;
 import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
@@ -139,14 +131,18 @@ public class Web3Service {
 		NoSuchAlgorithmException,
 		NoSuchProviderException {
 
+		UserEntity userEntity = userRepository.findByUid(uid);
 		String privateKey = null;
+
+		// 이미 지갑을 생성한 의사임
+		if (userEntity.getWa() != null) {
+			throw new BaseException(ErrorMessage.EXIST_WALLET);
+		}
 
 		// 의사 계정이 맞는지 확인
 		if (checkLicense(licenseReqDto)) {
-
-
 			// Generate a new wallet file using a password
-			String password = "myPassword";
+			String password = "1234";
 			String fileName = WalletUtils.generateNewWalletFile(password,
 				new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
 				// new File("\\home\\ubuntu\\dev\\eth\\keystore"));
@@ -159,13 +155,12 @@ public class Web3Service {
 			// Print the wallet address
 			System.out.println("Wallet address: " + myCredentials.getAddress());
 
-			// 지갑 주소를 DB에 저장
-			UserEntity userEntity = userRepository.findByUid(uid);
-			userEntity.updateWa(myCredentials.getAddress());
-			userRepository.save(userEntity);
-
 			// 지갑의 프라이빗 키
 			privateKey = myCredentials.getEcKeyPair().getPrivateKey().toString(16);
+
+			// 지갑 주소와 지갑의 프라이빗 키를 DB에 저장
+			userEntity.updateWa(myCredentials.getAddress());
+			userRepository.save(userEntity);
 		}
 
 		return privateKey;

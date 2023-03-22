@@ -1,7 +1,5 @@
 package com.forpawchain.controller;
 
-import com.forpawchain.domain.entity.UserEntity;
-
 public class AuthController {
 
 	// 토큰으로 회원 uid 조회

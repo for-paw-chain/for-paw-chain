@@ -1,7 +1,6 @@
 package com.forpawchain.controller;
 
 import com.forpawchain.domain.dto.response.UserResDto;
-import com.forpawchain.domain.entity.UserEntity;
 import com.forpawchain.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

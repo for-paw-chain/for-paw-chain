@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
-import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.domain.Entity.UserEntity;
 import com.forpawchain.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
