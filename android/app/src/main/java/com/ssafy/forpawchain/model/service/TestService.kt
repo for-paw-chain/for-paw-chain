@@ -15,7 +15,7 @@ class TestService {
     companion object {
         val TAG: String? = this::class.qualifiedName
 
-        const val baseUrl: String = "http://192.168.56.1:8080"
+        const val baseUrl: String = "http://j8a207.p.ssafy.io:8080/api/"
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())

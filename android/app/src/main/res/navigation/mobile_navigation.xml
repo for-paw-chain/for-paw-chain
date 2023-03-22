@@ -47,6 +47,12 @@
         tools:layout="@layout/fragment_adopt_add" />
 
     <fragment
+        android:id="@+id/navigation_adopt_create"
+        android:name="com.ssafy.forpawchain.behind.fragment.CreateDoctorHistoryFragment"
+        android:label="PawFragment"
+        tools:layout="@layout/fragment_create_doctor_history" />
+
+    <fragment
         android:id="@+id/navigation_adopt_update"
         android:name="com.ssafy.forpawchain.behind.fragment.AdoptUpdateFragment"
         android:label="PawFragment"
@@ -57,6 +63,12 @@
         android:name="com.ssafy.forpawchain.behind.fragment.AdoptViewFragment"
         android:label="PawFragment"
         tools:layout="@layout/fragment_adopt_view" />
+
+    <fragment
+        android:id="@+id/navigation_diagnosis_detail"
+        android:name="com.ssafy.forpawchain.behind.fragment.DiagnosisDetailFragment"
+        android:label="PawFragment"
+        tools:layout="@layout/fragment_diagnosis_detail" />
 
     <fragment
         android:id="@+id/navigation_search_result"

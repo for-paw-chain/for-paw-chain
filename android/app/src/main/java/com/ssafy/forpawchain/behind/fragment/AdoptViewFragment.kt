@@ -7,18 +7,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
 import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 
 class AdoptViewFragment : Fragment() {
     private var _binding: FragmentAdoptViewBinding? = null
     private lateinit var viewModel: AdoptViewFragmentVM
-    private lateinit var item: MyPawListDTO
+    private lateinit var navController: NavController
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,21 +40,32 @@ class AdoptViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAdoptViewBinding.inflate(inflater, container, false)
-        item = MyPawListDTO("별이", "여아", "개과", "말티즈", "O")
+
+
+
         activity?.let {
             viewModel = ViewModelProvider(it).get(AdoptViewFragmentVM::class.java)
             binding.viewModel = viewModel
-            binding.item = item
             binding.lifecycleOwner = this
         }
 
         val root: View = binding.root
+
+        val bundle = arguments
+
+        lifecycleScope.launch {
+            bundle?.getString("pid")?.let {
+                viewModel.initInfo(it)
+                binding.item = viewModel.pawInfo
+            }
+        }
 
         val recyclerView = binding.recycler
 
         recyclerView.adapter = DiagnosisRecyclerViewAdapter(
             {
                 // TODO: 의료기록 상세 보기로 넘어가야함.
+                navController.navigate(R.id.navigation_diagnosis_detail)
                 Log.d(TAG, "의료기록 상세 조회")
             })
 
@@ -90,13 +107,23 @@ class AdoptViewFragment : Fragment() {
                 "Sign by 김의사"
             )
         )
-
+        binding.fab.setOnClickListener { view ->
+            // TODO: 의료 내역 등록
+            navController.navigate(R.id.navigation_adopt_create)
+            Log.d(MyPawHistoryFragment.TAG, "공고 추가")
+        }
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(requireView())
+
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        viewModel.clearTask()
+//        _binding = null
     }
 }
