@@ -187,17 +187,13 @@ public class Web3Service {
 		return userEntity.getWa();
 	}
 
+	public void getContract() {
+		String ca = "0xD899CDfE7474545D174fcE8937D23Ef9Cb2e4C3d";
+
+
+	}
+
 	/////////////////////////////////////////////
-	// // 계좌 거래 건수
-	// public EthGetTransactionCount getTransactionCount() throws ExecutionException, InterruptedException {
-	// 	EthGetTransactionCount result = new EthGetTransactionCount();
-	// 	result = web3j.ethGetTransactionCount(WALLET_ADDRESS,
-	// 			DefaultBlockParameter.valueOf("latest"))
-	// 		.sendAsync()
-	// 		.get();
-	// 	return result;
-	// }
-	//
 	// // 계정 잔액
 	// public EthGetBalance getEthBalance() throws ExecutionException, InterruptedException {
 	// 	return web3j.ethGetBalance(WALLET_ADDRESS,
