@@ -1,4 +1,4 @@
-# open jdk java 11 버전 환경
+# Open jdk java 11 버전 환경
 FROM openjdk:11-jdk
 
 # gradle 빌드 시 jar 파일 생성 경로
