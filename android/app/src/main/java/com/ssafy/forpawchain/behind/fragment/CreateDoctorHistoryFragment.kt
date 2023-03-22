@@ -10,12 +10,20 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
+import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.dialog.AdoptCRUDDialog
 import com.ssafy.forpawchain.databinding.FragmentCreateDoctorHistoryBinding
+import com.ssafy.forpawchain.model.interfaces.IAdoptCRUD
+import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
+import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisNewRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.CreateDoctorHistoryFragmentVM
+import kotlinx.coroutines.launch
 
 
 class CreateDoctorHistoryFragment : Fragment() {
@@ -50,6 +58,21 @@ class CreateDoctorHistoryFragment : Fragment() {
         }
 
         val root: View = binding.root
+
+
+        val recyclerView = binding.recycler
+
+        recyclerView.adapter = DiagnosisNewRecyclerViewAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
+
+
+        viewModel.todoLiveData.observe(
+            requireActivity()
+        ) { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
+            (binding.recycler.adapter as DiagnosisNewRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
+
+        }
 
         binding.imageView.setOnClickListener() {
             // 이미지 선택을 위한 Intent 생성
