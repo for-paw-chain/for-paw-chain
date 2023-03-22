@@ -1,5 +1,6 @@
 package com.forpawchain.domain.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AdoptDetailReqDto {
-	private String name;
-	private String sex;
-	private String profile1;
-	private String profile2;
-	private String type;
-	private String kind;
-	private boolean spayed;
+	@Schema(description = "동물등록번호")
+	private String pid;
+
+	@Schema(description = "프로필 사진")
+	private String profile;
+
+	@Schema(description = "동물 특이사항")
+	private String etc;
+
+	@Schema(description = "입양을 원할 시 연락할 수 있는 전화번호")
 	private String tel;
 }

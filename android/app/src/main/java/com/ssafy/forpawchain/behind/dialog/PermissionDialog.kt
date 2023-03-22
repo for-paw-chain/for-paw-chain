@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import com.ssafy.forpawchain.databinding.DialogPermissionDeleteBinding
+import com.ssafy.forpawchain.model.interfaces.IAdoptCRUD
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 
 class PermissionDialog(context: Context, dialogInterface: IPermissionDelete) :

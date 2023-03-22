@@ -75,6 +75,8 @@ class UserFragment : Fragment() {
                     requireActivity().finish()
                     var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
                     startActivity(intent)
+                } else if (it.title.equals("내가 쓴 글")) {
+                    navController.navigate(R.id.navigation_my_paw_history)
                 }
 //                viewModel.deleteTask(it)
             })

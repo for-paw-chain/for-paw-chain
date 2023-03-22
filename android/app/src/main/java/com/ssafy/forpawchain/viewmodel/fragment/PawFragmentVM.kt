@@ -3,100 +3,85 @@ package com.ssafy.forpawchain.viewmodel.fragment
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ssafy.forpawchain.blockchain.Forpawchain_sol_Storage
-import org.web3j.abi.datatypes.Utf8String
-import org.web3j.abi.datatypes.generated.Uint256
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
-import org.web3j.protocol.infura.InfuraHttpService
-import java.math.BigInteger
-import kotlin.concurrent.thread
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.ssafy.forpawchain.model.domain.AdoptDTO
+import com.ssafy.forpawchain.model.service.AdoptService
+import com.ssafy.forpawchain.util.ImageLoader
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class PawFragmentVM : ViewModel() {
-    val numberValue = MutableLiveData<String>("0")
-    val statusText = MutableLiveData<String>("읽은 값")
-
+    val selectedKind = MutableLiveData<Int>()
+    val selectedNeutered = MutableLiveData<Int>()
+    val selectedSex = MutableLiveData<Int>()
 
     companion object {
-        //        val web3 = Web3j.build(HttpService("http://183.97.128.216:7545/")) // defaults to http://localhost:8545/
         val TAG: String? = this::class.qualifiedName
-
-
-        // https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91
-        val web3 =
-            Web3j.build(InfuraHttpService("http://3.39.235.238:8545"))
-
-        //        val web3 = Web3jFactory.build()
-        val web3ClientVersion = web3.web3ClientVersion().sendAsync().get()
-
-        // contract address
-        val contractAddress = "0x2396007A802a0381891fD1308C4b7e3c2655FdB5"
-
-        // gas limit
-        val gasLimit: BigInteger = BigInteger.valueOf(3000000)
-
-        // gas price
-        val gasPrice: BigInteger = BigInteger.valueOf(3000)
-
-        // create credentials w/ your private key
-        val credentials =
-            Credentials.create("6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544")
     }
 
-    fun writeBtn_onClick() {
-        Log.d(
-            TAG,
-            "MainFragment - MainFragmentVM - 버튼 클릭"
-        )
+    //추가 시작
+    val todoLiveData = MutableLiveData<List<AdoptDTO>>() //변경/관찰가능한 List
 
-        val contract =
-            Forpawchain_sol_Storage.load(contractAddress, web3, credentials, gasPrice, gasLimit)
-        val num = numberValue.value.toString()
+    //추가 끝
+    private val data = arrayListOf<AdoptDTO>()
 
-        thread {
-            val data =
-                contract.store(
-                    BigInteger(num),
-                    BigInteger("${num}"),
-                    "title${num}",
-                    "content${num}",
-                    "hash${num}-0",
-                    "hash${num}-1"
-                ).sendAsync()
-
-            Log.d(TAG, "send result ${data.get().blockNumber}, ${data.get().gasUsed}")
-            numberValue.postValue("0")
-        }
+    fun addTask(todo: AdoptDTO) {
+        data.add(todo)
+        todoLiveData.value = data //todoLiveData를 add된 데이터로 변경
     }
 
-    fun readBtn_onClick() {
-        Log.d(
-            TAG,
-            "MainFragment - MainFragmentVM - 버튼 클릭"
-        )
+    fun deleteTask(todo: AdoptDTO) {
+        data.remove(todo)
+        todoLiveData.value = data //todoLiveData를 remove된 데이터로 변경, 이제 TodoLiveData로 UI값을 변경해줘야한다.
+    }
 
-        val contract =
-            Forpawchain_sol_Storage.load(contractAddress, web3, credentials, gasPrice, gasLimit)
-        val num = numberValue.value.toString()
+    fun clearTask() {
+        data.clear()
+        todoLiveData.value = data
+    }
 
-        thread {
-            // 값 읽기는 어떻게 읽는거냐-
-            val size = contract.getSize().sendAsync().get()
+    suspend fun initData() {
+        val response = withContext(Dispatchers.IO) {
+            AdoptService().getAdoptList().enqueue(object :
+                Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        var result: JsonObject? = response.body()
+                        val items = result?.get("content") as JsonArray
+                        for (item in items.asJsonArray) {
+                            val item = item.asJsonObject
+                            ImageLoader().loadDrawableFromUrl(item["profile"].asString) { drawable ->
+                                // drawable 객체 사용
+                                addTask(
+                                    AdoptDTO(
+                                        item["pid"].asString,
+                                        drawable,
+                                        item["type"].asString,
+                                        item["kind"].asString,
+                                        item["spayed"].asString
+                                    )
+                                )
+                            }
 
-            val remoteCall = contract.retrieve(BigInteger(num))
-            val result = remoteCall.send()
-            val value1 = result[0] as Uint256
-            val value2 = result[1] as Uint256
-            val value3 = result[2] as Utf8String
-            val value4 = result[3] as Utf8String
-            val value5 = result[4] as Utf8String
-            val value6 = result[5] as Utf8String
-            Log.d(TAG, "")
-//            statusText.postValue(value.toString())
-//            Log.d(TAG, "recv result ${value}")
+                        }
+                        Log.d(TAG, "onResponse 성공: $result");
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        Log.d(TAG, "onResponse 실패")
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                    Log.d(TAG, "onFailure 에러: " + t.message.toString());
+                }
+            })
         }
-
-
     }
 }

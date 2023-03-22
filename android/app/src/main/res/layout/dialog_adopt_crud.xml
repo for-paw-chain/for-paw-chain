@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="200dp"
+    android:background="@drawable/background_layout_redius"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:weightSum="2">
+
+    <TextView
+        android:id="@+id/updateBtn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/kakao_regular"
+        android:gravity="center"
+        android:text="공고 수정하기"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/gray" />
+
+    <TextView
+        android:id="@+id/deleteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/kakao_regular"
+        android:gravity="center"
+        android:text="공고 삭제하기"
+        android:textColor="@color/black"
+        android:textSize="24sp" />
+
+</LinearLayout>
