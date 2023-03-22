@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.forpawchain.domain.dto.request.LoginUserReqDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.service.UserService;
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-	private UserService userService;
+	private final UserService userService;
 
 	// 회원가입
 	@PostMapping("/")
@@ -29,31 +30,55 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	// // 로그아웃
-	// @GetMapping("/logout")
-	// public ResponseEntity<?> logout(@RequestHeader(value = "accessToken") String accessToken) {
-	//
-	// }
+	// 해야 함
+	// 로그인
+	@PostMapping("login")
+	public ResponseEntity<?> login(@RequestBody LoginUserReqDto loginUserReqDto) {
+		// 정보 일치하면 token 발급
+		String accessToken = "";
+		return ResponseEntity.status(HttpStatus.OK).body(accessToken);
+	}
+
+	// 로그아웃
+	@GetMapping("/logout")
+	public void logout(@RequestHeader(value = "Authorization") String accessToken) {
+		removeToken(accessToken);
+	}
 
 	// 회원 정보 조회 (회원 프로필)
 	@GetMapping("/")
-	public ResponseEntity<?> getUserInfo(@RequestHeader(value = "accessToken") String accessToken) {
-		// long userId = authController.getUser(accessToken);
-		long userId = 1L;
-
+	public ResponseEntity<?> getUserInfo(@RequestHeader(value = "Authorization") String accessToken) {
+		// long userId = 1L;
+		long userId = getTokenInfo(accessToken);
 		UserInfoResDto userInfo = userService.getUserInfo(userId);
+
 		return ResponseEntity.status(HttpStatus.OK).body(userInfo);
 	}
 
 	// 회원 탈퇴
 	@DeleteMapping("/")
-	public ResponseEntity<?> removeUser(@RequestHeader(value = "accessToken") String accessToken) {
-		// long userId = authController.getUser(accessToken);
-		long userId = 7L;
+	public ResponseEntity<?> removeUser(@RequestHeader(value = "Authorization") String accessToken) {
+		long userId = getTokenInfo(accessToken);
 
 		userService.removeUser(userId);
+		removeToken(accessToken);
 
-		// 로그아웃
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
+
+	// 아래로 쭉~~~~~~~~~ 해야 함
+
+	// 토큰 정보 조회
+	private long getTokenInfo(String accessToken) {
+		long uid = 0L;
+		return uid;
+	}
+
+	// 토큰 정보(refresh) 삭제
+	private void removeToken(String accessToken) {
+
+	}
+
+	// 토큰 재발급
+	// 토큰 유효성 검사
 }
