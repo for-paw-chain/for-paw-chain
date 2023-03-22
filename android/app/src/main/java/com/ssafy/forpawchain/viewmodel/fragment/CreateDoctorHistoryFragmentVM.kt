@@ -99,6 +99,9 @@ class CreateDoctorHistoryFragmentVM : ViewModel() {
 //            })
 //
 //        }
+        for (item in data) {
+            Log.d(TAG, "item: ${item}")
+        }
         clearTask()
         _openEvent.value = Event(ActivityCode.DONE)
     }
