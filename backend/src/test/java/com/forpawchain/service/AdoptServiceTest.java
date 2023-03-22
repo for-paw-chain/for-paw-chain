@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
-import com.forpawchain.domain.entity.PetEntity;
+import com.forpawchain.domain.Entity.PetEntity;
 import com.forpawchain.repository.AdoptRepository;
 import com.forpawchain.repository.PetRegRepository;
 import com.forpawchain.repository.PetRepository;

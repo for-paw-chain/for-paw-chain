@@ -1,9 +1,10 @@
-package com.forpawchain.domain.entity;
+package com.forpawchain.domain.Entity;
 
-import java.util.List;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
+
 
 @Entity
 @Table(name = "USER")

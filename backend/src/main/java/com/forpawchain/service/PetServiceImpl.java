@@ -30,51 +30,56 @@ public class PetServiceImpl implements PetService {
 
 	@Override
 	public List<PetDefaultInfoResDto> getMyPetList(Long userId) {
-		List<PetDefaultInfoResDto> myPetList = petRegRepository.findAuthAndInfo(userId);
-		return myPetList;
+		return null;
 	}
 
-	@Override
-	@Transactional
-	public void registPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto) {
-		// 견적사항 등록 권한 체크
-		AuthenticationType type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
-		if (type == null || !AuthenticationType.MASTER.equals(type)) {
-			// 에러
-		}
+//	@Override
+//	public List<PetDefaultInfoResDto> getMyPetList(Long userId) {
+////		List<PetDefaultInfoResDto> myPetList = petRegRepository.findAuthAndInfo(userId);
+//		return myPetList;
+//	}
 
-		// 이미 등록되어 있는지 체크
-		PetInfoEntity petInfoEntity = petInfoRepository.findByPid(registPetInfoReqDto.getPid());
-		if (petInfoEntity != null) {
-			// 에러
-		}
-
-		// 등록하기
-		petInfoRepository.save(registPetInfoReqDto.toEntity());
-	}
-
-	@Override
-	@Transactional
-	public void modifyPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto) {
-		// 견적사항 등록 권한 체크
-		AuthenticationType type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
-		if (type == null || !AuthenticationType.MASTER.equals(type)) {
-			// 에러
-		}
-
-		// 수정하기
-		petInfoRepository.save(registPetInfoReqDto.toEntity());
-	}
-
-	@Override
-	public PetInfoResDto getPetInfo(String pid) {
-		// Pet이 등록되어 있지 않는 경우, DB 저장
-		if (petRepository.findByPid(pid) == null && petRegRepository.findByPid(pid) != null) {
-			PetEntity petEntity = PetEntity.builder().pid(pid).build();
-			petRepository.save(petEntity);
-		}
-
-		PetInfoResDto petInfoResDto = petRegRepository.findRegAndInfoByPid(pid);
-		return petInfoResDto;
-	}
+//	@Override
+//	@Transactional
+//	public void registPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto) {
+//		// 견적사항 등록 권한 체크
+//		AuthenticationType type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
+//		if (type == null || !AuthenticationType.MASTER.equals(type)) {
+//			// 에러
+//		}
+//
+//		// 이미 등록되어 있는지 체크
+//		PetInfoEntity petInfoEntity = petInfoRepository.findByPid(registPetInfoReqDto.getPid());
+//		if (petInfoEntity != null) {
+//			// 에러
+//		}
+//
+//		// 등록하기
+//		petInfoRepository.save(registPetInfoReqDto.toEntity());
+//	}
+//
+//	@Override
+//	@Transactional
+//	public void modifyPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto) {
+//		// 견적사항 등록 권한 체크
+//		AuthenticationType type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
+//		if (type == null || !AuthenticationType.MASTER.equals(type)) {
+//			// 에러
+//		}
+//
+//		// 수정하기
+//		petInfoRepository.save(registPetInfoReqDto.toEntity());
+//	}
+//
+//	@Override
+//	public PetInfoResDto getPetInfo(String pid) {
+//		// Pet이 등록되어 있지 않는 경우, DB 저장
+//		if (petRepository.findByPid(pid) == null && petRegRepository.findByPid(pid) != null) {
+//			PetEntity petEntity = PetEntity.builder().pid(pid).build();
+//			petRepository.save(petEntity);
+//		}
+//
+//		PetInfoResDto petInfoResDto = petRegRepository.findRegAndInfoByPid(pid);
+//		return petInfoResDto;
+//	}
 }

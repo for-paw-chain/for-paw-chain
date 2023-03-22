@@ -1,8 +1,8 @@
 package com.forpawchain.service;
 
 import com.forpawchain.domain.dto.response.UserResDto;
-import com.forpawchain.domain.entity.AuthenticationEntity;
-import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.domain.Entity.AuthenticationEntity;
+import com.forpawchain.domain.Entity.UserEntity;
 
 import java.util.List;
 

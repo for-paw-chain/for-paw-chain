@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
-import com.forpawchain.domain.entity.AdoptEntity;
+import com.forpawchain.domain.Entity.AdoptEntity;
 
 public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 

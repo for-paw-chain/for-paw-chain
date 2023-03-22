@@ -1,6 +1,6 @@
 package com.forpawchain.controller;
 
-import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.domain.Entity.UserEntity;
 
 public class AuthController {
 

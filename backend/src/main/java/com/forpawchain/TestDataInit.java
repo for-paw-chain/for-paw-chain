@@ -1,21 +1,21 @@
 package com.forpawchain;
 
-import static com.forpawchain.domain.entity.Sex.*;
-import static com.forpawchain.domain.entity.Social.*;
-import static com.forpawchain.domain.entity.Type.*;
+import static com.forpawchain.domain.Entity.Sex.*;
+import static com.forpawchain.domain.Entity.Social.*;
+import static com.forpawchain.domain.Entity.Type.*;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 
-import com.forpawchain.domain.entity.AdoptEntity;
-import com.forpawchain.domain.entity.DoctorLicenseEntity;
-import com.forpawchain.domain.entity.PetEntity;
-import com.forpawchain.domain.entity.PetInfoEntity;
-import com.forpawchain.domain.entity.PetRegEntity;
-import com.forpawchain.domain.entity.Sex;
-import com.forpawchain.domain.entity.Social;
-import com.forpawchain.domain.entity.Type;
-import com.forpawchain.domain.entity.UserEntity;
+import com.forpawchain.domain.Entity.AdoptEntity;
+import com.forpawchain.domain.Entity.DoctorLicenseEntity;
+import com.forpawchain.domain.Entity.PetEntity;
+import com.forpawchain.domain.Entity.PetInfoEntity;
+import com.forpawchain.domain.Entity.PetRegEntity;
+import com.forpawchain.domain.Entity.Sex;
+import com.forpawchain.domain.Entity.Social;
+import com.forpawchain.domain.Entity.Type;
+import com.forpawchain.domain.Entity.UserEntity;
 import com.forpawchain.repository.AdoptRepository;
 import com.forpawchain.repository.DoctorLicenseRepository;
 import com.forpawchain.repository.PetInfoRepository;

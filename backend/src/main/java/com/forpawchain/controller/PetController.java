@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.forpawchain.domain.dto.response.PetDefaultInfoResDto;
-import com.forpawchain.domain.entity.PetInfoEntity;
+import com.forpawchain.domain.Entity.PetInfoEntity;
 import com.forpawchain.service.PetService;
 
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.forpawchain.domain.dto.response;
 
 import javax.persistence.Entity;
 
-import com.forpawchain.domain.entity.Type;
+import com.forpawchain.domain.Entity.Type;
 
 import lombok.Builder;
 import lombok.Data;
