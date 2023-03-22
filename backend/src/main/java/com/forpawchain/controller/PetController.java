@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/pet")
 @RequiredArgsConstructor
 public class PetController {
-	private PetService petService;
+	private final PetService petService;
 
 	// 나의 반려동물 조회
 	@GetMapping("/")
