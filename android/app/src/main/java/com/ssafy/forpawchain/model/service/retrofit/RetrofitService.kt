@@ -49,4 +49,6 @@ interface RetrofitService {
 
     @GET("auth/")
     fun getPetAuth(@Query("pid") pid: String): Call<JsonArray>
+
+
 }
