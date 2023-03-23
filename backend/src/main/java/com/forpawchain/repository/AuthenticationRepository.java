@@ -4,6 +4,8 @@ import com.forpawchain.domain.Entity.AuthenticationEntity;
 import com.forpawchain.domain.Entity.AuthenticationId;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,6 +14,9 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
     AuthenticationEntity findByAidUidAndAidPid(long uid, String pid);
     List<AuthenticationEntity> findAllByAidUid(long uid);
     List<AuthenticationEntity> findAllByAidPid(String pid);
+
+    @Query("select a.type from AuthenticationEntity a where a.aid.uid = :userId and a.aid.pid = :petId")
+    String findTypeByUidAndPid(@Param("userId")Long uid, @Param("petId")String pid);
 
     /**
      * 타인에게 권한을 주는 경우

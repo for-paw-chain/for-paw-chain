@@ -8,7 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
 import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
@@ -21,6 +24,7 @@ import kotlinx.coroutines.launch
 class AdoptViewFragment : Fragment() {
     private var _binding: FragmentAdoptViewBinding? = null
     private lateinit var viewModel: AdoptViewFragmentVM
+    private lateinit var navController: NavController
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -61,6 +65,7 @@ class AdoptViewFragment : Fragment() {
         recyclerView.adapter = DiagnosisRecyclerViewAdapter(
             {
                 // TODO: 의료기록 상세 보기로 넘어가야함.
+                navController.navigate(R.id.navigation_diagnosis_detail)
                 Log.d(TAG, "의료기록 상세 조회")
             })
 
@@ -102,10 +107,19 @@ class AdoptViewFragment : Fragment() {
                 "Sign by 김의사"
             )
         )
-
+        binding.fab.setOnClickListener { view ->
+            // TODO: 의료 내역 등록
+            navController.navigate(R.id.navigation_adopt_create)
+            Log.d(MyPawHistoryFragment.TAG, "공고 추가")
+        }
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(requireView())
+
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
