@@ -75,7 +75,7 @@ class HouseFragment : Fragment() {
                 // TODO(): navController
                 Log.d(TAG, "클릭  " + it.name + it.species)
                 val bundle = Bundle()
-                bundle.putParcelable("SearchResultItem", it)
+                bundle.putParcelable("item", it)
                 navController.navigate(R.id.navigation_search_result, bundle)
             },
         )

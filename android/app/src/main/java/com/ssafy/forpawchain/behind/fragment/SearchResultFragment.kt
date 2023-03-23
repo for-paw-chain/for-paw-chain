@@ -31,7 +31,7 @@ class SearchResultFragment : Fragment() {
         _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
         return binding.root
     }
-    // TODO: Test
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let {
@@ -42,16 +42,16 @@ class SearchResultFragment : Fragment() {
         }
         val bundle = arguments
 
-        bundle?.getParcelable<SearchResultDTO>("SearchResultItem")?.let {
-            binding.searchResultItem = it
+        bundle?.getParcelable<SearchResultDTO>("item")?.let {
+            binding.item = it
         }
         initObserve()
     }
 
     private fun initObserve() {
         viewModel.selectedSearchResult.observe(viewLifecycleOwner, Observer {
-            binding.searchResultItem = it
-            println("왜 안나와" + binding.searchResultItem)
+            binding.item = it
+            println("왜 안나와" + binding.item)
         })
         viewModel.openEvent.eventObserve(this) { obj ->
             when (obj) {
