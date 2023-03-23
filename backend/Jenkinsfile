@@ -10,7 +10,8 @@ node{
         }
 
         stage('Gradle Build'){
-            sh 'cd backend/'
+            sh 'pwd'
+            sh 'ls'
             sh 'chmod +x ./gradlew'
             sh './gradlew clean build'
         }
