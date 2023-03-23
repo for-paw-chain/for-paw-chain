@@ -31,7 +31,7 @@ class SearchResultFragment : Fragment() {
         _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
         return binding.root
     }
-
+    // TODO: Test
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let {
