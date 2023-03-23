@@ -10,9 +10,11 @@ node{
         }
 
         stage('Gradle Build'){
-            sh 'cd backend'
-            sh 'chmod +x ./gradlew'
-            sh './gradlew clean build'
+            dir('backend/'){
+                sh 'ls'
+                sh 'chmod +x ./gradlew'
+                sh './gradlew clean build'
+            }
         }
         // stage('Copy application.properties'){
         //     sh '''
