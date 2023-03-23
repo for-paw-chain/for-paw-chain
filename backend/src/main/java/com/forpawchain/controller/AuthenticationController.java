@@ -48,7 +48,7 @@ public class AuthenticationController {
     @PutMapping("/hand")
     public ResponseEntity<?> giveMasterAuthentication(@RequestHeader("access-token") String accessToken, long receiver, String pid) {
         try {
-            long uid = 1;
+            long uid = 6;
             authService.giveMasterAuthentication(uid, receiver, pid);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
