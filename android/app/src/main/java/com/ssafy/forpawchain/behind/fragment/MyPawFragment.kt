@@ -83,6 +83,7 @@ class MyPawFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.initData()
         }
+
         viewModel.todoLiveData.observe(
             requireActivity(),
             Observer { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
