@@ -7,7 +7,7 @@ ARG JAR_FILE=./build/libs/*.jar
 # JAR_FILE을 메인 디렉토리에 복사
 COPY ${JAR_FILE} app.jar
 
-# 8080 port opne
+# 8080 port Open
 EXPOSE 8080
 
 # 시스템 진입점
