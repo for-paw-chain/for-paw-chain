@@ -42,5 +42,13 @@ interface RetrofitService {
     fun setDoctor(@Body doctor: RequestDoctorDTO): Call<JsonObject>
 
     @POST("upload")
-    fun setUpload(@Part filePart:MultipartBody.Part): Call<JsonObject>
+    fun setUpload(@Part filePart: MultipartBody.Part): Call<JsonObject>
+
+    @GET("pet/")
+    fun getMyPets(): Call<JsonArray>
+
+    @GET("auth/")
+    fun getPetAuth(@Query("pid") pid: String): Call<JsonArray>
+
+
 }

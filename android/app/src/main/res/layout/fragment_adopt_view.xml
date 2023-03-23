@@ -5,7 +5,6 @@
     tools:context=".behind.fragment.AdoptViewFragment">
 
     <data>
-
         <variable
             name="item"
             type="com.ssafy.forpawchain.model.domain.MyPawListDTO" />
@@ -52,7 +51,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 android:layout_weight="1.5"
-                android:src="@drawable/icon_paw_solid" />
+                android:src="@{item.profile}" />
 
             <LinearLayout
                 android:layout_width="0dp"
