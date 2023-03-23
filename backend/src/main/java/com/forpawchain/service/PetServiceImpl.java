@@ -56,7 +56,7 @@ public class PetServiceImpl implements PetService {
 	@Transactional
 	public void registPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) {
 		// 견적사항 등록 권한 체크 (주인만 가능)
-		String type = authenticationRepository.findTypeByUidAndPid(userId, registPetInfoReqDto.getPid());
+		String type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
 		if (type == null || !type.equals("master")){
 			throw new BaseException(ErrorMessage.NOT_PERMISSION_EXCEPTION);
 		}
@@ -83,7 +83,7 @@ public class PetServiceImpl implements PetService {
 	@Transactional
 	public void modifyPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto) {
 		// 견적사항 등록 권한 체크 (주인만 가능)
-		String type = authenticationRepository.findTypeByUidAndPid(userId, registPetInfoReqDto.getPid());
+		String type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
 		if (type == null || !type.equals("master")){
 			throw new BaseException(ErrorMessage.NOT_PERMISSION_EXCEPTION);
 		}
