@@ -64,6 +64,7 @@ class SearchResultAdapter(
             holder.binding.idPawImg.setOnClickListener{
                 Log.d(TAG,"여긴 어댑터 bindviewholder이미지 ${mydataSet.get(holder.adapterPosition)}")
                 onClickDetailButton.invoke(listposition)
+
             }
         }
     }
