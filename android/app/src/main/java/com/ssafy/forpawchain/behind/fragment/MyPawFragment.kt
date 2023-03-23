@@ -7,6 +7,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
+import kotlinx.coroutines.launch
 
 
 class MyPawFragment : Fragment() {
@@ -76,7 +78,9 @@ class MyPawFragment : Fragment() {
 
 //        viewModel.addTask(MyPawListDTO("별", "여아", "개과", "말티즈", "O"))
 //        viewModel.addTask(MyPawListDTO("뚱이", "여아", "개과", "비숑", "X"))
-
+        lifecycleScope.launch {
+            viewModel.initData()
+        }
         viewModel.todoLiveData.observe(
             requireActivity(),
             Observer { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.

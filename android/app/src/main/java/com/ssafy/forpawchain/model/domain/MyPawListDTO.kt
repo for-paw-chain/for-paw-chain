@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 
 data class MyPawListDTO(
     // 사진
-    var profile: MutableLiveData<Drawable>,
+    var profile: MutableLiveData<Drawable>?,
 
     // 이름
     var name: MutableLiveData<String>,
