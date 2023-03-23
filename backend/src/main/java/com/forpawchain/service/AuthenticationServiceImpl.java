@@ -119,16 +119,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         // 권한을 받을 사람 정보
         UserEntity userEntity = userRepository.findByUid(target);
         PetEntity petEntity = petRepository.findByPid(pid);
-        // 기존에 어떠한 권한이라도 있었다면 갱신되지 않음
-        // 권한이 없다가 권한이 생긴 경우에는 현재 시간으로 저장된다
-        LocalDate newDate = authentication == null ? LocalDate.now() : authentication.get().getRegTime();
 
         // 권할 받을 사람의 권한을 master로 변경
         AuthenticationEntity newEntity = AuthenticationEntity
                 .builder()
                 .authId(new AuthenticationId(target, pid))
                 .type(AuthenticationType.MASTER) // MASTER로 설정
-                .regTime(newDate)
+                .regTime(LocalDate.now())
                 .user(userEntity)
                 .pet(petEntity)
                 .build();
