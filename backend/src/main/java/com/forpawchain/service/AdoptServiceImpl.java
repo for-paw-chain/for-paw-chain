@@ -153,7 +153,7 @@ public class AdoptServiceImpl implements AdoptService {
 
 		//존재하지 않는 유저일 경우
 		if (userEntity == null || userEntity.isDel()) {
-			throw new BaseException(ErrorMessage.NOT_USER_INFO);
+			throw new BaseException(ErrorMessage.USER_NOT_FOUND);
 		}
 
 		List<AdoptListResDto> list = adoptRepository.findByUid(uid);

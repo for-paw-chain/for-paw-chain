@@ -252,9 +252,9 @@ public class TestDataInit {
 		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000002");
 		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000003");
 
-		authenticationService.giveFriendAuthentication(2L, "41000000000001");
-		authenticationService.giveFriendAuthentication(3L, "41000000000001");
-		authenticationService.giveFriendAuthentication(4L, "41000000000001");
-		authenticationService.giveFriendAuthentication(5L, "41000000000001");
+		authenticationService.giveFriendAuthentication(1, 2L, "41000000000001");
+		authenticationService.giveFriendAuthentication(1, 3L, "41000000000001");
+		authenticationService.giveFriendAuthentication(1, 4L, "41000000000001");
+		authenticationService.giveFriendAuthentication(1, 5L, "41000000000001");
 	}
 }
