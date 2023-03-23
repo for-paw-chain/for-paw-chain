@@ -40,7 +40,7 @@ public class PetServiceImpl implements PetService {
 
 		// 반려동물이 없는 경우
 		if (myPetList.size() == 0) {
-			throw new BaseException(ErrorMessage.NOT_EXIST_PETLIST);
+			throw new BaseException(ErrorMessage.PETLIST_NOT_FOUND);
 		}
 
 		return myPetList;
