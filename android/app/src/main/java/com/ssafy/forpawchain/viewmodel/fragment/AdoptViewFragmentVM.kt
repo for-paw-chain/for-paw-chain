@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
-import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.service.AdoptService
@@ -14,7 +13,6 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.concurrent.thread
 
 
 class AdoptViewFragmentVM : ViewModel() {
@@ -50,7 +48,7 @@ class AdoptViewFragmentVM : ViewModel() {
     }
 
     fun clearTask() {
-        pawInfo.profile.value = null
+        pawInfo.profile?.value = null
         pawInfo.name.value = ""
         pawInfo.sex.value = ""
         pawInfo.species.value = ""
@@ -71,7 +69,7 @@ class AdoptViewFragmentVM : ViewModel() {
                         // 정상적으로 통신이 성고된 경우
                         var result: JsonObject? = response.body()
                         ImageLoader().loadDrawableFromUrl(result!!["profile"].asString) { drawable ->
-                            pawInfo.profile.postValue(drawable)
+                            pawInfo.profile?.postValue(drawable)
                             pawInfo.name.postValue(result["name"].asString)
                             pawInfo.sex.postValue(result["sex"].asString)
                             pawInfo.species.postValue(result["type"].asString)
