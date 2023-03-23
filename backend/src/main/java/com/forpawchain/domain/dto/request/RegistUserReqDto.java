@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class RegistUserReqDto {
 	private String id;
-	private Social social;
+	private String social;
 	private String name;
 	private String profile;
 

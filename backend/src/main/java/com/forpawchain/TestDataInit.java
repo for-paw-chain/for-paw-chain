@@ -71,7 +71,7 @@ public class TestDataInit {
 		for (int i = 0; i < 6; i++) {
 			UserEntity userEntity = UserEntity.builder()
 				.id("123")    // 소셜 로그인 아이디
-				.social(KAKAO)
+				.social("KAKAO")
 				.name(names[i])
 				.del(false)
 				.build();

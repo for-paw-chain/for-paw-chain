@@ -8,7 +8,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.forpawchain.auth.JwtAuthenticationFilter;
 import com.forpawchain.auth.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -19,26 +21,27 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	private final JwtTokenProvider jwtTokenProvider;
 
-	// security 기본 설정
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		// security 기본 설정
 		http
-			.httpBasic().disable() // basic auth 미사용
-			.csrf().disable() // csrf 보안 미사용
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // session 미사용
-			.and()
-			.authorizeRequests() // 요청에 대한 권한 체크
-			// .antMatchers("/user/login").permitAll() // 로그인 페이지 모두에게 허용
-			// .anyRequest().authenticated() // 그 외 페이지 유저만 허용
-			.antMatchers("*").permitAll();
-		// .and()
-		// .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+			// basic auth, csrf 보안, session 미사용
+			.httpBasic().disable()
+			.csrf().disable()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()// 권한 체크
+			.authorizeRequests()
+			// .antMatchers("/user/login").permitAll()
+			// .anyRequest().authenticated()
+			.antMatchers("*").permitAll()
+			.and() // JwtTokenProvider 필터 추가
+			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
-	// Bycrypt encoder 사용
 	@Bean
 	public PasswordEncoder passwordEncoder() {
+		// Bycrypt encoder 사용
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 }

@@ -2,11 +2,16 @@ package com.forpawchain.service;
 
 import javax.transaction.Transactional;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.forpawchain.auth.JwtTokenProvider;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.domain.Entity.UserEntity;
+import com.forpawchain.domain.dto.token.TokenInfo;
 import com.forpawchain.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +21,8 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private UserRepository userRepository;
+	private AuthenticationManagerBuilder authenticationManagerBuilder;
+	private JwtTokenProvider jwtTokenProvider;
 
 	@Override
 	@Transactional
@@ -54,5 +61,19 @@ public class UserServiceImpl implements UserService {
 			.build();
 
 		userRepository.save(newUserEntity);
+	}
+
+	@Override
+	public TokenInfo login(String id, String social) {
+		// id와 social 정보를 통해서 Authentication 생성
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id, social);
+
+		// 사용자 확인
+		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+		// jwt 토큰 생성
+		TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+
+		return tokenInfo;
 	}
 }
