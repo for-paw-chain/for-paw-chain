@@ -8,7 +8,13 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
+
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
+	/**
+	 * 사용자 정보 조회
+	 * @param uid
+	 * @return UserEntity
+	 */
 	UserEntity findByUid(long uid);
 
 	// ui의 의사 지갑 주소 반환
