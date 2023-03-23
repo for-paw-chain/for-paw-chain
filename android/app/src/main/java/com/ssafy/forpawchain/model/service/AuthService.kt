@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class PetService {
+class AuthService {
     companion object {
         val TAG: String? = this::class.qualifiedName
 
@@ -22,7 +22,7 @@ class PetService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun getMyPets(): Call<JsonArray> {
+    fun getPetAuth(pid: String): Call<JsonArray> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("accessToken", "Bearer qwerqwer")
@@ -38,6 +38,6 @@ class PetService {
 
         service = retrofit.create(RetrofitService::class.java);
 
-        return service.getMyPets()
+        return service.getPetAuth(pid)
     }
 }

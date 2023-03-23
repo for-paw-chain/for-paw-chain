@@ -19,6 +19,7 @@ class AdoptViewFragmentVM : ViewModel() {
     val extra = MutableLiveData<String>()
 
     var pawInfo: MyPawListDTO = MyPawListDTO(
+        MutableLiveData(""),
         MutableLiveData(null),
         MutableLiveData(""),
         MutableLiveData(""),

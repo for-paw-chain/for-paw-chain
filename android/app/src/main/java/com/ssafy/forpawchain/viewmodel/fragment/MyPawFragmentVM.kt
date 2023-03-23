@@ -54,9 +54,10 @@ class MyPawFragmentVM : ViewModel() {
                         if (result != null) {
                             for (item in result) {
                                 var item1 = item as JsonObject
-                                if (item["profile"].toString() == "null") {
+                                if (item1["profile"].toString() == "null") {
                                     addTask(
                                         MyPawListDTO(
+                                            MutableLiveData<String>(item1["pid"].asString),
                                             null,
                                             MutableLiveData<String>(item1["name"].asString),
                                             MutableLiveData<String>(item1["sex"].asString),
@@ -66,9 +67,10 @@ class MyPawFragmentVM : ViewModel() {
                                         )
                                     )
                                 } else {
-                                    ImageLoader().loadDrawableFromUrl(item["profile"].asString) { drawable ->
+                                    ImageLoader().loadDrawableFromUrl(item1["profile"].asString) { drawable ->
                                         addTask(
                                             MyPawListDTO(
+                                                MutableLiveData<String>(item1["pid"].asString),
                                                 MutableLiveData<Drawable>(drawable),
                                                 MutableLiveData<String>(item1["name"].asString),
                                                 MutableLiveData<String>(item1["sex"].asString),
