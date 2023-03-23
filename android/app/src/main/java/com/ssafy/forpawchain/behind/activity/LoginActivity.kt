@@ -3,6 +3,7 @@ package com.ssafy.forpawchain.behind.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -10,13 +11,22 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
+import com.kakao.sdk.auth.AuthApiClient
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.user.UserApiClient
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
+import com.ssafy.forpawchain.BuildConfig
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
 import com.ssafy.forpawchain.viewmodel.activity.LoginVM
+import java.util.Properties
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), View.OnClickListener {
     //뒤로가기 연속 클릭 대기 시간
     private var backPressedTime: Long = 0
 
@@ -25,22 +35,72 @@ class LoginActivity : AppCompatActivity() {
     }
     // Log.d(TAG, "LoginActivity - loginVM - pwEditText 라이브 데이터 값 변경 : $it")
 
-    private val viewModel: LoginVM by viewModels()
+//    private val viewModel: LoginVM by viewModels()
+
+    private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
+
+    private val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        if (error != null) {
+            Log.d(TAG, "로그인 실패 $error")
+        } else if (token != null) {
+            Log.d(TAG, "로그인 성공 ${token.accessToken}")
+            nextMainActivity()
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            binding.idKakaoLoginBtn.id -> {
+                if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+                    UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+                        if (error != null) {
+                            Log.d(TAG, "로그인 실패 $error")
+                            if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                                return@loginWithKakaoTalk
+                            } else {
+                                UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback)
+                            }
+                        } else if (token != null) {
+                            Log.d(TAG, "로그인 성공 ${token.accessToken}")
+                            Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                            nextMainActivity()
+                        }
+                    }
+                } else {
+                    UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback)
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-
         super.onCreate(savedInstanceState)
-        val binding =
-            DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
 
-        initObserve()
+        // 안드로이드 기본 메뉴 바 숨기는 코드, 있으면 이상함
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()
+
+        // Kakao SDK 초기화
+        //kakao_native_app_key
+
+//        Log.d(TAG, "카카오 로그인 네이티브 키 ${getApplicationContext().getResources().getString(R.string.kakao_native_app_key)}")
+//        KakaoSdk.init(this, "${R.string.kakao_native_app_key}")
+
+        //액세스 토큰이 있는 경우
+        if (AuthApiClient.instance.hasToken()) {
+            UserApiClient.instance.accessTokenInfo { _, error ->
+                if (error == null) {
+                    nextMainActivity()
+                }
+            }
+        }
+
+        setContentView(binding.root)
+        binding.idKakaoLoginBtn.setOnClickListener(this)
     }
 
     override fun onBackPressed() {
@@ -57,20 +117,32 @@ class LoginActivity : AppCompatActivity() {
         backPressedTime = System.currentTimeMillis()
     }
 
-    private fun initObserve() {
-        viewModel.openEvent.eventObserve(this) { obj ->
-
-            var intent: Intent? = null
-
-            when (obj) {
-                ActivityCode.MAIN_ACTIVITY -> intent = Intent(this, MainActivity::class.java)
-                ActivityCode.LOGIN_ACTIVITY -> intent = Intent(this, LoginActivity::class.java)
-                else -> {
-                    null
-                }
-            }
-
-            startActivity(intent)
-        }
+    private fun nextMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
+
+    private fun getKakaoNativeAppKey(context: LoginActivity): String? {
+        val properties = Properties()
+        val inputStream = context.assets.open("local.properties")
+        properties.load(inputStream)
+        Log.d(TAG, "제발 카카오 로그인 >> ${properties.getProperty("kakao_native_app_key")}")
+        return properties.getProperty("kakao_native_app_key")
+    }
+
+//    private fun initObserve() {
+//        viewModel.openEvent.eventObserve(this) { obj ->
+//
+//            var intent: Intent? = null
+//
+//            when (obj) {
+//                ActivityCode.MAIN_ACTIVITY -> intent = Intent(this, MainActivity::class.java)
+//                else -> {
+//                    null
+//                }
+//            }
+//
+//            startActivity(intent)
+//        }
+//    }
 }

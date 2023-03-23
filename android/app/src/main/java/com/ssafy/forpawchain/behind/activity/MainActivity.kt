@@ -27,11 +27,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-
         super.onCreate(savedInstanceState)
 
 //        binding = ActivityMainBinding.inflate(layoutInflater)

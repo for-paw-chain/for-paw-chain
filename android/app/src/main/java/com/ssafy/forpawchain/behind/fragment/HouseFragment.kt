@@ -76,7 +76,7 @@ class HouseFragment : Fragment() {
                 Log.d(TAG, "클릭  " + it.name + it.species)
                 val bundle = Bundle()
                 bundle.putParcelable("SearchResultItem", it)
-                navController.navigate(R.id.navigation_search_result, bundle)
+                navController.navigate(R.id.navigation_search_result_unauth, bundle)
             },
         )
 
@@ -114,8 +114,6 @@ class HouseFragment : Fragment() {
                 }
 
             }
-
-
     }
 
     private fun scrollEvent() {
