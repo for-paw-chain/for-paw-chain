@@ -36,7 +36,6 @@ public class RegistPetInfoReqDto {
 			.pid(pid)
 			.birth(birth)
 			.etc(etc)
-			.profile(profile)
 			.region(region)
 			.tel(tel)
 			.build();
