@@ -54,6 +54,10 @@ dependencies {
 
 	implementation 'org.web3j:core:4.9.7'	// web3j
 	implementation 'com.github.ipfs:java-ipfs-http-client:1.4.0'
+
+	// 구글 스토리지 플랫폼
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.5.RELEASE'
 }
 
 dependencyManagement {

@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.forpawchain.domain.Entity.AuthenticationType;
 import org.springframework.stereotype.Service;
 
 import com.forpawchain.domain.dto.request.RegistPetInfoReqDto;
 import com.forpawchain.domain.dto.response.PetDefaultInfoResDto;
 import com.forpawchain.domain.dto.response.PetInfoResDto;
-import com.forpawchain.domain.Entity.AuthenticationEntity;
 import com.forpawchain.domain.Entity.PetEntity;
 import com.forpawchain.domain.Entity.PetInfoEntity;
 import com.forpawchain.repository.AuthenticationRepository;
@@ -37,8 +37,8 @@ public class PetServiceImpl implements PetService {
 	@Transactional
 	public void registPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto) {
 		// 견적사항 등록 권한 체크
-		String type = authenticationRepository.findTypeByUidAndPid(userId, registPetInfoReqDto.getPid());
-		if (type == null || !type.equals("master")){
+		AuthenticationType type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
+		if (!AuthenticationType.MASTER.equals(type)) {
 			// 에러
 		}
 
@@ -56,8 +56,8 @@ public class PetServiceImpl implements PetService {
 	@Transactional
 	public void modifyPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto) {
 		// 견적사항 등록 권한 체크
-		String type = authenticationRepository.findTypeByUidAndPid(userId, registPetInfoReqDto.getPid());
-		if (type == null || !type.equals("master")){
+		AuthenticationType type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
+		if (!AuthenticationType.MASTER.equals(type)) {
 			// 에러
 		}
 

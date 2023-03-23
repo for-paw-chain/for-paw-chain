@@ -2,6 +2,7 @@ package com.forpawchain.controller;
 
 import static com.forpawchain.exception.ErrorMessage.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +10,10 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
@@ -82,25 +85,25 @@ public class AdoptController {
         return new ResponseEntity<>(adoptDetailResDto, HttpStatus.OK);
     }
 
+    // @PostMapping(consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
     @PostMapping
 	@ApiOperation(value = "입양 공고 작성", notes = "입양 공고를 작성한다. 누가 작성했는지는 access token으로 파악한다.")
-    public ResponseEntity<Void> registAdopt(@RequestHeader("Access-Token") String accessToken, @RequestBody
-        AdoptDetailReqDto adoptDetailReqDto) {
-
+    public ResponseEntity<Void> registAdopt(@RequestHeader("Access-Token") String accessToken,
+        AdoptDetailReqDto adoptDetailReqDto, @RequestPart MultipartFile imageFile) throws IOException {
         long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
-        adoptService.registAdopt(adoptDetailReqDto, uid);
+        adoptService.registAdopt(adoptDetailReqDto, uid, imageFile);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping
 	@ApiOperation(value = "입양 공고 수정", notes = "입양 공고의 내용을 수정한다.")
-    public ResponseEntity<Void> modifyAdopt(@RequestHeader("Access-Token") String accessToken, @RequestBody
-    AdoptDetailReqDto adoptDetailReqDto) {
+    public ResponseEntity<Void> modifyAdopt(@RequestHeader("Access-Token") String accessToken,
+    AdoptDetailReqDto adoptDetailReqDto, @RequestPart MultipartFile imageFile) throws IOException {
 
         long uid = 1L;
 
         // 글을 쓴 본인이 맞는지 검증하는 과정 필요
-        adoptService.modifyAdopt(adoptDetailReqDto, uid);
+        adoptService.modifyAdopt(adoptDetailReqDto, uid, imageFile);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

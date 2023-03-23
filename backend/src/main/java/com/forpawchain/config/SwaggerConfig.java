@@ -83,8 +83,8 @@ public class SwaggerConfig {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title(title)
-			.description("<h3>A208 API</h3>Swagger를 이용한 ALL INFO API<br>")
-			.license("A208 License")
+			.description("<h3>A207 API</h3>Swagger를 이용한 포포체인 API<br>")
+			.license("A207 License")
 			.version("1.0").build();
 	}
 }
