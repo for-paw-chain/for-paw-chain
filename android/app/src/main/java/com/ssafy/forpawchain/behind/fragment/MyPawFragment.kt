@@ -70,7 +70,9 @@ class MyPawFragment : Fragment() {
             }, {
                 // detail
                 // TODO: navController
-                navController.navigate(R.id.navigation_permission_paw)
+                val bundle = Bundle()
+                bundle.putSerializable("item", it)
+                navController.navigate(R.id.navigation_permission_paw, bundle)
 
             })
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

@@ -6,19 +6,20 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
-import com.ssafy.forpawchain.behind.dialog.AdoptCRUDDialog
 import com.ssafy.forpawchain.behind.dialog.PermissionDialog
 import com.ssafy.forpawchain.behind.dialog.PermissionSetDialog
 import com.ssafy.forpawchain.databinding.FragmentPermissionPawBinding
+import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.PermissionUserDTO
-import com.ssafy.forpawchain.model.interfaces.IAdoptCRUD
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.viewmodel.adapter.PermissionPawListAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.PermissionPawFragmentVM
+import kotlinx.coroutines.launch
 
 
 class PermissionPawFragment : Fragment() {
@@ -47,7 +48,18 @@ class PermissionPawFragment : Fragment() {
             binding.lifecycleOwner = this
         }
 
+        val bundle = arguments
 
+        lifecycleScope.launch {
+            bundle?.getSerializable("item")?.let {
+                val item = it as (MyPawListDTO)
+                viewModel.name.postValue(item.name.value)
+                viewModel.code.postValue("#" + item.code.value.toString())
+
+                item.code.value?.let { it1 -> viewModel.initData(it1) }
+//                viewModel.
+            }
+        }
         binding.floatingBtn.setOnClickListener { view ->
             val dialog = PermissionSetDialog(requireContext(), object : IPermissionDelete {
                 override fun onDeleteBtnClick() {
@@ -78,37 +90,37 @@ class PermissionPawFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-        viewModel.addTask(
-            PermissionUserDTO(
-                resources.getDrawable(R.drawable.icon_default),
-                "김아무개",
-                "#123421"
-            )
-        )
-
-        viewModel.addTask(
-            PermissionUserDTO(
-                resources.getDrawable(R.drawable.icon_default),
-                "홍길동",
-                "#543532"
-            )
-        )
-
-        viewModel.addTask(
-            PermissionUserDTO(
-                resources.getDrawable(R.drawable.icon_default),
-                "사용자",
-                "#000000"
-            )
-        )
-
-        viewModel.addTask(
-            PermissionUserDTO(
-                resources.getDrawable(R.drawable.icon_default),
-                "최진우",
-                "#123432"
-            )
-        )
+//        viewModel.addTask(
+//            PermissionUserDTO(
+//                resources.getDrawable(R.drawable.icon_default),
+//                "김아무개",
+//                "#123421"
+//            )
+//        )
+//
+//        viewModel.addTask(
+//            PermissionUserDTO(
+//                resources.getDrawable(R.drawable.icon_default),
+//                "홍길동",
+//                "#543532"
+//            )
+//        )
+//
+//        viewModel.addTask(
+//            PermissionUserDTO(
+//                resources.getDrawable(R.drawable.icon_default),
+//                "사용자",
+//                "#000000"
+//            )
+//        )
+//
+//        viewModel.addTask(
+//            PermissionUserDTO(
+//                resources.getDrawable(R.drawable.icon_default),
+//                "최진우",
+//                "#123432"
+//            )
+//        )
 
         viewModel.todoLiveData.observe(
             requireActivity()
