@@ -73,7 +73,7 @@ public class Web3ServiceImpl implements Web3Service {
 
 	/**
 	 * 현재 블록 번호
-	 */
+ 	 */
 	public EthBlockNumber getBlockNumber() throws ExecutionException, InterruptedException {
 		setting();
 		return web3j.ethBlockNumber().sendAsync().get();
@@ -94,10 +94,10 @@ public class Web3ServiceImpl implements Web3Service {
 		//해당 동물에게 컨트랙트가 배포된 적 없다면 새로운 컨트랙트를 배포
 		if (petEntity.getCa() == null) {
 			MyContract contract = MyContract.deploy(
-					web3j,
-					transactionManager,
-					DefaultGasProvider.GAS_PRICE,
-					DefaultGasProvider.GAS_LIMIT
+				web3j,
+				transactionManager,
+				DefaultGasProvider.GAS_PRICE,
+				DefaultGasProvider.GAS_LIMIT
 			).send();
 
 			String invalidAddr = contract.getContractAddress();
@@ -123,7 +123,7 @@ public class Web3ServiceImpl implements Web3Service {
 		int telecom = licenseReqDto.getTelecom();
 
 		Optional<DoctorLicenseEntity> findDoctorLicense = doctorLicenseRepository.findByNameAndRegistnumAndTelAndTelecom(
-				name, registnum, tel, telecom);
+			name, registnum, tel, telecom);
 
 		// 요청으로 들어온 입력 정보가 DB에 존재하면 의사 맞음
 		if (findDoctorLicense.isPresent()) {
@@ -139,11 +139,11 @@ public class Web3ServiceImpl implements Web3Service {
 	 * private key를 프론트에 전달해주기. db에는 저장 안함
 	 */
 	public String createWallet(long uid, LicenseReqDto licenseReqDto) throws
-			CipherException,
-			IOException,
-			InvalidAlgorithmParameterException,
-			NoSuchAlgorithmException,
-			NoSuchProviderException {
+		CipherException,
+		IOException,
+		InvalidAlgorithmParameterException,
+		NoSuchAlgorithmException,
+		NoSuchProviderException {
 
 		setting();
 
@@ -160,8 +160,8 @@ public class Web3ServiceImpl implements Web3Service {
 			// 비밀번호를 이용해 새 지갑 파일을 생성
 			String password = "1234";
 			String fileName = WalletUtils.generateNewWalletFile(password,
-					new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
-			// new File("\\home\\ubuntu\\dev\\eth\\keystore"));
+				new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
+				// new File("\\home\\ubuntu\\dev\\eth\\keystore"));
 
 			// 비밀번호를 이용해 파일로부터 지갑을 로드해오기
 			String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
@@ -185,11 +185,11 @@ public class Web3ServiceImpl implements Web3Service {
 
 		// 목적지 주소로 보내려는 이더의 양
 		BigInteger value = Convert.toWei("1.0", Convert.Unit.ETHER).toBigInteger();
-
+		
 		// 트랜잭션(이더) 전송
 		EthSendTransaction ethSendTransaction = transactionManager.sendTransaction(DefaultGasProvider.GAS_PRICE,
-				DefaultGasProvider.GAS_LIMIT, toAddress, "",
-				value);
+			DefaultGasProvider.GAS_LIMIT, toAddress, "",
+			value);
 	}
 
 	/**

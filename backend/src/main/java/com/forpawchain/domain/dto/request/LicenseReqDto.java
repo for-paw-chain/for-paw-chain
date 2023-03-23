@@ -19,6 +19,6 @@ public class LicenseReqDto {
 	@Schema(description = "의사 휴대폰 번호")
 	private String tel;
 
-	@Schema(description = "의사 휴대폰 통신사")
+	@Schema(description = "의사 휴대폰 통신사, 1: KT, 2: SKT, 3: LG, 4: KT알뜰폰, 5: SKT알뜰폰, 6: LG알뜰폰 ")
 	private int telecom;
 }

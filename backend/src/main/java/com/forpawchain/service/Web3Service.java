@@ -16,11 +16,11 @@ public interface Web3Service {
 	String deployContract(String pid) throws Exception;
 	boolean checkLicense(LicenseReqDto licenseReqDto);
 	String createWallet(long uid, LicenseReqDto licenseReqDto) throws
-			CipherException,
-			IOException,
-			InvalidAlgorithmParameterException,
-			NoSuchAlgorithmException,
-			NoSuchProviderException;
+		CipherException,
+		IOException,
+		InvalidAlgorithmParameterException,
+		NoSuchAlgorithmException,
+		NoSuchProviderException;
 	void sendEth(String toAddress) throws Exception;
 	String getAddress(long uid);
 }

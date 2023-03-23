@@ -45,8 +45,7 @@ public class AuthenticationController {
     @PutMapping("/hand")
     public ResponseEntity<?> giveMasterAuthentication(String pid, long receiver) {
         try {
-            long uid = 1l; // token 되기 전까지
-            authService.giveMasterAuthentication(uid, receiver, pid);
+            authService.giveFriendAuthentication(receiver, pid);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();

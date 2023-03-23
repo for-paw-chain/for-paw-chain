@@ -30,7 +30,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 	private String version = "V1";
-	private String title = "A208 API " + version;
+	private String title = "A207 API " + version;
 
 	@Bean
 	public Docket api() {

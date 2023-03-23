@@ -8,51 +8,51 @@ import java.util.List;
 
 @Data
 public class BaseException extends RuntimeException {
-    private int errorCode;
-    private List<String> errorMessage;
-    private List<String> errorTrace;
-    private HttpStatus httpStatus;
+	private int errorCode;
+	private List<String> errorMessage;
+	private List<String> errorTrace;
+	private HttpStatus httpStatus;
 
-    public BaseException() {
-    }
+	public BaseException() {
+	}
 
-    public BaseException(ErrorMessage errorMessage) {
-        this.errorCode = errorMessage.getErrorCode();
-        this.errorMessage = new ArrayList<>();
-        this.errorMessage.add(errorMessage.getErrorMessage());
-        this.httpStatus = errorMessage.getHttpStatus();
-        errorTrace = new ArrayList<>();
-    }
+	public BaseException(ErrorMessage errorMessage) {
+		this.errorCode = errorMessage.getErrorCode();
+		this.errorMessage = new ArrayList<>();
+		this.errorMessage.add(errorMessage.getErrorMessage());
+		this.httpStatus = errorMessage.getHttpStatus();
+		errorTrace = new ArrayList<>();
+	}
 
-    public int getErrorCode() {
-        return errorCode;
-    }
+	public int getErrorCode() {
+		return errorCode;
+	}
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
+	public HttpStatus getHttpStatus() {
+		return httpStatus;
+	}
 
-    public List<String> getErrorMessage() {
-        return errorMessage;
-    }
+	public List<String> getErrorMessage() {
+		return errorMessage;
+	}
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
 
-    public void appendMsg(String msg) {
-        this.errorMessage.add(msg);
-    }
+	public void appendMsg(String msg) {
+		this.errorMessage.add(msg);
+	}
 
-    public void setHttpStatus(HttpStatus httpStatus) {
-        this.httpStatus = httpStatus;
-    }
+	public void setHttpStatus(HttpStatus httpStatus) {
+		this.httpStatus = httpStatus;
+	}
 
-    public List<String> getErrorTrace() {
-        return errorTrace;
-    }
+	public List<String> getErrorTrace() {
+		return errorTrace;
+	}
 
-    public void appendTrace(String errorTrace) {
-        this.errorTrace.add(errorTrace);
-    }
+	public void appendTrace(String errorTrace) {
+		this.errorTrace.add(errorTrace);
+	}
 }
