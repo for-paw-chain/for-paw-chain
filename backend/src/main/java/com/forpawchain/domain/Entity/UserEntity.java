@@ -1,4 +1,4 @@
-package com.forpawchain.domain.entity;
+package com.forpawchain.domain.Entity;
 
 import java.util.List;
 import lombok.*;
@@ -23,7 +23,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String name;
     private String profile;
-    private String wa;
+    private String wa;  // 지갑 주소 (null이 아니면 의사)
     @Column(nullable = false)
     private boolean del;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -31,4 +31,8 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     List<AuthenticationEntity> authList;// = new ArrayList<>();
+
+    public void updateWa(String wa) {
+        this.wa = wa;
+    }
 }

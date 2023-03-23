@@ -1,4 +1,4 @@
-package com.forpawchain.domain.entity;
+package com.forpawchain.domain.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,8 @@ public class AuthenticationEntity {
     @EmbeddedId
     private AuthenticationId aid;
     @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private AuthenticationType type;
     @Column(nullable = false)
     private LocalDate regTime;
 

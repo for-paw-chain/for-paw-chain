@@ -1,4 +1,4 @@
-package com.forpawchain.domain.entity;
+package com.forpawchain.domain.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -19,8 +18,14 @@ import javax.persistence.*;
 public class PetEntity {
     @Id
     private String pid;
-    @Column(nullable = false)
     private String ca;
     @Column(nullable = false)
     private boolean lost;
+
+    public void updatePetLost(boolean lost) {
+        this.lost = lost;
+    }
+    public void updatePetCa(String ca) {
+        this.ca = ca;
+    }
 }
