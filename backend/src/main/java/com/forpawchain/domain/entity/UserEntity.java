@@ -23,7 +23,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String name;
     private String profile;
-    private String wa;  // ì§€ê°‘ ì£¼ì†Œ (nullì´ ì•„ë‹ˆë©´ ì˜ì‚¬)
+    private String wa;  // Áö°© ÁÖ¼Ò (nullÀÌ ¾Æ´Ï¸é ÀÇ»ç)
     @Column(nullable = false)
     private boolean del;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

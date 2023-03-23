@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-	private UserService userService;
+	private final UserService userService;
 
 	// 회원가입
 	@PostMapping("/")
