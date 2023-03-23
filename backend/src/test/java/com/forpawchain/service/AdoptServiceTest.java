@@ -41,12 +41,12 @@ class AdoptServiceTest {
 		Long uid = 1L;
 		String pid = "41000000000000";
 
-		AdoptDetailReqDto adoptDetailReqDto = AdoptDetailReqDto.builder()
-			.tel("010-1234-1234")
-			.etc("입양해주세요")
-			.pid(pid)
-			.profile("이미지 url")
-			.build();
+		// AdoptDetailReqDto adoptDetailReqDto = AdoptDetailReqDto.builder()
+		// 	.tel("010-1234-1234")
+		// 	.etc("입양해주세요")
+		// 	.pid(pid)
+		// 	.profile("이미지 url")
+		// 	.build();
 
 		// adoptService.registAdopt(adoptDetailReqDto, uid, imageFile);
 
