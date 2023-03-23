@@ -1,16 +1,15 @@
 package com.ssafy.forpawchain.model.service
 
-import android.util.Log
 import com.google.gson.JsonObject
+import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
-import com.ssafy.forpawchain.viewmodel.activity.LoginVM
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class AdoptService {
+class IpfsService {
     companion object {
         val TAG: String? = this::class.qualifiedName
 
@@ -22,26 +21,22 @@ class AdoptService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun getAdoptList(): Call<JsonObject> {
+    fun uploadImage(filePart: MultipartBody.Part): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Access-Token", "Bearer qwerqwer")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
         retrofit = Retrofit.Builder()
+            .client(client)
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         service = retrofit.create(RetrofitService::class.java);
 
-        return service.getAdoptList(0, null, null, null)
-
-    }
-
-    fun getDetailAdopt(pid: String): Call<JsonObject> {
-        retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        service = retrofit.create(RetrofitService::class.java);
-
-        return service.getDetailAdopt(pid)
+        return service.setUpload(filePart)
     }
 }

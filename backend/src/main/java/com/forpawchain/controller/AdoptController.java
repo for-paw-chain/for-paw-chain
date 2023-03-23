@@ -19,6 +19,7 @@ import com.forpawchain.exception.BaseException;
 import com.forpawchain.service.AdoptService;
 import com.forpawchain.service.AdoptServiceImpl;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/adopt")
+@Api(tags = "입양 공고 API")
 public class AdoptController {
 
     private final AdoptService adoptService;

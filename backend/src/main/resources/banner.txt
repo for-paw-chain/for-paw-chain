@@ -1,0 +1,15 @@
+${AnsiColor.BRIGHT_CYAN}                                                                                    _
+${AnsiColor.BRIGHT_CYAN}                                                                                    \`*-.
+${AnsiColor.BRIGHT_CYAN}                                                                                     )  _`-.
+${AnsiColor.BRIGHT_CYAN}                                                                                    .  : `. .
+${AnsiColor.BRIGHT_CYAN}                                                                                    : _   '  \
+${AnsiColor.BRIGHT_CYAN}                                                                                    ; *` _.   `*-._
+${AnsiColor.BRIGHT_CYAN}                                                                                     `-.-'          `-.
+${AnsiColor.BRIGHT_CYAN}                                                                                      ;       `       `.
+${AnsiColor.BRIGHT_CYAN}                                                                                      :.       .        \
+${AnsiColor.BRIGHT_CYAN} _  _    .____     _   ___        ___  _____  _    _       ___       _  .__   __.     . \  .   :   .-'   .
+${AnsiColor.BRIGHT_CYAN}| || |   |  _ \   / \  \  \  /\  /  / /     || |  | |     /   \     | | |  \ |  |     '  `+.;  ;  '      :
+${AnsiColor.BRIGHT_CYAN}| || |_  | |_) | / ^ \  \  \/  \/  / |  ,---'| |__| |    /  ^  \    | | |   \|  |     :  '  |    ;       ;-.
+${AnsiColor.BRIGHT_CYAN}|__   _| |  __/ / /_\ \  \        /  |  |    |  __  |   /  /_\  \   | | |  . `  |     ; '   : :`-:     _.`* ;
+${AnsiColor.BRIGHT_CYAN}   | |   | |   / _____ \  \  /\  /   |  `---.| |  | |  /  _____  \  | | |  |\   |  .*' /  .*' ; .*`- +'  `*'
+${AnsiColor.BRIGHT_CYAN}   |_|   | |  /_/     \_\  \/  \/     \_____||_|  |_| /__/     \__\ |_| |__| \__|  `*-*   `*-*  `*-*'
