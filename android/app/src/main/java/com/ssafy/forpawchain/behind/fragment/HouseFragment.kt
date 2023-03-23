@@ -2,16 +2,19 @@ package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Layout.Directions
 import android.util.Log
 import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.ssafy.basictemplate.util.ActivityCode
@@ -41,13 +44,24 @@ class HouseFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View ? {
         _binding = FragmentHouseBinding.inflate(inflater, container, false)
+
         activity?.let {
             viewModel = ViewModelProvider(it).get(HouseFragmentVM::class.java)
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }
+
+        val root: View = binding.root
+        initObserve()
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(requireView())
+        scrollEvent()
 
         val recyclerView = binding.recycler
         val searchList = mutableListOf<SearchResultDTO>()
@@ -55,11 +69,17 @@ class HouseFragment : Fragment() {
         recyclerView.adapter = SearchResultAdapter(searchList,
             onClickQrButton = {
                 viewModel.deleteTask(it)
-            },{
+            },
+            onClickDetailButton = {
                 // detail
                 // TODO(): navController
-                navController.navigate(R.id.navigation_search_result)
-            })
+                Log.d(TAG, "클릭  " + it.name + it.species)
+                val bundle = Bundle()
+                bundle.putParcelable("SearchResultItem", it)
+                navController.navigate(R.id.navigation_search_result, bundle)
+            },
+        )
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
@@ -95,15 +115,7 @@ class HouseFragment : Fragment() {
 
             }
 
-        val root: View = binding.root
-        initObserve()
-        return root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(requireView())
-        scrollEvent()
     }
 
     private fun scrollEvent() {

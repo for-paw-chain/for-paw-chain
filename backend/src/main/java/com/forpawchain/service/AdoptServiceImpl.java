@@ -60,6 +60,7 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public AdoptDetailResDto getAdoptDetail(String pid) {
+
 		AdoptDetailResDto adoptDetailResDto = adoptRepository.findDetailByPid(pid);
 
 		//존재하지 않는 pid 이거나, 해당 pid에 쓰인 입양 공고가 없을 경우

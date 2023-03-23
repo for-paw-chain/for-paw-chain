@@ -74,8 +74,8 @@ class MyPawFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-//        viewModel.addTask(MyPawListDTO("별", "여아", "개과", "말티즈", "O"))
-//        viewModel.addTask(MyPawListDTO("뚱이", "여아", "개과", "비숑", "X"))
+        viewModel.addTask(MyPawListDTO("별", "여아", "개과", "말티즈", "O"))
+        viewModel.addTask(MyPawListDTO("뚱이", "여아", "개과", "비숑", "X"))
 
         viewModel.todoLiveData.observe(
             requireActivity(),
