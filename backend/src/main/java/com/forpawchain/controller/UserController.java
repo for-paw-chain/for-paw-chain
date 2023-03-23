@@ -2,6 +2,8 @@ package com.forpawchain.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +16,7 @@ import com.forpawchain.domain.dto.request.LoginUserReqDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.service.UserService;
+import com.forpawchain.domain.dto.token.TokenInfo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,13 +33,14 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	// 해야 함
 	// 로그인
 	@PostMapping("login")
-	public ResponseEntity<?> login(@RequestBody LoginUserReqDto loginUserReqDto) {
+	public ResponseEntity<TokenInfo> login(@RequestBody LoginUserReqDto loginUserReqDto) {
 		// 정보 일치하면 token 발급
-		String accessToken = "";
-		return ResponseEntity.status(HttpStatus.OK).body(accessToken);
+		String id = loginUserReqDto.getId();
+		String social = loginUserReqDto.getSocial();
+		TokenInfo tokenInfo = userService.login(id, social);
+		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
 	}
 
 	// 로그아웃
@@ -49,8 +53,8 @@ public class UserController {
 	@GetMapping("/")
 	public ResponseEntity<?> getUserInfo(@RequestHeader(value = "Authorization") String accessToken) {
 		// long userId = 1L;
-		long userId = getTokenInfo(accessToken);
-		UserInfoResDto userInfo = userService.getUserInfo(userId);
+		String id = getCurrentUserId();
+		UserInfoResDto userInfo = userService.getUserInfo(1L);
 
 		return ResponseEntity.status(HttpStatus.OK).body(userInfo);
 	}
@@ -58,20 +62,21 @@ public class UserController {
 	// 회원 탈퇴
 	@DeleteMapping("/")
 	public ResponseEntity<?> removeUser(@RequestHeader(value = "Authorization") String accessToken) {
-		long userId = getTokenInfo(accessToken);
+		String id = getCurrentUserId();
 
-		userService.removeUser(userId);
+		userService.removeUser(1L);
 		removeToken(accessToken);
 
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
-	// 아래로 쭉~~~~~~~~~ 해야 함
-
 	// 토큰 정보 조회
-	private long getTokenInfo(String accessToken) {
-		long uid = 0L;
-		return uid;
+	private String getCurrentUserId() {
+		final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication == null || authentication.getName() == null) {
+			throw new RuntimeException("권한이 없는 토큰입니다.");
+		}
+		return authentication.getName();
 	}
 
 	// 토큰 정보(refresh) 삭제
@@ -80,5 +85,4 @@ public class UserController {
 	}
 
 	// 토큰 재발급
-	// 토큰 유효성 검사
 }

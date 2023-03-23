@@ -31,8 +31,8 @@ public class SecurityConfig {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()// 권한 체크
 			.authorizeRequests()
-			// .antMatchers("/user/login").permitAll()
-			// .anyRequest().authenticated()
+			.antMatchers("/user/login").permitAll()
+			.anyRequest().authenticated()
 			.antMatchers("*").permitAll()
 			.and() // JwtTokenProvider 필터 추가
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
