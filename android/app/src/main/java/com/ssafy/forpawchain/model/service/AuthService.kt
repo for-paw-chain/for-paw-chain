@@ -21,7 +21,7 @@ class AuthService {
             .build();
         var service = retrofit.create(RetrofitService::class.java);
     }
-
+    // TODO: fix
     fun getPetAuth(pid: String): Call<JsonArray> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
