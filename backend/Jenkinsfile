@@ -5,8 +5,8 @@ node{
     try{
         stage('Clone Repo'){
             git url: 'https://lab.ssafy.com/s08-blockchain-contract-sub2/S08P22A207.git',
-                credentialsId: 'jenkins',
-                branch: 'release_springboot'
+                credentialsId: 'YHJ',
+                branch: 'release'
         }
 
         // stage('Copy application.properties'){
