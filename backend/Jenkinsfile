@@ -9,6 +9,11 @@ node{
                 branch: 'release'
         }
 
+        stage('Gradle Build'){
+            sh 'cd backend/'
+            sh 'chmod +x ./gradlew'
+            sh './gradlew clean build'
+        }
         // stage('Copy application.properties'){
         //     sh '''
         //         cp /home/env/application.properties ./BE/Spring/src/main/resources
