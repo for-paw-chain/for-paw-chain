@@ -23,7 +23,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private PetInfoRepository petInfoRepository;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws BaseException {
-        String token = request.getHeader("access-token");
+        String token = request.getHeader("Authorization");
         long uid = 1;
         String pid = request.getParameter("pid");
 

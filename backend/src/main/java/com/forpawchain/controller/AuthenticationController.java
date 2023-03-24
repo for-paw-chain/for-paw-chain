@@ -16,7 +16,7 @@ public class AuthenticationController {
     private final AuthenticationService authService;
 
     @PostMapping
-    public ResponseEntity<?> giveFriendAuthentication(@RequestHeader("access-token") String accessToken, long receiver, String pid) {
+    public ResponseEntity<?> giveFriendAuthentication(@RequestHeader("Authorization") String authorization, long receiver, String pid) {
         try {
             long uid = 1;
             authService.giveFriendAuthentication(uid, receiver, pid);
@@ -26,7 +26,7 @@ public class AuthenticationController {
         }
     }
     @PutMapping
-    public ResponseEntity<?> removeAuthentication(@RequestHeader("access-token") String accessToken, long receiver, String pid) {
+    public ResponseEntity<?> removeAuthentication(@RequestHeader("Authorization") String authorization, long receiver, String pid) {
         try {
             long uid = 1;
             authService.removeAuthentication(uid, receiver, pid);
@@ -36,7 +36,7 @@ public class AuthenticationController {
         }
     }
     @GetMapping
-    public ResponseEntity<?> getAllAuthenicatedUser(@RequestHeader("access-token") String accessToken, String pid) {
+    public ResponseEntity<?> getAllAuthenicatedUser(@RequestHeader("Authorization") String authorization, String pid) {
         try {
             long uid = 1;
             List<UserResDto> userList = authService.getAllAuthenicatedUser(uid, pid);
@@ -46,7 +46,7 @@ public class AuthenticationController {
         }
     }
     @PutMapping("/hand")
-    public ResponseEntity<?> giveMasterAuthentication(@RequestHeader("access-token") String accessToken, long receiver, String pid) {
+    public ResponseEntity<?> giveMasterAuthentication(@RequestHeader("Authorization") String authorization, long receiver, String pid) {
         try {
             long uid = 6;
             authService.giveMasterAuthentication(uid, receiver, pid);

@@ -38,17 +38,17 @@ public class PetController {
 
 	/**
 	 * 나의 반려동물 목록 조회
-	 * @param accessToken
+	 * @param authorization
 	 * @return List<PetDefaultInfoResDto>
 	 */
 	@GetMapping
 	@ApiOperation(value = "나의 반려동물 목록 조회", notes = "주인 및 권한 있는 타인에 대한 반려동물 목록을 반환하며, 반려동물에 대한 기본 정보도 반환한다.")
-	@ApiImplicitParam(name = "accessToken", value = "accessToken 혹은 refreshToken")
+	@ApiImplicitParam(name = "Authorization", value = "authorization 혹은 refreshToken")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "나의 반려동물 목록 반환 성공")
 	})
-	public ResponseEntity<?> getMyPetList(@RequestHeader(value = "accessToken") String accessToken) {
-		// TODO: accessToken으로 userId 찾기
+	public ResponseEntity<?> getMyPetList(@RequestHeader(value = "Authorization") String authorization) {
+		// TODO: authorization으로 userId 찾기
 		long userId = 1L;
 
 		List<PetDefaultInfoResDto> myPetList = petService.getMyPetList(userId);
@@ -57,7 +57,7 @@ public class PetController {
 
 	/**
 	 * 견적사항 등록
-	 * @param accessToken
+	 * @param authorization
 	 * @param registPetInfoReqDto
 	 * @param image
 	 * @return
@@ -65,17 +65,17 @@ public class PetController {
 	@PostMapping("/info")
 	@ApiOperation(value = "견적사항 등록", notes = "주인이 입력한 반려동물에 대한 정보를 저장한다.")
 	// @ApiImplicitParams({
-	// 	@ApiImplicitParam(name = "accessToken", value = "accessToken 혹은 refreshToken"),
+	// 	@ApiImplicitParam(name = "authorization", value = "authorization 혹은 refreshToken"),
 	// 	@ApiImplicitParam(name = "registPetInfoReqDto", value = "반려동물의 정보: birth(생년월일), etc(특이사항), pid(반려동물의 인식칩 번호), region(지역), tel(전화번호)"),
 	// 	@ApiImplicitParam(name = "image", value = "사진")
 	// })
 	@ApiResponses({
 		@ApiResponse(code = 201, message = "견적사항 등록 성공")
 	})
-	public ResponseEntity<?> registPetInfo(@RequestHeader(value = "accessToken") String accessToken,
+	public ResponseEntity<?> registPetInfo(@RequestHeader(value = "Authorization") String authorization,
 		@RequestPart(name = "content") RegistPetInfoReqDto registPetInfoReqDto,
 		@RequestPart(name = "profile", required = false) MultipartFile image) throws IOException {
-		// TODO: accessToken으로 userId 찾기
+		// TODO: authorization으로 userId 찾기
 		long userId = 1L;
 
 		petService.registPetInfo(userId, registPetInfoReqDto, image);
@@ -84,23 +84,23 @@ public class PetController {
 
 	/**
 	 * 견적사항 수정
-	 * @param accessToken
+	 * @param authorization
 	 * @param registPetInfoReqDto
 	 * @return
 	 */
 	@PutMapping("/info")
 	@ApiOperation(value = "견적사항 수정", notes = "주인이 입력한 반려동물에 대한 정보로 수정한다.")
 	// @ApiImplicitParams({
-	// 	@ApiImplicitParam(name = "accessToken", value = "accessToken 혹은 refreshToken"),
+	// 	@ApiImplicitParam(name = "authorization", value = "authorization 혹은 refreshToken"),
 	// 	@ApiImplicitParam(name = "registPetInfoReqDto", value = "반려동물의 정보: birth(생년월일), etc(특이사항), pid(반려동물의 인식칩 번호), profile(이미지 저장 URL), region(지역), tel(전화번호)")
 	// })
 	@ApiResponses({
 		@ApiResponse(code = 201, message = "견적사항 수정 성공")
 	})
-	public ResponseEntity<?> modifyPetInfo(@RequestHeader(value = "accessToken") String accessToken,
+	public ResponseEntity<?> modifyPetInfo(@RequestHeader(value = "Authorization") String authorization,
 		@RequestPart(name = "content") RegistPetInfoReqDto registPetInfoReqDto,
 		@RequestPart(name = "profile", required = false) MultipartFile image) throws IOException {
-		// TODO: accessToken으로 userId 찾기
+		// TODO: authorization으로 userId 찾기
 		long userId = 1L;
 
 		petService.modifyPetInfo(userId, registPetInfoReqDto, image);
