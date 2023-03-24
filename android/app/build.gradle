@@ -88,6 +88,9 @@ dependencies {
     // Scalars 변환기 라이브러리
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
 
+    // qr create 라이브러리
+    implementation 'com.google.zxing:core:3.4.1'
+    
     // default
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
