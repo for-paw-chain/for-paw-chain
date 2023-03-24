@@ -1,5 +1,6 @@
 package com.forpawchain.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -22,14 +23,15 @@ public interface PetService {
 	 * @param registPetInfoReqDto
 	 * @param image
 	 */
-	void registPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image);
+	void registPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws IOException;
 
 	/**
 	 * 동물의 견적사항 수정
 	 * @param userId
 	 * @param registPetInfoReqDto
+	 * @param image
 	 */
-	void modifyPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto);
+	void modifyPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws IOException;
 
 	/**
 	 * 동물의 기본 정보 및 견적사항 조회
