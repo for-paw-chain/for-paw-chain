@@ -14,7 +14,6 @@ import java.util.Optional;
 public interface AuthenticationRepository extends JpaRepository<AuthenticationEntity, AuthenticationId> {
     Optional<AuthenticationEntity> findByAuthId(AuthenticationId id);
     Optional<AuthenticationEntity> findByAuthIdUidAndAuthIdPid(long uid, String pid);
-
     /**
      * 회원과 동물에 대한 관계 찾기
      * @param uid
@@ -24,7 +23,6 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
     @Query("select a.type from AuthenticationEntity a \n" +
             "where a.authId.uid = :uid and a.authId.pid = :pid")
     String findTypeByAuthIdUidAndAuthIdPid(@Param("uid") long uid, @Param("pid") String pid);
-    
     List<AuthenticationEntity> findAllByAuthIdUid(long uid);
     List<AuthenticationEntity> findAllByAuthIdPid(String pid);
     void deleteByAuthIdUidAndAuthIdPid(long uid, String pid);

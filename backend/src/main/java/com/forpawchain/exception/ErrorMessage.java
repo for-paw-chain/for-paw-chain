@@ -8,6 +8,7 @@ public enum ErrorMessage {
 	// BINDING_FAIL_EXCEPTION(1, "내부 서버에서 오류가 발생하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 	//
 	NOT_PERMISSION_EXCEPTION(5, "권한이 없거나 부족합니다.", HttpStatus.FORBIDDEN),
+	IPFS_CONNECTION_EXCEPTION(11, "IPFS연결이 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 	//
 	// REQUEST_EXCEPTION(10, "", HttpStatus.BAD_REQUEST),
 	NOT_EXIST_CONTENT(20, "존재하지 않는 컨텐츠입니다.", HttpStatus.BAD_REQUEST),
@@ -33,6 +34,7 @@ public enum ErrorMessage {
 	USER_NOT_FOUND(300, "유저정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST),
 	PET_NOT_FOUND(301, "펫 정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST),
 	AUTH_NOT_FOUND(302, "펫관련 권한이 존재하지 않습니다.", HttpStatus.BAD_REQUEST),
+	NOT_EXIST_REGISTCONTENT(310, "등록하려는 내용이 없습니다.", HttpStatus.BAD_REQUEST),
 
 	PETLIST_NOT_FOUND(600, "반려동물이 없습니다.", HttpStatus.NO_CONTENT);
 	//
