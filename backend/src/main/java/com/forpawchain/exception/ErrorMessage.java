@@ -9,6 +9,7 @@ public enum ErrorMessage {
 	//
 	NOT_PERMISSION_EXCEPTION(5, "권한이 없거나 부족합니다.", HttpStatus.FORBIDDEN),
 	//
+	IPFS_CONNECTION_EXCEPTION (10, "IPFS 연결이 되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 	// REQUEST_EXCEPTION(10, "", HttpStatus.BAD_REQUEST),
 	NOT_EXIST_CONTENT(20, "존재하지 않는 컨텐츠입니다.", HttpStatus.BAD_REQUEST),
 	EXIST_CONTENT(21, "이미 존재하는 컨텐츠입니다.", HttpStatus.BAD_REQUEST),
