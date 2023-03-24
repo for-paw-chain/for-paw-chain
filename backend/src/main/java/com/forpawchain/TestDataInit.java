@@ -83,7 +83,7 @@ public class TestDataInit {
 
 		// 동물 정보 50개 추가
 		for (int i = 0; i < 50; i++) {
-			String pid = "4100000000000" + Integer.toString(i);
+			String pid = "41" + Integer.toString(i);
 			String petImgUrl = "";
 			String petEtc = "위치는 서울시 관악구입니다.\n"
 				+ "길에서 발견되어 보호하게 되었습니다.\n"
@@ -248,13 +248,22 @@ public class TestDataInit {
 		}
 
 		// 주인 권한 추가
-		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000001");
-		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000002");
-		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000003");
+		// authenticationService.giveMasterAuthentication(6L, 1L, "41000000000001");
+		// authenticationService.giveMasterAuthentication(6L, 1L, "41000000000002");
+		// authenticationService.giveMasterAuthentication(6L, 1L, "41000000000003");
 
-		authenticationService.giveFriendAuthentication(1, 2L, "41000000000001");
-		authenticationService.giveFriendAuthentication(1, 3L, "41000000000001");
-		authenticationService.giveFriendAuthentication(1, 4L, "41000000000001");
-		authenticationService.giveFriendAuthentication(1, 5L, "41000000000001");
+		// authenticationService.giveFriendAuthentication(1, 2L, "41000000000001");
+		// authenticationService.giveFriendAuthentication(1, 3L, "41000000000001");
+		// authenticationService.giveFriendAuthentication(1, 4L, "41000000000001");
+		// authenticationService.giveFriendAuthentication(1, 5L, "41000000000001");
+
+		authenticationService.giveMasterAuthentication(6L, 1L, "411");
+		authenticationService.giveMasterAuthentication(6L, 1L, "412");
+		authenticationService.giveMasterAuthentication(6L, 1L, "413");
+
+		authenticationService.giveFriendAuthentication(1, 2L, "411");
+		authenticationService.giveFriendAuthentication(1, 3L, "411");
+		authenticationService.giveFriendAuthentication(1, 4L, "411");
+		authenticationService.giveFriendAuthentication(1, 5L, "411");
 	}
 }
