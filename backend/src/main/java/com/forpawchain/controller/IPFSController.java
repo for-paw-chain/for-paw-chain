@@ -15,9 +15,9 @@ public class IPFSController {
     final private IPFSFileService ipfsService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> saveFile(@RequestPart MultipartFile file) {
+    public String saveFile(@RequestPart MultipartFile file) {
         MultipartFile tmpfile = file;
-        return ResponseEntity.ok(ipfsService.saveFile(tmpfile));
+        return ipfsService.saveFile(tmpfile);
     }
 
     @GetMapping("/file/{hash}")
