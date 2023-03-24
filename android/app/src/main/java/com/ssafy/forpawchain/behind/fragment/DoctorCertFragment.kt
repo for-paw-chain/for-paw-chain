@@ -62,7 +62,6 @@ class DoctorCertFragment : Fragment() {
         viewModel.openEvent.eventObserve(this) { obj ->
 
             when (obj) {
-                // TODO: navController
                 ActivityCode.FRAGMENT_USER -> navController.navigate(R.id.navigation_user)
                 else -> {
                     null

@@ -80,7 +80,6 @@ class MyPawFragment : Fragment() {
 //                viewModel.deleteTask(it)
             }, {
                 // detail
-                // TODO: navController
                 val bundle = Bundle()
                 bundle.putSerializable("item", it)
                 navController.navigate(R.id.navigation_permission_paw, bundle)

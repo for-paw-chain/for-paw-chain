@@ -4,6 +4,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -53,4 +54,11 @@ interface RetrofitService {
 
     @DELETE("adopt/{pid}")
     fun deleteAdopt(@Path("pid") pid: String): Call<ResponseBody>
+
+    @Multipart
+    @POST("adopt")
+    fun createAdopt(
+        @Part image: MultipartBody.Part,
+        @Part payload: MultipartBody.Part
+    ): Call<ResponseBody>
 }

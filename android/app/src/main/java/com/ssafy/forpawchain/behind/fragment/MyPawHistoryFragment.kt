@@ -59,14 +59,12 @@ class MyPawHistoryFragment : Fragment() {
 
         recyclerView.adapter = AdoptRecyclerViewAdapter(
             {
-                // TODO: Detail
                 val bundle = Bundle()
                 bundle.putString("pid", it.pid)
                 navController.navigate(R.id.navigation_adopt_view, bundle)
                 Log.d(TAG, "입분양 디테일 뷰")
             },
             {
-                // TODO: CRUD
 //                navController.navigate(R.id.navigation_permission_paw)
                 val dialog = AdoptCRUDDialog(requireContext(), object : IAdoptCRUD {
                     override fun onUpdateBtnClick() {
@@ -101,7 +99,6 @@ class MyPawHistoryFragment : Fragment() {
         }
 
         binding.fab.setOnClickListener { view ->
-            // TODO: 공고 추가
             navController.navigate(R.id.navigation_adopt_add)
             Log.d(TAG, "공고 추가")
         }

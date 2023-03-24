@@ -1,27 +1,33 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
 import android.util.Log
+import androidx.core.view.accessibility.AccessibilityEventCompat.ContentChangeType
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.Event
-import com.ssafy.forpawchain.blockchain.Forpawchain_sol_Storage
-import com.ssafy.forpawchain.model.domain.AdoptDTO
-import com.ssafy.forpawchain.model.domain.MyPawListDTO
-import org.web3j.abi.datatypes.Utf8String
-import org.web3j.abi.datatypes.generated.Uint256
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
-import org.web3j.protocol.infura.InfuraHttpService
-import java.math.BigInteger
-import kotlin.concurrent.thread
+import com.ssafy.forpawchain.model.service.AdoptService
+import kotlinx.coroutines.*
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 
 
 class AdoptAddFragmentVM : ViewModel() {
     val number = MutableLiveData<String>()
     val phone = MutableLiveData<String>()
     val extra = MutableLiveData<String>()
+    val path = MutableLiveData<String>()
 
     private val _openEvent = MutableLiveData<Event<ActivityCode>>()
     val openEvent: LiveData<Event<ActivityCode>> get() = _openEvent
@@ -30,14 +36,63 @@ class AdoptAddFragmentVM : ViewModel() {
         val TAG: String? = this::class.qualifiedName
     }
 
+    // 키와 값을 RequestBody로 변환하는 함수
+    fun toRequestBody(key: String, value: String?): Pair<String, RequestBody?> {
+        val requestBody = value?.toRequestBody("application/json".toMediaTypeOrNull())
+        return Pair(key, requestBody)
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
     fun doneBtn_onClick() {
         // TODO: Done
-        _openEvent.value = Event(ActivityCode.DONE)
+
+        val file = path.value?.let { File(it) }
+        val requestBody = file?.asRequestBody("image/*".toMediaTypeOrNull())
+        val imagePart = requestBody?.let {
+            MultipartBody.Part.createFormData(
+                "profile", file.name,
+                it
+            )
+        }
+        val payload = mapOf(
+            "pid" to number.value,
+            "etc" to extra.value,
+            "tel" to phone.value
+        )
+        val jsonPayload = Gson().toJson(payload)
+        val jsonRequestBody = jsonPayload.toRequestBody("application/json".toMediaTypeOrNull())
+        val payloadPart = MultipartBody.Part.createFormData("content", null, jsonRequestBody)
+
+        GlobalScope.launch {
+            val response = withContext(Dispatchers.IO) {
+
+                if (imagePart != null) {
+                    AdoptService().createAdopt(imagePart, payloadPart).enqueue(object :
+                        Callback<ResponseBody> {
+                        override fun onResponse(
+                            call: Call<ResponseBody>,
+                            response: Response<ResponseBody>
+                        ) {
+                            if (response.isSuccessful) {
+                                // 정상적으로 통신이 성공된 경우
+                                Log.d(TAG, "onResponse 성공");
+                            } else {
+                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                Log.d(TAG, "onResponse 실패")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                            Log.d(TAG, "onFailure 에러: " + t.message.toString())
+                        }
+                    })
+                }
+            }
+        }
+
+//        _openEvent.value = Event(ActivityCode.DONE)
 
     }
 
-    fun imageSelected_onClick() {
-        // TODO: Done
-        Log.d(TAG, "이미지 선택")
-    }
 }
