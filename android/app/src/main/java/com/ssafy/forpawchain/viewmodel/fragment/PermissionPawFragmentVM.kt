@@ -80,16 +80,16 @@ class PermissionPawFragmentVM : ViewModel() {
 
                             }
                         }
-                        Log.d(PawFragmentVM.TAG, "onResponse 성공: $result");
+                        Log.d(TAG, "onResponse 성공: $result");
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        Log.d(PawFragmentVM.TAG, "onResponse 실패")
+                        Log.d(TAG, "onResponse 실패")
                     }
                 }
 
                 override fun onFailure(call: Call<JsonArray>, t: Throwable) {
                     // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                    Log.d(MyPawHistoryFragmentVM.TAG, "onFailure 에러: " + t.message.toString());
+                    Log.d(TAG, "onFailure 에러: " + t.message.toString());
                 }
             })
         }

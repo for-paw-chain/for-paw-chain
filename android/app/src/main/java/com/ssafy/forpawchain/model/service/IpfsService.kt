@@ -24,7 +24,7 @@ class IpfsService {
     fun uploadImage(filePart: MultipartBody.Part): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Access-Token", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer qwerqwer")
                 .build()
             chain.proceed(newRequest)
         }.build()

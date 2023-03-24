@@ -25,7 +25,7 @@ class AuthService {
     fun getPetAuth(pid: String): Call<JsonArray> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("accessToken", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer qwerqwer")
                 .build()
             chain.proceed(newRequest)
         }.build()
