@@ -76,7 +76,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     /**
-     * 
+     *
      * @param pid: pid와 관련된 모든 권한 조회
      * @return pid에 대한 권한 모두 반환
      */
