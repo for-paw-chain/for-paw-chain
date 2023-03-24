@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<Object>(new HashMap<String, Object>() {{
 			put("result", false);
-			put("msg", "알 수 없는 예외입니다.");
+			put("msg", t.getMessage());
 		}}, HttpStatus.INTERNAL_SERVER_ERROR);
 
 	}

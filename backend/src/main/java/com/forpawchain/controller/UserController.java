@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 	private final UserService userService;
 
-	/**
+	/**z
 	 * 회원가입
 	 * @param registUserReqDto
 	 * @return
