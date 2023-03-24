@@ -63,11 +63,11 @@ public class PetController {
 	 */
 	@PostMapping("/info")
 	@ApiOperation(value = "견적사항 등록", notes = "주인이 입력한 반려동물에 대한 정보를 저장한다.")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "accessToken", value = "accessToken 혹은 refreshToken"),
-		@ApiImplicitParam(name = "registPetInfoReqDto", value = "반려동물의 정보: birth(생년월일), etc(특이사항), pid(반려동물의 인식칩 번호), region(지역), tel(전화번호)"),
-		@ApiImplicitParam(name = "image", value = "사진")
-	})
+	// @ApiImplicitParams({
+	// 	@ApiImplicitParam(name = "accessToken", value = "accessToken 혹은 refreshToken"),
+	// 	@ApiImplicitParam(name = "registPetInfoReqDto", value = "반려동물의 정보: birth(생년월일), etc(특이사항), pid(반려동물의 인식칩 번호), region(지역), tel(전화번호)"),
+	// 	@ApiImplicitParam(name = "image", value = "사진")
+	// })
 	@ApiResponses({
 		@ApiResponse(code = 201, message = "견적사항 등록 성공")
 	})
