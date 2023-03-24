@@ -46,23 +46,23 @@ public class UserController {
 
 	// // 로그아웃
 	// @GetMapping("/logout")
-	// public ResponseEntity<?> logout(@RequestHeader(value = "accessToken") String accessToken) {
+	// public ResponseEntity<?> logout(@RequestHeader(value = "Authorization") String authorization) {
 	//
 	// }
 
 	/**
 	 * 회원 정보 조회 (회원 프로필)
-	 * @param accessToken
+	 * @param authorization
 	 * @return UserInfoResDto
 	 */
 	@GetMapping
 	@ApiOperation(value = "회원 정보 조회 (회원 프로필)", notes = "회원의 정보를 조회한다.")
-	@ApiImplicitParam(name = "accessToken", value = "accessToken 혹은 refreshToken")
+	@ApiImplicitParam(name = "Authorization", value = "authorization 혹은 refreshToken")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "회원 정보 조회 성공")
 	})
-	public ResponseEntity<?> getUserInfo(@RequestHeader(value = "accessToken") String accessToken) {
-		// TODO: accessToken으로 userId 찾기
+	public ResponseEntity<?> getUserInfo(@RequestHeader(value = "Authorization") String authorization) {
+		// TODO: authorization으로 userId 찾기
 		long userId = 1L;
 
 		UserInfoResDto userInfo = userService.getUserInfo(userId);
@@ -71,17 +71,17 @@ public class UserController {
 
 	/**
 	 * 회원 탈퇴
-	 * @param accessToken
+	 * @param authorization
 	 * @return
 	 */
 	@DeleteMapping
 	@ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴 여부를 수정한다.")
-	@ApiImplicitParam(name = "accessToken", value = "accessToken 혹은 refreshToken")
+	@ApiImplicitParam(name = "Authorization", value = "authorization 혹은 refreshToken")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "회원 탈퇴 성공")
 	})
-	public ResponseEntity<?> removeUser(@RequestHeader(value = "accessToken") String accessToken) {
-		// TODO: accessToken으로 userId 찾기
+	public ResponseEntity<?> removeUser(@RequestHeader(value = "Authorization") String authorization) {
+		// TODO: authorization으로 userId 찾기
 		long userId = 7L;
 
 		// TODO: 로그아웃
