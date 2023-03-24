@@ -1,6 +1,5 @@
 package com.forpawchain.domain.dto.request;
 
-import java.awt.event.ItemListener;
 import java.time.LocalDate;
 
 import com.forpawchain.domain.Entity.PetInfoEntity;
@@ -28,7 +27,7 @@ public class RegistPetInfoReqDto {
 	private String tel;
 
 	/**
-	 * RegistPetInfoReqDto를 PetInfoEntity로 변환
+	 * RegistPetInfoReqDto를 PetInfoEntity로 변환 (이미지가 없는 경우)
 	 * @return PetInfoEntity
 	 */
 	public PetInfoEntity toEntity() {
@@ -36,6 +35,21 @@ public class RegistPetInfoReqDto {
 			.pid(pid)
 			.birth(birth)
 			.etc(etc)
+			.region(region)
+			.tel(tel)
+			.build();
+	}
+
+	/**
+	 * RegistPetInfoReqDto를 PetInfoEntity로 변환 (이미지가 있는 경우)
+	 * @return PetInfoEntity
+	 */
+	public PetInfoEntity toEntityAndImage(String imageUrl) {
+		return PetInfoEntity.builder()
+			.pid(pid)
+			.birth(birth)
+			.etc(etc)
+			.profile(imageUrl)
 			.region(region)
 			.tel(tel)
 			.build();
