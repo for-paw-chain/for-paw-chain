@@ -16,11 +16,12 @@ public class IPFSConfig {
             return ipfs;
         } else {
             try {
-                ipfs = new IPFS("/ip4/127.0.0.1/tcp/5001");
-//                ipfs = new IPFS("/ip4/3.39.235.238/tcp/5001");
+//                ipfs = new IPFS("/ip4/127.0.0.1/tcp/5001");
+                ipfs = new IPFS("/ip4/3.39.235.238/tcp/5001");
 //                ipfs = new IPFS("/ip4/70.12.247.105/tcp/5001");
                 return ipfs;
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new BaseException(ErrorMessage.IPFS_CONNECTION_EXCEPTION);
             }
         }
