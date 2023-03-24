@@ -35,10 +35,10 @@
 
         <LinearLayout
             android:id="@+id/linearLayout8"
-            android:layout_width="match_parent"
+            android:layout_width="380dp"
             android:layout_height="125dp"
             android:layout_margin="16dp"
-            android:background="@drawable/background_layout_redius"
+            android:background="@drawable/box_radius_02"
             android:backgroundTint="@color/whitesmoke"
             android:orientation="horizontal"
             android:weightSum="5"
@@ -51,6 +51,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 android:layout_weight="1.5"
+                android:scaleType="centerCrop"
                 android:src="@{item.profile}" />
 
             <LinearLayout
@@ -72,7 +73,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:text="이름" />
 
@@ -81,7 +81,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
 
                         android:fontFamily="@font/kakao_bold"
 
@@ -92,7 +91,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
 
                         android:fontFamily="@font/kakao_bold"
 
@@ -103,7 +101,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
 
                         android:fontFamily="@font/kakao_bold"
 
@@ -114,7 +111,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
 
                         android:fontFamily="@font/kakao_bold"
 
@@ -206,8 +202,8 @@
 
                 <Button
                     android:id="@+id/qr_btn"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:background="@drawable/icon_qr"
                     android:gravity="bottom"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -220,12 +216,12 @@
 
         <LinearLayout
             android:id="@+id/linearLayout9"
-            android:layout_width="match_parent"
+            android:layout_width="380dp"
             android:layout_height="100dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/background_layout_redius"
+            android:background="@drawable/box_radius_01"
             android:orientation="horizontal"
-            android:weightSum="1"
+            android:weightSum="4.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
@@ -251,6 +247,7 @@
                 android:gravity="center_horizontal"
                 android:text="@{viewModel.extra}"
                 android:textColor="@color/black" />
+
         </LinearLayout>
 
         <TextView
