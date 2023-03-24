@@ -98,7 +98,7 @@ public class AdoptController {
     @PutMapping
 	@ApiOperation(value = "입양 공고 수정", notes = "입양 공고의 내용을 수정한다.")
     public ResponseEntity<Void> modifyAdopt(@RequestHeader("Access-Token") String accessToken,
-    AdoptDetailReqDto adoptDetailReqDto, @RequestPart MultipartFile imageFile) throws IOException {
+        @RequestPart(name = "content") AdoptDetailReqDto adoptDetailReqDto, @RequestPart(name = "profile") MultipartFile imageFile) throws IOException {
 
         long uid = 1L;
 
