@@ -25,7 +25,7 @@ public class IPFSFileServiceImpl implements IPFSFileService {
             InputStream stream = new ByteArrayInputStream(file.getBytes());
             NamedStreamable.InputStreamWrapper inputStreamWrapper = new NamedStreamable.InputStreamWrapper(stream);
 
-            MerkleNode merkleNode = ipfsConfig.ipfs.add(inputStreamWrapper).get(0);
+            MerkleNode merkleNode = ipfsConfig.getIPFS().add(inputStreamWrapper).get(0);
 
             return merkleNode.hash.toBase58();
 
@@ -38,7 +38,7 @@ public class IPFSFileServiceImpl implements IPFSFileService {
     public byte[] loadFile(String hash) {
         Multihash filePointer = Multihash.fromBase58(hash);
         try {
-            return ipfsConfig.ipfs.cat(filePointer);
+            return ipfsConfig.getIPFS().cat(filePointer);
         } catch (IOException e) {
             throw new RuntimeException("Error whilst communication wit the IPFS node", e);
         }
