@@ -89,7 +89,7 @@ public class AdoptController {
     @PostMapping
 	@ApiOperation(value = "입양 공고 작성", notes = "입양 공고를 작성한다. 누가 작성했는지는 access token으로 파악한다.")
     public ResponseEntity<Void> registAdopt(@RequestHeader("Access-Token") String accessToken,
-        AdoptDetailReqDto adoptDetailReqDto, @RequestPart MultipartFile imageFile) throws IOException {
+        @RequestPart(name = "content") AdoptDetailReqDto adoptDetailReqDto, @RequestPart(name = "profile") MultipartFile imageFile) throws IOException {
         long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
         adoptService.registAdopt(adoptDetailReqDto, uid, imageFile);
         return new ResponseEntity<>(HttpStatus.CREATED);
