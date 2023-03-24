@@ -4,6 +4,8 @@ import android.util.Log
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
 import com.ssafy.forpawchain.viewmodel.activity.LoginVM
+import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,7 +16,7 @@ class AdoptService {
     companion object {
         val TAG: String? = this::class.qualifiedName
 
-        const val baseUrl: String = "http://j8a207.p.ssafy.io:8080/api/"
+        const val baseUrl: String = "http://j8a207.p.ssafy.io:3000/api/"
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -43,5 +45,24 @@ class AdoptService {
         service = retrofit.create(RetrofitService::class.java);
 
         return service.getDetailAdopt(pid)
+    }
+
+    fun deleteAdopt(pid: String): Call<ResponseBody> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Access-Token", "Bearer qwerqwer")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
+        retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(PetService.baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        service = retrofit.create(RetrofitService::class.java);
+
+        return service.deleteAdopt(pid)
     }
 }

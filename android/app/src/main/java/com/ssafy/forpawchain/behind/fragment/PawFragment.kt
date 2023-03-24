@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.JsonObject
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.behind.dialog.AdoptCRUDDialog
 import com.ssafy.forpawchain.behind.dialog.PermissionDialog
@@ -24,7 +25,13 @@ import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class PawFragment : Fragment() {
     private var _binding: FragmentPawBinding? = null
@@ -75,7 +82,30 @@ class PawFragment : Fragment() {
 
                     override fun onDeleteBtnClick() {
                         // 공고 삭제
-                        viewModel.deleteTask(it)
+                        lifecycleScope.launch() {
+                            val response = withContext(Dispatchers.IO) {
+                                AdoptService().deleteAdopt(it.pid).enqueue(object :
+                                    Callback<ResponseBody> {
+                                    override fun onResponse(
+                                        call: Call<ResponseBody>,
+                                        response: Response<ResponseBody>
+                                    ) {
+                                        if (response.isSuccessful) {
+                                            viewModel.deleteTask(it)
+                                        } else {
+
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                        Log.d(TAG, "dd")
+                                    }
+
+                                })
+                            }
+                        }
+
+//                        viewModel.deleteTask(it)
                         Log.d(TAG, "공고 삭제")
                     }
 
