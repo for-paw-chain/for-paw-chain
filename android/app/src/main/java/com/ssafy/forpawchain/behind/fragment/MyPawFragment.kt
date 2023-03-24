@@ -12,13 +12,13 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.dialog.QRCreateDialog
 import com.ssafy.forpawchain.behind.dialog.WithdrawalAnimalDialog
-import com.ssafy.forpawchain.behind.dialog.WithdrawalDialog
 import com.ssafy.forpawchain.databinding.FragmentMyPawBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
+import com.ssafy.forpawchain.util.ImageSave
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
-import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
 import kotlinx.coroutines.launch
 
@@ -55,6 +55,17 @@ class MyPawFragment : Fragment() {
         recyclerView.adapter = MyPawListAdapter(searchList,
             {
                 // qr
+
+                it.code.value?.let { it1 ->
+                    QRCreateDialog(requireContext(), it1) {
+                        ImageSave().saveImageToGallery(
+                            requireContext(),
+                            it,
+                            "qrImage",
+                            "Created QR in PawForChain"
+                        )
+                    }
+                }?.show()
 //                viewModel.deleteTask(it)
             }, {
                 // del
