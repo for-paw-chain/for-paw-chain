@@ -26,11 +26,12 @@ public class GCSService {
 
 	public Blob uploadFileToGCS(MultipartFile file) throws IOException {
 
-		StorageOptions storageOptions = StorageOptions.newBuilder()
-			.setProjectId(projectId)
-			.setCredentials(GoogleCredentials.fromStream(new
-				FileInputStream("src/main/resources/for-paw-chain-c2d3ba7aaab6.json"))).build();
-		Storage storage = storageOptions.getService();
+		// StorageOptions storageOptions = StorageOptions.newBuilder()
+		// 	.setProjectId(projectId)
+		// 	.setCredentials(GoogleCredentials.fromStream(new
+		// 		FileInputStream("src/main/resources/for-paw-chain-c2d3ba7aaab6.json"))).build();
+		// Storage storage = storageOptions.getService();
+		Storage storage = StorageOptions.getDefaultInstance().getService();
 
 		String fileName = UUID.randomUUID().toString();
 
