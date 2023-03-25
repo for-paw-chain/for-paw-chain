@@ -55,7 +55,6 @@ class SearchResultFragment : Fragment() {
         })
         viewModel.openEvent.eventObserve(this) { obj ->
             when (obj) {
-                // TODO: navController
                 ActivityCode.FRAGMENT_USER -> navController.navigate(com.ssafy.forpawchain.R.id.navigation_user)
                 else -> {
                     null

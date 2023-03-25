@@ -64,7 +64,6 @@ class AdoptViewFragment : Fragment() {
 
         recyclerView.adapter = DiagnosisRecyclerViewAdapter(
             {
-                // TODO: 의료기록 상세 보기로 넘어가야함.
                 navController.navigate(R.id.navigation_diagnosis_detail)
                 Log.d(TAG, "의료기록 상세 조회")
             })
@@ -108,7 +107,6 @@ class AdoptViewFragment : Fragment() {
             )
         )
         binding.fab.setOnClickListener { view ->
-            // TODO: 의료 내역 등록
             navController.navigate(R.id.navigation_adopt_create)
             Log.d(MyPawHistoryFragment.TAG, "공고 추가")
         }
