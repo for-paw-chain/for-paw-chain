@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.blockchain.Test_sol_ForPawChain
 import com.ssafy.forpawchain.blockchain.Test_sol_MyContract
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
@@ -35,7 +36,7 @@ class SplashActivity : AppCompatActivity() {
         val web3ClientVersion = web3.web3ClientVersion().sendAsync().get()
 
         // contract address
-        val contractAddress = "0x8BFaB20A1027851DdC9A0095174cfeBE45Ef536e"
+        val contractAddress = "0x789bE5eC74330cd64d007a15bD273fCC27fEE6bB"
 
         // gas limit
         val gasLimit: BigInteger = BigInteger.valueOf(3000000)
@@ -49,7 +50,7 @@ class SplashActivity : AppCompatActivity() {
         thread {
 
             val contract =
-                Test_sol_MyContract.load(contractAddress, web3, credentials, gasPrice, gasLimit)
+                Test_sol_ForPawChain.load(contractAddress, web3, credentials, gasPrice, gasLimit)
 
             val size = contract.size
             val itemSize = contract.getItemSize(BigInteger("1"))
