@@ -51,11 +51,12 @@ class SplashActivity : AppCompatActivity() {
 
             val contract =
                 Test_sol_ForPawChain.load(contractAddress, web3, credentials, gasPrice, gasLimit)
+            contract.addHistory("title3", "body3", "hash").send()
 
-            val size = contract.size
-            val itemSize = contract.getItemSize(BigInteger("1"))
-            val history = contract.getHistory(BigInteger("0")).send()
-            val item = contract.getItem(BigInteger("0")).send()
+//            val size = contract.size
+//            val itemSize = contract.getItemSize(BigInteger("1"))
+//            val history = contract.getHistory(BigInteger("0")).send()
+//            val item = contract.getItem(BigInteger("0")).send()
             print("")
         }
         startLoading();
