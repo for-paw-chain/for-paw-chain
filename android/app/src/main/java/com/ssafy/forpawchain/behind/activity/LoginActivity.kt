@@ -6,72 +6,37 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import com.google.android.material.snackbar.Snackbar
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
-import com.ssafy.basictemplate.util.ActivityCode
-import com.ssafy.basictemplate.util.eventObserve
 import com.ssafy.forpawchain.BuildConfig
-import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
-import com.ssafy.forpawchain.viewmodel.activity.LoginVM
-import java.util.Properties
 
-class LoginActivity : AppCompatActivity(), View.OnClickListener {
+class LoginActivity : AppCompatActivity() {
     //뒤로가기 연속 클릭 대기 시간
     private var backPressedTime: Long = 0
 
     companion object {
         val TAG: String? = this::class.qualifiedName
     }
-    // Log.d(TAG, "LoginActivity - loginVM - pwEditText 라이브 데이터 값 변경 : $it")
 
-//    private val viewModel: LoginVM by viewModels()
-
-    private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
-
-    private val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+    // 이메일 로그인 콜백
+    private val kakaoCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
-            Log.d(TAG, "로그인 실패 $error")
+            Log.e(TAG, "로그인 실패 $error")
         } else if (token != null) {
-            Log.d(TAG, "로그인 성공 ${token.accessToken}")
+            Log.e(TAG, "로그인 성공 ${token.accessToken}")
             nextMainActivity()
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            binding.idKakaoLoginBtn.id -> {
-                if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-                    UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
-                        if (error != null) {
-                            Log.d(TAG, "로그인 실패 $error")
-                            if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                                return@loginWithKakaoTalk
-                            } else {
-                                UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback)
-                            }
-                        } else if (token != null) {
-                            Log.d(TAG, "로그인 성공 ${token.accessToken}")
-                            Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
-                            nextMainActivity()
-                        }
-                    }
-                } else {
-                    UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback)
-                }
-            }
-        }
-    }
+    private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setFlags(
@@ -84,23 +49,69 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()
 
-        // Kakao SDK 초기화
-        //kakao_native_app_key
+        //화면 띄어 주는 것이라서 지우면 안됨
+        setContentView(binding.root)
 
-//        Log.d(TAG, "카카오 로그인 네이티브 키 ${getApplicationContext().getResources().getString(R.string.kakao_native_app_key)}")
-//        KakaoSdk.init(this, "${R.string.kakao_native_app_key}")
+        binding.idKakaoLoginBtn.setOnClickListener{
+            Log.d(TAG, "로그인 버튼 눌렀다!!")
+            btnKakaoLogin(it)
+        }
+    }
 
-        //액세스 토큰이 있는 경우
-        if (AuthApiClient.instance.hasToken()) {
-            UserApiClient.instance.accessTokenInfo { _, error ->
-                if (error == null) {
+    fun btnKakaoLogin(view: View) {
+        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+        if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)){
+            UserApiClient.instance.loginWithKakaoTalk(this){ token, error ->
+                //로그인 실패 부분
+                if(error != null){
+                    when {
+                        error.toString() == AuthErrorCause.AccessDenied.toString() -> {
+                            Log.d("[카카오톡 로그인 에러]","접근이 거부 됨(동의 취소)")
+                        }
+                        error.toString() == AuthErrorCause.InvalidClient.toString() -> {
+                            Log.d("[카카오톡 로그인 에러]","유효하지 않은 앱")
+                        }
+                        error.toString() == AuthErrorCause.InvalidGrant.toString() -> {
+                            Log.d("[카카오톡 로그인 에러]","인증 수단이 유효하지 않아 인증할 수 없는 상태")
+                        }
+                        error.toString() == AuthErrorCause.InvalidRequest.toString() -> {
+                            Log.d("[카카오톡 로그인 에러]","요청 파라미터 오류")
+                        }
+                        error.toString() == AuthErrorCause.InvalidScope.toString() -> {
+                            Log.d("[카카오톡 로그인 에러]","유효하지 않은 scope ID")
+                        }
+                        error.toString() == AuthErrorCause.Misconfigured.toString() -> {
+                            Log.d("[카카오톡 로그인 에러]","설정이 올바르지 않음(android key hash)")
+                        }
+                        error.toString() == AuthErrorCause.ServerError.toString() -> {
+                            Log.d("[카카오톡 로그인 에러]","서버 내부 에러")
+                        }
+                        error.toString() == AuthErrorCause.Unauthorized.toString() -> {
+                            Log.d("[카카오톡 로그인 에러]","앱이 요청 권한이 없음")
+                        }
+                        else -> { // Unknown
+                            Log.d("[카카오톡 로그인 에러]","기타 에러")
+                        }
+                    }
+                    // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+                    UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoCallback)
+                }else if (token != null) {
+                    Log.d("[카카오로그인]","로그인에 성공하였습니다.\n${token.accessToken}")
+                    UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+//                    UserApiClient.instance.me { user, error ->
+//                        nickname.text = "닉네임: ${user?.kakaoAccount?.profile?.nickname}"
+//                    }
+                    }
                     nextMainActivity()
                 }
+                else {
+                    Log.d("카카오 로그인", "토큰==null error==null")
+                }
             }
+        }else{
+            Log.d("카카오 계정 로그인", "잘 나옴?")
+            UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoCallback)
         }
-
-        setContentView(binding.root)
-        binding.idKakaoLoginBtn.setOnClickListener(this)
     }
 
     override fun onBackPressed() {
@@ -121,28 +132,4 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
-
-    private fun getKakaoNativeAppKey(context: LoginActivity): String? {
-        val properties = Properties()
-        val inputStream = context.assets.open("local.properties")
-        properties.load(inputStream)
-        Log.d(TAG, "제발 카카오 로그인 >> ${properties.getProperty("kakao_native_app_key")}")
-        return properties.getProperty("kakao_native_app_key")
-    }
-
-//    private fun initObserve() {
-//        viewModel.openEvent.eventObserve(this) { obj ->
-//
-//            var intent: Intent? = null
-//
-//            when (obj) {
-//                ActivityCode.MAIN_ACTIVITY -> intent = Intent(this, MainActivity::class.java)
-//                else -> {
-//                    null
-//                }
-//            }
-//
-//            startActivity(intent)
-//        }
-//    }
 }

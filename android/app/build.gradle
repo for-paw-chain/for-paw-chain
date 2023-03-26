@@ -7,6 +7,10 @@ plugins {
 
 apply plugin: 'kotlin-kapt'
 
+// local.properties 사용을 위함
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     namespace 'com.ssafy.forpawchain'
     compileSdk 33
@@ -16,11 +20,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-//
-//    Properties properties = new Properties()
-//    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-//    def kakao_native_app_key = properties.getProperty('kakao_native_app_key')
-
     defaultConfig {
         applicationId "com.ssafy.forpawchain"
         minSdk 28
@@ -29,6 +28,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "KAKAO_NATIVE_APP_KEY", properties['kakao.native.app.key']
 
     }
 
