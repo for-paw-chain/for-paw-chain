@@ -12,13 +12,10 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
-import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
-import com.ssafy.forpawchain.model.domain.MyPawListDTO
-import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class AdoptViewFragment : Fragment() {
@@ -62,11 +59,12 @@ class AdoptViewFragment : Fragment() {
 
         val recyclerView = binding.recycler
 
-        recyclerView.adapter = DiagnosisRecyclerViewAdapter(
-            {
-                navController.navigate(R.id.navigation_diagnosis_detail)
-                Log.d(TAG, "의료기록 상세 조회")
-            })
+        recyclerView.adapter = DiagnosisRecyclerViewAdapter {
+            val bundle = Bundle()
+            bundle.putSerializable("item", it)
+            navController.navigate(R.id.navigation_diagnosis_detail, bundle)
+            Log.d(TAG, "의료기록 상세 조회")
+        }
 
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -77,35 +75,18 @@ class AdoptViewFragment : Fragment() {
             (binding.recycler.adapter as DiagnosisRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
 
         }
-        viewModel.addTask(DiagnosisHistoryDTO("[초진] 상담", "2022-03-03 오후 03:05:27", "Sign by 김의사"))
-        viewModel.addTask(
-            DiagnosisHistoryDTO(
-                "[초진] 치과수술 / 담석 체크 / 좌측 pm4 발치",
-                "2022-03-05 오후 04:05:27",
-                "Sign by 김의사"
+        lifecycleScope.launch {
+            ForPawChain.setBlockChain(
+                "0x789bE5eC74330cd64d007a15bD273fCC27fEE6bB",
+                "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
             )
-        )
-        viewModel.addTask(
-            DiagnosisHistoryDTO(
-                "[초진] 치과수술 / 담석 체크 / 좌측 pm4 발치",
-                "2022-03-05 오후 04:05:27",
-                "Sign by 김의사"
-            )
-        )
-        viewModel.addTask(
-            DiagnosisHistoryDTO(
-                "[초진] 치과수술 / 담석 체크 / 좌측 pm4 발치",
-                "2022-03-05 오후 04:05:27",
-                "Sign by 김의사"
-            )
-        )
-        viewModel.addTask(
-            DiagnosisHistoryDTO(
-                "[초진] 치과수술 / 담석 체크 / 좌측 pm4 발치",
-                "2022-03-05 오후 04:05:27",
-                "Sign by 김의사"
-            )
-        )
+            val history = ForPawChain.getHistory()
+            for (item in history) {
+                viewModel.addTask(item)
+            }
+        }
+
+
         binding.fab.setOnClickListener { view ->
             navController.navigate(R.id.navigation_adopt_create)
             Log.d(MyPawHistoryFragment.TAG, "공고 추가")

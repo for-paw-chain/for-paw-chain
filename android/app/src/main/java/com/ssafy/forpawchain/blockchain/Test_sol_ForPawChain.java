@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.DynamicArray;
@@ -81,7 +83,7 @@ public class Test_sol_ForPawChain extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteCall<?> getHistory(BigInteger index) {
+    public RemoteCall<List<Type>> getHistory(BigInteger index) {
         final Function function = new Function(
                 FUNC_GETHISTORY,
                 // 인자 타입
@@ -102,7 +104,7 @@ public class Test_sol_ForPawChain extends Contract {
         return executeRemoteCallMultipleValueReturn(function);
     }
 
-    public RemoteCall<?> getItem(BigInteger index) {
+    public RemoteCall<List<Type>> getItem(BigInteger index) {
         final Function function = new Function(
                 FUNC_GETITEM,
                 Collections.singletonList(new Uint256(index)),
