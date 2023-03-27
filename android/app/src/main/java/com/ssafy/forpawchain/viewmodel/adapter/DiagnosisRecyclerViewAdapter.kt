@@ -1,14 +1,10 @@
 package com.ssafy.forpawchain.viewmodel.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.ControllDiagnosisHistoryBinding
-import com.ssafy.forpawchain.model.domain.AdoptDTO
-import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
 import com.ssafy.forpawchain.model.domain.HistoryDTO
-import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
 
 class DiagnosisRecyclerViewAdapter(
     val onClickDetailButton: (pos: HistoryDTO) -> Unit,

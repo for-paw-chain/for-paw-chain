@@ -14,13 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
-import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
-import com.ssafy.forpawchain.model.domain.HistoryDTO
-import com.ssafy.forpawchain.model.domain.MyPawListDTO
-import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class AdoptViewFragment : Fragment() {
@@ -64,11 +59,12 @@ class AdoptViewFragment : Fragment() {
 
         val recyclerView = binding.recycler
 
-        recyclerView.adapter = DiagnosisRecyclerViewAdapter(
-            {
-                navController.navigate(R.id.navigation_diagnosis_detail)
-                Log.d(TAG, "의료기록 상세 조회")
-            })
+        recyclerView.adapter = DiagnosisRecyclerViewAdapter {
+            val bundle = Bundle()
+            bundle.putSerializable("item", it)
+            navController.navigate(R.id.navigation_diagnosis_detail, bundle)
+            Log.d(TAG, "의료기록 상세 조회")
+        }
 
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
