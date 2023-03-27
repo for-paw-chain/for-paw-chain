@@ -35,17 +35,16 @@ class SplashActivity : AppCompatActivity() {
             "0x789bE5eC74330cd64d007a15bD273fCC27fEE6bB",
             "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
         )
-        val temp = ForPawChain.getHistory()
+//        val temp = ForPawChain.getHistory()
         startLoading();
     }
 
     private fun startLoading() {
-        // TODO: 주석 해제 꼭 필요
-//        val handler = Handler()
-//        handler.postDelayed(Runnable {
-//            // Splash Screen이 뜨고 나서 실행될 Activity 연결
-//            startActivity(Intent(applicationContext, LoginActivity::class.java))
-//            finish()
-//        }, 2000)
+        val handler = Handler()
+        handler.postDelayed(Runnable {
+            // Splash Screen이 뜨고 나서 실행될 Activity 연결
+            startActivity(Intent(applicationContext, LoginActivity::class.java))
+            finish()
+        }, 2000)
     }
 }

@@ -10,5 +10,6 @@ data class HistoryDTO(
     val body: String,
     val extra: ArrayList<Data>,
     val writer: String,
-    val hash: String
+    val hash: String,
+    val date: String
 )

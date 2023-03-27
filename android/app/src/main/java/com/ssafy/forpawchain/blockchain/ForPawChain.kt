@@ -19,9 +19,6 @@ class ForPawChain {
         val web3 =
             Web3j.build(InfuraHttpService("https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91"))
 
-        //        val web3 = Web3jFactory.build()
-        val web3ClientVersion = web3.web3ClientVersion().sendAsync().get()
-
         // gas limit
         val gasLimit: BigInteger = BigInteger.valueOf(3000000)
 
@@ -68,7 +65,8 @@ class ForPawChain {
                             body.value.toString(),
                             extra,
                             writer.value,
-                            hash.value
+                            hash.value,
+                            "2022-03-03 오후 03:05:27" // TODO: 시간 작업 필요
                         )
                     )
                 }

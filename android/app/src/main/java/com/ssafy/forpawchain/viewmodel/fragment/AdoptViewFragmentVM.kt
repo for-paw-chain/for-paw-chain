@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
+import com.ssafy.forpawchain.model.domain.HistoryDTO
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.util.ImageLoader
@@ -29,21 +30,21 @@ class AdoptViewFragmentVM : ViewModel() {
     )
 
     //추가 시작
-    val todoLiveData = MutableLiveData<List<DiagnosisHistoryDTO>>() //변경/관찰가능한 List
+    val todoLiveData = MutableLiveData<List<HistoryDTO>>() //변경/관찰가능한 List
 
     //추가 끝
-    private val data = arrayListOf<DiagnosisHistoryDTO>()
+    private val data = arrayListOf<HistoryDTO>()
 
     companion object {
         val TAG: String? = this::class.qualifiedName
     }
 
-    fun addTask(todo: DiagnosisHistoryDTO) {
+    fun addTask(todo: HistoryDTO) {
         data.add(todo)
         todoLiveData.value = data //todoLiveData를 add된 데이터로 변경
     }
 
-    fun deleteTask(todo: DiagnosisHistoryDTO) {
+    fun deleteTask(todo: HistoryDTO) {
         data.remove(todo)
         todoLiveData.value = data //todoLiveData를 remove된 데이터로 변경, 이제 TodoLiveData로 UI값을 변경해줘야한다.
     }
