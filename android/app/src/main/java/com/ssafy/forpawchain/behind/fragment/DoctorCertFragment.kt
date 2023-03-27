@@ -20,6 +20,7 @@ import com.ssafy.forpawchain.databinding.FragmentDoctorCertBinding
 import com.ssafy.forpawchain.databinding.FragmentUserBinding
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
+import com.ssafy.forpawchain.util.DoctorCertFragmentVMFactory
 import com.ssafy.forpawchain.viewmodel.adapter.MyPageMenuAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.DoctorCertFragmentVM
@@ -48,7 +49,8 @@ class DoctorCertFragment : Fragment() {
     ): View {
         _binding = FragmentDoctorCertBinding.inflate(inflater, container, false)
         activity?.let {
-            viewModel = ViewModelProvider(it).get(DoctorCertFragmentVM::class.java)
+            val viewModelFactory = DoctorCertFragmentVMFactory(requireContext())
+            viewModel = ViewModelProvider(it, viewModelFactory).get(DoctorCertFragmentVM::class.java)
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }
