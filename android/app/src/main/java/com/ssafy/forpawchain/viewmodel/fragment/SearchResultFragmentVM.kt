@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.Event
-import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 
 class SearchResultFragmentVM : ViewModel() {
