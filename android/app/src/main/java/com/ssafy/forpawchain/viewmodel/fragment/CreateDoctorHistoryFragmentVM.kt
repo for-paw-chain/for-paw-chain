@@ -4,31 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.Event
-import com.ssafy.forpawchain.blockchain.Forpawchain_sol_Storage
-import com.ssafy.forpawchain.model.domain.AdoptDTO
 import com.ssafy.forpawchain.model.domain.DianosisNewDTO
-import com.ssafy.forpawchain.model.domain.MyPawListDTO
-import com.ssafy.forpawchain.model.service.IpfsService
-import com.ssafy.forpawchain.util.ImageLoader
-import okhttp3.Callback
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import org.web3j.abi.datatypes.Utf8String
-import org.web3j.abi.datatypes.generated.Uint256
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
-import org.web3j.protocol.infura.InfuraHttpService
-import retrofit2.Call
-import retrofit2.Response
-import java.io.File
-import java.math.BigInteger
-import kotlin.concurrent.thread
 
 
 class CreateDoctorHistoryFragmentVM : ViewModel() {
