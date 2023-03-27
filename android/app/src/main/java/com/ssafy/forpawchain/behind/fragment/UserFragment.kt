@@ -1,18 +1,21 @@
 package com.ssafy.forpawchain.behind.fragment
 
+import android.app.ProgressDialog
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ssafy.basictemplate.util.ActivityCode
+import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.behind.activity.LoginActivity
 import com.ssafy.forpawchain.behind.activity.MainActivity
@@ -22,6 +25,7 @@ import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.viewmodel.adapter.MyPageMenuAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.UserFragmentVM
+
 
 class UserFragment : Fragment() {
     private lateinit var viewModel: UserFragmentVM
@@ -34,14 +38,13 @@ class UserFragment : Fragment() {
 
     companion object {
         val TAG: String? = this::class.qualifiedName
-
-
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         activity?.let {
@@ -59,22 +62,61 @@ class UserFragment : Fragment() {
                 if (it.title.equals("의사 면허 등록")) {
                     // TODO: navController
                     navController.navigate(R.id.navigation_doctor_cert)
-
                 } else if (it.title.equals("나의 반려 동물")) {
                     // TODO: navController
                     navController.navigate(R.id.navigation_my_paw_list)
                 } else if (it.title.equals("회원 탈퇴")) {
+                    // dialog는 확인 창
                     val dialog = WithdrawalDialog(requireContext(), object : IPermissionDelete {
                         override fun onDeleteBtnClick() {
-                            Log.d(TAG, "회원탈퇴 완료")
+                            UserApiClient.instance.unlink { error ->
+                                if (error != null) {
+                                    // 에러가 발생한 경우 처리합니다.
+                                    Log.d(UserFragment.TAG, "회원 탈퇴 에러 발생")
+                                } else {
+                                    // 로그아웃이 성공한 경우 처리합니다.
+                                    Log.d(UserFragment.TAG, "회원 탈퇴 완료")
+                                }
+                            }
                         }
                     })
-
                     dialog.show()
                 } else if (it.title.equals("로그아웃")) {
-                    requireActivity().finish()
-                    var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
-                    startActivity(intent)
+                    Log.d(UserFragment.TAG, "로그아웃 누름")
+                    UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+                        if (error != null) {
+                            // 액세스 토큰 정보를 가져오는 중 에러가 발생한 경우 처리합니다.
+                            Log.d(UserFragment.TAG, "액세스 토큰 정보를 가져오는 중 에러가 발생")
+                            requireActivity().finish()
+                            var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
+                            startActivity(intent)
+                        } else if (tokenInfo != null) {
+                            // 액세스 토큰 정보를 가져왔고, 로그인한 사용자인 경우 로그아웃을 수행합니다.
+                            UserApiClient.instance.logout { error ->
+                                if (error != null) {
+                                    // 에러가 발생한 경우 처리합니다.
+                                    Log.d(UserFragment.TAG, "에러 발생")
+                                } else {
+                                    // 로그아웃이 성공한 경우 처리합니다.
+                                    Log.d(UserFragment.TAG, "정상적인 로그아웃")
+                                    requireActivity().finish()
+                                    var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
+                                    startActivity(intent)
+                                    dialog = new ProgressDialog(this);
+                                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                    //dialog.setIndeterminate(true);
+                                    dialog.setCancelable(true);
+                                    //dialog.setCancelable(false); ProcessDialog를 취소할 수 있는지를 결정한다.
+                                    // 디폴트는 true인듯하다
+                                    dialog.setMessage("Checking Data");
+                                    dialog.show();
+                                }
+                            }
+                        } else {
+                            // 로그인하지 않은 사용자인 경우 처리합니다.
+                            Log.d(UserFragment.TAG, "로그인하지 않은 사용자의 로그아웃")
+                        }
+                    }
                 } else if (it.title.equals("내가 쓴 글")) {
                     navController.navigate(R.id.navigation_my_paw_history)
                 }

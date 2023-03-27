@@ -4,13 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.UserManager
 import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.BuildConfig
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.fragment.UserFragment
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -34,6 +37,17 @@ class SplashActivity : AppCompatActivity() {
         val handler = Handler()
         handler.postDelayed(Runnable {
             // Splash Screen이 뜨고 나서 실행될 Activity 연결
+
+            UserApiClient.instance.unlink { error ->
+                if (error != null) {
+                    // 에러가 발생한 경우 처리합니다.
+                    Log.d(UserFragment.TAG, "회원 탈퇴 에러 발생")
+                } else {
+                    // 로그아웃이 성공한 경우 처리합니다.
+                    Log.d(UserFragment.TAG, "회원 탈퇴")
+                }
+            }
+
             UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
                 if(error != null){
                     Log.d(LoginActivity.TAG, "로그인 토큰 에러>> ${error}")

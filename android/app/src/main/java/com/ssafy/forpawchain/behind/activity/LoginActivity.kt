@@ -1,22 +1,20 @@
 package com.ssafy.forpawchain.behind.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.AuthErrorCause
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.ssafy.forpawchain.BuildConfig
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
+
 
 class LoginActivity : AppCompatActivity() {
     //뒤로가기 연속 클릭 대기 시간
@@ -52,63 +50,61 @@ class LoginActivity : AppCompatActivity() {
         //화면 띄어 주는 것이라서 지우면 안됨
         setContentView(binding.root)
 
-        binding.idKakaoLoginBtn.setOnClickListener{
-            Log.d(TAG, "로그인 버튼 눌렀다!!")
+        binding.idKakaoLoginBtn.setOnClickListener {
             btnKakaoLogin(it)
         }
     }
 
     fun btnKakaoLogin(view: View) {
-        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-        if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)){
-            UserApiClient.instance.loginWithKakaoTalk(this){ token, error ->
+        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오 계정으로 로그인
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                 //로그인 실패 부분
-                if(error != null){
+                if (error != null) {
                     when {
                         error.toString() == AuthErrorCause.AccessDenied.toString() -> {
-                            Log.d("[카카오톡 로그인 에러]","접근이 거부 됨(동의 취소)")
+                            Log.d("[카카오톡 로그인 에러]", "접근이 거부 됨(동의 취소)")
                         }
                         error.toString() == AuthErrorCause.InvalidClient.toString() -> {
-                            Log.d("[카카오톡 로그인 에러]","유효하지 않은 앱")
+                            Log.d("[카카오톡 로그인 에러]", "유효하지 않은 앱")
                         }
                         error.toString() == AuthErrorCause.InvalidGrant.toString() -> {
-                            Log.d("[카카오톡 로그인 에러]","인증 수단이 유효하지 않아 인증할 수 없는 상태")
+                            Log.d("[카카오톡 로그인 에러]", "인증 수단이 유효하지 않아 인증할 수 없는 상태")
                         }
                         error.toString() == AuthErrorCause.InvalidRequest.toString() -> {
-                            Log.d("[카카오톡 로그인 에러]","요청 파라미터 오류")
+                            Log.d("[카카오톡 로그인 에러]", "요청 파라미터 오류")
                         }
                         error.toString() == AuthErrorCause.InvalidScope.toString() -> {
-                            Log.d("[카카오톡 로그인 에러]","유효하지 않은 scope ID")
+                            Log.d("[카카오톡 로그인 에러]", "유효하지 않은 scope ID")
                         }
                         error.toString() == AuthErrorCause.Misconfigured.toString() -> {
-                            Log.d("[카카오톡 로그인 에러]","설정이 올바르지 않음(android key hash)")
+                            Log.d("[카카오톡 로그인 에러]", "설정이 올바르지 않음(android key hash)")
                         }
                         error.toString() == AuthErrorCause.ServerError.toString() -> {
-                            Log.d("[카카오톡 로그인 에러]","서버 내부 에러")
+                            Log.d("[카카오톡 로그인 에러]", "서버 내부 에러")
                         }
                         error.toString() == AuthErrorCause.Unauthorized.toString() -> {
-                            Log.d("[카카오톡 로그인 에러]","앱이 요청 권한이 없음")
+                            Log.d("[카카오톡 로그인 에러]", "앱이 요청 권한이 없음")
                         }
                         else -> { // Unknown
-                            Log.d("[카카오톡 로그인 에러]","기타 에러")
+                            Log.d("[카카오톡 로그인 에러]", "기타 에러")
                         }
                     }
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoCallback)
-                }else if (token != null) {
-                    Log.d("[카카오로그인]","로그인에 성공하였습니다.\n${token.accessToken}")
+                } else if (token != null) {
+                    Log.d("[카카오톡 로그인]", "로그인에 성공하였습니다. 토큰은 > ${token.accessToken}")
                     UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-//                    UserApiClient.instance.me { user, error ->
-//                        nickname.text = "닉네임: ${user?.kakaoAccount?.profile?.nickname}"
-//                    }
+                        UserApiClient.instance.me { user, error ->
+                            Log.d("[카카오톡 로그인]", "유저 정보. ${user}")
+                        }
                     }
                     nextMainActivity()
-                }
-                else {
+                } else {
                     Log.d("카카오 로그인", "토큰==null error==null")
                 }
             }
-        }else{
+        } else { // 카카오 계정 로그인
             Log.d("카카오 계정 로그인", "잘 나옴?")
             UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoCallback)
         }
