@@ -10,6 +10,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.BuildConfig
 import com.ssafy.forpawchain.R
@@ -26,8 +27,11 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        //해시 키가 컴퓨터마다 바뀌는 경우가 생김.. 그럴때 마다 하나씩 추가하기
+//        val keyHash = Utility.getKeyHash(this)
+//        Log.d("Hash", keyHash)
+
         // Kakao SDK 초기화, local.properties에서 불러와야함
-        //val kakaoNativeAppKey = getKakaoNativeAppKey(this)
         Log.d(LoginActivity.TAG, "카카오 키는 제대로? ${BuildConfig.KAKAO_NATIVE_APP_KEY}")
         KakaoSdk.init(this, "${BuildConfig.KAKAO_NATIVE_APP_KEY}")
         startLoading();
@@ -45,6 +49,16 @@ class SplashActivity : AppCompatActivity() {
                 } else {
                     // 로그아웃이 성공한 경우 처리합니다.
                     Log.d(UserFragment.TAG, "회원 탈퇴")
+                }
+            }
+
+            UserApiClient.instance.logout { error ->
+                if (error != null) {
+                    // 에러가 발생한 경우 처리합니다.
+                    Log.d(UserFragment.TAG, "로그아웃 에러 발생")
+                } else {
+                    // 로그아웃이 성공한 경우 처리합니다.
+                    Log.d(UserFragment.TAG, "로그아웃")
                 }
             }
 

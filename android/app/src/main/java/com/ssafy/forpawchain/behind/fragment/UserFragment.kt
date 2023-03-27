@@ -102,14 +102,14 @@ class UserFragment : Fragment() {
                                     requireActivity().finish()
                                     var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
                                     startActivity(intent)
-                                    dialog = new ProgressDialog(this);
-                                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                    //dialog.setIndeterminate(true);
-                                    dialog.setCancelable(true);
-                                    //dialog.setCancelable(false); ProcessDialog를 취소할 수 있는지를 결정한다.
-                                    // 디폴트는 true인듯하다
-                                    dialog.setMessage("Checking Data");
-                                    dialog.show();
+//                                    dialog = new ProgressDialog(this);
+//                                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                                    //dialog.setIndeterminate(true);
+//                                    dialog.setCancelable(true);
+//                                    //dialog.setCancelable(false); ProcessDialog를 취소할 수 있는지를 결정한다.
+//                                    // 디폴트는 true인듯하다
+//                                    dialog.setMessage("Checking Data");
+//                                    dialog.show();
                                 }
                             }
                         } else {

@@ -12,6 +12,8 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
 
@@ -87,11 +89,15 @@ class LoginActivity : AppCompatActivity() {
                             Log.d("[카카오톡 로그인 에러]", "앱이 요청 권한이 없음")
                         }
                         else -> { // Unknown
-                            Log.d("[카카오톡 로그인 에러]", "기타 에러")
+                            Log.d("[카카오톡 로그인 에러]", "기타 에러 ${error.toString()}")
                         }
                     }
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
-                    UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoCallback)
+                }
+                // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+                // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+                else if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                    return@loginWithKakaoTalk
                 } else if (token != null) {
                     Log.d("[카카오톡 로그인]", "로그인에 성공하였습니다. 토큰은 > ${token.accessToken}")
                     UserApiClient.instance.accessTokenInfo { tokenInfo, error ->

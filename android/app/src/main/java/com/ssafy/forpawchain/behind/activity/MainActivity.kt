@@ -50,21 +50,37 @@ class MainActivity : AppCompatActivity() {
 //        actionBar?.hide()
     }
 
+//    override fun onBackPressed() {
+//        // 뒤로가기 버튼 클릭
+//        Log.d(TAG, "뒤로가기")
+//        if (navController.backQueue.size <= 1) {
+//            // 2초내 다시 클릭하면 앱 종료
+//            if (System.currentTimeMillis() - backPressedTime < 2000) {
+//                android.os.Process.killProcess(android.os.Process.myPid());
+//                return
+//            }
+//            // 처음 클릭 메시지
+//            Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+//            backPressedTime = System.currentTimeMillis()
+//        } else {
+//            navController.navigateUp()
+////            navController.popBackStack()
+//        }
+//    }
+
     override fun onBackPressed() {
-        // 뒤로가기 버튼 클릭
-        Log.d(TAG, "뒤로가기")
-        if (navController.backQueue.size <= 1) {
-            // 2초내 다시 클릭하면 앱 종료
-            if (System.currentTimeMillis() - backPressedTime < 2000) {
-                android.os.Process.killProcess(android.os.Process.myPid());
-                return
+        val currentTime = System.currentTimeMillis()
+        Log.d(MainActivity.TAG, "뒤로 가기 눌렀을 때 백큐 사이즈 : ${navController.backQueue.size}")
+        if (navController.backQueue.size <= 2){ //홈 화면의 navController.backQueue.size는 2가 가장 낮다
+            if (backPressedTime + 2000 > currentTime) {
+                super.onBackPressed()
+                finish()
+            } else {
+                Toast.makeText(this, "뒤로 가기 버튼을 한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show() // Toast.LENGTH_SHORT 자체가 2초
             }
-            // 처음 클릭 메시지
-            Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
-            backPressedTime = System.currentTimeMillis()
-        } else {
+        }else{ //아직 backQueue에 액티비티가 남아있는 경우
             navController.navigateUp()
-//            navController.popBackStack()
         }
+        backPressedTime = currentTime
     }
 }
