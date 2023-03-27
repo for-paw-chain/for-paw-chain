@@ -8,5 +8,6 @@ import com.forpawchain.domain.Entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	Optional<UserEntity> findById(String id);
+	Optional<UserEntity> findByIdAndSocial(String id, String social);
 	UserEntity findByUid(long uid);
 }

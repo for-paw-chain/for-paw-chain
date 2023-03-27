@@ -26,11 +26,15 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 import com.forpawchain.domain.dto.token.TokenInfo;
+import com.forpawchain.exception.BaseException;
+import com.forpawchain.exception.ErrorMessage;
 
 @Slf4j
 @Component
 public class JwtTokenProvider {
 	private final Key key;
+	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
+	private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
 
 	// jwt.secret을 통해 secret key 생성
 	public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
@@ -45,10 +49,15 @@ public class JwtTokenProvider {
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.joining(","));
 
+		// 수정 필요
+		if(authorities.equals("")) {
+			authorities = "ROLE_USER";
+		}
+
 		long now = (new Date()).getTime(); // 현재 시간
 
 		// accessToken
-		Date accessTokenExpireseIn = new Date(now + 8640000);
+		Date accessTokenExpireseIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 		String accessToken = Jwts.builder()
 			.setSubject(authentication.getName())
 			.claim("auth", authorities)
@@ -58,7 +67,7 @@ public class JwtTokenProvider {
 
 		// refreshToken
 		String refreshToken = Jwts.builder()
-			.setExpiration(new Date(now + 86400000))
+			.setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 
@@ -102,6 +111,15 @@ public class JwtTokenProvider {
 		}
 	}
 
+	// 토큰에서 식별자 변환
+	public String getUserId(String token) {
+		return Jwts.parser()
+			.setSigningKey(key)
+			.parseClaimsJws(token)
+			.getBody()
+			.getSubject();
+	}
+
 	// 토큰 유효성 검증
 	public boolean validateToken(String token) {
 		try {
@@ -109,14 +127,20 @@ public class JwtTokenProvider {
 				setSigningKey(key)
 				.build()
 				.parseClaimsJws(token);
+			return true;
 		} catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException e) {
 			log.info("Invalid JWT Token", e);
+			// 예외처리 이렣게 안됨
+			// throw new BaseException(ErrorMessage.ACCESS_TOKEN_INVALID_SIGNATURE);
 		} catch (ExpiredJwtException e) {
 			log.info("Expired JWT Token", e);
+			// throw new BaseException(ErrorMessage.ACCESS_TOKEN_EXPIRE);
 		} catch (UnsupportedJwtException e) {
 			log.info("Unsupported JWT Token", e);
+			// throw new BaseException(ErrorMessage.ACCESS_TOKEN_INVALID);
 		} catch (IllegalArgumentException e) {
 			log.info("JWT claims string is empty.", e);
+			// throw new BaseException(ErrorMessage.ACCESS_TOKEN_INVALID_HEADER);
 		}
 
 		return false;

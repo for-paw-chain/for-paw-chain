@@ -14,7 +14,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 	private final JwtTokenProvider jwtTokenProvider;
@@ -23,9 +25,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws
 		IOException, ServletException {
 		String token = resolveToken((HttpServletRequest) request);
-
 		// 토큰 유효성 검사
 		if(token != null && jwtTokenProvider.validateToken(token)) {
+			// 사용자 정보 등록
+			String id = jwtTokenProvider.getUserId(token);
 			Authentication authentication = jwtTokenProvider.geAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}

@@ -30,18 +30,18 @@ public enum ErrorMessage {
 	EXIST_WALLET(251, "이미 의사 면허 인증이 완료되었습니다.", HttpStatus.BAD_REQUEST),
 	//
 	// NOT_TIMESTAMP(205, "탈퇴 후 재 가입은 24시간이 넘어서 가능합니다.", HttpStatus.BAD_REQUEST),
-	NOT_USER_INFO(300, "유저정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+	NOT_USER_INFO(300, "유저정보가 존재하지 않습니다.", HttpStatus.BAD_REQUEST),
 	//
 	// REFRESH_TOKEN_EXPIRE(900, "리프세리 토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED),
 	// REFRESH_TOKEN_NOT_MATCH(901, "리프레시 토큰이 일치하지 않습니다.", HttpStatus.UNAUTHORIZED),
 	//
-	// ACCESS_TOKEN_EXPIRE(1000, "토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED),
-	// ACCESS_TOKEN_INVALID(1001, "토큰이 잘못되었습니다.", HttpStatus.UNAUTHORIZED),
+	ACCESS_TOKEN_EXPIRE(1000, "토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED),
+	ACCESS_TOKEN_INVALID(1001, "토큰이 잘못되었습니다.", HttpStatus.UNAUTHORIZED),
 	// ACCESS_TOKEN_NOT_LOAD(1002, "토큰을 불러오지 못하였습니다.", HttpStatus.UNAUTHORIZED),
 	// ACCESS_TOKEN_INVALID_STRUCT(1010, "토큰이 구조가 잘못되었습니다.", HttpStatus.UNAUTHORIZED),
-	// ACCESS_TOKEN_INVALID_HEADER(1011, "토큰 해더가 손상되었습니다.", HttpStatus.UNAUTHORIZED),
+	ACCESS_TOKEN_INVALID_HEADER(1011, "토큰 해더가 손상되었습니다.", HttpStatus.UNAUTHORIZED),
 	// ACCESS_TOKEN_INVALID_PAYLOADS(1012, "토큰 정보가 손상되었습니다.", HttpStatus.UNAUTHORIZED),
-	// ACCESS_TOKEN_INVALID_SIGNATURE(1013, "토큰이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED),
+	ACCESS_TOKEN_INVALID_SIGNATURE(1013, "토큰이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
 	// ACCESS_TOKEN_EMPTY(1014, "토큰이 입력되지 않았습니다.", HttpStatus.BAD_REQUEST);
 	private final Integer code;
 	private final String errMsg;
