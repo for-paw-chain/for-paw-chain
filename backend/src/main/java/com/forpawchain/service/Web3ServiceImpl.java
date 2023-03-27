@@ -161,12 +161,13 @@ public class Web3ServiceImpl implements Web3Service {
 			String password = "1234";
 			String fileName = WalletUtils.generateNewWalletFile(password,
 //				new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
-				 new File("/home/ubuntu/eth/keystore"));
+				 new File("."));
+
+			// String wa = fileName.substring(37, 76);
 
 			// 비밀번호를 이용해 파일로부터 지갑을 로드해오기
 //			String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
-			 String walletFilePath = "/home/ubuntu/eth/keystore" + fileName;
-
+			String walletFilePath = fileName;
 			Credentials myCredentials = WalletUtils.loadCredentials(password, walletFilePath);
 
 			// 지갑의 프라이빗 키
@@ -174,6 +175,7 @@ public class Web3ServiceImpl implements Web3Service {
 
 			// 지갑 주소와 지갑의 프라이빗 키를 DB에 저장
 			userEntity.updateWa(myCredentials.getAddress());
+			// userEntity.updateWa(wa);
 			userRepository.save(userEntity);
 		}
 
