@@ -1,7 +1,5 @@
 package com.forpawchain.controller;
 
-import java.security.Principal;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,7 +20,7 @@ import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.exception.BaseException;
 import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.service.UserService;
-import com.forpawchain.domain.dto.token.TokenInfo;
+import com.forpawchain.domain.dto.TokenInfo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,21 +46,27 @@ public class UserController {
 	@PostMapping("login")
 	public ResponseEntity<TokenInfo> login(@RequestBody LoginUserDto loginUserReqDto) {
 		// 로그인 시마다 정보 일치하면 새로운 token 발급
-		String id = loginUserReqDto.getId();
-		String social = loginUserReqDto.getSocial();
-		TokenInfo tokenInfo = userService.login(id, social);
+		TokenInfo tokenInfo = userService.login(loginUserReqDto);
 		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
 	}
 
 	// 로그아웃
 	@GetMapping("/logout")
-	public void logout(@RequestHeader(value = "Authorization") String accessToken) {
-		removeToken(accessToken);
+	public void logout(@RequestHeader("Authorization") String accessToken,
+		@RequestHeader("RefreshToken") String refreshToken) {
+		String id = getCurrentUserId();
+		userService.logout(accessToken, refreshToken, id);
+	}
+
+	// accessToken 재발급
+	@PostMapping("/reissue")
+	public ResponseEntity<TokenInfo> reissue(@RequestHeader("RefreshToken") String refreshToken) {
+		return ResponseEntity.ok(userService.reissue(refreshToken));
 	}
 
 	// 회원 정보 조회 (회원 프로필)
 	@GetMapping("/")
-	public ResponseEntity<?> getUserInfo(@RequestHeader(value = "Authorization") String accessToken) {
+	public ResponseEntity<?> getUserInfo() {
 		UserInfoResDto userInfo = userService.getUserInfo(getCurrentUserId());
 
 		return ResponseEntity.status(HttpStatus.OK).body(userInfo);
@@ -70,10 +74,10 @@ public class UserController {
 
 	// 회원 탈퇴
 	@DeleteMapping("/")
-	public ResponseEntity<?> removeUser(@RequestHeader(value = "Authorization") String accessToken) {
+	public ResponseEntity<?> removeUser() {
 		userService.removeUser(getCurrentUserId());
 
-		removeToken(accessToken);
+		// 토큰 정보 삭제
 
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
@@ -91,11 +95,4 @@ public class UserController {
 		// 수정 필요
 		return userDetails.getUsername();
 	}
-
-	// 토큰 정보(refresh) 삭제
-	private void removeToken(String accessToken) {
-
-	}
-
-	// 토큰 재발급
 }

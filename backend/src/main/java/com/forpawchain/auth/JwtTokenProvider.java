@@ -25,9 +25,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
-import com.forpawchain.domain.dto.token.TokenInfo;
-import com.forpawchain.exception.BaseException;
-import com.forpawchain.exception.ErrorMessage;
+import com.forpawchain.domain.dto.TokenInfo;
 
 @Slf4j
 @Component
@@ -71,11 +69,7 @@ public class JwtTokenProvider {
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 
-		return TokenInfo.builder()
-			.grantType("Bearer")
-			.accessToken(accessToken)
-			.refreshToken(refreshToken)
-			.build();
+		return TokenInfo.of("Bearer", accessToken, refreshToken);
 	}
 
 	// 토큰 정보 조회
@@ -131,18 +125,18 @@ public class JwtTokenProvider {
 		} catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException e) {
 			log.info("Invalid JWT Token", e);
 			// 예외처리 이렣게 안됨
-			// throw new BaseException(ErrorMessage.ACCESS_TOKEN_INVALID_SIGNATURE);
+			throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
 		} catch (ExpiredJwtException e) {
 			log.info("Expired JWT Token", e);
-			// throw new BaseException(ErrorMessage.ACCESS_TOKEN_EXPIRE);
+			throw new IllegalArgumentException("만료된 토큰입니다.");
 		} catch (UnsupportedJwtException e) {
 			log.info("Unsupported JWT Token", e);
-			// throw new BaseException(ErrorMessage.ACCESS_TOKEN_INVALID);
+			throw new IllegalArgumentException("지원하지 않는 토큰 형식입니다.");
 		} catch (IllegalArgumentException e) {
 			log.info("JWT claims string is empty.", e);
-			// throw new BaseException(ErrorMessage.ACCESS_TOKEN_INVALID_HEADER);
+			throw new IllegalArgumentException("빈 토큰입니다.");
 		}
 
-		return false;
+		// return false;
 	}
 }

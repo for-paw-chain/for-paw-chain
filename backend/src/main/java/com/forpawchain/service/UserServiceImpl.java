@@ -8,13 +8,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.forpawchain.auth.JwtTokenProvider;
+import com.forpawchain.domain.Entity.RefreshToken;
 import com.forpawchain.domain.dto.LoginUserDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.domain.Entity.UserEntity;
-import com.forpawchain.domain.dto.token.TokenInfo;
+import com.forpawchain.domain.dto.TokenInfo;
 import com.forpawchain.exception.BaseException;
 import com.forpawchain.exception.ErrorMessage;
+import com.forpawchain.repository.RefreshTokenRedisRepository;
 import com.forpawchain.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
+	private RefreshTokenRedisRepository refreshTokenRedisRepository;
 	private AuthenticationManagerBuilder authenticationManagerBuilder;
 	private JwtTokenProvider jwtTokenProvider;
 
@@ -71,13 +74,31 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public TokenInfo login(String id, String social) {
+	public TokenInfo login(LoginUserDto loginUserDto) {
 		// id와 social 정보를 통해서 Authentication 생성
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id, social);
+		UsernamePasswordAuthenticationToken authenticationToken =
+			new UsernamePasswordAuthenticationToken(loginUserDto.getId(), loginUserDto.getSocial());
 		// 사용자 확인
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 		// jwt 토큰 생성
 		TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+		registRefreshToken(loginUserDto.getId(), tokenInfo.getRefreshToken());
 		return tokenInfo;
+	}
+
+	private RefreshToken registRefreshToken(String id, String refreshToken) {
+		Long remainingMilliSeconds = 1000L * 60 * 60 * 24 * 7 * 2;
+		RefreshToken refreshTokenEntity = RefreshToken.RefreshTokenBuilder;
+		return refreshTokenRedisRepository.save(refreshTokenEntity);
+	}
+
+	@Override
+	public void logout(String accessToken, String refreshToken, String id) {
+
+	}
+
+	@Override
+	public TokenInfo reissue(String refreshToken) {
+		return null;
 	}
 }

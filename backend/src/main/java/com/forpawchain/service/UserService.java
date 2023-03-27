@@ -3,7 +3,7 @@ package com.forpawchain.service;
 import com.forpawchain.domain.dto.LoginUserDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
-import com.forpawchain.domain.dto.token.TokenInfo;
+import com.forpawchain.domain.dto.TokenInfo;
 
 public interface UserService {
 
@@ -13,5 +13,9 @@ public interface UserService {
 
 	void removeUser(String id);
 
-	TokenInfo login(String id, String social);
+	TokenInfo login(LoginUserDto loginUserReqDto);
+
+	void logout(String accessToken, String refreshToken, String id);
+
+	TokenInfo reissue(String refreshToken);
 }

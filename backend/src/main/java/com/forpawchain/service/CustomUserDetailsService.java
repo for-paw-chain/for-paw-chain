@@ -1,5 +1,6 @@
 package com.forpawchain.service;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
+	// @Cacheable(value = CacheKey.USER, key = "#username", unless = "#result == null")
 	public UserDetails loadUserByUsername(String id) {
 		return userRepository.findById(id)
 			.map(this::createUserDetails)
@@ -29,7 +31,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 
 	private UserDetails createUserDetails(UserEntity user) {
-
 		return User.builder()
 			.username(user.getUsername())
 			.password(user.getPassword())

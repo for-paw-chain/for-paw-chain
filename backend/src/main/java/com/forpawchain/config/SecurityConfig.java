@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.forpawchain.auth.JwtAuthenticationFilter;
+import com.forpawchain.auth.JwtEntryPoint;
 import com.forpawchain.auth.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 	private final JwtTokenProvider jwtTokenProvider;
+	private final JwtEntryPoint jwtEntryPoint;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,7 +40,10 @@ public class SecurityConfig {
 			.antMatchers("/user/").permitAll()
 			.antMatchers("/user/login").permitAll()
 			.anyRequest().authenticated()
-			// .antMatchers("*").permitAll()
+			.antMatchers("*").permitAll()
+			.and() // 에러핸들링
+			.exceptionHandling()
+			.authenticationEntryPoint(jwtEntryPoint)
 			.and() // JwtTokenProvider 필터 추가
  			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
