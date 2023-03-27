@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
+import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
@@ -139,16 +140,13 @@ public class Web3ServiceImpl implements Web3Service {
 	 * private key를 프론트에 전달해주기. db에는 저장 안함
 	 */
 	public String createWallet(long uid, LicenseReqDto licenseReqDto) throws
-		CipherException,
-		IOException,
-		InvalidAlgorithmParameterException,
-		NoSuchAlgorithmException,
-		NoSuchProviderException {
+		Exception {
 
 		setting();
 
 		UserEntity userEntity = userRepository.findByUid(uid);
 		String privateKey = null;
+		String address = null;
 
 		// 이미 지갑을 생성한 의사임
 		if (userEntity.getWa() != null) {
@@ -157,25 +155,33 @@ public class Web3ServiceImpl implements Web3Service {
 
 		// 의사 계정이 맞는지 확인
 		if (checkLicense(licenseReqDto)) {
-			// 비밀번호를 이용해 새 지갑 파일을 생성
-			String password = "1234";
-			String fileName = WalletUtils.generateNewWalletFile(password,
-//				new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
-				 new File("."));
+// 			// 비밀번호를 이용해 새 지갑 파일을 생성
+// 			String password = "1234";
+// 			String fileName = WalletUtils.generateNewWalletFile(password,
+// //				new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
+// 				 new File("."));
+//
+// 			// String wa = fileName.substring(37, 76);
+//
+// 			// 비밀번호를 이용해 파일로부터 지갑을 로드해오기
+// //			String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
+// 			String walletFilePath = fileName;
+// 			Credentials myCredentials = WalletUtils.loadCredentials(password, walletFilePath);
+//
+// 			// 지갑의 프라이빗 키
+// 			privateKey = myCredentials.getEcKeyPair().getPrivateKey().toString(16);
 
-			// String wa = fileName.substring(37, 76);
+			ECKeyPair ecKeyPair = Keys.createEcKeyPair();
+			BigInteger privateKeyInDec = ecKeyPair.getPrivateKey();
 
-			// 비밀번호를 이용해 파일로부터 지갑을 로드해오기
-//			String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
-			String walletFilePath = fileName;
-			Credentials myCredentials = WalletUtils.loadCredentials(password, walletFilePath);
-
-			// 지갑의 프라이빗 키
-			privateKey = myCredentials.getEcKeyPair().getPrivateKey().toString(16);
+			privateKey = privateKeyInDec.toString(16);
+			address = Keys.getAddress(ecKeyPair);
 
 			// 지갑 주소와 지갑의 프라이빗 키를 DB에 저장
-			userEntity.updateWa(myCredentials.getAddress());
-			// userEntity.updateWa(wa);
+			userEntity.updateWa(address);
+
+			this.sendEth(address);
+
 			userRepository.save(userEntity);
 		}
 

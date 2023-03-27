@@ -48,11 +48,7 @@ public class Web3Controller {
 	@PostMapping("/license")
 	@ApiOperation(value = "의사 인증", notes = "입력한 의사 정보가 정부 DB에 들어있으면 의사임이 인증된다. 지갑이 생성되고 private key가 반환된다.")
 	public ResponseEntity<HashMap<String, String>> authDoctor(@RequestBody LicenseReqDto licenseReqDto) throws
-		InvalidAlgorithmParameterException,
-		CipherException,
-		IOException,
-		NoSuchAlgorithmException,
-		NoSuchProviderException {
+		Exception {
 
 		// authorization으로 uid 값 받아와야됨
 		Long uid = 1L;
