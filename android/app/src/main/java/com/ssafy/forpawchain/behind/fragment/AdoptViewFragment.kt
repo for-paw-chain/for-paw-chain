@@ -11,11 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
+import com.ssafy.forpawchain.model.room.AppDatabase
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AdoptViewFragment : Fragment() {
@@ -75,18 +79,26 @@ class AdoptViewFragment : Fragment() {
             (binding.recycler.adapter as DiagnosisRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
 
         }
-        lifecycleScope.launch {
-            ForPawChain.setBlockChain(
-                "0x789bE5eC74330cd64d007a15bD273fCC27fEE6bB",
-                "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
-            )
-            val history = ForPawChain.getHistory()
-            for (item in history) {
-                viewModel.addTask(item)
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = Room.databaseBuilder(
+                requireContext(),
+                AppDatabase::class.java, "database-name"
+            ).build()
+            val userDao = db.userDao()
+            val user = userDao.getUserById("private")
+            if (user != null) {
+                lifecycleScope.launch {
+                    ForPawChain.setBlockChain(
+                        "0x789bE5eC74330cd64d007a15bD273fCC27fEE6bB",
+                        user.privateKey
+                    )
+                    val history = ForPawChain.getHistory()
+                    for (item in history) {
+                        viewModel.addTask(item)
+                    }
+                }
             }
         }
-
-
         binding.fab.setOnClickListener { view ->
             navController.navigate(R.id.navigation_adopt_create)
             Log.d(MyPawHistoryFragment.TAG, "공고 추가")
