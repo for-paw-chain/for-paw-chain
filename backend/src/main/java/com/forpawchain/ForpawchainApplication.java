@@ -23,11 +23,11 @@ public class ForpawchainApplication {
 
 	}
 
-	 // @Bean
-	 // public TestDataInit testDataInit(DoctorLicenseRepository doctorLicenseRepository, PetRepository petRepository,
-	 // 	UserRepository userRepository, AdoptRepository adoptRepository, PetRegRepository petRegRepository,
-	 // 	PetInfoRepository petInfoRepository, AuthenticationServiceImpl authenticationService, Web3ServiceImpl web3Service) {
-	 // 	return new TestDataInit(doctorLicenseRepository, petRepository, userRepository, adoptRepository,
-	 // 		petRegRepository, petInfoRepository, authenticationService, web3Service);
-	 // }
+	 @Bean
+	 public TestDataInit testDataInit(DoctorLicenseRepository doctorLicenseRepository, PetRepository petRepository,
+	 	UserRepository userRepository, AdoptRepository adoptRepository, PetRegRepository petRegRepository,
+	 	PetInfoRepository petInfoRepository, AuthenticationServiceImpl authenticationService, Web3ServiceImpl web3Service) {
+	 	return new TestDataInit(doctorLicenseRepository, petRepository, userRepository, adoptRepository,
+	 		petRegRepository, petInfoRepository, authenticationService, web3Service);
+	 }
 }

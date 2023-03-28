@@ -80,13 +80,24 @@ public class Web3Controller {
 		System.out.println("지갑 주소 : " + toAddress);
 		web3Service.sendEth(toAddress);
 	}
-	
+
+	/**
+	 * 동물 스마트 컨트랙트 배포
+	 */
 	@PostMapping("contract/{pid}")
 	@ApiOperation(value = "컨트랙트 주소 조회", notes = "해당 동물의 컨트랙트 주소를 반환한다. 컨트랜트 주소가 없으면 새 컨트랙트를 배포한다.")
 	public ResponseEntity<HashMap<String, String>> deployContract(@PathVariable("pid") String pid) throws Exception {
 		HashMap<String, String> map = new HashMap<>();
 		String ca = web3Service.deployContract(pid);
 		map.put("content", ca);
+		return new ResponseEntity<>(map, HttpStatus.OK);
+	}
+
+	@GetMapping("wallet/{wa}")
+	public ResponseEntity<HashMap<String, String>> findDoctor(@PathVariable("wa") String wa) {
+		HashMap<String, String> map = new HashMap<>();
+		String name = web3Service.findDoctor(wa);
+		map.put("content", name);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 }

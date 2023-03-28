@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	// ui의 의사 지갑 주소 반환
 	@Query("select wa from UserEntity u where u.uid = :uid")
 	Optional<String> findWaByUid(@Param("uid") long uid);
+
+	UserEntity findByWa(String wa);
 }
