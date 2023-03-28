@@ -77,9 +77,15 @@
         tools:layout="@layout/fragment_diagnosis_detail" />
 
     <fragment
-        android:id="@+id/navigation_search_result"
+        android:id="@+id/navigation_search_result_auth"
         android:name="com.ssafy.forpawchain.behind.fragment.SearchResultFragment"
         android:label="SearchResult"
-        tools:layout="@layout/fragment_search_result" />
+        tools:layout="@layout/fragment_search_result_auth" />
+
+    <fragment
+        android:id="@+id/navigation_search_result_unauth"
+        android:name="com.ssafy.forpawchain.behind.fragment.SearchResultFragment"
+        android:label="SearchResult"
+        tools:layout="@layout/fragment_search_result_unauth" />
 
 </navigation>
