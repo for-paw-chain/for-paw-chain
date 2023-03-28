@@ -57,8 +57,7 @@ class PermissionPawFragmentVM : ViewModel() {
                         if (result != null) {
                             for (item in result) {
                                 var item1 = item as JsonObject
-                                // TODO: 현정님 오타
-                                if (item1["pfofile"].toString() == "null") {
+                                if (item1["profile"].toString() == "null") {
                                     addTask(
                                         PermissionUserDTO(
                                             null,
