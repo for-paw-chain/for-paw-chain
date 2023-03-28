@@ -207,7 +207,7 @@
 
                     <Button
                         android:id="@+id/qr_btn"
-                        android:layout_width="20dp"
+                        android:layout_width="21dp"
                         android:layout_height="20dp"
                         android:background="@drawable/phone_solid"
                         android:gravity="bottom"
