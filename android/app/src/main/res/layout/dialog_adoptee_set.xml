@@ -62,11 +62,11 @@
         android:layout_width="150dp"
         android:layout_height="30dp"
         android:layout_weight="1"
-        android:background="#743FFF"
         android:fontFamily="@font/kakao_bold"
         android:text="확인"
         android:textColor="@color/white"
         android:textSize="28sp"
+        android:background="@drawable/background_doctor_cert_summit_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
