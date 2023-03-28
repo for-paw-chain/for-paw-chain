@@ -134,4 +134,37 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
+
+    // 카카오 웹뷰 로그인을 위한 오버라이딩 함수
+//    fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//        Log.d(LoginActivity.TAG, "shouldOverrideUrlLoading :: $url")
+//        try {
+//            /**
+//             * 20 12 29
+//             * 카카오링크 오류 수정을 위해 아래 if문을 추가함.
+//             */
+//            if (url != null && url.startsWith("intent:kakaolink:")) {
+//                try {
+//                    val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+//                    val existPackage =
+//                        packageManager.getLaunchIntentForPackage(intent.getPackage()!!)
+//                    if (existPackage != null) {
+//                        startActivity(intent)
+//                    } else {
+//                        val marketIntent = Intent(Intent.ACTION_VIEW)
+//                        marketIntent.data = Uri.parse("market://details?id=" + intent.getPackage())
+//                        startActivity(marketIntent)
+//                    }
+//                    return true
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            return false
+//        }
+//        return false
+//    }
+
 }
