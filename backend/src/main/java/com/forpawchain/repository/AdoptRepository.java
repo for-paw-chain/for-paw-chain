@@ -39,8 +39,7 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 		+ "FROM adopt a, pet_reg pr\n"
 		+ "WHERE a.pid = pr.pid and pr.type LIKE COALESCE(:type, '%')\n"
 		+ "and pr.sex LIKE COALESCE(:sex, '%')\n"
-		+ "and pr.spayed = :spayed\n"
-		+ "order by regTime desc"
+		+ "and pr.spayed = :spayed"
 		, nativeQuery = true)
 	PageImpl<AdoptListResDto> findByTypeAndSexAndSpayed(@Param("type") String type, @Param("sex") String sex,
 		@Param("spayed") int spayed, PageRequest pageRequest);
@@ -48,8 +47,7 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 	@Query(value = "SELECT a.pid, a.profile, pr.type, pr.kind, pr.spayed\n"
 		+ "FROM adopt a, pet_reg pr\n"
 		+ "WHERE a.pid = pr.pid and pr.type LIKE COALESCE(:type, '%')\n"
-		+ "and pr.sex LIKE COALESCE(:sex, '%')\n"
-		+ "order by regTime desc"
+		+ "and pr.sex LIKE COALESCE(:sex, '%')"
 		, nativeQuery = true)
 	PageImpl<AdoptListResDto> findByTypeAndSex(@Param("type") String type, @Param("sex") String sex, PageRequest pageRequest);
 

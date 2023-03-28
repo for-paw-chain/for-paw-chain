@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,7 +38,7 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public PageImpl<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex) {
-		PageRequest pageRequest = PageRequest.of(pageNo, 10);
+		PageRequest pageRequest = PageRequest.of(pageNo, 10, Sort.by("regTime").descending());
 		PageImpl<AdoptListResDto> adoptListResDtos = null;
 
 		// 중성화여부가 null 일 때
