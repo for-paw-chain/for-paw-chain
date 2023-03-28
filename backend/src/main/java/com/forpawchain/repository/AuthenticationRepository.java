@@ -39,4 +39,5 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
     @Query(value = "select a.authId.uid from AuthenticationEntity a " +
             "where pid = :pid and type = :type", nativeQuery = false)
     Optional<Long> findUidByPidAndType(@Param("pid") String pid, @Param("type") AuthenticationType type);
+
 }
