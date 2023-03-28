@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -40,7 +39,7 @@ public class SecurityConfig {
 			.antMatchers("/user/").permitAll()
 			.antMatchers("/user/login").permitAll()
 			.anyRequest().authenticated()
-			.antMatchers("*").permitAll()
+			// .antMatchers("*").permitAll()
 			.and() // 에러핸들링
 			.exceptionHandling()
 			.authenticationEntryPoint(jwtEntryPoint)
@@ -48,12 +47,6 @@ public class SecurityConfig {
  			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
-
-	// @Bean
-	// public PasswordEncoder passwordEncoder() {
-	// 	// Bycrypt encoder 사용
-	// 	return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	// }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

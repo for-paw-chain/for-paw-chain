@@ -15,7 +15,7 @@ public interface UserService {
 
 	TokenInfo login(LoginUserDto loginUserReqDto);
 
-	void logout(String accessToken, String refreshToken, String id);
+	void logout(String accessToken, String id);
 
-	TokenInfo reissue(String refreshToken);
+	TokenInfo reissue(String refreshToken, String id);
 }

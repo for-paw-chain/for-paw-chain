@@ -52,16 +52,16 @@ public class UserController {
 
 	// 로그아웃
 	@GetMapping("/logout")
-	public void logout(@RequestHeader("Authorization") String accessToken,
-		@RequestHeader("RefreshToken") String refreshToken) {
+	public void logout(@RequestHeader("Authorization") String accessToken) {
 		String id = getCurrentUserId();
-		userService.logout(accessToken, refreshToken, id);
+		userService.logout(resolveToken(accessToken), id);
 	}
 
 	// accessToken 재발급
 	@PostMapping("/reissue")
 	public ResponseEntity<TokenInfo> reissue(@RequestHeader("RefreshToken") String refreshToken) {
-		return ResponseEntity.ok(userService.reissue(refreshToken));
+		String id = getCurrentUserId();
+		return ResponseEntity.ok(userService.reissue(resolveToken(refreshToken), id));
 	}
 
 	// 회원 정보 조회 (회원 프로필)
@@ -76,8 +76,6 @@ public class UserController {
 	@DeleteMapping("/")
 	public ResponseEntity<?> removeUser() {
 		userService.removeUser(getCurrentUserId());
-
-		// 토큰 정보 삭제
 
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
@@ -94,5 +92,10 @@ public class UserController {
 
 		// 수정 필요
 		return userDetails.getUsername();
+	}
+
+	// 헤더에서 토큰 추출
+	private String resolveToken(String token) {
+		return token.substring(7);
 	}
 }

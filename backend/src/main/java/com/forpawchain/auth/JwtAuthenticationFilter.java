@@ -28,8 +28,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 		// 토큰 유효성 검사
 		if(token != null && jwtTokenProvider.validateToken(token)) {
 			// 사용자 정보 등록
-			String id = jwtTokenProvider.getUserId(token);
-			Authentication authentication = jwtTokenProvider.geAuthentication(token);
+			// String id = jwtTokenProvider.getUserId(token);
+			Authentication authentication = jwtTokenProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
 

@@ -25,14 +25,13 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
+import com.forpawchain.domain.Entity.JwtExpirationEnums;
 import com.forpawchain.domain.dto.TokenInfo;
 
 @Slf4j
 @Component
 public class JwtTokenProvider {
 	private final Key key;
-	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
-	private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
 
 	// jwt.secret을 통해 secret key 생성
 	public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
@@ -55,25 +54,24 @@ public class JwtTokenProvider {
 		long now = (new Date()).getTime(); // 현재 시간
 
 		// accessToken
-		Date accessTokenExpireseIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 		String accessToken = Jwts.builder()
 			.setSubject(authentication.getName())
 			.claim("auth", authorities)
-			.setExpiration(accessTokenExpireseIn)
+			.setExpiration(new Date(now + JwtExpirationEnums.ACCESS_TOKEN_EXPIRATION_TIME.getValue()))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 
 		// refreshToken
 		String refreshToken = Jwts.builder()
-			.setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
+			.setExpiration(new Date(now + JwtExpirationEnums.REFRESH_TOKEN_EXPIRATION_TIME.getValue()))
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 
-		return TokenInfo.of("Bearer", accessToken, refreshToken);
+		return new TokenInfo("Bearer", accessToken, refreshToken);
 	}
 
 	// 토큰 정보 조회
-	public Authentication geAuthentication(String accessToken) {
+	public Authentication getAuthentication(String accessToken) {
 		Claims claims = parseClaims(accessToken);
 		if(claims.get("auth") == null) {
 			throw new RuntimeException("권한 정보가 없는 토큰입니다.");
@@ -136,7 +134,18 @@ public class JwtTokenProvider {
 			log.info("JWT claims string is empty.", e);
 			throw new IllegalArgumentException("빈 토큰입니다.");
 		}
-
 		// return false;
+	}
+
+	public long getRemainMilliSeconds(String token) {
+		Claims claims = Jwts.parserBuilder()
+			.setSigningKey(key)
+			.build()
+			.parseClaimsJws(token)
+			.getBody();
+		Date expiration = claims.getExpiration();
+		Date now = new Date();
+
+		return expiration.getTime() - now.getTime();
 	}
 }

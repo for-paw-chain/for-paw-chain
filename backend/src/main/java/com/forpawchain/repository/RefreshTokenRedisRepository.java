@@ -2,5 +2,7 @@ package com.forpawchain.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface RefreshTokenRedisRepository extends CrudRepository<RefreshTokenRedisRepository, String> {
+import com.forpawchain.domain.Entity.RefreshToken;
+
+public interface RefreshTokenRedisRepository extends CrudRepository<RefreshToken, String> {
 }

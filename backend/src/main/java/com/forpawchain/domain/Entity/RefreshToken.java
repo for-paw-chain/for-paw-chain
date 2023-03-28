@@ -21,12 +21,4 @@ public class RefreshToken {
 
 	@TimeToLive
 	private Long expiration;
-
-	public RefreshToken RefreshToken(String id, String refreshToken, Long remainingMilliSeconds) {
-		return RefreshToken.builder()
-			.id(id)
-			.refreshToken(refreshToken)
-			.expiration(remainingMilliSeconds / 1000)
-			.build();
-	}
 }

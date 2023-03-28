@@ -12,19 +12,18 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
-import com.forpawchain.auth.CacheKey;
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableCaching
 public class CacheConfig {
+	final int DEFAULT_EXPIRE_SEC = 60;
 	@Bean
 	public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
 		RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
 			.disableCachingNullValues()
-			.entryTtl(Duration.ofSeconds(CacheKey.DEFAULT_EXPIRE_SEC))
+			.entryTtl(Duration.ofSeconds(DEFAULT_EXPIRE_SEC))
 			.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
 		return RedisCacheManager.RedisCacheManagerBuilder
