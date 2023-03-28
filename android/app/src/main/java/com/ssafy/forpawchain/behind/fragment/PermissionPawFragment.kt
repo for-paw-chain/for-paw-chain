@@ -73,18 +73,6 @@ class PermissionPawFragment : Fragment() {
             Log.d(PawFragment.TAG, "열람 권한 부여")
         }
 
-        binding.floatingBtn.setOnClickListener { view ->
-            val dialog = AdopteeSetDialog(requireContext(), object : IPermissionDelete {
-                override fun onDeleteBtnClick() {
-                    Log.d(TAG, "권한 양도")
-                }
-            })
-
-            dialog.show()
-
-//            Log.d(PawFragment.TAG, "열람 권한 부여")
-        }
-
         val recyclerView = binding.recycler
         val searchList = mutableListOf<PermissionUserDTO>()
 
