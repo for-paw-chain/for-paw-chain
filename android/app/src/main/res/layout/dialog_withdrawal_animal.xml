@@ -76,6 +76,17 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_time_together"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView7"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <ImageView
         android:id="@+id/imageView102"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -83,7 +94,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9"
         app:layout_constraintVertical_bias="0.5" />
 
     <LinearLayout
@@ -96,7 +107,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintVertical_bias="0.6">
 
         <Button
             android:id="@+id/deleteBtn"

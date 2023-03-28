@@ -72,7 +72,6 @@ class HouseFragment : Fragment() {
             },
             onClickDetailButton = {
                 // detail
-                // TODO(): navController
                 Log.d(TAG, "클릭  " + it.name + it.species)
                 val bundle = Bundle()
                 bundle.putParcelable("SearchResultItem", it)
@@ -149,7 +148,6 @@ class HouseFragment : Fragment() {
         viewModel.openEvent.eventObserve(this) { obj ->
 
             when (obj) {
-                // TODO: navController
                 ActivityCode.FRAGMENT_USER -> navController.navigate(R.id.navigation_user)
                 else -> {
                     null

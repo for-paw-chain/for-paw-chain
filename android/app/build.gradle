@@ -94,6 +94,7 @@ dependencies {
     // Scalars 변환기 라이브러리
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
 
+
     // 카카오 로그인 모듈
     implementation 'com.kakao.sdk:v2-all:2.13.0' // 전체 모듈 설치, 2.11.0 버전부터 지원
 //    implementation "com.kakao.sdk:v2-user:2.13.0" // 카카오 로그인
@@ -102,6 +103,14 @@ dependencies {
 //    implementation "com.kakao.sdk:v2-share:2.13.0" // 메시지(카카오톡 공유)
 //    implementation "com.kakao.sdk:v2-navi:2.13.0" // 카카오내비
 //    implementation "com.kakao.sdk:v2-friend:2.13.0" // 카카오톡 소셜 피커, 리소스 번들 파일 포함
+
+    // qr create 라이브러리
+    implementation 'com.google.zxing:core:3.4.1'
+
+    // ROOM 라이브러리
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     // default
     implementation 'androidx.core:core-ktx:1.7.0'

@@ -2,47 +2,41 @@ package com.forpawchain.repository;
 
 import com.forpawchain.domain.Entity.AuthenticationEntity;
 import com.forpawchain.domain.Entity.AuthenticationId;
-
+import com.forpawchain.domain.Entity.AuthenticationType;
+import com.forpawchain.domain.dto.response.UserResDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthenticationRepository extends JpaRepository<AuthenticationEntity, AuthenticationId> {
-    List<AuthenticationEntity> findAllByAid(AuthenticationId aid);
-    AuthenticationEntity findByAidUidAndAidPid(long uid, String pid);
-    List<AuthenticationEntity> findAllByAidUid(long uid);
-    List<AuthenticationEntity> findAllByAidPid(String pid);
-
-    @Query("select a.type from AuthenticationEntity a where a.aid.uid = :userId and a.aid.pid = :petId")
-    String findTypeByUidAndPid(@Param("userId")Long uid, @Param("petId")String pid);
-
+    Optional<AuthenticationEntity> findByAuthId(AuthenticationId id);
+    Optional<AuthenticationEntity> findByAuthIdUidAndAuthIdPid(long uid, String pid);
     /**
-     * 타인에게 권한을 주는 경우
-     * 타인의 권한 값 변경 -> save
+     * 회원과 동물에 대한 관계 찾기
+     * @param uid
+     * @param pid
+     * @return AuthenticationEntity의 type
      */
+    @Query("select a.type from AuthenticationEntity a \n" +
+            "where a.authId.uid = :uid and a.authId.pid = :pid")
+    String findTypeByAuthIdUidAndAuthIdPid(@Param("uid") long uid, @Param("pid") String pid);
+    List<AuthenticationEntity> findAllByAuthIdUid(long uid);
+    List<AuthenticationEntity> findAllByAuthIdPid(String pid);
+    void deleteByAuthIdUidAndAuthIdPid(long uid, String pid);
+    @Query(value = "select a.uid uid, u.name name, u.profile profile \n" +
+            "from authentication a join user u on a.uid = u.uid \n"+
+            "where a.pid = :pid", nativeQuery = true)
+    List<UserResDto> findUserAllByPid(@Param("pid") String pid);
+    // 동물 pid에 대한 uid사람의 권한 반환
+    @Query("select a.type from AuthenticationEntity a " +
+            "where pid = :pid and uid = :uid")
+    AuthenticationType findAuthenticationTypeByUidAndPid(@Param("uid") long uid, @Param("pid") String pid);
 
-    /**
-     * 권한 삭제 (나의 강아지는 삭제 불가)
-     * delete
-     */
-    void deleteByAidUidAndAidPid(long uid, String pid);
-
-    /**
-     * 반려동물에게 권한이 있는 사용자 목록 조회
-     * 주체: 반려동물
-     * findAllByPid
-     */
-
-    /**
-     *  주인권한양도
-     *  1. 의사에 의해
-     */
-
-    /**
-     * 2. 주인의 권한 넘겨주기
-     * save 2번
-     *
-     */
+    // 동물 pid에 대한 권한이 type인 사람의 uid 반환
+    @Query(value = "select a.authId.uid from AuthenticationEntity a " +
+            "where pid = :pid and type = :type", nativeQuery = false)
+    Optional<Long> findUidByPidAndType(@Param("pid") String pid, @Param("type") AuthenticationType type);
 }

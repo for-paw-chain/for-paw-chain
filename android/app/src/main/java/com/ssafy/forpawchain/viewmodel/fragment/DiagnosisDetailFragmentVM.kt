@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.AdoptDTO
+import com.ssafy.forpawchain.model.domain.DianosisNewDTO
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.util.ImageLoader
 import kotlinx.coroutines.Dispatchers
@@ -16,13 +17,34 @@ import retrofit2.Response
 
 
 class DiagnosisDetailFragmentVM : ViewModel() {
-    val name = MutableLiveData<String>("Sign by 김의사")
-    val title = MutableLiveData<String>("[초진] 치과수술 / 담석 체크 / 좌측 pm4 발치")
-    val date = MutableLiveData<String>("2022-03-03 오후 03:05:27")
+    val name = MutableLiveData<String>()
+    val title = MutableLiveData<String>()
+    val date = MutableLiveData<String>()
     val searchEditText = MutableLiveData<String>("410087800324555")
+
+    //추가 시작
+    val todoLiveData = MutableLiveData<List<DianosisNewDTO>>() //변경/관찰가능한 List
+
+    //추가 끝
+    private val data = arrayListOf<DianosisNewDTO>()
 
     companion object {
         val TAG: String? = this::class.qualifiedName
+    }
+
+    fun addTask(todo: DianosisNewDTO) {
+        data.add(todo)
+        todoLiveData.value = data //todoLiveData를 add된 데이터로 변경
+    }
+
+    fun deleteTask(todo: DianosisNewDTO) {
+        data.remove(todo)
+        todoLiveData.value = data //todoLiveData를 remove된 데이터로 변경, 이제 TodoLiveData로 UI값을 변경해줘야한다.
+    }
+
+    fun clearTask() {
+        data.clear()
+        todoLiveData.value = data
     }
 
 }

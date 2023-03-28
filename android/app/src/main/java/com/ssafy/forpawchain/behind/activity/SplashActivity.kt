@@ -14,7 +14,16 @@ import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.BuildConfig
 import com.ssafy.forpawchain.R
+
 import com.ssafy.forpawchain.behind.fragment.UserFragment
+import com.ssafy.forpawchain.blockchain.ForPawChain
+import com.ssafy.forpawchain.blockchain.Test_sol_ForPawChain
+import com.ssafy.forpawchain.blockchain.Test_sol_MyContract
+import org.web3j.crypto.Credentials
+import org.web3j.protocol.Web3j
+import org.web3j.protocol.infura.InfuraHttpService
+import java.math.BigInteger
+import kotlin.concurrent.thread
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -23,7 +32,10 @@ class SplashActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
@@ -34,6 +46,12 @@ class SplashActivity : AppCompatActivity() {
         // Kakao SDK 초기화, local.properties에서 불러와야함
         Log.d(LoginActivity.TAG, "카카오 키는 제대로? ${BuildConfig.KAKAO_NATIVE_APP_KEY}")
         KakaoSdk.init(this, "${BuildConfig.KAKAO_NATIVE_APP_KEY}")
+
+        ForPawChain.setBlockChain(
+            "0x789bE5eC74330cd64d007a15bD273fCC27fEE6bB",
+            "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
+        )
+//        val temp = ForPawChain.getHistory()
         startLoading();
     }
 
