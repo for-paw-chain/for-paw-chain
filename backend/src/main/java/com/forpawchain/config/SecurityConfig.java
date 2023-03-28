@@ -36,6 +36,7 @@ public class SecurityConfig {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()// 권한 체크
 			.authorizeRequests()
+			.antMatchers("/v2/api-docs", "/swagger*/**").permitAll()
 			.antMatchers("/user/").permitAll()
 			.antMatchers("/user/login").permitAll()
 			.anyRequest().authenticated()

@@ -46,7 +46,7 @@ public class JwtTokenProvider {
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.joining(","));
 
-		// 수정 필요
+		// TO DO
 		if(authorities.equals("")) {
 			authorities = "ROLE_USER";
 		}
