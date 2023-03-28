@@ -15,10 +15,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="125dp"
+        android:layout_height="135dp"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/whitesmoke"
         android:orientation="horizontal"
-        android:weightSum="5">
+        android:weightSum="5"
+        android:padding="8dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -36,6 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2.5"
+            android:layout_marginLeft="8dp"
             android:orientation="horizontal"
             android:weightSum="3">
 
