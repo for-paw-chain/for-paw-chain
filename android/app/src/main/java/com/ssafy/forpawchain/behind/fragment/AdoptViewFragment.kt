@@ -21,6 +21,7 @@ import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.room.AppDatabase
+import com.ssafy.forpawchain.model.room.UserDao
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
@@ -99,6 +100,8 @@ class AdoptViewFragment : Fragment() {
             ).build()
             val userDao = db.userDao()
             val user = userDao.getUserById("private")
+            // TODO: 수정 필요
+            user.privateKey = "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
             if (user != null) {
                 lifecycleScope.launch {
                     bundle?.getString("pid")?.let {
@@ -111,8 +114,8 @@ class AdoptViewFragment : Fragment() {
                                 ) {
                                     if (response.isSuccessful) {
                                         // 정상적으로 통신이 성공된 경우
-                                        val ca = response.body()?.get("content").toString()
-
+                                        var ca = response.body()?.get("content").toString()
+                                        ca = ca.replace("\"", "")
                                         ForPawChain.setBlockChain(
                                             ca,
                                             user.privateKey
