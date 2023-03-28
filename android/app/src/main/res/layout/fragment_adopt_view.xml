@@ -200,13 +200,10 @@
                 <LinearLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="54dp"
                     android:background="@drawable/box_radius_03"
                     android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView10">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <Button
                         android:id="@+id/qr_btn"
@@ -224,24 +221,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textSize="10sp"
                         android:fontFamily="@font/kakao_regular"
-
                         android:text="입양문의"
+
+                        android:textSize="10sp" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout9"
             android:layout_width="380dp"
             android:layout_height="100dp"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/box_radius_01"
+            android:elevation="20dp"
             android:orientation="horizontal"
             android:weightSum="4.5"
-            android:elevation="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView22"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
@@ -254,17 +253,18 @@
                 android:fontFamily="@font/kakao_regular"
                 android:gravity="center_horizontal"
                 android:text="특이사항"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                tools:ignore="MissingConstraints" />
 
             <LinearLayout
-                android:layout_width="290dp"
-                android:layout_height="50dp"
+                android:layout_width="300dp"
+                android:layout_height="84dp"
                 android:background="@drawable/box_radius_03"
-                >
+                tools:ignore="MissingConstraints">
 
                 <TextView
                     android:layout_width="0sp"
-                    android:layout_height="37dp"
+                    android:layout_height="80dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
 
@@ -276,7 +276,7 @@
             </LinearLayout>
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/textView22"

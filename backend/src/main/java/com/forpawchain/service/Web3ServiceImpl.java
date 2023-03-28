@@ -155,22 +155,6 @@ public class Web3ServiceImpl implements Web3Service {
 
 		// 의사 계정이 맞는지 확인
 		if (checkLicense(licenseReqDto)) {
-// 			// 비밀번호를 이용해 새 지갑 파일을 생성
-// 			String password = "1234";
-// 			String fileName = WalletUtils.generateNewWalletFile(password,
-// //				new File("\\C:\\Users\\SSAFY\\Desktop\\wallet"));
-// 				 new File("."));
-//
-// 			// String wa = fileName.substring(37, 76);
-//
-// 			// 비밀번호를 이용해 파일로부터 지갑을 로드해오기
-// //			String walletFilePath = "C:\\Users\\SSAFY\\Desktop\\wallet\\" + fileName;
-// 			String walletFilePath = fileName;
-// 			Credentials myCredentials = WalletUtils.loadCredentials(password, walletFilePath);
-//
-// 			// 지갑의 프라이빗 키
-// 			privateKey = myCredentials.getEcKeyPair().getPrivateKey().toString(16);
-
 			ECKeyPair ecKeyPair = Keys.createEcKeyPair();
 			BigInteger privateKeyInDec = ecKeyPair.getPrivateKey();
 
@@ -208,5 +192,14 @@ public class Web3ServiceImpl implements Web3Service {
 		setting();
 		UserEntity userEntity = userRepository.findByUid(uid);
 		return userEntity.getWa();
+	}
+
+	public String findDoctor(String wa) {
+		UserEntity userEntity = userRepository.findByWa(wa);
+		if (userEntity == null) {
+			throw new BaseException(ErrorMessage.USER_NOT_FOUND);
+		}
+
+		return userEntity.getName();
 	}
 }
