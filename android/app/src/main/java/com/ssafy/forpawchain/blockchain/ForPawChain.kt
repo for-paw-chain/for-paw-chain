@@ -10,6 +10,7 @@ import org.web3j.abi.datatypes.Utf8String
 import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
+import org.web3j.protocol.http.HttpService
 import org.web3j.protocol.infura.InfuraHttpService
 import java.math.BigInteger
 import kotlin.concurrent.thread
@@ -17,7 +18,8 @@ import kotlin.concurrent.thread
 class ForPawChain {
     companion object {
         val web3 =
-            Web3j.build(InfuraHttpService("https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91"))
+//            Web3j.build(InfuraHttpService("https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91"))
+            Web3j.build(HttpService("http://3.39.235.238:8545/"))
 
         // gas limit
         val gasLimit: BigInteger = BigInteger.valueOf(3000000)

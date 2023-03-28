@@ -76,6 +76,7 @@ class AdoptAddFragmentVM : ViewModel() {
                             if (response.isSuccessful) {
                                 // 정상적으로 통신이 성공된 경우
                                 Log.d(TAG, "onResponse 성공");
+                                _openEvent.value = Event(ActivityCode.DONE)
                             } else {
                                 // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                                 Log.d(TAG, "onResponse 실패")

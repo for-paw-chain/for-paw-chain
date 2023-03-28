@@ -16,7 +16,7 @@ class AdoptService {
     companion object {
         val TAG: String? = this::class.qualifiedName
 
-        const val baseUrl: String = "http://j8a207.p.ssafy.io:3000/api/"
+        const val baseUrl: String = "http://j8a207.p.ssafy.io:8080/api/"
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -95,5 +95,24 @@ class AdoptService {
         service = retrofit.create(RetrofitService::class.java);
 
         return service.deleteAdopt(pid)
+    }
+
+    fun getCA(pid: String): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Access-Token", "Bearer qwerqwer")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
+        retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(PetService.baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        service = retrofit.create(RetrofitService::class.java);
+
+        return service.getCA(pid)
     }
 }

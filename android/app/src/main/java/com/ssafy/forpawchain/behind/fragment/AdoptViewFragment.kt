@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.behind.fragment
 
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -7,20 +8,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
+import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.room.AppDatabase
+import com.ssafy.forpawchain.model.service.AdoptService
+import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
+import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
+import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AdoptViewFragment : Fragment() {
     private var _binding: FragmentAdoptViewBinding? = null
@@ -88,14 +101,41 @@ class AdoptViewFragment : Fragment() {
             val user = userDao.getUserById("private")
             if (user != null) {
                 lifecycleScope.launch {
-                    ForPawChain.setBlockChain(
-                        "0x789bE5eC74330cd64d007a15bD273fCC27fEE6bB",
-                        user.privateKey
-                    )
-                    val history = ForPawChain.getHistory()
-                    for (item in history) {
-                        viewModel.addTask(item)
+                    bundle?.getString("pid")?.let {
+                        AdoptService().getCA(it)
+                            .enqueue(object :
+                                Callback<JsonObject> {
+                                override fun onResponse(
+                                    call: Call<JsonObject>,
+                                    response: Response<JsonObject>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        // 정상적으로 통신이 성공된 경우
+                                        val ca = response.body()?.get("content").toString()
+
+                                        ForPawChain.setBlockChain(
+                                            ca,
+                                            user.privateKey
+                                        )
+                                        val history = ForPawChain.getHistory()
+                                        for (item in history) {
+                                            viewModel.addTask(item)
+                                        }
+                                        Log.d(TAG, "onResponse 성공");
+                                    } else {
+                                        Log.d(TAG, "onResponse 실패");
+
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                    Log.d(TAG, "네트워크 에러");
+
+                                }
+                            })
                     }
+
+
                 }
             }
         }
