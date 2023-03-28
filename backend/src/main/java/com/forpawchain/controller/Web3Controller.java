@@ -94,6 +94,7 @@ public class Web3Controller {
 	}
 
 	@GetMapping("wallet/{wa}")
+	@ApiOperation(value = "지갑으로 의사 조회", notes = "지갑 주소로 의사를 조회해서 의사의 이름을 반환한다.")
 	public ResponseEntity<HashMap<String, String>> findDoctor(@PathVariable("wa") String wa) {
 		HashMap<String, String> map = new HashMap<>();
 		String name = web3Service.findDoctor(wa);
