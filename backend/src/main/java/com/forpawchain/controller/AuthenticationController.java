@@ -1,17 +1,23 @@
 package com.forpawchain.controller;
 
+import com.forpawchain.domain.Entity.AuthenticationType;
 import com.forpawchain.domain.dto.response.UserResDto;
 import com.forpawchain.service.AuthenticationService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Api(tags = "권한 API")
 public class AuthenticationController {
     private final AuthenticationService authService;
 
@@ -54,5 +60,18 @@ public class AuthenticationController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
+    }
+
+    @GetMapping("/pet")
+    @ApiOperation(value = "동물에 대한 권한 조회", notes = "어떤 동물에 대해서, 내가 어떤 권한을 갖고 있는지 조회한다.")
+    public ResponseEntity<HashMap<String, String>> getAuthenticationOfPid(@RequestHeader("Authorization")
+    String authorization, String pid) {
+
+        Long uid = 1L;
+        HashMap<String, String> map = new HashMap<>();
+
+        AuthenticationType authenticationType = authService.getAuthenticationOfPid(uid, pid);
+        map.put("content", authenticationType.toString());
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

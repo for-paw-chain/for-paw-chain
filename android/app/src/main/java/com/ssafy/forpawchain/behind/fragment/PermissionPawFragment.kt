@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.dialog.AdopteeSetDialog
 import com.ssafy.forpawchain.behind.dialog.PermissionDialog
 import com.ssafy.forpawchain.behind.dialog.PermissionSetDialog
 import com.ssafy.forpawchain.databinding.FragmentPermissionPawBinding
@@ -70,6 +71,17 @@ class PermissionPawFragment : Fragment() {
             dialog.show()
 
             Log.d(PawFragment.TAG, "열람 권한 부여")
+        }
+
+        binding.adoptBtn.setOnClickListener { view ->
+            val dialog = AdopteeSetDialog(requireContext(), object : IPermissionDelete {
+                override fun onDeleteBtnClick() {
+                    Log.d(TAG, "권한 양도")
+                }
+            })
+
+            dialog.show()
+
         }
 
         val recyclerView = binding.recycler
