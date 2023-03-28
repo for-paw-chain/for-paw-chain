@@ -65,4 +65,7 @@ interface RetrofitService {
         @Part image: MultipartBody.Part,
         @Part payload: MultipartBody.Part
     ): Call<ResponseBody>
+
+    @POST("web3/contract/{pid}")
+    fun getCA(@Path("pid") pid: String): Call<JsonObject>
 }

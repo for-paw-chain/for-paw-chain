@@ -1,26 +1,35 @@
 package com.ssafy.forpawchain.blockchain
 
+import android.util.Log
 import com.ssafy.forpawchain.model.domain.Data
 import com.ssafy.forpawchain.model.domain.HistoryDTO
-import okhttp3.internal.wait
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.DynamicArray
-import org.web3j.abi.datatypes.Type
 import org.web3j.abi.datatypes.Utf8String
-import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
+import org.web3j.protocol.http.HttpService
 import org.web3j.protocol.infura.InfuraHttpService
+import org.web3j.tx.RawTransactionManager
+import org.web3j.tx.gas.DefaultGasProvider
 import java.math.BigInteger
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.concurrent.thread
+
 
 class ForPawChain {
     companion object {
-        val web3 =
-            Web3j.build(InfuraHttpService("https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91"))
+        val TAG: String? = this::class.qualifiedName
+
+        // https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91
+        var web3 =
+//            Web3j.build(InfuraHttpService("https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91"))
+            Web3j.build(HttpService("http://3.39.235.238:8545/"))
+
 
         // gas limit
-        val gasLimit: BigInteger = BigInteger.valueOf(3000000)
+        val gasLimit: BigInteger = BigInteger.valueOf(30_000_000)
 
         // gas price
         val gasPrice: BigInteger = BigInteger.valueOf(3000)
@@ -34,18 +43,62 @@ class ForPawChain {
             this.credentials = Credentials.create(cred)
         }
 
+        fun createHistory(
+            title: String,
+            body: String,
+            items: ArrayList<Data>,
+            hash: String
+        ): Boolean {
+            thread {
+                val transactionManager = RawTransactionManager(web3, credentials, 111)
+
+
+                val contract =
+                    Forpawchain_sol_ForPawChain.load(
+                        contractAddress,
+                        web3,
+                        transactionManager,
+                        gasPrice,
+                        gasLimit
+                    )
+                val currentDateTime = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                val formatted = currentDateTime.format(formatter)
+                val data = contract.addHistory(title, body, formatted, hash).send()
+
+                data.blockNumber
+
+                val size = contract.size.toInt() - 1
+                for (item in items) {
+                    Log.d(TAG, "추가 시작")
+                    contract.addItem(BigInteger(size.toString()), item.title, item.body).send()
+                    Log.d(TAG, "추가 끝")
+
+                }
+            }
+
+            return true
+        }
+
         fun getHistory(): ArrayList<HistoryDTO> {
             var result: ArrayList<HistoryDTO> = ArrayList()
             val contract =
-                Test_sol_ForPawChain.load(contractAddress, web3, credentials, gasPrice, gasLimit)
+                Forpawchain_sol_ForPawChain.load(
+                    contractAddress,
+                    web3,
+                    credentials,
+                    gasPrice,
+                    gasLimit
+                )
             thread {
                 val size: BigInteger = contract.size
                 for (i in 0 until size.toInt()) {
                     val history = contract.getHistory(BigInteger(i.toString())).send()
                     val title = history[0] as Utf8String
                     val body = history[1] as Utf8String
-                    val writer = history[2] as Address
-                    val extra_size = history[3] as DynamicArray<*>
+                    val date = history[2] as Utf8String
+                    val writer = history[3] as Address
+                    val extra_size = history[4] as DynamicArray<*>
                     var extra: ArrayList<Data> = ArrayList()
                     for (index in extra_size.value) {
                         val temp = contract.getItem(index.value as BigInteger?).send()
@@ -58,7 +111,7 @@ class ForPawChain {
                             )
                         )
                     }
-                    val hash = history[4] as Utf8String
+                    val hash = history[5] as Utf8String
                     result.add(
                         HistoryDTO(
                             title.value.toString(),
@@ -66,7 +119,7 @@ class ForPawChain {
                             extra,
                             writer.value,
                             hash.value,
-                            "2022-03-03 오후 03:05:27" // TODO: 시간 작업 필요
+                            date.value
                         )
                     )
                 }
