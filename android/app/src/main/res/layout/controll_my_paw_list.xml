@@ -20,12 +20,17 @@
         android:orientation="horizontal"
         android:weightSum="5">
 
-        <ImageView
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
             android:layout_weight="1.5"
-            android:src="@{item.profile}" />
+            android:background="@drawable/box_radius_04">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@{item.profile}" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -46,7 +51,6 @@
                     android:layout_height="0dp"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:background="#F3F0FD"
                     android:fontFamily="@font/kakao_bold"
                     android:text="이름" />
 
@@ -55,7 +59,6 @@
                     android:layout_height="0dp"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:background="#F3F0FD"
 
                     android:fontFamily="@font/kakao_bold"
 
@@ -66,29 +69,26 @@
                     android:layout_height="0dp"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:background="#F3F0FD"
 
                     android:fontFamily="@font/kakao_bold"
 
-                    android:text="견과" />
+                    android:text="종" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:background="#F3F0FD"
 
                     android:fontFamily="@font/kakao_bold"
 
-                    android:text="말티즈" />
+                    android:text="종류" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_margin="4dp"
                     android:layout_weight="1"
-                    android:background="#F3F0FD"
 
                     android:fontFamily="@font/kakao_bold"
 
@@ -166,6 +166,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/imageView11"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/logo_img_color_shadow"
@@ -176,17 +177,56 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.1" />
 
-            <Button
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/qr_btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/icon_qr"
-                android:gravity="bottom"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/box_radius_03"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.84" />
+                tools:ignore="MissingConstraints">
+
+                <ImageView
+                    android:id="@+id/imageView12"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/icon_qr"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:fontFamily="@font/kakao_regular"
+                    android:text="QR생성"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="MissingConstraints" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+<!--            <Button-->
+<!--                android:id="@+id/qr_btn"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:background="@drawable/icon_qr"-->
+<!--                android:gravity="bottom"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_bias="0.84" >-->
+<!--            </Button>-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
