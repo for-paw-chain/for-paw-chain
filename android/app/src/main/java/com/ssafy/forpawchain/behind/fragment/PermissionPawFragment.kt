@@ -18,9 +18,17 @@ import com.ssafy.forpawchain.databinding.FragmentPermissionPawBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.PermissionUserDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
+import com.ssafy.forpawchain.model.service.AuthService
 import com.ssafy.forpawchain.viewmodel.adapter.PermissionPawListAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.PermissionPawFragmentVM
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class PermissionPawFragment : Fragment() {
@@ -51,9 +59,14 @@ class PermissionPawFragment : Fragment() {
 
         val bundle = arguments
 
+        var pid = ""
+        var uid = ""
         lifecycleScope.launch {
             bundle?.getSerializable("item")?.let {
                 val item = it as (MyPawListDTO)
+                pid = item.code.value.toString()
+                uid = item.code.value.toString()
+
                 viewModel.name.postValue(item.name.value)
                 viewModel.code.postValue("#" + item.code.value.toString())
 
@@ -82,7 +95,35 @@ class PermissionPawFragment : Fragment() {
             // del
             val dialog = PermissionDialog(requireContext(), object : IPermissionDelete {
                 override fun onDeleteBtnClick() {
-                    viewModel.deleteTask(it)
+                    GlobalScope.launch {
+                        val response = withContext(Dispatchers.IO) {
+                            AuthService().deletePetAuth(
+                                Integer.parseInt(uid), pid
+                            ).enqueue(object :
+                                Callback<ResponseBody> {
+                                override fun onResponse(
+                                    call: Call<ResponseBody>,
+                                    response: Response<ResponseBody>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        // 정상적으로 통신이 성공된 경우
+                                        Log.d(TAG, "onResponse 성공");
+                                        viewModel.deleteTask(it)
+                                    } else {
+                                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                        Log.d(TAG, "onResponse 실패")
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d(TAG, "onFailure 에러: " + t.message.toString());
+                                }
+                            })
+                        }
+                    }
+
+                    Log.d(TAG,"권한 삭제")
                 }
             })
 

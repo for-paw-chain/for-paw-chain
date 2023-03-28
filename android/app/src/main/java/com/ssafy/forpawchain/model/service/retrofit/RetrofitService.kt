@@ -49,8 +49,12 @@ interface RetrofitService {
     @GET("pet/")
     fun getMyPets(): Call<JsonArray>
 
-    @GET("auth/")
+    @GET("auth")
     fun getPetAuth(@Query("pid") pid: String): Call<JsonArray>
+    @PUT("auth")
+    fun removePetAuth(@Query("receiver") receiver: Int,
+                      @Query("pid") pid: String
+    ): Call<ResponseBody>
 
     @DELETE("adopt/{pid}")
     fun deleteAdopt(@Path("pid") pid: String): Call<ResponseBody>
