@@ -13,6 +13,8 @@ import org.web3j.protocol.infura.InfuraHttpService
 import org.web3j.tx.RawTransactionManager
 import org.web3j.tx.gas.DefaultGasProvider
 import java.math.BigInteger
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.concurrent.thread
 
 
@@ -52,14 +54,17 @@ class ForPawChain {
 
 
                 val contract =
-                    Test_sol_ForPawChain.load(
+                    Forpawchain_sol_ForPawChain.load(
                         contractAddress,
                         web3,
                         transactionManager,
                         gasPrice,
                         gasLimit
                     )
-                val data = contract.addHistory(title, body, hash).send()
+                val currentDateTime = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                val formatted = currentDateTime.format(formatter)
+                val data = contract.addHistory(title, body, formatted, hash).send()
 
                 data.blockNumber
 
@@ -78,15 +83,22 @@ class ForPawChain {
         fun getHistory(): ArrayList<HistoryDTO> {
             var result: ArrayList<HistoryDTO> = ArrayList()
             val contract =
-                Test_sol_ForPawChain.load(contractAddress, web3, credentials, gasPrice, gasLimit)
+                Forpawchain_sol_ForPawChain.load(
+                    contractAddress,
+                    web3,
+                    credentials,
+                    gasPrice,
+                    gasLimit
+                )
             thread {
                 val size: BigInteger = contract.size
                 for (i in 0 until size.toInt()) {
                     val history = contract.getHistory(BigInteger(i.toString())).send()
                     val title = history[0] as Utf8String
                     val body = history[1] as Utf8String
-                    val writer = history[2] as Address
-                    val extra_size = history[3] as DynamicArray<*>
+                    val date = history[2] as Utf8String
+                    val writer = history[3] as Address
+                    val extra_size = history[4] as DynamicArray<*>
                     var extra: ArrayList<Data> = ArrayList()
                     for (index in extra_size.value) {
                         val temp = contract.getItem(index.value as BigInteger?).send()
@@ -99,7 +111,7 @@ class ForPawChain {
                             )
                         )
                     }
-                    val hash = history[4] as Utf8String
+                    val hash = history[5] as Utf8String
                     result.add(
                         HistoryDTO(
                             title.value.toString(),
@@ -107,7 +119,7 @@ class ForPawChain {
                             extra,
                             writer.value,
                             hash.value,
-                            "2022-03-03 오후 03:05:27" // TODO: 시간 작업 필요
+                            date.value
                         )
                     )
                 }
