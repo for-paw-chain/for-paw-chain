@@ -169,6 +169,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
         }
     }
+
+    @Override
+    public AuthenticationType getAuthenticationOfPid(Long uid, String pid) {
+        String authentication = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(uid, pid);
+
+        if (authentication == null) {
+            throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
+        }
+
+        AuthenticationType authenticationType = AuthenticationType.valueOf(authentication);
+
+        return authenticationType;
+    }
+
     // 주인의 권한이 제거되는 경우
     public void moveAuthentication(long frm, long to, String pid, AuthenticationType type) {
         try {
