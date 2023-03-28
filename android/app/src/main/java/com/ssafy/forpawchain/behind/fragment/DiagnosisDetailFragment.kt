@@ -61,6 +61,7 @@ class DiagnosisDetailFragment : Fragment() {
         if (bundle != null) {
             val value = bundle.getSerializable("item") as HistoryDTO
             viewModel.title.postValue(value.title)
+            viewModel.body.postValue(value.body)
             viewModel.date.postValue(value.date)
             viewModel.name.postValue(value.writer)
             for (item in value.extra) {

@@ -19,6 +19,7 @@ import retrofit2.Response
 class DiagnosisDetailFragmentVM : ViewModel() {
     val name = MutableLiveData<String>()
     val title = MutableLiveData<String>()
+    val body = MutableLiveData<String>()
     val date = MutableLiveData<String>()
     val searchEditText = MutableLiveData<String>("410087800324555")
 
