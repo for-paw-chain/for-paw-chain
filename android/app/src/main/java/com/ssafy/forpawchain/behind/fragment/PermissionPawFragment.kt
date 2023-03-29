@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.behind.dialog.AdopteeSetDialog
 import com.ssafy.forpawchain.behind.dialog.PermissionDialog
 import com.ssafy.forpawchain.behind.dialog.PermissionSetDialog
@@ -76,14 +75,45 @@ class PermissionPawFragment : Fragment() {
             }
         }
         binding.floatingBtn.setOnClickListener { view ->
-            val dialog = PermissionSetDialog(requireContext(), object : IPermissionDelete {
-                override fun onDeleteBtnClick() {
+            val dialog = PermissionSetDialog(requireContext(), object : IHandAdaptee {
+                override fun onHandPetBtnClick(receiver: Int) {
+                    GlobalScope.launch {
+                        val response = withContext(Dispatchers.IO) {
+                            AuthService().giveFriendAuth(
+                                receiver, pid
+                            ).enqueue(object :
+                                Callback<ResponseBody> {
+                                override fun onResponse(
+                                    call: Call<ResponseBody>,
+                                    response: Response<ResponseBody>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        // 정상적으로 통신이 성공된 경우
+                                        lifecycleScope.launch {
+                                            viewModel.clearTask()
+                                            viewModel.initData(pid)
+                                        }
+                                        // call
+                                        Log.d(TAG, "onResponse 성공");
+
+                                    } else {
+                                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                        Log.d(TAG, "onResponse 실패")
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d(TAG, "onFailure 에러: " + t.message.toString());
+                                }
+                            })
+                        }
+                    }
                     Log.d(TAG, "set 권한 부여")
                 }
             })
 
             dialog.show()
-
             Log.d(PawFragment.TAG, "열람 권한 부여")
         }
 

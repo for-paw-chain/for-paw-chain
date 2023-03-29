@@ -6,14 +6,15 @@ import android.os.Bundle
 import com.ssafy.forpawchain.databinding.DialogPermissionDeleteBinding
 import com.ssafy.forpawchain.databinding.DialogPermissionSetBinding
 import com.ssafy.forpawchain.model.interfaces.IAdoptCRUD
+import com.ssafy.forpawchain.model.interfaces.IHandAdaptee
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 
-class PermissionSetDialog(context: Context, dialogInterface: IPermissionDelete) :
+class PermissionSetDialog(context: Context, dialogInterface: IHandAdaptee) :
     Dialog(context) {
     private var mBinding: DialogPermissionSetBinding? = null
     private val binding get() = mBinding!!
 
-    private var dialogInterface: IPermissionDelete? = null
+    private var dialogInterface: IHandAdaptee? = null
 
     init {
         this.dialogInterface = dialogInterface
@@ -25,7 +26,7 @@ class PermissionSetDialog(context: Context, dialogInterface: IPermissionDelete) 
         setContentView(binding.root)
 
         binding.doneBtn.setOnClickListener {
-            this.dialogInterface?.onDeleteBtnClick()
+            this.dialogInterface?.onHandPetBtnClick(binding.numberText.text.toString().toInt())
             dismiss()
         }
     }
