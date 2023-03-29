@@ -43,6 +43,7 @@ interface RetrofitService {
     @POST("web3/license")
     fun setDoctor(@Body doctor: RequestDoctorDTO): Call<JsonObject>
 
+    @Multipart
     @POST("upload")
     fun setUpload(@Part filePart: MultipartBody.Part): Call<JsonObject>
 

@@ -1,20 +1,34 @@
 package com.ssafy.forpawchain.behind.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.JsonObject
 import com.ssafy.forpawchain.databinding.FragmentDiagnosisDetailBinding
 import com.ssafy.forpawchain.model.domain.DianosisNewDTO
 import com.ssafy.forpawchain.model.domain.HistoryDTO
+import com.ssafy.forpawchain.model.service.AdoptService
+import com.ssafy.forpawchain.model.service.IpfsService
+import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisNewRecyclerViewAdapter
+import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.DiagnosisDetailFragmentVM
+import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DiagnosisDetailFragment : Fragment() {
     private var _binding: FragmentDiagnosisDetailBinding? = null
@@ -72,7 +86,14 @@ class DiagnosisDetailFragment : Fragment() {
                     )
                 )
             }
-            // Do something with value
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+
+                    ImageLoader().loadDrawableFromUrl("http://j8a207.p.ssafy.io:8080/api/file/${value.hash}") { drawable ->
+                        viewModel.image.postValue(drawable)
+                    }
+                }
+            }
         }
 
 
