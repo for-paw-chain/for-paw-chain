@@ -83,7 +83,8 @@ class SplashActivity : AppCompatActivity() {
             UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
                 if(error != null){
                     Log.d(LoginActivity.TAG, "로그인 토큰 에러>> ${error}")
-                    startActivity(Intent(applicationContext, LoginActivity::class.java))
+//                    startActivity(Intent(applicationContext, LoginActivity::class.java))
+                    startActivity(Intent(applicationContext, MainActivity::class.java))
                     finish()
                 }else if(tokenInfo != null){
                     Log.d(LoginActivity.TAG, "로그인 정상 >> ${tokenInfo}")
