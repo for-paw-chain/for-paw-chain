@@ -1,4 +1,4 @@
-package com.forpawchain.domain.dto;
+package com.forpawchain.domain.dto.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

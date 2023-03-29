@@ -15,6 +15,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.internal.http2.ErrorCode;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,14 +27,18 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 		IOException, ServletException {
 		String token = resolveToken((HttpServletRequest) request);
 		// 토큰 유효성 검사
-		if(token != null && jwtTokenProvider.validateToken(token)) {
-			// 사용자 정보 등록
-			// String id = jwtTokenProvider.getUserId(token);
-			Authentication authentication = jwtTokenProvider.getAuthentication(token);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+		try {
+			if(token != null && jwtTokenProvider.validateToken(token)) {
+				// 사용자 정보 등록
+				// String id = jwtTokenProvider.getUserId(token);
+				Authentication authentication = jwtTokenProvider.getAuthentication(token);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+		} catch (IllegalArgumentException e) {
+			request.setAttribute("exception: ", "토큰이 윺효하지 않습니다.");
+		} finally {
+			chain.doFilter(request, response);
 		}
-
-		chain.doFilter(request, response);
 	}
 
 	// request header의 jwt 토큰 정보 추출

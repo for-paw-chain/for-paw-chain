@@ -1,9 +1,9 @@
 package com.forpawchain.service;
 
-import com.forpawchain.domain.dto.LoginUserDto;
+import com.forpawchain.domain.dto.token.LoginUserDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
-import com.forpawchain.domain.dto.TokenInfo;
+import com.forpawchain.domain.dto.token.TokenInfo;
 
 public interface UserService {
 

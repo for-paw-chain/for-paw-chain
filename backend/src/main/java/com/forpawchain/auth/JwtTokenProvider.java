@@ -26,7 +26,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 import com.forpawchain.domain.Entity.JwtExpirationEnums;
-import com.forpawchain.domain.dto.TokenInfo;
+import com.forpawchain.domain.dto.token.TokenInfo;
 
 @Slf4j
 @Component
@@ -121,8 +121,8 @@ public class JwtTokenProvider {
 				.parseClaimsJws(token);
 			return true;
 		} catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException e) {
+			// TO DO: 형식화된 예외 처리
 			log.info("Invalid JWT Token", e);
-			// 예외처리 이렣게 안됨
 			throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
 		} catch (ExpiredJwtException e) {
 			log.info("Expired JWT Token", e);

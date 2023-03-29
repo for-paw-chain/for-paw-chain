@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.forpawchain.domain.dto.LoginUserDto;
+import com.forpawchain.domain.dto.token.LoginUserDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.exception.BaseException;
 import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.service.UserService;
-import com.forpawchain.domain.dto.TokenInfo;
+import com.forpawchain.domain.dto.token.TokenInfo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,27 +31,25 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
-@Api(tags = "User 관련 API")
+@Api(tags = "유저 API")
 public class UserController {
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
 
-	// 회원가입
+	// 소셜 회원가입 & 로그인
 	@PostMapping("/")
-	@ApiOperation(value = "회원가입", notes = "String 형태의 ID, Social, Name, Profile 입력")
-	public ResponseEntity<?> registUser(@RequestBody RegistUserReqDto registUserReqDto) {
-		registUserReqDto.setSocial(passwordEncoder.encode(registUserReqDto.getSocial()));
-		userService.registUser(registUserReqDto);
+	public ResponseEntity<TokenInfo> sns(@RequestBody RegistUserReqDto registUserReqDto) {
+		String id = registUserReqDto.getId();
+		TokenInfo tokenInfo = null;
 
-		return ResponseEntity.status(HttpStatus.CREATED).build();
-	}
+		try {
+			userService.getUserInfo(id); // 유저 가입 유뮤 검사
+		} catch (BaseException e) {
+			registUser(registUserReqDto);
+		} finally {
+			tokenInfo = login(new LoginUserDto(registUserReqDto.getId(), registUserReqDto.getSocial()));
+		}
 
-	// 로그인
-	@PostMapping("login")
-	@ApiOperation(value = "로그인", notes = "String 형태의 ID와 Social 입력")
-	public ResponseEntity<TokenInfo> login(@RequestBody LoginUserDto loginUserReqDto) {
-		// 로그인 시마다 정보 일치하면 새로운 token 발급
-		TokenInfo tokenInfo = userService.login(loginUserReqDto);
 		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
 	}
 
@@ -86,6 +84,19 @@ public class UserController {
 	public ResponseEntity<?> removeUser() {
 		userService.removeUser(getCurrentUserId());
 		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	private boolean registUser(RegistUserReqDto registUserReqDto) {
+		registUserReqDto.setSocial(passwordEncoder.encode(registUserReqDto.getSocial()));
+		userService.registUser(registUserReqDto);
+
+		return true;
+	}
+
+	private TokenInfo login(LoginUserDto loginUserReqDto) {
+		// 로그인 시마다 정보 일치하면 새로운 token 발급
+		TokenInfo tokenInfo = userService.login(loginUserReqDto);
+		return tokenInfo;
 	}
 
 	// 토큰 정보 조회

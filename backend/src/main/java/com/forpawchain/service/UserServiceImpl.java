@@ -1,23 +1,19 @@
 package com.forpawchain.service;
 
-import java.util.Date;
-
 import javax.transaction.Transactional;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.forpawchain.auth.JwtTokenProvider;
-import com.forpawchain.domain.Entity.JwtExpirationEnums;
 import com.forpawchain.domain.Entity.RefreshToken;
-import com.forpawchain.domain.dto.LoginUserDto;
+import com.forpawchain.domain.dto.token.LoginUserDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.domain.Entity.UserEntity;
-import com.forpawchain.domain.dto.TokenInfo;
+import com.forpawchain.domain.dto.token.TokenInfo;
 import com.forpawchain.exception.BaseException;
 import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.repository.RefreshTokenRedisRepository;
