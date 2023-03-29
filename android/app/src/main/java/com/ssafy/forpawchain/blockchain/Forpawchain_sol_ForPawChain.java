@@ -1,0 +1,200 @@
+package com.ssafy.forpawchain.blockchain;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.web3j.abi.TypeReference;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.DynamicArray;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.Utf8String;
+import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.crypto.Credentials;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.RemoteCall;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.tx.Contract;
+import org.web3j.tx.TransactionManager;
+import org.web3j.tx.gas.ContractGasProvider;
+
+/**
+ * <p>Auto generated code.
+ * <p><strong>Do not modify!</strong>
+ * <p>Please use the <a href="https://docs.web3j.io/command_line.html">web3j command line tools</a>,
+ * or the org.web3j.codegen.SolidityFunctionWrapperGenerator in the
+ * <a href="https://github.com/web3j/web3j/tree/master/codegen">codegen module</a> to update.
+ *
+ * <p>Generated with web3j version 4.1.1.
+ */
+public class Forpawchain_sol_ForPawChain extends Contract {
+    private static final String BINARY = "608060405234801561001057600080fd5b5061117b806100206000396000f3fe608060405234801561001057600080fd5b50600436106100885760003560e01c8063c8691b2a1161005b578063c8691b2a14610103578063cb54421214610128578063de8fa4311461013b578063e2883a761461014d57600080fd5b806312ff3be31461008d5780633129e773146100ba5780635f2c43b0146100db578063bfb231d2146100f0575b600080fd5b6100a061009b366004610c6c565b610160565b6040516100b1959493929190610ccb565b60405180910390f35b6100cd6100c8366004610c6c565b6103d5565b6040516100b1929190610d33565b6100ee6100e9366004610e04565b610541565b005b6100cd6100fe366004610c6c565b61064c565b610116610111366004610c6c565b610790565b6040516100b196959493929190610eb1565b6100ee610136366004610f52565b610b1d565b6001545b6040519081526020016100b1565b61013f61015b366004610c6c565b610bdd565b6001818154811061017057600080fd5b906000526020600020906006020160009150905080600001805461019390610fbf565b80601f01602080910402602001604051908101604052809291908181526020018280546101bf90610fbf565b801561020c5780601f106101e15761010080835404028352916020019161020c565b820191906000526020600020905b8154815290600101906020018083116101ef57829003601f168201915b50505050509080600101805461022190610fbf565b80601f016020809104026020016040519081016040528092919081815260200182805461024d90610fbf565b801561029a5780601f1061026f5761010080835404028352916020019161029a565b820191906000526020600020905b81548152906001019060200180831161027d57829003601f168201915b5050505050908060020180546102af90610fbf565b80601f01602080910402602001604051908101604052809291908181526020018280546102db90610fbf565b80156103285780601f106102fd57610100808354040283529160200191610328565b820191906000526020600020905b81548152906001019060200180831161030b57829003601f168201915b505050600384015460058501805494956001600160a01b0390921694919350915061035290610fbf565b80601f016020809104026020016040519081016040528092919081815260200182805461037e90610fbf565b80156103cb5780601f106103a0576101008083540402835291602001916103cb565b820191906000526020600020905b8154815290600101906020018083116103ae57829003601f168201915b5050505050905085565b606080600083815481106103eb576103eb610ff9565b90600052602060002090600202016000016000848154811061040f5761040f610ff9565b906000526020600020906002020160010181805461042c90610fbf565b80601f016020809104026020016040519081016040528092919081815260200182805461045890610fbf565b80156104a55780601f1061047a576101008083540402835291602001916104a5565b820191906000526020600020905b81548152906001019060200180831161048857829003601f168201915b505050505091508080546104b890610fbf565b80601f01602080910402602001604051908101604052809291908181526020018280546104e490610fbf565b80156105315780601f1061050657610100808354040283529160200191610531565b820191906000526020600020905b81548152906001019060200180831161051457829003601f168201915b5050505050905091509150915091565b6040805160c0810182528581526020808201869052818301859052336060830181905283516000808252928101909452608083019390935260a082018490526001805480820182559152815160069091027fb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6019081906105c1908261105e565b50602082015160018201906105d6908261105e565b50604082015160028201906105eb908261105e565b5060608201516003820180546001600160a01b0319166001600160a01b039092169190911790556080820151805161062d916004840191602090910190610c0c565b5060a08201516005820190610642908261105e565b5050505050505050565b6000818154811061065c57600080fd5b906000526020600020906002020160009150905080600001805461067f90610fbf565b80601f01602080910402602001604051908101604052809291908181526020018280546106ab90610fbf565b80156106f85780601f106106cd576101008083540402835291602001916106f8565b820191906000526020600020905b8154815290600101906020018083116106db57829003601f168201915b50505050509080600101805461070d90610fbf565b80601f016020809104026020016040519081016040528092919081815260200182805461073990610fbf565b80156107865780601f1061075b57610100808354040283529160200191610786565b820191906000526020600020905b81548152906001019060200180831161076957829003601f168201915b5050505050905082565b60608060606000606080600187815481106107ad576107ad610ff9565b9060005260206000209060060201600001600188815481106107d1576107d1610ff9565b9060005260206000209060060201600101600189815481106107f5576107f5610ff9565b906000526020600020906006020160020160018a8154811061081957610819610ff9565b906000526020600020906006020160030160009054906101000a90046001600160a01b031660018b8154811061085157610851610ff9565b906000526020600020906006020160040160018c8154811061087557610875610ff9565b906000526020600020906006020160050185805461089290610fbf565b80601f01602080910402602001604051908101604052809291908181526020018280546108be90610fbf565b801561090b5780601f106108e05761010080835404028352916020019161090b565b820191906000526020600020905b8154815290600101906020018083116108ee57829003601f168201915b5050505050955084805461091e90610fbf565b80601f016020809104026020016040519081016040528092919081815260200182805461094a90610fbf565b80156109975780601f1061096c57610100808354040283529160200191610997565b820191906000526020600020905b81548152906001019060200180831161097a57829003601f168201915b505050505094508380546109aa90610fbf565b80601f01602080910402602001604051908101604052809291908181526020018280546109d690610fbf565b8015610a235780601f106109f857610100808354040283529160200191610a23565b820191906000526020600020905b815481529060010190602001808311610a0657829003601f168201915b5050505050935081805480602002602001604051908101604052809291908181526020018280548015610a7557602002820191906000526020600020905b815481526020019060010190808311610a61575b50505050509150808054610a8890610fbf565b80601f0160208091040260200160405190810160405280929190818152602001828054610ab490610fbf565b8015610b015780601f10610ad657610100808354040283529160200191610b01565b820191906000526020600020905b815481529060010190602001808311610ae457829003601f168201915b5050505050905095509550955095509550955091939550919395565b604080518082019091528281526020810182905260008054600181018255908052815160029091027f290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e56301908190610b74908261105e565b5060208201516001820190610b89908261105e565b50505060018381548110610b9f57610b9f610ff9565b90600052602060002090600602016004016001600080549050610bc2919061111e565b81546001810183556000928352602090922090910155505050565b600060018281548110610bf257610bf2610ff9565b600091825260209091206004600690920201015492915050565b828054828255906000526020600020908101928215610c47579160200282015b82811115610c47578251825591602001919060010190610c2c565b50610c53929150610c57565b5090565b5b80821115610c535760008155600101610c58565b600060208284031215610c7e57600080fd5b5035919050565b6000815180845260005b81811015610cab57602081850181015186830182015201610c8f565b506000602082860101526020601f19601f83011685010191505092915050565b60a081526000610cde60a0830188610c85565b8281036020840152610cf08188610c85565b90508281036040840152610d048187610c85565b6001600160a01b038616606085015283810360808501529050610d278185610c85565b98975050505050505050565b604081526000610d466040830185610c85565b8281036020840152610d588185610c85565b95945050505050565b634e487b7160e01b600052604160045260246000fd5b600082601f830112610d8857600080fd5b813567ffffffffffffffff80821115610da357610da3610d61565b604051601f8301601f19908116603f01168101908282118183101715610dcb57610dcb610d61565b81604052838152866020858801011115610de457600080fd5b836020870160208301376000602085830101528094505050505092915050565b60008060008060808587031215610e1a57600080fd5b843567ffffffffffffffff80821115610e3257600080fd5b610e3e88838901610d77565b95506020870135915080821115610e5457600080fd5b610e6088838901610d77565b94506040870135915080821115610e7657600080fd5b610e8288838901610d77565b93506060870135915080821115610e9857600080fd5b50610ea587828801610d77565b91505092959194509250565b60c081526000610ec460c0830189610c85565b602083820381850152610ed7828a610c85565b91508382036040850152610eeb8289610c85565b6001600160a01b03881660608601528481036080860152865180825282880193509082019060005b81811015610f2f57845183529383019391830191600101610f13565b505084810360a0860152610f438187610c85565b9b9a5050505050505050505050565b600080600060608486031215610f6757600080fd5b83359250602084013567ffffffffffffffff80821115610f8657600080fd5b610f9287838801610d77565b93506040860135915080821115610fa857600080fd5b50610fb586828701610d77565b9150509250925092565b600181811c90821680610fd357607f821691505b602082108103610ff357634e487b7160e01b600052602260045260246000fd5b50919050565b634e487b7160e01b600052603260045260246000fd5b601f82111561105957600081815260208120601f850160051c810160208610156110365750805b601f850160051c820191505b8181101561105557828155600101611042565b5050505b505050565b815167ffffffffffffffff81111561107857611078610d61565b61108c816110868454610fbf565b8461100f565b602080601f8311600181146110c157600084156110a95750858301515b600019600386901b1c1916600185901b178555611055565b600085815260208120601f198616915b828110156110f0578886015182559484019460019091019084016110d1565b508582101561110e5787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b8181038181111561113f57634e487b7160e01b600052601160045260246000fd5b9291505056fea26469706673582212209210c2075b2b40df33d1cb0ac81b4f771c3558ced3c717fe79a45b625c7f7db064736f6c63430008130033";
+
+    public static final String FUNC_ADDHISTORY = "addHistory";
+
+    public static final String FUNC_ADDITEM = "addItem";
+
+    public static final String FUNC_GETHISTORY = "getHistory";
+
+    public static final String FUNC_GETITEM = "getItem";
+
+    public static final String FUNC_GETITEMSIZE = "getItemSize";
+
+    public static final String FUNC_GETSIZE = "getSize";
+
+    public static final String FUNC_HISTORYS = "historys";
+
+    public static final String FUNC_ITEMS = "items";
+
+    @Deprecated
+    protected Forpawchain_sol_ForPawChain(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+        super(BINARY, contractAddress, web3j, credentials, gasPrice, gasLimit);
+    }
+
+    protected Forpawchain_sol_ForPawChain(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+        super(BINARY, contractAddress, web3j, credentials, contractGasProvider);
+    }
+
+    @Deprecated
+    protected Forpawchain_sol_ForPawChain(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        super(BINARY, contractAddress, web3j, transactionManager, gasPrice, gasLimit);
+    }
+
+    protected Forpawchain_sol_ForPawChain(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public RemoteCall<TransactionReceipt> addHistory(String _title, String _body, String _date, String _fileHash) {
+        final Function function = new Function(
+                FUNC_ADDHISTORY,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Utf8String(_title),
+                        new org.web3j.abi.datatypes.Utf8String(_body),
+                        new org.web3j.abi.datatypes.Utf8String(_date),
+                        new org.web3j.abi.datatypes.Utf8String(_fileHash)),
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
+    }
+
+    public RemoteCall<TransactionReceipt> addItem(BigInteger index, String _title, String _body) {
+        final Function function = new Function(
+                FUNC_ADDITEM,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(index),
+                        new org.web3j.abi.datatypes.Utf8String(_title),
+                        new org.web3j.abi.datatypes.Utf8String(_body)),
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
+    }
+
+    public RemoteCall<List<Type>> getHistory(BigInteger index) {
+        final Function function = new Function(
+                FUNC_GETHISTORY,
+                // 인자 타입
+                Collections.singletonList(new Uint256(index)),
+                // 리턴 타입
+                Arrays.asList(
+                        new TypeReference<Utf8String>() {
+                        },
+                        new TypeReference<Utf8String>() {
+                        },
+                        new TypeReference<Utf8String>() {
+                        },
+                        new TypeReference<Address>() {
+                        },
+                        new TypeReference<DynamicArray<Uint256>>() {
+                        },
+                        new TypeReference<Utf8String>() {
+                        }
+                ));
+        return executeRemoteCallMultipleValueReturn(function);
+    }
+
+    public RemoteCall<List<Type>> getItem(BigInteger index) {
+        final Function function = new Function(
+                FUNC_GETITEM,
+                Collections.singletonList(new Uint256(index)),
+                Arrays.asList(
+                        new TypeReference<Utf8String>() {
+                        },
+                        new TypeReference<Utf8String>() {
+                        }
+                ));
+        return executeRemoteCallMultipleValueReturn(function);
+    }
+
+    public BigInteger getItemSize(BigInteger index) throws IOException {
+        final Function function = new Function(
+                FUNC_GETITEMSIZE,
+                Collections.singletonList(new Uint256(index)),
+                Collections.singletonList(
+                        new TypeReference<Uint256>() {
+                        }
+                ));
+        return executeCallSingleValueReturn(function, BigInteger.class);
+    }
+
+    public BigInteger getSize() throws IOException {
+        final Function function = new Function(
+                FUNC_GETSIZE,
+                Collections.emptyList(),
+                Collections.singletonList(
+                        new TypeReference<Uint256>() {
+                        }
+                ));
+        return executeCallSingleValueReturn(function, BigInteger.class);
+    }
+
+    public RemoteCall<TransactionReceipt> historys(BigInteger param0) {
+        final Function function = new Function(
+                FUNC_HISTORYS,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(param0)),
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
+    }
+
+    public RemoteCall<TransactionReceipt> items(BigInteger param0) {
+        final Function function = new Function(
+                FUNC_ITEMS,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(param0)),
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
+    }
+
+    @Deprecated
+    public static Forpawchain_sol_ForPawChain load(String contractAddress, Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+        return new Forpawchain_sol_ForPawChain(contractAddress, web3j, credentials, gasPrice, gasLimit);
+    }
+
+    @Deprecated
+    public static Forpawchain_sol_ForPawChain load(String contractAddress, Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return new Forpawchain_sol_ForPawChain(contractAddress, web3j, transactionManager, gasPrice, gasLimit);
+    }
+
+    public static Forpawchain_sol_ForPawChain load(String contractAddress, Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+        return new Forpawchain_sol_ForPawChain(contractAddress, web3j, credentials, contractGasProvider);
+    }
+
+    public static Forpawchain_sol_ForPawChain load(String contractAddress, Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return new Forpawchain_sol_ForPawChain(contractAddress, web3j, transactionManager, contractGasProvider);
+    }
+
+    public static RemoteCall<Forpawchain_sol_ForPawChain> deploy(Web3j web3j, Credentials credentials, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(Forpawchain_sol_ForPawChain.class, web3j, credentials, contractGasProvider, BINARY, "");
+    }
+
+    @Deprecated
+    public static RemoteCall<Forpawchain_sol_ForPawChain> deploy(Web3j web3j, Credentials credentials, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(Forpawchain_sol_ForPawChain.class, web3j, credentials, gasPrice, gasLimit, BINARY, "");
+    }
+
+    public static RemoteCall<Forpawchain_sol_ForPawChain> deploy(Web3j web3j, TransactionManager transactionManager, ContractGasProvider contractGasProvider) {
+        return deployRemoteCall(Forpawchain_sol_ForPawChain.class, web3j, transactionManager, contractGasProvider, BINARY, "");
+    }
+
+    @Deprecated
+    public static RemoteCall<Forpawchain_sol_ForPawChain> deploy(Web3j web3j, TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit) {
+        return deployRemoteCall(Forpawchain_sol_ForPawChain.class, web3j, transactionManager, gasPrice, gasLimit, BINARY, "");
+    }
+}

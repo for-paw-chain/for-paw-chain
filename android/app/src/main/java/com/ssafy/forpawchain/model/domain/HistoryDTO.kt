@@ -4,8 +4,8 @@ import java.io.Serializable
 
 
 data class Data(
-    val title: String,
-    val body: String
+    val title: String?,
+    val body: String?
 ): Serializable
 
 
