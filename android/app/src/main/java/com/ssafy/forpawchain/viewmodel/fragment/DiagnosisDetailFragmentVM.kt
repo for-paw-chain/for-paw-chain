@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,7 @@ class DiagnosisDetailFragmentVM : ViewModel() {
     val body = MutableLiveData<String>()
     val date = MutableLiveData<String>()
     val searchEditText = MutableLiveData<String>("410087800324555")
+    var image = MutableLiveData<Drawable>()
 
     //추가 시작
     val todoLiveData = MutableLiveData<List<DianosisNewDTO>>() //변경/관찰가능한 List
