@@ -57,4 +57,22 @@ class AuthService {
 
         return service.removePetAuth(receiver, pid);
     }
+    fun handPetAuth(receiver: Int, pid: String): Call<ResponseBody> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer qwerqwer")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
+        retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        service = retrofit.create(RetrofitService::class.java);
+
+        return service.handPetAuth(receiver, pid);
+    }
 }

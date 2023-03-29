@@ -89,6 +89,33 @@ class PermissionPawFragment : Fragment() {
         binding.adoptBtn.setOnClickListener { view ->
             val dialog = AdopteeSetDialog(requireContext(), object : IPermissionDelete {
                 override fun onDeleteBtnClick() {
+                    GlobalScope.launch {
+                        val response = withContext(Dispatchers.IO) {
+                            AuthService().handPetAuth(
+                                Integer.parseInt(uid), pid
+                            ).enqueue(object :
+                                Callback<ResponseBody> {
+                                override fun onResponse(
+                                    call: Call<ResponseBody>,
+                                    response: Response<ResponseBody>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        // 정상적으로 통신이 성공된 경우
+                                        Log.d(TAG, "onResponse 성공");
+                                        viewModel.deleteTask(it)
+                                    } else {
+                                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                        Log.d(TAG, "onResponse 실패")
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d(TAG, "onFailure 에러: " + t.message.toString());
+                                }
+                            })
+                        }
+                    }
                     Log.d(TAG, "권한 양도")
                 }
             })
