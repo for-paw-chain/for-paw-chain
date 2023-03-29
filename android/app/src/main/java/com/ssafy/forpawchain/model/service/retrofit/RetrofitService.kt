@@ -55,6 +55,10 @@ interface RetrofitService {
     fun removePetAuth(@Query("receiver") receiver: Int,
                       @Query("pid") pid: String
     ): Call<ResponseBody>
+    @PUT("auth/hand")
+    fun handPetAuth(@Query("receiver") receiver: Int,
+                      @Query("pid") pid: String
+    ): Call<ResponseBody>
 
     @DELETE("adopt/{pid}")
     fun deleteAdopt(@Path("pid") pid: String): Call<ResponseBody>
