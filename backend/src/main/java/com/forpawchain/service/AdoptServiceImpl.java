@@ -106,6 +106,9 @@ public class AdoptServiceImpl implements AdoptService {
 			.user(userEntity)
 			.build();
 
+		petEntity.updatePetLost(true);
+		petRepository.save(petEntity);
+
 		adoptRepository.save(adoptEntity);
 	}
 
