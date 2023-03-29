@@ -5,15 +5,11 @@
 
     <data>
         <variable
-            name="SearchResultItem"
-            type="com.ssafy.forpawchain.model.domain.SearchResultDTO" />
+            name="MyPawDetailItem"
+            type="com.ssafy.forpawchain.model.domain.MyPawListDTO" />
 
         <variable
-            name="viewModel"
-            type="com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM" />
-
-        <variable
-            name="AdoptItem"
+            name="adoptItem"
             type="com.ssafy.forpawchain.model.domain.AdoptDTO" />
 
     </data>
@@ -131,7 +127,7 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{SearchResultItem.name}" />
+                        android:text="@{MyPawDetailItem.name}" />
 
                     <TextView
                         android:id="@+id/SearchResultItemSex"
@@ -142,7 +138,7 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{SearchResultItem.sex}" />
+                        android:text="@{MyPawDetailItem.sex}" />
 
                     <TextView
                         android:id="@+id/SearchResultItemSpecies"
@@ -153,7 +149,7 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{SearchResultItem.species}" />
+                        android:text="@{MyPawDetailItem.species}" />
 
                     <TextView
                         android:id="@+id/SearchResultItemKind"
@@ -164,7 +160,7 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{SearchResultItem.kind}" />
+                        android:text="@{MyPawDetailItem.kind}" />
 
                     <TextView
                         android:id="@+id/SearchResultItemNeutered"
@@ -175,7 +171,7 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{SearchResultItem.neutered}" />
+                        android:text="@{MyPawDetailItem.neutered}" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -220,6 +216,7 @@
             android:orientation="horizontal"
             android:weightSum="5"
             android:background="@drawable/shadow"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -347,169 +344,37 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/idAddPawInfoDetailButton"
+            android:layout_width="match_parent"
+            android:layout_height="127dp"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            android:background="@drawable/logo_add_pawinfo_button"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/idSearchResultDetail"
+            app:layout_constraintVertical_bias="0.0"/>
+
+
+        <include
+            layout="@layout/controll_adopt_ad"
             android:layout_width="match_parent"
             android:layout_height="132dp"
             android:layout_margin="16dp"
-            android:orientation="vertical"
             android:background="@drawable/background_layout_search_result_redius"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/idSearchResultDetail"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:background="#F3F0FD"
-                android:fontFamily="@font/kakao_bold"
-                android:gravity="center"
-                android:text="버림 받은 유기동물의 주인이 되어주세요"
-                android:textSize="16sp"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="4dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="16dp"
-                android:orientation="horizontal"
-                android:weightSum="5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:src="@{AdoptItem.profile}" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.75"
-                        android:orientation="vertical"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="4dp"
-                            android:layout_weight="1"
-                            android:background="#F3F0FD"
-                            android:fontFamily="@font/kakao_bold"
-                            android:gravity="center_vertical"
-                            android:text="종" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="4dp"
-                            android:layout_weight="1"
-                            android:background="#F3F0FD"
-                            android:fontFamily="@font/kakao_bold"
-                            android:gravity="center_vertical"
-
-                            android:text="종류" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="4dp"
-                            android:layout_weight="1"
-                            android:background="#F3F0FD"
-                            android:fontFamily="@font/kakao_bold"
-                            android:gravity="center_vertical"
-
-                            android:text="중성화" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="2.25"
-                        android:orientation="vertical"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:id="@+id/AdoptItemSpecies"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="4dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_layout_search_result_info_redius"
-                            android:fontFamily="@font/kakao_regular"
-                            android:gravity="center_vertical"
-
-                            android:text="@{AdoptItem.species}" />
-
-                        <TextView
-                            android:id="@+id/AdoptItemKind"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="4dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_layout_search_result_info_redius"
-                            android:fontFamily="@font/kakao_regular"
-                            android:gravity="center_vertical"
-
-                            android:text="@{AdoptItem.kind}" />
-
-                        <TextView
-                            android:id="@+id/AdoptItemNeutered"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="4dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_layout_search_result_info_redius"
-                            android:fontFamily="@font/kakao_regular"
-                            android:gravity="center_vertical"
-                            android:text="@{AdoptItem.neutered}" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/detail_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:background="@drawable/background_layout_redius"
-                        android:gravity="center"
-                        android:text="자세히 >"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.95" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </LinearLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

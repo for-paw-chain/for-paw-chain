@@ -103,6 +103,7 @@ class LoginActivity : AppCompatActivity() {
                     UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
                         UserApiClient.instance.me { user, error ->
                             Log.d("[카카오톡 로그인]", "유저 정보. ${user}")
+                            Log.d("[카카오톡 로그인]", "토큰 정보. ${token}")
                         }
                     }
                     nextMainActivity()

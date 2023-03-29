@@ -65,7 +65,7 @@ class PawFragment : Fragment() {
         recyclerView.adapter = AdoptRecyclerViewAdapter(
             {
                 val bundle = Bundle()
-                bundle.putString("pid", it.pid)
+                bundle.putString("pid", it.pid.value)
                 navController.navigate(R.id.navigation_adopt_view, bundle)
                 Log.d(TAG, "입분양 디테일 뷰")
             },
@@ -82,7 +82,7 @@ class PawFragment : Fragment() {
                         // 공고 삭제
                         lifecycleScope.launch() {
                             val response = withContext(Dispatchers.IO) {
-                                AdoptService().deleteAdopt(it.pid).enqueue(object :
+                                AdoptService().deleteAdopt(it.pid.value!!).enqueue(object :
                                     Callback<ResponseBody> {
                                     override fun onResponse(
                                         call: Call<ResponseBody>,

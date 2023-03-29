@@ -72,10 +72,9 @@ class HouseFragment : Fragment() {
             },
             onClickDetailButton = {
                 // detail
-                Log.d(TAG, "클릭  " + it.name + it.species)
                 val bundle = Bundle()
-                bundle.putParcelable("SearchResultItem", it)
-                navController.navigate(R.id.navigation_search_result_unauth, bundle)
+                bundle.putParcelable("MyPawDetailItem", it)
+                navController.navigate(R.id.navigation_search_result, bundle)
             },
         )
 
