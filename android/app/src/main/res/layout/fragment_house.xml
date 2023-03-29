@@ -39,9 +39,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/kakao_bold"
+                        android:fontFamily="@font/kakao_regular"
                         android:gravity="center"
-                        android:text="동물 등록 번호 입력"
+                        android:text="동물 등록 번호 검색"
                         android:textColor="@{viewModel.isOpenSearch ? #00000000 : @color/white }"
                         android:textSize="35sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -53,40 +53,47 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <androidx.appcompat.widget.Toolbar
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_gravity="bottom"
                     android:background="#00000000"
+                    android:gravity="center"
+                    android:weightSum="10"
                     app:layout_collapseMode="pin">
 
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/linearLayout"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
+                        android:weight="8"
                         android:background="@drawable/background_layout_redius"
-                        android:gravity="top"
-                        android:orientation="horizontal"
-                        android:weightSum="1"
 
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+
+                        android:weightSum="1"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0">
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="50"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
-                            android:layout_width="50dp"
+                            android:id="@+id/imageView13"
+                            android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:src="@drawable/logo_img_color_shadow" />
+                            android:src="@drawable/logo_img_color_shadow"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
 
                         <EditText
                             android:id="@+id/searchEditText"
-                            android:layout_width="300dp"
-                            android:layout_height="45dp"
-                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:background="@color/white"
                             android:fontFamily="@font/kakao_regular"
                             android:gravity="center"
@@ -94,12 +101,17 @@
                             android:imeOptions="actionDone"
                             android:singleLine="true"
                             android:text="@={viewModel.searchEditText}"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                </androidx.appcompat.widget.Toolbar>
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/imageView13"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
 
             <!-- 뷰페이저와 연결할 탭 -->
             <!--            <com.google.android.material.tabs.TabLayout-->
@@ -110,22 +122,34 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- 뷰페이저 (layout_behavior를 "@string/appbar_scrolling_view_behavior"로 설정해야함! ) -->
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+<!--            <TextView-->
+<!--                android:id="@+id/textView25"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/kakao_bold"-->
+<!--                android:text="나의 반려동물"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="25sp"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                tools:ignore="MissingConstraints" />-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="parent">
 
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>

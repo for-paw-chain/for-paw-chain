@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/icon_paw_solid" />
+                android:src="@drawable/icon_default_pet" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -130,6 +130,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="#E7E7E7"
             android:fontFamily="@font/kakao_bold"
             android:text="취소"
             android:textColor="@color/black"
