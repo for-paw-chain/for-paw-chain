@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserInfoResDto getUserInfo(String id) {
 		UserEntity userEntity = userRepository.findById(id)
-			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_USER_INFO));
+			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 		UserInfoResDto userInfo = new UserInfoResDto(userEntity);
 
 		// 의사인 경우
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void removeUser(String id) {
 		UserEntity userEntity = userRepository.findById(id)
-			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_USER_INFO));
+			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 
 		// user 정보 변경
 		UserEntity newUserEntity = UserEntity.builder()

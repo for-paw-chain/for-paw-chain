@@ -37,7 +37,7 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private boolean del;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     List<AdoptEntity> adoptList;// = new ArrayList<>();
     @OneToMany(mappedBy = "user")
     List<AuthenticationEntity> authList;// = new ArrayList<>();

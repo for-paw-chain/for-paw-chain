@@ -1,18 +1,12 @@
 package com.forpawchain;
 
 import static com.forpawchain.domain.Entity.Sex.*;
-import static com.forpawchain.domain.Entity.Social.*;
 import static com.forpawchain.domain.Entity.Type.*;
 
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.time.LocalDate;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import org.web3j.crypto.CipherException;
 
 import com.forpawchain.domain.dto.request.LicenseReqDto;
 import com.forpawchain.domain.Entity.AdoptEntity;
