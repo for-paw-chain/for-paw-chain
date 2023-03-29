@@ -22,6 +22,7 @@
             android:fontFamily="@font/kakao_bold"
             android:gravity="center"
             android:text="나의 반려동물 모음"
+            android:textColor="@color/black"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -88,8 +88,8 @@ public class AdoptController {
     // @PostMapping(consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
     @PostMapping
 	@ApiOperation(value = "입양 공고 작성", notes = "입양 공고를 작성한다. 누가 작성했는지는 access token으로 파악한다.")
-    public ResponseEntity<Void> registAdopt(@RequestHeader("Access-Token") String accessToken,
-        AdoptDetailReqDto adoptDetailReqDto, @RequestPart MultipartFile imageFile) throws IOException {
+    public ResponseEntity<Void> registAdopt(@RequestHeader("Authorization") String authorization,
+        @RequestPart(name = "content") AdoptDetailReqDto adoptDetailReqDto, @RequestPart(name = "profile") MultipartFile imageFile) throws IOException {
         long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
         adoptService.registAdopt(adoptDetailReqDto, uid, imageFile);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -97,8 +97,8 @@ public class AdoptController {
 
     @PutMapping
 	@ApiOperation(value = "입양 공고 수정", notes = "입양 공고의 내용을 수정한다.")
-    public ResponseEntity<Void> modifyAdopt(@RequestHeader("Access-Token") String accessToken,
-    AdoptDetailReqDto adoptDetailReqDto, @RequestPart MultipartFile imageFile) throws IOException {
+    public ResponseEntity<Void> modifyAdopt(@RequestHeader("Authorization") String authorization,
+        @RequestPart(name = "content") AdoptDetailReqDto adoptDetailReqDto, @RequestPart(name = "profile") MultipartFile imageFile) throws IOException {
 
         long uid = 1L;
 
@@ -109,7 +109,7 @@ public class AdoptController {
 
     @DeleteMapping("/{pid}")
 	@ApiOperation(value = "입양 공고 삭제", notes = "동물등록번호(pid)를 입력하면 해당 동물의 분양 공고를 삭제한다.")
-    public ResponseEntity<Void> removeAdopt(@RequestHeader("Access-Token") String accessToken,
+    public ResponseEntity<Void> removeAdopt(@RequestHeader("Authorization") String authorization,
         @PathVariable("pid") String pid) {
 
         long uid = 1L;
@@ -120,7 +120,7 @@ public class AdoptController {
 
     @GetMapping("/article")
 	@ApiOperation(value = "내가 쓴 입양 공고 조회", notes = "access token에서 uid 값을 추출해서, 해당 사용자가 쓴 분양 공고글 리스트를 반환한다.")
-    public ResponseEntity<HashMap<String, List<AdoptListResDto>>> getAdoptMyList(@RequestHeader("Access-Token") String accessToken) {
+    public ResponseEntity<HashMap<String, List<AdoptListResDto>>> getAdoptMyList(@RequestHeader("Authorization") String authorization) {
         long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
         List<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptMyList(uid);
 

@@ -42,19 +42,20 @@ class SearchResultFragment : Fragment() {
         }
         val bundle = arguments
 
-        bundle?.getParcelable<SearchResultDTO>("item")?.let {
-            binding.item = it
+        bundle?.getParcelable<SearchResultDTO>("SearchResultItem")?.let {
+            binding.searchResultItem = it
         }
         initObserve()
     }
 
     private fun initObserve() {
         viewModel.selectedSearchResult.observe(viewLifecycleOwner, Observer {
-            binding.item = it
-            println("왜 안나와" + binding.item)
+            binding.searchResultItem = it
+            println("왜 안나와" + binding.searchResultItem)
         })
         viewModel.openEvent.eventObserve(this) { obj ->
             when (obj) {
+                // TODO: navController
                 ActivityCode.FRAGMENT_USER -> navController.navigate(com.ssafy.forpawchain.R.id.navigation_user)
                 else -> {
                     null

@@ -25,22 +25,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     /**
      *
-     * @param taraget: 권한을 받는 사람의 uid
+     * @param target: 권한을 받는 사람의 uid
      * @param pid: 권한과 관련된 동물의 pid
      */
     @Override
-    public void giveFriendAuthentication(long uid, long taraget, String pid) throws BaseException {
-        AuthenticationType authType = authenticationRepository.findAuthenticationTypeByUidAndPid(uid, pid);
+    public void giveFriendAuthentication(long uid, long target, String pid) throws BaseException {
+        try {
+            Optional<String> targetWa = userRepository.findWaByUid(target);
+            // 받는 사람이 의사라면
+            if (!targetWa.isEmpty()) {
+                return;
+            }
 
-        Optional<AuthenticationEntity> orgEntity = authenticationRepository.findByAuthIdUidAndAuthIdPid(taraget, pid);
+            AuthenticationType authType = authenticationRepository.findAuthenticationTypeByUidAndPid(uid, pid);
 
-        AuthenticationId authID = new AuthenticationId(taraget, pid);
+            Optional<AuthenticationEntity> orgEntity = authenticationRepository.findByAuthIdUidAndAuthIdPid(target, pid);
 
-        UserEntity userEntity = userRepository.findByUid(taraget);
+            AuthenticationId authID = new AuthenticationId(target, pid);
 
-        PetEntity petEntity = petRepository.findByPid(pid);
+            UserEntity userEntity = userRepository.findByUid(target);
 
-        AuthenticationEntity newEntity = AuthenticationEntity
+            PetEntity petEntity = petRepository.findByPid(pid);
+
+            AuthenticationEntity newEntity = AuthenticationEntity
                     .builder()
                     .authId(authID)
                     .type(AuthenticationType.FRIEND) // FRIEND 권한으로 변경된다.
@@ -49,8 +56,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .pet(petEntity)
                     .build();
 
-        // 받 는 사람의 권한을 FRINED로 변경
-        authenticationRepository.save(newEntity);
+            // 받 는 사람의 권한을 FRINED로 변경
+            authenticationRepository.save(newEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
+        }
      }
 
     /**
@@ -60,18 +72,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     @Override
     public void removeAuthentication(long uid, long target, String pid) {
-        // uid, pid인 권한 삭제   
-        authenticationRepository.deleteByAuthIdUidAndAuthIdPid(uid, pid);
+        try {
+            Optional<String> targetWa = userRepository.findWaByUid(target);
+            // 받는 사람이 의사라면
+            if (!targetWa.isEmpty()) {
+                return;
+            }
+            // uid, pid인 권한 삭제
+            authenticationRepository.deleteByAuthIdUidAndAuthIdPid(uid, pid);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
+        }
     }
 
     /**
-     * 
+     *
      * @param pid: pid와 관련된 모든 권한 조회
      * @return pid에 대한 권한 모두 반환
      */
     @Override
     public List<UserResDto> getAllAuthenicatedUser(long uid, String pid) {
-        return authenticationRepository.findUserAllByPid(pid);
+        try {
+            Optional<String> targetWa = userRepository.findWaByUid(uid);
+            // 받는 사람이 의사라면
+            if (!targetWa.isEmpty()) {
+                throw new BaseException(ErrorMessage.AUTH_NOT_NEEDED);
+            }
+            return authenticationRepository.findUserAllByPid(pid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
+        }
     }
     /**
      *  주인권한양도
@@ -90,12 +123,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     @Override
     public void giveMasterAuthentication(long uid, long target, String pid) {
+        try {
+            Optional<String> targetWa = userRepository.findWaByUid(target);
+            // 받는 사람이 의사라면
+            if (!targetWa.isEmpty()) {
+                return;
+            }
+
             AuthenticationType senderAuthentication = authenticationRepository.findAuthenticationTypeByUidAndPid(uid, pid);
-            Optional<String> wa = userRepository.findWaByUid(uid);
+            Optional<String> uidWa = userRepository.findWaByUid(uid);
             PetEntity petEntity = petRepository.findByPid(pid);
 
             // 의사일 경우
-            if (!wa.isEmpty()) {
+            if (!uidWa.isEmpty()) {
                 // 원래의 주인 uid 찾기
                 Optional<Long> sender = authenticationRepository.findUidByPidAndType(pid, AuthenticationType.MASTER);
 
@@ -121,30 +161,52 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 }
             }
             // 주인이 주인 권한을 넘겨주는 경우
-             else {
+            else {
                 moveAuthentication(uid, target, pid, AuthenticationType.MASTER);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
+        }
     }
-    // 주인의 권한이 제거되는 경우
-    public void moveAuthentication(long frm, long to, String pid, AuthenticationType type) {
 
-        // 권한을 주는 사람의 권한
-        Optional<AuthenticationEntity> frmAuthentication = authenticationRepository.findByAuthId(new AuthenticationId(frm, pid));
+    @Override
+    public AuthenticationType getAuthenticationOfPid(Long uid, String pid) {
+        String authentication = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(uid, pid);
 
-        if (frmAuthentication.isEmpty()) {
-            throw new BaseException(ErrorMessage.AUTH_NOT_FOUND);
+        if (authentication == null) {
+            throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
         }
 
-        authenticationRepository.deleteByAuthIdUidAndAuthIdPid(frm, pid);
+        AuthenticationType authenticationType = AuthenticationType.valueOf(authentication);
 
-        AuthenticationEntity toAuthentication = AuthenticationEntity
-                .builder()
-                .authId(new AuthenticationId(to, pid))
-                .user(userRepository.findByUid(to))
-                .pet(frmAuthentication.get().getPet())
-                .regTime(LocalDate.now())
-                .type(type)
-                .build();
+        return authenticationType;
+    }
 
+    // 주인의 권한이 제거되는 경우
+    public void moveAuthentication(long frm, long to, String pid, AuthenticationType type) {
+        try {
+            // 권한을 주는 사람의 권한
+            Optional<AuthenticationEntity> frmAuthentication = authenticationRepository.findByAuthId(new AuthenticationId(frm, pid));
+
+            if (frmAuthentication.isEmpty()) {
+                throw new BaseException(ErrorMessage.AUTH_NOT_FOUND);
+            }
+
+            authenticationRepository.deleteByAuthIdUidAndAuthIdPid(frm, pid);
+
+            AuthenticationEntity toAuthentication = AuthenticationEntity
+                    .builder()
+                    .authId(new AuthenticationId(to, pid))
+                    .user(userRepository.findByUid(to))
+                    .pet(frmAuthentication.get().getPet())
+                    .regTime(LocalDate.now())
+                    .type(type)
+                    .build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
+        }
     }
 }

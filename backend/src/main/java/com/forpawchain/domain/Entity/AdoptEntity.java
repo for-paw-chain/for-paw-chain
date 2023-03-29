@@ -1,11 +1,16 @@
 package com.forpawchain.domain.Entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "ADOPT")
@@ -22,6 +27,10 @@ public class AdoptEntity {
     @Column(nullable = false, length = 1000)
     private String profile;
     private String etc;
+
+    @Column(nullable = false)
+    @CreationTimestamp
+    private LocalDateTime regTime = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "pid")
