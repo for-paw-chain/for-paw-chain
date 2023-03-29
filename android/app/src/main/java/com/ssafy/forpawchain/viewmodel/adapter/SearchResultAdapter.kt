@@ -16,7 +16,7 @@ import com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM
 class SearchResultAdapter(
     private var mydataSet: List<SearchResultDTO>,
     val onClickQrButton: (pos: SearchResultDTO) -> Unit,
-    val onClickDetailButton: (pos: MyPawListDTO) ->Unit,
+    val onClickDetailButton: (pos: SearchResultDTO) ->Unit,
 ) : RecyclerView.Adapter<SearchResultAdapter.SearchRestulViewHolder>() {
 
     companion object {

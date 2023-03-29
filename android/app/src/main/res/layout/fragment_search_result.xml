@@ -6,7 +6,7 @@
     <data>
         <variable
             name="MyPawDetailItem"
-            type="com.ssafy.forpawchain.model.domain.MyPawListDTO" />
+            type="com.ssafy.forpawchain.model.domain.SearchResultDTO" />
 
         <variable
             name="adoptItem"
