@@ -74,4 +74,16 @@ public class AuthenticationController {
         map.put("content", authenticationType.toString());
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    @GetMapping("/date")
+    @ApiOperation(value = "동물과 함께한 날 조회", notes = "어떤 동물과 함께하기 시작한 날짜를 조회한다.")
+    public ResponseEntity<HashMap<String, String>> getRegDate(@RequestHeader("Authorization") String authorization, String pid) {
+
+        Long uid = 1L;
+        HashMap<String, String> map = new HashMap<>();
+
+        String regDate = authService.getRegDate(uid, pid);
+        map.put("content", regDate);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }
