@@ -28,7 +28,7 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
     void deleteByAuthIdUidAndAuthIdPid(long uid, String pid);
     @Query(value = "select a.uid uid, u.name name, u.profile profile \n" +
             "from authentication a join user u on a.uid = u.uid \n"+
-            "where a.pid = :pid", nativeQuery = true)
+            "where a.pid = :pid and a.authentication != 'MASTER'", nativeQuery = true)
     List<UserResDto> findUserAllByPid(@Param("pid") String pid);
     // 동물 pid에 대한 uid사람의 권한 반환
     @Query("select a.type from AuthenticationEntity a " +
