@@ -231,7 +231,7 @@ public class TestDataInit {
 						.pid(pid)
 						.tel("01023411243")
 						.profile(petImgUrl)
-						.birth(LocalDate.of(2023, 5, 19))
+						.birth(LocalDate.of(2023, 1, 19))
 						.region("서울시 관악구")
 						.etc("귀염둥이입니당")
 						.pet(petEntity)
@@ -254,12 +254,12 @@ public class TestDataInit {
 		// authenticationService.giveFriendAuthentication(1, 5L, "41000000000001");
 
 		authenticationService.giveMasterAuthentication(6L, 1L, "411");
-		authenticationService.giveMasterAuthentication(6L, 1L, "412");
-		authenticationService.giveMasterAuthentication(6L, 1L, "413");
+		authenticationService.giveMasterAuthentication(6L, 1L, "414");
+		authenticationService.giveMasterAuthentication(6L, 1L, "417");
 
-		authenticationService.giveFriendAuthentication(1, 2L, "411");
-		authenticationService.giveFriendAuthentication(1, 3L, "411");
-		authenticationService.giveFriendAuthentication(1, 4L, "411");
-		authenticationService.giveFriendAuthentication(1, 5L, "411");
+		authenticationService.giveFriendAuthentication(1L, 2L, "411");
+		authenticationService.giveFriendAuthentication(1L, 3L, "411");
+		authenticationService.giveFriendAuthentication(1L, 4L, "411");
+		authenticationService.giveFriendAuthentication(1L, 5L, "411");
 	}
 }
