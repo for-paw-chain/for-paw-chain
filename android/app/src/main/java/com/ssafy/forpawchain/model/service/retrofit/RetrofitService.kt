@@ -43,6 +43,7 @@ interface RetrofitService {
     @POST("web3/license")
     fun setDoctor(@Body doctor: RequestDoctorDTO): Call<JsonObject>
 
+    @Multipart
     @POST("upload")
     fun setUpload(@Part filePart: MultipartBody.Part): Call<JsonObject>
 
@@ -58,6 +59,10 @@ interface RetrofitService {
     @PUT("auth/hand")
     fun handPetAuth(@Query("receiver") receiver: Int,
                       @Query("pid") pid: String
+    ): Call<ResponseBody>
+    @POST("auth")
+    fun giveFriendAuth(@Query("receiver") receiver: Int,
+                       @Query("pid") pid: String
     ): Call<ResponseBody>
 
     @DELETE("adopt/{pid}")
