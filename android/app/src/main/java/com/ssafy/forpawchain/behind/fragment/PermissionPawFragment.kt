@@ -17,6 +17,7 @@ import com.ssafy.forpawchain.behind.dialog.PermissionSetDialog
 import com.ssafy.forpawchain.databinding.FragmentPermissionPawBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.PermissionUserDTO
+import com.ssafy.forpawchain.model.interfaces.IHandAdaptee
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.model.service.AuthService
 import com.ssafy.forpawchain.viewmodel.adapter.PermissionPawListAdapter
@@ -87,8 +88,8 @@ class PermissionPawFragment : Fragment() {
         }
 
         binding.adoptBtn.setOnClickListener { view ->
-            val dialog = AdopteeSetDialog(requireContext(), object : IPermissionDelete {
-                override fun onDeleteBtnClick() {
+            val dialog = AdopteeSetDialog(requireContext(), object : IHandAdaptee {
+                override fun onHandPetBtnClick(receiver: Int) {
                     GlobalScope.launch {
                         val response = withContext(Dispatchers.IO) {
                             AuthService().handPetAuth(
@@ -102,7 +103,7 @@ class PermissionPawFragment : Fragment() {
                                     if (response.isSuccessful) {
                                         // 정상적으로 통신이 성공된 경우
                                         Log.d(TAG, "onResponse 성공");
-                                        viewModel.deleteTask(it)
+                                        viewModel.deleteUserTask(receiver)
                                     } else {
                                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                                         Log.d(TAG, "onResponse 실패")
