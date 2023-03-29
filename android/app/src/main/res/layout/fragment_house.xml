@@ -60,14 +60,12 @@
                     android:layout_gravity="bottom"
                     android:background="#00000000"
                     android:gravity="center"
-                    android:weightSum="10"
                     app:layout_collapseMode="pin">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/linearLayout"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:weight="8"
                         android:background="@drawable/background_layout_redius"
 
                         android:baselineAligned="false"
