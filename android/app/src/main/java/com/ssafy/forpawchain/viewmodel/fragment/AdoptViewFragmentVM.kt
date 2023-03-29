@@ -66,7 +66,7 @@ class AdoptViewFragmentVM : ViewModel() {
             AdoptService().getDetailAdopt(pid).enqueue(object :
                 Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    if (response.isSuccessful) {1
+                    if (response.isSuccessful) {
                         // 정상적으로 통신이 성고된 경우
                         var result: JsonObject? = response.body()
                         ImageLoader().loadDrawableFromUrl(result!!["profile"].asString) { drawable ->
