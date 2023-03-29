@@ -1,18 +1,15 @@
 package com.ssafy.forpawchain.viewmodel.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.ControllDiagnosisHistoryBinding
-import com.ssafy.forpawchain.model.domain.AdoptDTO
-import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
-import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
+import com.ssafy.forpawchain.model.domain.HistoryDTO
 
 class DiagnosisRecyclerViewAdapter(
-    val onClickDetailButton: (pos: DiagnosisHistoryDTO) -> Unit,
+    val onClickDetailButton: (pos: HistoryDTO) -> Unit,
 ) :
-    BaseRecyclerViewAdapter<ControllDiagnosisHistoryBinding, DiagnosisHistoryDTO>(emptyList()) {
+    BaseRecyclerViewAdapter<ControllDiagnosisHistoryBinding, HistoryDTO>(emptyList()) {
 
     override fun onBindViewHolder(
         holder: BaseRecyclerViewHolder<ControllDiagnosisHistoryBinding>,
@@ -43,7 +40,7 @@ class DiagnosisRecyclerViewAdapter(
         return holder
     }
 
-    fun setData(data: List<DiagnosisHistoryDTO>) {
+    fun setData(data: List<HistoryDTO>) {
         mydataSet = data
         notifyDataSetChanged()
     }

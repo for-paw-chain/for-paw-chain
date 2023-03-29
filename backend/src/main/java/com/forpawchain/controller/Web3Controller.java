@@ -48,13 +48,9 @@ public class Web3Controller {
 	@PostMapping("/license")
 	@ApiOperation(value = "의사 인증", notes = "입력한 의사 정보가 정부 DB에 들어있으면 의사임이 인증된다. 지갑이 생성되고 private key가 반환된다.")
 	public ResponseEntity<HashMap<String, String>> authDoctor(@RequestBody LicenseReqDto licenseReqDto) throws
-		InvalidAlgorithmParameterException,
-		CipherException,
-		IOException,
-		NoSuchAlgorithmException,
-		NoSuchProviderException {
+		Exception {
 
-		// accesstoken으로 uid 값 받아와야됨
+		// authorization으로 uid 값 받아와야됨
 		Long uid = 1L;
 
 		String privateKey = web3Service.createWallet(uid, licenseReqDto);
@@ -77,20 +73,32 @@ public class Web3Controller {
 	@ApiOperation(value = "이더 충전", notes = "로그인 유저의 지갑으로 이더를 충전해준다.")
 	public void sendEth() throws Exception {
 		// String toAddress = "0x4ba7a38538d48f05816909e572fedc18cc3ab7bb";
-		// accesstoken으로 uid 값 받아와야됨
+		// authorization으로 uid 값 받아와야됨
 		Long uid = 1L;
 
 		String toAddress = web3Service.getAddress(uid);
 		System.out.println("지갑 주소 : " + toAddress);
 		web3Service.sendEth(toAddress);
 	}
-	
+
+	/**
+	 * 동물 스마트 컨트랙트 배포
+	 */
 	@PostMapping("contract/{pid}")
 	@ApiOperation(value = "컨트랙트 주소 조회", notes = "해당 동물의 컨트랙트 주소를 반환한다. 컨트랜트 주소가 없으면 새 컨트랙트를 배포한다.")
 	public ResponseEntity<HashMap<String, String>> deployContract(@PathVariable("pid") String pid) throws Exception {
 		HashMap<String, String> map = new HashMap<>();
 		String ca = web3Service.deployContract(pid);
 		map.put("content", ca);
+		return new ResponseEntity<>(map, HttpStatus.OK);
+	}
+
+	@GetMapping("wallet/{wa}")
+	@ApiOperation(value = "지갑으로 의사 조회", notes = "지갑 주소로 의사를 조회해서 의사의 이름을 반환한다.")
+	public ResponseEntity<HashMap<String, String>> findDoctor(@PathVariable("wa") String wa) {
+		HashMap<String, String> map = new HashMap<>();
+		String name = web3Service.findDoctor(wa);
+		map.put("content", name);
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 }

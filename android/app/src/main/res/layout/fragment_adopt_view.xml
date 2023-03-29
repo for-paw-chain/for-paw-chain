@@ -5,7 +5,6 @@
     tools:context=".behind.fragment.AdoptViewFragment">
 
     <data>
-
         <variable
             name="item"
             type="com.ssafy.forpawchain.model.domain.MyPawListDTO" />
@@ -29,35 +28,45 @@
             android:gravity="center"
             android:text="새로운 주인이 되어주세요"
             android:textColor="@color/white"
-            android:textSize="32sp"
+            android:textSize="26sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearLayout8"
-            android:layout_width="match_parent"
-            android:layout_height="125dp"
+            android:layout_width="380dp"
+            android:layout_height="135dp"
             android:layout_margin="16dp"
-            android:background="@drawable/background_layout_redius"
+            android:background="@drawable/box_radius_02"
             android:backgroundTint="@color/whitesmoke"
             android:orientation="horizontal"
             android:weightSum="5"
+            android:elevation="25dp"
+            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView20">
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
                 android:layout_weight="1.5"
-                android:src="@{item.profile}" />
+                android:background="@drawable/box_radius_04">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@{item.profile}" />
+            </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
+                android:layout_marginLeft="8dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -73,7 +82,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:text="이름" />
 
@@ -82,7 +90,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
 
                         android:fontFamily="@font/kakao_bold"
 
@@ -93,29 +100,26 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
 
                         android:fontFamily="@font/kakao_bold"
 
-                        android:text="견과" />
+                        android:text="종" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
 
                         android:fontFamily="@font/kakao_bold"
 
-                        android:text="말티즈" />
+                        android:text="종류" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
 
                         android:fontFamily="@font/kakao_bold"
 
@@ -193,40 +197,59 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:id="@+id/imageView10"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:src="@drawable/logo_img_color_shadow"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.8"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.1" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- TODO: 통화 이모티콘 필요 -->
-
-                <Button
-                    android:id="@+id/qr_btn"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/linearLayout11"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/icon_qr"
-                    android:gravity="bottom"
+                    android:background="@drawable/box_radius_03"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.84" />
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <Button
+                        android:id="@+id/qr_btn"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/phone_solid"
+                        android:gravity="bottom"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="15dp"
+
+                        android:fontFamily="@font/kakao_regular"
+                        android:text="입양문의"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout9"
-            android:layout_width="match_parent"
+            android:layout_width="380dp"
             android:layout_height="100dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/background_layout_redius"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/box_radius_01"
+            android:elevation="20dp"
             android:orientation="horizontal"
-            android:weightSum="1"
+            android:weightSum="4.5"
+            app:layout_constraintBottom_toTopOf="@+id/textView22"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
@@ -234,30 +257,47 @@
             <TextView
                 android:layout_width="75sp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/kakao_regular"
                 android:gravity="center_horizontal"
                 android:text="특이사항"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout12"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
 
-            <TextView
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+            <LinearLayout
+                android:id="@+id/linearLayout12"
+                android:layout_width="300dp"
+                android:layout_height="84dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/box_radius_03"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
 
-                android:layout_weight="1"
-                android:fontFamily="@font/kakao_regular"
-                android:gravity="center_horizontal"
-                android:text="@{viewModel.extra}"
-                android:textColor="@color/black" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+
+                    android:layout_weight="1"
+                    android:fontFamily="@font/kakao_regular"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewModel.extra}"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/textView22"
             android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="24dp"
             android:fontFamily="@font/kakao_regular"
             android:gravity="center"
@@ -283,9 +323,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
             android:backgroundTint="#743FFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@drawable/icon_plus">
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

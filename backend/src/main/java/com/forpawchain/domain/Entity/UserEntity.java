@@ -33,7 +33,7 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private String name;
     private String profile;
-    private String wa;  // 지갑 주소 (null이 아니면 의사)
+    private String wa; 
     @Column(nullable = false)
     private boolean del;
 

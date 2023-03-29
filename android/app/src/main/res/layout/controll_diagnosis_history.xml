@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO" />
+            type="com.ssafy.forpawchain.model.domain.HistoryDTO" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:layout_height="64dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/background_layout_redius"
+        android:background="@drawable/box_radius_05"
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 
@@ -47,7 +47,7 @@
             android:layout_height="30dp"
             android:fontFamily="@font/kakao_bold"
             android:gravity="center"
-            android:text="@{item.name}"
+            android:text="@{item.writer}"
             android:textColor="@color/gray"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

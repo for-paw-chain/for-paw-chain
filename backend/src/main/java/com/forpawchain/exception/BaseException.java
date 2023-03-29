@@ -1,12 +1,15 @@
 package com.forpawchain.exception;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class BaseException extends RuntimeException {
 	private int errorCode;
 	private List<String> errorMessage;

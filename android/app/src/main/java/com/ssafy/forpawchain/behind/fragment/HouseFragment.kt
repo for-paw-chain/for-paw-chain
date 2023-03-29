@@ -72,11 +72,10 @@ class HouseFragment : Fragment() {
             },
             onClickDetailButton = {
                 // detail
-                // TODO(): navController
                 Log.d(TAG, "클릭  " + it.name + it.species)
                 val bundle = Bundle()
-                bundle.putParcelable("item", it)
-                navController.navigate(R.id.navigation_search_result, bundle)
+                bundle.putParcelable("SearchResultItem", it)
+                navController.navigate(R.id.navigation_search_result_unauth, bundle)
             },
         )
 
@@ -114,8 +113,6 @@ class HouseFragment : Fragment() {
                 }
 
             }
-
-
     }
 
     private fun scrollEvent() {
@@ -151,7 +148,6 @@ class HouseFragment : Fragment() {
         viewModel.openEvent.eventObserve(this) { obj ->
 
             when (obj) {
-                // TODO: navController
                 ActivityCode.FRAGMENT_USER -> navController.navigate(R.id.navigation_user)
                 else -> {
                     null

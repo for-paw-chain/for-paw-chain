@@ -1,35 +1,34 @@
 package com.ssafy.forpawchain.behind.fragment
 
-import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.ssafy.basictemplate.util.ActivityCode
-import com.ssafy.basictemplate.util.eventObserve
-import com.ssafy.forpawchain.behind.activity.LoginActivity
-import com.ssafy.forpawchain.behind.activity.MainActivity
-import com.ssafy.forpawchain.behind.dialog.AdoptCRUDDialog
-import com.ssafy.forpawchain.behind.dialog.PermissionDialog
-import com.ssafy.forpawchain.databinding.FragmentAdoptAddBinding
+import com.google.gson.JsonObject
 import com.ssafy.forpawchain.databinding.FragmentDiagnosisDetailBinding
-import com.ssafy.forpawchain.databinding.FragmentPawBinding
-import com.ssafy.forpawchain.model.domain.AdoptDTO
-import com.ssafy.forpawchain.model.domain.MyPawListDTO
-import com.ssafy.forpawchain.model.interfaces.IAdoptCRUD
-import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
-import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
-import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
-import com.ssafy.forpawchain.viewmodel.fragment.AdoptAddFragmentVM
+import com.ssafy.forpawchain.model.domain.DianosisNewDTO
+import com.ssafy.forpawchain.model.domain.HistoryDTO
+import com.ssafy.forpawchain.model.service.AdoptService
+import com.ssafy.forpawchain.model.service.IpfsService
+import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisNewRecyclerViewAdapter
+import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.DiagnosisDetailFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DiagnosisDetailFragment : Fragment() {
     private var _binding: FragmentDiagnosisDetailBinding? = null
@@ -57,6 +56,47 @@ class DiagnosisDetailFragment : Fragment() {
         }
 
         val root: View = binding.root
+        val recyclerView = binding.recycler
+
+        recyclerView.adapter = DiagnosisNewRecyclerViewAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
+
+
+        viewModel.todoLiveData.observe(
+            requireActivity()
+        ) { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
+            (binding.recycler.adapter as DiagnosisNewRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
+
+        }
+
+
+        val bundle = arguments
+        if (bundle != null) {
+            val value = bundle.getSerializable("item") as HistoryDTO
+            viewModel.title.postValue(value.title)
+            viewModel.body.postValue(value.body)
+            viewModel.date.postValue(value.date)
+            viewModel.name.postValue(value.writer)
+            for (item in value.extra) {
+                viewModel.addTask(
+                    DianosisNewDTO(
+                        MutableLiveData(item.title),
+                        MutableLiveData(item.body)
+                    )
+                )
+            }
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+
+                    ImageLoader().loadDrawableFromUrl("http://j8a207.p.ssafy.io:8080/api/file/${value.hash}") { drawable ->
+                        viewModel.image.postValue(drawable)
+                    }
+                }
+            }
+        }
+
+
 
         return root
     }
@@ -69,6 +109,7 @@ class DiagnosisDetailFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        viewModel.clearTask()
+//        _binding = null
     }
 }

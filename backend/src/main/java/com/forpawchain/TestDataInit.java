@@ -49,11 +49,7 @@ public class TestDataInit {
 	 */
 	@EventListener(ApplicationReadyEvent.class)
 	public void initData() throws
-		InvalidAlgorithmParameterException,
-		CipherException,
-		IOException,
-		NoSuchAlgorithmException,
-		NoSuchProviderException {
+		Exception {
 
 		// 의사 면허 정보 추가 (실제 서비스에서는 정부 db로 대체됨)
 		doctorLicenseRepository.save(new DoctorLicenseEntity(1L, "CJW", "1234561234567", "01012341234", 1));
@@ -83,7 +79,7 @@ public class TestDataInit {
 
 		// 동물 정보 50개 추가
 		for (int i = 0; i < 50; i++) {
-			String pid = "4100000000000" + Integer.toString(i);
+			String pid = "41" + Integer.toString(i);
 			String petImgUrl = "";
 			String petEtc = "위치는 서울시 관악구입니다.\n"
 				+ "길에서 발견되어 보호하게 되었습니다.\n"
@@ -235,7 +231,7 @@ public class TestDataInit {
 						.pid(pid)
 						.tel("01023411243")
 						.profile(petImgUrl)
-						.birth(LocalDate.of(2023, 5, 19))
+						.birth(LocalDate.of(2023, 1, 19))
 						.region("서울시 관악구")
 						.etc("귀염둥이입니당")
 						.pet(petEntity)
@@ -248,13 +244,22 @@ public class TestDataInit {
 		}
 
 		// 주인 권한 추가
-		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000001");
-		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000002");
-		authenticationService.giveMasterAuthentication(6L, 1L, "41000000000003");
+		// authenticationService.giveMasterAuthentication(6L, 1L, "41000000000001");
+		// authenticationService.giveMasterAuthentication(6L, 1L, "41000000000002");
+		// authenticationService.giveMasterAuthentication(6L, 1L, "41000000000003");
 
-		authenticationService.giveFriendAuthentication(2L, "41000000000001");
-		authenticationService.giveFriendAuthentication(3L, "41000000000001");
-		authenticationService.giveFriendAuthentication(4L, "41000000000001");
-		authenticationService.giveFriendAuthentication(5L, "41000000000001");
+		// authenticationService.giveFriendAuthentication(1, 2L, "41000000000001");
+		// authenticationService.giveFriendAuthentication(1, 3L, "41000000000001");
+		// authenticationService.giveFriendAuthentication(1, 4L, "41000000000001");
+		// authenticationService.giveFriendAuthentication(1, 5L, "41000000000001");
+
+		authenticationService.giveMasterAuthentication(6L, 1L, "411");
+		authenticationService.giveMasterAuthentication(6L, 1L, "414");
+		authenticationService.giveMasterAuthentication(6L, 1L, "417");
+
+		authenticationService.giveFriendAuthentication(1L, 2L, "411");
+		authenticationService.giveFriendAuthentication(1L, 3L, "411");
+		authenticationService.giveFriendAuthentication(1L, 4L, "411");
+		authenticationService.giveFriendAuthentication(1L, 5L, "411");
 	}
 }

@@ -1,12 +1,15 @@
 package com.forpawchain.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
@@ -19,6 +22,7 @@ import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.repository.AdoptRepository;
 import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
+import com.google.cloud.storage.Blob;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,10 +34,11 @@ public class AdoptServiceImpl implements AdoptService {
 	private final AdoptRepository adoptRepository;
 	private final UserRepository userRepository;
 	private final PetRepository petRepository;
+	private final GCSService gcsService;
 
 	@Override
 	public PageImpl<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex) {
-		PageRequest pageRequest = PageRequest.of(pageNo, 10);
+		PageRequest pageRequest = PageRequest.of(pageNo, 10, Sort.by("regTime").descending());
 		PageImpl<AdoptListResDto> adoptListResDtos = null;
 
 		// 중성화여부가 null 일 때
@@ -56,6 +61,7 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public AdoptDetailResDto getAdoptDetail(String pid) {
+
 		AdoptDetailResDto adoptDetailResDto = adoptRepository.findDetailByPid(pid);
 
 		//존재하지 않는 pid 이거나, 해당 pid에 쓰인 입양 공고가 없을 경우
@@ -67,7 +73,7 @@ public class AdoptServiceImpl implements AdoptService {
 	}
 
 	@Override
-	public void registAdopt(AdoptDetailReqDto adoptDetailReqDto, long uid) {
+	public void registAdopt(AdoptDetailReqDto adoptDetailReqDto, long uid, MultipartFile imageFile) throws IOException {
 
 		String pid = adoptDetailReqDto.getPid();
 		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
@@ -85,22 +91,29 @@ public class AdoptServiceImpl implements AdoptService {
 			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
 		}
 
+		//파일 업로드
+		Blob blob = gcsService.uploadFileToGCS(imageFile);
+		String imageUrl = blob.getMediaLink();
+
 		// 분양 공고 추가
 		adoptEntity = AdoptEntity.builder()
 			.pid(adoptDetailReqDto.getPid())
 			.uid(uid)
-			.profile(adoptDetailReqDto.getProfile())
+			.profile(imageUrl)
 			.tel(adoptDetailReqDto.getTel())
 			.etc(adoptDetailReqDto.getEtc())
 			.pet(petEntity)
 			.user(userEntity)
 			.build();
 
+		petEntity.updatePetLost(true);
+		petRepository.save(petEntity);
+
 		adoptRepository.save(adoptEntity);
 	}
 
 	@Override
-	public void modifyAdopt(AdoptDetailReqDto adoptDetailReqDto, long uid) {
+	public void modifyAdopt(AdoptDetailReqDto adoptDetailReqDto, long uid, MultipartFile imageFile) throws IOException {
 		String pid = adoptDetailReqDto.getPid();
 		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
 
@@ -114,11 +127,14 @@ public class AdoptServiceImpl implements AdoptService {
 			throw new BaseException(ErrorMessage.NOT_PERMISSION_EXCEPTION);
 		}
 
-		String profile = adoptDetailReqDto.getProfile();
+		//파일 업로드
+		Blob blob = gcsService.uploadFileToGCS(imageFile);
+		String imageUrl = blob.getMediaLink();
+
 		String etc = adoptDetailReqDto.getEtc();
 		String tel = adoptDetailReqDto.getTel();
 
-		adoptEntity.updateAdopt(profile, etc, tel);
+		adoptEntity.updateAdopt(imageUrl, etc, tel);
 	}
 
 	@Override
@@ -152,7 +168,7 @@ public class AdoptServiceImpl implements AdoptService {
 
 		//존재하지 않는 유저일 경우
 		if (userEntity == null || userEntity.isDel()) {
-			throw new BaseException(ErrorMessage.NOT_USER_INFO);
+			throw new BaseException(ErrorMessage.USER_NOT_FOUND);
 		}
 
 		List<AdoptListResDto> list = adoptRepository.findByUid(uid);

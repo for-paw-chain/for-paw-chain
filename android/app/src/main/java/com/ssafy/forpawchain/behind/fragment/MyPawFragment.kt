@@ -7,18 +7,20 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.dialog.QRCreateDialog
 import com.ssafy.forpawchain.behind.dialog.WithdrawalAnimalDialog
-import com.ssafy.forpawchain.behind.dialog.WithdrawalDialog
 import com.ssafy.forpawchain.databinding.FragmentMyPawBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
+import com.ssafy.forpawchain.util.ImageSave
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
-import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
+import kotlinx.coroutines.launch
 
 
 class MyPawFragment : Fragment() {
@@ -53,6 +55,17 @@ class MyPawFragment : Fragment() {
         recyclerView.adapter = MyPawListAdapter(searchList,
             {
                 // qr
+
+                it.code.value?.let { it1 ->
+                    QRCreateDialog(requireContext(), it1) {
+                        ImageSave().saveImageToGallery(
+                            requireContext(),
+                            it,
+                            "qrImage",
+                            "Created QR in PawForChain"
+                        )
+                    }
+                }?.show()
 //                viewModel.deleteTask(it)
             }, {
                 // del
@@ -67,8 +80,9 @@ class MyPawFragment : Fragment() {
 //                viewModel.deleteTask(it)
             }, {
                 // detail
-                // TODO: navController
-                navController.navigate(R.id.navigation_permission_paw)
+                val bundle = Bundle()
+                bundle.putSerializable("item", it)
+                navController.navigate(R.id.navigation_permission_paw, bundle)
 
             })
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -76,7 +90,9 @@ class MyPawFragment : Fragment() {
 
 //        viewModel.addTask(MyPawListDTO("별", "여아", "개과", "말티즈", "O"))
 //        viewModel.addTask(MyPawListDTO("뚱이", "여아", "개과", "비숑", "X"))
-
+        lifecycleScope.launch {
+            viewModel.initData()
+        }
         viewModel.todoLiveData.observe(
             requireActivity(),
             Observer { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.

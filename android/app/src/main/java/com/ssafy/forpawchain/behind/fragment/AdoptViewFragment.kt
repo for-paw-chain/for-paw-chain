@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.behind.fragment
 
+import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -7,19 +8,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
-import com.ssafy.forpawchain.model.domain.DiagnosisHistoryDTO
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
-import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
+import com.ssafy.forpawchain.model.room.AppDatabase
+import com.ssafy.forpawchain.model.room.UserDao
+import com.ssafy.forpawchain.model.service.AdoptService
+import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
-import kotlinx.coroutines.awaitAll
+import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
+import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AdoptViewFragment : Fragment() {
     private var _binding: FragmentAdoptViewBinding? = null
@@ -62,12 +77,12 @@ class AdoptViewFragment : Fragment() {
 
         val recyclerView = binding.recycler
 
-        recyclerView.adapter = DiagnosisRecyclerViewAdapter(
-            {
-                // TODO: 의료기록 상세 보기로 넘어가야함.
-                navController.navigate(R.id.navigation_diagnosis_detail)
-                Log.d(TAG, "의료기록 상세 조회")
-            })
+        recyclerView.adapter = DiagnosisRecyclerViewAdapter {
+            val bundle = Bundle()
+            bundle.putSerializable("item", it)
+            navController.navigate(R.id.navigation_diagnosis_detail, bundle)
+            Log.d(TAG, "의료기록 상세 조회")
+        }
 
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -78,37 +93,56 @@ class AdoptViewFragment : Fragment() {
             (binding.recycler.adapter as DiagnosisRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
 
         }
-        viewModel.addTask(DiagnosisHistoryDTO("[초진] 상담", "2022-03-03 오후 03:05:27", "Sign by 김의사"))
-        viewModel.addTask(
-            DiagnosisHistoryDTO(
-                "[초진] 치과수술 / 담석 체크 / 좌측 pm4 발치",
-                "2022-03-05 오후 04:05:27",
-                "Sign by 김의사"
-            )
-        )
-        viewModel.addTask(
-            DiagnosisHistoryDTO(
-                "[초진] 치과수술 / 담석 체크 / 좌측 pm4 발치",
-                "2022-03-05 오후 04:05:27",
-                "Sign by 김의사"
-            )
-        )
-        viewModel.addTask(
-            DiagnosisHistoryDTO(
-                "[초진] 치과수술 / 담석 체크 / 좌측 pm4 발치",
-                "2022-03-05 오후 04:05:27",
-                "Sign by 김의사"
-            )
-        )
-        viewModel.addTask(
-            DiagnosisHistoryDTO(
-                "[초진] 치과수술 / 담석 체크 / 좌측 pm4 발치",
-                "2022-03-05 오후 04:05:27",
-                "Sign by 김의사"
-            )
-        )
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = Room.databaseBuilder(
+                requireContext(),
+                AppDatabase::class.java, "database-name"
+            ).build()
+            val userDao = db.userDao()
+            val user = userDao.getUserById("private")
+            // TODO: 수정 필요
+            user.privateKey = "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
+            if (user != null) {
+                lifecycleScope.launch {
+                    bundle?.getString("pid")?.let {
+                        AdoptService().getCA(it)
+                            .enqueue(object :
+                                Callback<JsonObject> {
+                                override fun onResponse(
+                                    call: Call<JsonObject>,
+                                    response: Response<JsonObject>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        // 정상적으로 통신이 성공된 경우
+                                        var ca = response.body()?.get("content").toString()
+                                        ca = ca.replace("\"", "")
+                                        ForPawChain.setBlockChain(
+                                            ca,
+                                            user.privateKey
+                                        )
+                                        val history = ForPawChain.getHistory()
+                                        for (item in history) {
+                                            viewModel.addTask(item)
+                                        }
+                                        Log.d(TAG, "onResponse 성공");
+                                    } else {
+                                        Log.d(TAG, "onResponse 실패");
+
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                    Log.d(TAG, "네트워크 에러");
+
+                                }
+                            })
+                    }
+
+
+                }
+            }
+        }
         binding.fab.setOnClickListener { view ->
-            // TODO: 의료 내역 등록
             navController.navigate(R.id.navigation_adopt_create)
             Log.d(MyPawHistoryFragment.TAG, "공고 추가")
         }
