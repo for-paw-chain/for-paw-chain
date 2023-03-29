@@ -75,4 +75,22 @@ class AuthService {
 
         return service.handPetAuth(receiver, pid);
     }
+    fun giveFriendAuth(receiver: Int, pid: String): Call<ResponseBody> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer qwerqwer")
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
+        retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        service = retrofit.create(RetrofitService::class.java);
+
+        return service.giveFriendAuth(receiver, pid);
+    }
 }
