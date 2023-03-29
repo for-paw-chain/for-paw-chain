@@ -60,10 +60,10 @@ class MyPawFragmentVM : ViewModel() {
                                             MutableLiveData<String>(item1["pid"].asString),
                                             null,
                                             MutableLiveData<String>(item1["name"].asString),
-                                            MutableLiveData<String>(item1["sex"].asString),
-                                            MutableLiveData<String>(item1["type"].asString),
+                                            MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
+                                            MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                             MutableLiveData<String>(item1["kind"].asString),
-                                            MutableLiveData<String>(item1["spayed"].asString),
+                                            MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
                                         )
                                     )
                                 } else {
@@ -73,10 +73,10 @@ class MyPawFragmentVM : ViewModel() {
                                                 MutableLiveData<String>(item1["pid"].asString),
                                                 MutableLiveData<Drawable>(drawable),
                                                 MutableLiveData<String>(item1["name"].asString),
-                                                MutableLiveData<String>(item1["sex"].asString),
-                                                MutableLiveData<String>(item1["type"].asString),
+                                                MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
+                                                MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                                 MutableLiveData<String>(item1["kind"].asString),
-                                                MutableLiveData<String>(item1["spayed"].asString),
+                                                MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
                                             )
                                         )
                                     }
