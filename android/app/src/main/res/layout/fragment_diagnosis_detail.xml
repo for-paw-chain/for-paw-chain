@@ -129,8 +129,8 @@
                     android:id="@+id/textView23"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
-                    android:text="@{viewModel.body}"
                     android:layout_marginTop="24dp"
+                    android:text="@{viewModel.body}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
@@ -141,6 +141,13 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
+                <ImageView
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:src="@{viewModel.image}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

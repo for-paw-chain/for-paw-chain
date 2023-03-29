@@ -21,7 +21,7 @@ class IpfsService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun uploadImage(filePart: MultipartBody.Part): Call<JsonObject> {
+    fun uploadImage(image: MultipartBody.Part): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer qwerqwer")
@@ -31,12 +31,12 @@ class IpfsService {
 
         retrofit = Retrofit.Builder()
             .client(client)
-            .baseUrl(baseUrl)
+            .baseUrl(PetService.baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         service = retrofit.create(RetrofitService::class.java);
 
-        return service.setUpload(filePart)
+        return service.setUpload(image)
     }
 }
