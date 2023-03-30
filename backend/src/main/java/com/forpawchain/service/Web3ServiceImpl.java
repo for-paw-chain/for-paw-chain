@@ -85,12 +85,8 @@ public class Web3ServiceImpl implements Web3Service {
 	 */
 	public String deployContract(String pid) throws Exception {
 		setting();
-		PetEntity petEntity = petRepository.findByPid(pid);
-
-		//존재하지 않는 pid일 경우 예외 발생
-		if (petEntity == null) {
-			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
-		}
+		PetEntity petEntity = petRepository.findByPid(pid)
+			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_EXIST_CONTENT));
 
 		//해당 동물에게 컨트랙트가 배포된 적 없다면 새로운 컨트랙트를 배포
 		if (petEntity.getCa() == null) {
