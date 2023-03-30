@@ -19,6 +19,7 @@ import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
 import com.forpawchain.exception.BaseException;
+import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.service.AdoptService;
 import com.forpawchain.service.AdoptServiceImpl;
 
@@ -37,10 +38,18 @@ public class AdoptController {
 
     @GetMapping("/ad")
 	@ApiOperation(value = "입양 광고 랜덤 목록 10개 조회", notes = "랜덤으로 입양 공고문 10개 리스트를 반환한다. 광고용이다.")
-    public ResponseEntity<List<AdoptListResDto>> getAdoptAd() {
+    public ResponseEntity<HashMap<String, List>> getAdoptAd() {
 
+        HashMap<String, List> map = new HashMap<>();
         List<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptAd();
-        return new ResponseEntity<>(adoptListResDtoList, HttpStatus.OK);
+
+        if (adoptListResDtoList == null) {
+            throw new BaseException(NOT_EXIST_CONTENT);
+        }
+
+        map.put("content", adoptListResDtoList);
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     @GetMapping
