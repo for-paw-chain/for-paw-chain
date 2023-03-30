@@ -7,6 +7,7 @@ import com.ssafy.forpawchain.viewmodel.activity.LoginVM
 import com.ssafy.forpawchain.blockchain.Contract_sol_Storage
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
+import com.ssafy.forpawchain.model.room.UserInfo
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.infura.InfuraHttpService
@@ -37,6 +38,7 @@ class UserFragmentVM : ViewModel() {
         todoLiveData.value = data
     }
 
-    val name = MutableLiveData<String>("홍길동")
-    val code = MutableLiveData<String>("#043261")
+    val name = MutableLiveData<String>(UserInfo.name)
+    val code = MutableLiveData<String>(UserInfo.uid)
+//    val profile = MutableLiveData<String>(UserInfo.uid)
 }
