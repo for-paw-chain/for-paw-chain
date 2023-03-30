@@ -54,6 +54,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
 	}
 
+	// 일반 회원가입 (테스트용)
 	@PostMapping("/regist")
 	@ApiOperation(value = "일반 회원가입")
 	public ResponseEntity<?> commonRegist(@RequestBody RegistUserReqDto registUserReqDto) {
@@ -61,6 +62,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	}
 
+	// 일반 로그인 (테스트용)
 	@PostMapping("/login")
 	@ApiOperation(value = "일반 로그인")
 	public ResponseEntity<?> commonLogin(@RequestBody LoginUserDto loginUserDto) {
