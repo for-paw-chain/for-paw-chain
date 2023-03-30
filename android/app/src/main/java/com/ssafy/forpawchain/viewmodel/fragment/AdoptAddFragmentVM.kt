@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.Event
 import com.ssafy.forpawchain.model.service.AdoptService
@@ -68,10 +69,10 @@ class AdoptAddFragmentVM : ViewModel() {
 
                 if (imagePart != null) {
                     AdoptService().createAdopt(imagePart, payloadPart).enqueue(object :
-                        Callback<ResponseBody> {
+                        Callback<JsonObject> {
                         override fun onResponse(
-                            call: Call<ResponseBody>,
-                            response: Response<ResponseBody>
+                            call: Call<JsonObject>,
+                            response: Response<JsonObject>
                         ) {
                             if (response.isSuccessful) {
                                 // 정상적으로 통신이 성공된 경우
@@ -83,7 +84,7 @@ class AdoptAddFragmentVM : ViewModel() {
                             }
                         }
 
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                             // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
                             Log.d(TAG, "onFailure 에러: " + t.message.toString())
                         }
