@@ -1,26 +1,21 @@
 package com.forpawchain.service;
 
+import com.forpawchain.domain.dto.token.LoginUserDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
+import com.forpawchain.domain.dto.token.TokenInfo;
 
 public interface UserService {
 
-	/**
-	 * 회원가입
-	 * @param registUserReqDto
-	 */
 	void registUser(RegistUserReqDto registUserReqDto);
 
-	/**
-	 * 회원 정보 조회
-	 * @param userId
-	 * @return UserInfoResDto
-	 */
-	UserInfoResDto getUserInfo(Long userId);
+	UserInfoResDto getUserInfo(String id);
 
-	/**
-	 * 회원 탈퇴
-	 * @param userId
-	 */
-	void removeUser(Long userId);
+	void removeUser(String id);
+
+	TokenInfo login(LoginUserDto loginUserReqDto);
+
+	void logout(String accessToken, String id);
+
+	TokenInfo reissue(String refreshToken, String id);
 }
