@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.model.service
 
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
+import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -54,5 +55,23 @@ class UserService {
         service = retrofit.create(RetrofitService::class.java);
 
         return service.setDoctor(doctorDTO)
+    }
+
+    fun getUser(): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
+        retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        service = retrofit.create(RetrofitService::class.java);
+
+        return service.getUser()
     }
 }
