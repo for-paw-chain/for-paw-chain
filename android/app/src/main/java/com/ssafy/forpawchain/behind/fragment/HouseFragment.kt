@@ -102,14 +102,14 @@ class HouseFragment : Fragment() {
 //                viewModel.deleteTask(it)
             }, {
                 // del
-                val dialog = WithdrawalAnimalDialog(requireContext(), object : IPermissionDelete {
-                    override fun onDeleteBtnClick() {
-                        viewModel.deleteTask(it)
-                        Log.d(MyPawFragment.TAG, "반려동물 삭제 완료")
-                    }
-                })
-
-                dialog.show()
+//                val dialog = WithdrawalAnimalDialog(requireContext(), object : IPermissionDelete {
+//                    override fun onDeleteBtnClick() {
+//                        viewModel.deleteTask(it)
+//                        Log.d(MyPawFragment.TAG, "반려동물 삭제 완료")
+//                    }
+//                })
+//
+//                dialog.show()
 //                viewModel.deleteTask(it)
             }, {
                 // detail
