@@ -85,7 +85,7 @@ class MyPawFragment : Fragment() {
                         GlobalScope.launch {
                             val response = withContext(Dispatchers.IO) {
                                 AuthService().removePetAuth(
-                                    UserInfo.uid.toInt(), pid.substring(1)
+                                    pid.substring(1)
                                 ).enqueue(object :
                                     Callback<JsonObject> {
                                     override fun onResponse(
@@ -97,17 +97,17 @@ class MyPawFragment : Fragment() {
                                             lifecycleScope.launch {
                                             }
                                             // call
-                                            Log.d(PermissionPawFragment.TAG, "onResponse 성공");
+                                            Log.d(TAG, "onResponse 성공");
 
                                         } else {
                                             // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                                            Log.d(PermissionPawFragment.TAG, "onResponse 실패")
+                                            Log.d(TAG, "onResponse 실패")
                                         }
                                     }
 
                                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                                         // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                                        Log.d(PermissionPawFragment.TAG, "onFailure 에러: " + t.message.toString());
+                                        Log.d(TAG, "onFailure 에러: " + t.message.toString());
                                     }
                                 })
                             }

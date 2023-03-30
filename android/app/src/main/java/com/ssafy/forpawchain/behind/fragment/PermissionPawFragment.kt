@@ -168,7 +168,7 @@ class PermissionPawFragment : Fragment() {
                     GlobalScope.launch {
                         val response = withContext(Dispatchers.IO) {
                             AuthService().removePetAuth(
-                                Integer.parseInt(uid), pid
+                                pid
                             ).enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
