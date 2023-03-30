@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.ControllSearchResultListBinding
+import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 import com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM
 

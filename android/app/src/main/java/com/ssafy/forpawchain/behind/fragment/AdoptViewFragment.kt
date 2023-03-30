@@ -20,6 +20,7 @@ import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
+import com.ssafy.forpawchain.model.domain.User
 import com.ssafy.forpawchain.model.room.AppDatabase
 import com.ssafy.forpawchain.model.room.UserDao
 import com.ssafy.forpawchain.model.service.AdoptService
@@ -99,6 +100,11 @@ class AdoptViewFragment : Fragment() {
                 AppDatabase::class.java, "database-name"
             ).build()
             val userDao = db.userDao()
+
+            // 새로운 안드로이드 스튜디오에서 개발 할 때마다 insert로 Room을 등록해야함, 자세히 버튼을 누르면 다운 됨
+            // 디버그 실행하고 다시 주석처리 하기
+//            userDao.insert(User("private", "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"))
+
             val user = userDao.getUserById("private")
             // TODO: 수정 필요
             user.privateKey = "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"

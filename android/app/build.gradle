@@ -10,6 +10,7 @@ apply plugin: 'kotlin-kapt'
 // local.properties 사용을 위함
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def kakaoNativeAppKey = properties['kakao.native.app.key']
 
 android {
     namespace 'com.ssafy.forpawchain'
@@ -30,6 +31,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "KAKAO_NATIVE_APP_KEY", properties['kakao.native.app.key']
+
+        // AndroidManifest 에서 localproperties 쓸 수 있도록 지정
+        manifestPlaceholders = [kakaoNativeAppKey:kakaoNativeAppKey]
 
     }
 
