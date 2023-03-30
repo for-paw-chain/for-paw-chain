@@ -41,10 +41,10 @@ public class PetServiceImpl implements PetService {
 	public List<PetDefaultInfoResDto> getMyPetList(Long userId) {
 		List<PetDefaultInfoResDto> myPetList = petRegRepository.findAuthAndInfo(userId);
 
-		// 반려동물이 없는 경우
-		if (myPetList.size() == 0) {
-			throw new BaseException(ErrorMessage.PETLIST_NOT_FOUND);
-		}
+		// // 반려동물이 없는 경우
+		// if (myPetList.size() == 0) {
+		// 	throw new BaseException(ErrorMessage.PETLIST_NOT_FOUND);
+		// }
 
 		return myPetList;
 	}
@@ -66,10 +66,8 @@ public class PetServiceImpl implements PetService {
 		}
 
 		// 이미 등록되어 있는지 체크
-		PetInfoEntity petInfoEntity = petInfoRepository.findByPid(registPetInfoReqDto.getPid());
-		if (petInfoEntity != null) {
-			throw new BaseException(ErrorMessage.EXIST_CONTENT);
-		}
+		PetInfoEntity petInfoEntity = petInfoRepository.findByPid(registPetInfoReqDto.getPid())
+			.orElseThrow(() -> new BaseException(ErrorMessage.EXIST_CONTENT));
 
 		// 모든 내용을 null이나 공백만 사용하여 등록하는 경우
 		if ((registPetInfoReqDto.getEtc() == null || registPetInfoReqDto.getEtc().stripLeading().stripTrailing().equals(""))

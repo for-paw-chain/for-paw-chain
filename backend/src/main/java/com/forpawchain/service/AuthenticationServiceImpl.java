@@ -45,7 +45,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             UserEntity userEntity = userRepository.findByUid(target);
 
-            PetEntity petEntity = petRepository.findByPid(pid);
+            PetEntity petEntity = petRepository.findByPid(pid)
+                .orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
 
             AuthenticationEntity newEntity = AuthenticationEntity
                     .builder()
@@ -71,13 +72,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param pid: 지워질 권한과 관련된 동물의 pid
      */
     @Override
-    public void removeAuthentication(long uid, long target, String pid) {
+    public void removeAuthentication(long uid, String pid) {
         try {
-            Optional<String> targetWa = userRepository.findWaByUid(target);
-            // 받는 사람이 의사라면
-            if (!targetWa.isEmpty()) {
-                return;
-            }
             // uid, pid인 권한 삭제
             authenticationRepository.deleteByAuthIdUidAndAuthIdPid(uid, pid);
 
@@ -132,7 +128,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             AuthenticationType senderAuthentication = authenticationRepository.findAuthenticationTypeByUidAndPid(uid, pid);
             Optional<String> uidWa = userRepository.findWaByUid(uid);
-            PetEntity petEntity = petRepository.findByPid(pid);
+            PetEntity petEntity = petRepository.findByPid(pid)
+                .orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
 
             // 의사일 경우
             if (!uidWa.isEmpty()) {

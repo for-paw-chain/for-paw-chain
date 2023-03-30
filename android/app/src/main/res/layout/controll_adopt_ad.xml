@@ -181,7 +181,7 @@
         android:layout_height="132dp"
         android:layout_margin="16dp"
         android:orientation="vertical"
-        android:background="@drawable/background_layout_search_result_redius"
+        android:background="@drawable/box_radius_02"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -194,7 +194,6 @@
             android:layout_height="0dp"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:background="#F3F0FD"
             android:fontFamily="@font/kakao_bold"
             android:gravity="center"
             android:text="버림 받은 유기동물의 주인이 되어주세요"
@@ -239,7 +238,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:gravity="center_vertical"
                         android:text="종" />
@@ -249,7 +247,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:gravity="center_vertical"
 
@@ -260,7 +257,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:gravity="center_vertical"
 

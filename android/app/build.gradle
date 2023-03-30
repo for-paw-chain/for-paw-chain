@@ -116,6 +116,9 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    //Circle ImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     // default
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
