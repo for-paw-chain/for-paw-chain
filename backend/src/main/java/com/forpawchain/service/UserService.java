@@ -11,11 +11,11 @@ public interface UserService {
 
 	UserInfoResDto getUserInfo(String id);
 
-	void removeUser(String id);
+	void removeUser(long uid);
 
 	TokenInfo login(LoginUserDto loginUserReqDto);
 
-	void logout(String accessToken, String id);
+	void logout(String id);
 
-	TokenInfo reissue(String refreshToken, String id);
+	TokenInfo reissue(String refreshToken, String id, String social);
 }

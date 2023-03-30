@@ -85,12 +85,8 @@ public class AdoptServiceImpl implements AdoptService {
 
 		PetEntity petEntity = petRepository.findByPid(pid)
 			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_EXIST_CONTENT));
-		UserEntity userEntity = userRepository.findByUid(uid);
-
-		// 존재하지 않는 pid 이거나 uid
-		if (userEntity == null) {
-			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
-		}
+		UserEntity userEntity = userRepository.findByUid(uid)
+			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_EXIST_CONTENT));
 
 		//파일 업로드
 		Blob blob = gcsService.uploadFileToGCS(imageFile);
@@ -166,10 +162,11 @@ public class AdoptServiceImpl implements AdoptService {
 	@Override
 	public List<AdoptListResDto> getAdoptMyList(Long uid) {
 
-		UserEntity userEntity = userRepository.findByUid(uid);
+		UserEntity userEntity = userRepository.findByUid(uid)
+			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 
 		//존재하지 않는 유저일 경우
-		if (userEntity == null || userEntity.isDel()) {
+		if (userEntity.isDel()) {
 			throw new BaseException(ErrorMessage.USER_NOT_FOUND);
 		}
 
