@@ -69,6 +69,7 @@ class DoctorCertFragmentVM(val application: Context) : ViewModel() {
                                 ).build()
                                 val userDao = db.userDao()
                                 val user = userDao.getUserById("private")
+                                //의사 인증이 되면 private 키가 날라오는데 이것을 Room에 저장해야함
                                 if (user == null) {
                                     userDao.insert(User("private", privateKey))
                                 } else {

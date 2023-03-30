@@ -60,11 +60,11 @@ class PawFragmentVM : ViewModel() {
                                 // drawable 객체 사용
                                 addTask(
                                     AdoptDTO(
-                                        item["pid"].asString,
-                                        drawable,
-                                        item["type"].asString,
-                                        item["kind"].asString,
-                                        item["spayed"].asString
+                                        MutableLiveData(item["pid"].asString),
+                                        MutableLiveData(drawable),
+                                        MutableLiveData(item["type"].asString),
+                                        MutableLiveData(item["kind"].asString),
+                                        MutableLiveData(item["spayed"].asString)
                                     )
                                 )
                             }

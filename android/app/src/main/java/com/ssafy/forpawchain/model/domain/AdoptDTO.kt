@@ -1,15 +1,19 @@
 package com.ssafy.forpawchain.model.domain
 
 import android.graphics.drawable.Drawable
+import android.os.Parcelable
+import androidx.lifecycle.MutableLiveData
+import kotlinx.parcelize.Parcelize
 
 data class AdoptDTO(
-    var pid: String,
-    var profile: Drawable?,
+    var pid: MutableLiveData<String>,
+    var profile: MutableLiveData<Drawable?>,
 
     // 종
-    var species: String,
+    var species: MutableLiveData<String>,
     // 종류
-    var kind: String,
+    var kind: MutableLiveData<String>,
     // 중성화 여부
-    var neutered: String
+    var neutered: MutableLiveData<String>
+
 )

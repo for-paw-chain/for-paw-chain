@@ -36,22 +36,20 @@ class SearchResultFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.let {
             viewModel = ViewModelProvider(it).get(SearchResultFragmentVM::class.java)
-            binding.viewModel = viewModel
             binding.lifecycleOwner = this
-
         }
-        val bundle = arguments
 
-        bundle?.getParcelable<SearchResultDTO>("SearchResultItem")?.let {
-            binding.searchResultItem = it
+        val bundle = arguments
+        bundle?.getParcelable<SearchResultDTO>("searchResultVM")?.let {
+            binding.searchResultVM = it
         }
         initObserve()
     }
 
     private fun initObserve() {
         viewModel.selectedSearchResult.observe(viewLifecycleOwner, Observer {
-            binding.searchResultItem = it
-            println("왜 안나와" + binding.searchResultItem)
+            binding.searchResultVM = it
+            println("왜 안나와" + binding.searchResultVM)
         })
         viewModel.openEvent.eventObserve(this) { obj ->
             when (obj) {
@@ -64,3 +62,4 @@ class SearchResultFragment : Fragment() {
         }
     }
 }
+
