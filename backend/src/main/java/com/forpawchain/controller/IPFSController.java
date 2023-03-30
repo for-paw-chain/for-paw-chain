@@ -28,8 +28,8 @@ public class IPFSController {
     public ResponseEntity<?> loadFile(@PathVariable("hash")String hash) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", MediaType.IMAGE_JPEG_VALUE);
-        Map<String, byte[]> response = new HashMap<>();
-        response.put("content", ipfsService.loadFile(hash));
-        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(response);
+//        Map<String, byte[]> response = new HashMap<>();
+//        response.put("content", ipfsService.loadFile(hash));
+        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(ipfsService.loadFile(hash));
     }
 }

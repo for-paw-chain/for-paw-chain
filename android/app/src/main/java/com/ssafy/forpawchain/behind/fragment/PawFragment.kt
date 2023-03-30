@@ -83,10 +83,10 @@ class PawFragment : Fragment() {
                         lifecycleScope.launch() {
                             val response = withContext(Dispatchers.IO) {
                                 AdoptService().deleteAdopt(it.pid.value!!).enqueue(object :
-                                    Callback<ResponseBody> {
+                                    Callback<JsonObject> {
                                     override fun onResponse(
-                                        call: Call<ResponseBody>,
-                                        response: Response<ResponseBody>
+                                        call: Call<JsonObject>,
+                                        response: Response<JsonObject>
                                     ) {
                                         if (response.isSuccessful) {
                                             viewModel.deleteTask(it)
@@ -95,7 +95,7 @@ class PawFragment : Fragment() {
                                         }
                                     }
 
-                                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                                         Log.d(TAG, "dd")
                                     }
 

@@ -41,6 +41,15 @@ class PermissionPawFragmentVM : ViewModel() {
         todoLiveData.value = data //todoLiveData를 remove된 데이터로 변경, 이제 TodoLiveData로 UI값을 변경해줘야한다.
     }
 
+    fun deleteUserTask(todo: Int) {
+        for (item in data) {
+            if (item.code.substring(1).toString().equals(todo.toString())) {
+                data.remove(item)
+            }
+        }
+        todoLiveData.value = data //todoLiveData를 remove된 데이터로 변경, 이제 TodoLiveData로 UI값을 변경해줘야한다.
+    }
+
     fun clearTask() {
         data.clear()
         todoLiveData.value = data

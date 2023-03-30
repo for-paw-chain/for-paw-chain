@@ -35,4 +35,6 @@ public interface AuthenticationService {
     void giveMasterAuthentication(long uid, long target, String pid);
 
 	AuthenticationType getAuthenticationOfPid(Long uid, String pid);
+
+    String getRegDate(Long uid, String pid);
 }

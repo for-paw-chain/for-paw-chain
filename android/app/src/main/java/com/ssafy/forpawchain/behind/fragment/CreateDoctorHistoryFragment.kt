@@ -99,12 +99,31 @@ class CreateDoctorHistoryFragment : Fragment() {
             if (requestCode == OPEN_GALLERY) {
                 var currentImageUrl: Uri? = data?.data
                 try {
+                    val imageUri = data?.data
+                    val projection = arrayOf(MediaStore.Images.Media.DATA)
+                    val cursor = imageUri?.let {
+                        requireActivity().contentResolver.query(
+                            it,
+                            projection,
+                            null,
+                            null,
+                            null
+                        )
+                    }
+                    cursor?.let {
+                        if (it.moveToFirst()) {
+                            val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                            val filePath = it.getString(columnIndex)
+                            viewModel.path.postValue(filePath)
+
+                        }
+                        cursor.close()
+                    }
                     val bitmap = MediaStore.Images.Media.getBitmap(
                         requireContext().contentResolver,
                         currentImageUrl
                     )
-                    viewModel.path.postValue(currentImageUrl.toString())
-                    Log.d(TAG, "이미지 불러오기 완료$currentImageUrl")
+                    Log.d(AdoptAddFragment.TAG, "이미지 불러오기 완료$currentImageUrl")
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

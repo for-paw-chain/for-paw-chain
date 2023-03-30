@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
     void deleteByAuthIdUidAndAuthIdPid(long uid, String pid);
     @Query(value = "select a.uid uid, u.name name, u.profile profile \n" +
             "from authentication a join user u on a.uid = u.uid \n"+
-            "where a.pid = :pid", nativeQuery = true)
+            "where a.pid = :pid and a.type != 'MASTER'", nativeQuery = true)
     List<UserResDto> findUserAllByPid(@Param("pid") String pid);
     // 동물 pid에 대한 uid사람의 권한 반환
     @Query("select a.type from AuthenticationEntity a " +
@@ -40,4 +41,7 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
             "where pid = :pid and type = :type", nativeQuery = false)
     Optional<Long> findUidByPidAndType(@Param("pid") String pid, @Param("type") AuthenticationType type);
 
+    @Query(value = "select a.regTime from AuthenticationEntity a " +
+            "where uid = :uid and pid = :pid", nativeQuery = false)
+    LocalDate findRegDateByAuthIdUidAndAuthIdPid(Long uid, String pid);
 }

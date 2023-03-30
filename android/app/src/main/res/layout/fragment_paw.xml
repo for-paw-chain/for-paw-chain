@@ -31,9 +31,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout7"
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="3"
@@ -44,10 +44,8 @@
             app:layout_constraintVertical_bias="0.05">
 
             <Spinner
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
                 android:background="@drawable/background_layout_redius"
                 android:entries="@array/kindItems"
                 android:fontFamily="@font/kakao_regular"
@@ -59,15 +57,12 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView13"
                 app:layout_constraintVertical_bias="0.0" />
 
             <Spinner
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
                 android:background="@drawable/background_layout_redius"
                 android:entries="@array/sexItems"
                 android:fontFamily="@font/kakao_regular"
@@ -77,17 +72,12 @@
                 android:singleLine="true"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
                 android:background="@drawable/background_layout_redius"
                 android:entries="@array/neuteredItems"
                 android:fontFamily="@font/kakao_regular"
@@ -98,11 +88,9 @@
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13"
-                app:layout_constraintVertical_bias="0.0" />
-        </LinearLayout>
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
@@ -124,7 +112,7 @@
             android:backgroundTint="#743FFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@drawable/icon_plus" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

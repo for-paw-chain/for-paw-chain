@@ -88,7 +88,7 @@ public class Forpawchain_sol_ForPawChain extends Contract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteCall<List<Type>> getHistory(BigInteger index) {
+    public RemoteCall<List<Type>> getHistory(BigInteger index) { // compile 시에는 remotecall에 TransactionReceipt 뜨기 때문에 RemoteCall<List<Type으로 바꿔야 확인 가능
         final Function function = new Function(
                 FUNC_GETHISTORY,
                 // 인자 타입
@@ -121,7 +121,7 @@ public class Forpawchain_sol_ForPawChain extends Contract {
                         new TypeReference<Utf8String>() {
                         }
                 ));
-        return executeRemoteCallMultipleValueReturn(function);
+        return executeRemoteCallMultipleValueReturn(function); // 멀티 리턴 타입
     }
 
     public BigInteger getItemSize(BigInteger index) throws IOException {
@@ -132,7 +132,7 @@ public class Forpawchain_sol_ForPawChain extends Contract {
                         new TypeReference<Uint256>() {
                         }
                 ));
-        return executeCallSingleValueReturn(function, BigInteger.class);
+        return executeCallSingleValueReturn(function, BigInteger.class); // 단일  리턴 타입
     }
 
     public BigInteger getSize() throws IOException {

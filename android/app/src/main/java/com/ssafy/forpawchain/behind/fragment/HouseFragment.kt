@@ -1,26 +1,49 @@
 package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.Layout.Directions
 import android.util.Log
 import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.behind.activity.MainActivity
+import com.ssafy.forpawchain.behind.dialog.QRCreateDialog
+import com.ssafy.forpawchain.behind.dialog.WithdrawalAnimalDialog
 import com.ssafy.forpawchain.databinding.FragmentHouseBinding
+import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
+import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
+import com.ssafy.forpawchain.model.service.PetService
+import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.util.ImageSave
+import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
+import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
+import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HouseFragment : Fragment() {
     private lateinit var viewModel: HouseFragmentVM
@@ -60,19 +83,41 @@ class HouseFragment : Fragment() {
         scrollEvent()
 
         val recyclerView = binding.recycler
-        val searchList = mutableListOf<SearchResultDTO>()
+        val searchList = mutableListOf<MyPawListDTO>()
 
-        recyclerView.adapter = SearchResultAdapter(searchList,
-            onClickQrButton = {
-                viewModel.deleteTask(it)
-            },
-            onClickDetailButton = {
+        recyclerView.adapter = MyPawListAdapter(searchList,
+            {
+                // qr
+
+                it.code.value?.let { it1 ->
+                    QRCreateDialog(requireContext(), it1) {
+                        ImageSave().saveImageToGallery(
+                            requireContext(),
+                            it,
+                            "qrImage",
+                            "Created QR in PawForChain"
+                        )
+                    }
+                }?.show()
+//                viewModel.deleteTask(it)
+            }, {
+                // del
+//                val dialog = WithdrawalAnimalDialog(requireContext(), object : IPermissionDelete {
+//                    override fun onDeleteBtnClick() {
+//                        viewModel.deleteTask(it)
+//                        Log.d(MyPawFragment.TAG, "반려동물 삭제 완료")
+//                    }
+//                })
+//
+//                dialog.show()
+//                viewModel.deleteTask(it)
+            }, {
                 // detail
                 val bundle = Bundle()
-                bundle.putParcelable("searchResultVM", it)
-                navController.navigate(R.id.navigation_search_result, bundle)
-            },
-        )
+                bundle.putSerializable("item", it)
+                navController.navigate(R.id.navigation_permission_paw, bundle)
+
+            })
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -80,7 +125,7 @@ class HouseFragment : Fragment() {
         viewModel.todoLiveData.observe(
             requireActivity(),
             Observer { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
-                (binding.recycler.adapter as SearchResultAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
+                (binding.recycler.adapter as MyPawListAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
 
             })
 
@@ -119,12 +164,66 @@ class HouseFragment : Fragment() {
                 if (!viewModel.isOpenSearch.value!!) {
                     Log.d(TAG, "열림")
                     // TODO: DUMMY DATA
-                    viewModel.addTask(SearchResultDTO("별이1", "여아", "견과", "말티즈", "X"))
-                    viewModel.addTask(SearchResultDTO("별이2", "여아", "견과", "말티즈", "O"))
-                    viewModel.addTask(SearchResultDTO("별이3", "여아", "견과", "말티즈", "O"))
-                    viewModel.addTask(SearchResultDTO("별이4", "여아", "견과", "말티즈", "O"))
-                    viewModel.addTask(SearchResultDTO("별이5", "여아", "견과", "말티즈", "X"))
-                    viewModel.addTask(SearchResultDTO("별이6", "여아", "견과", "말티즈", "X"))
+//                    viewModel.addTask(SearchResultDTO("별이1", "여아", "견과", "말티즈", "X"))
+//                    viewModel.addTask(SearchResultDTO("별이2", "여아", "견과", "말티즈", "O"))
+//                    viewModel.addTask(SearchResultDTO("별이3", "여아", "견과", "말티즈", "O"))
+//                    viewModel.addTask(SearchResultDTO("별이4", "여아", "견과", "말티즈", "O"))
+//                    viewModel.addTask(SearchResultDTO("별이5", "여아", "견과", "말티즈", "X"))
+//                    viewModel.addTask(SearchResultDTO("별이6", "여아", "견과", "말티즈", "X"))
+
+                    /////
+
+                    PetService().getMyPets().enqueue(object :
+                        Callback<JsonArray> {
+                        override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
+                            if (response.isSuccessful) {
+                                // 정상적으로 통신이 성고된 경우
+                                var result: JsonArray? = response.body()
+                                if (result != null) {
+                                    for (item in result) {
+                                        var item1 = item as JsonObject
+                                        if (item1["profile"].toString() == "null") {
+                                            viewModel.addTask(MyPawListDTO(
+                                                MutableLiveData<String>(item1["pid"].asString),
+                                                null,
+                                                MutableLiveData<String>(item1["name"].asString),
+                                                MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
+                                                MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
+                                                MutableLiveData<String>(item1["kind"].asString),
+                                                MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
+                                            ))
+                                        } else {
+                                            ImageLoader().loadDrawableFromUrl(item1["profile"].asString) { drawable ->
+                                                viewModel.addTask(
+                                                    MyPawListDTO(
+                                                        MutableLiveData<String>(item1["pid"].asString),
+                                                        MutableLiveData<Drawable>(drawable),
+                                                        MutableLiveData<String>(item1["name"].asString),
+                                                        MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
+                                                        MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
+                                                        MutableLiveData<String>(item1["kind"].asString),
+                                                        MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
+                                                    )
+                                                )
+                                            }
+                                        }
+
+                                    }
+                                }
+                                Log.d(PawFragmentVM.TAG, "onResponse 성공: $result");
+                            } else {
+                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                Log.d(MyPawFragmentVM.TAG, "onResponse 실패")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                            Log.d(MyPawFragmentVM.TAG, "onFailure 에러: " + t.message.toString());
+                        }
+                    })
+
+                    /////
                     viewModel.isOpenSearch.value = true
                 }
                 invalidateOptionsMenu((activity as MainActivity))
