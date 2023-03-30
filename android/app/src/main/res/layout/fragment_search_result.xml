@@ -5,11 +5,11 @@
 
     <data>
         <variable
-            name="MyPawDetailItem"
+            name="searchResultVM"
             type="com.ssafy.forpawchain.model.domain.SearchResultDTO" />
 
         <variable
-            name="adoptItem"
+            name="adoptVM"
             type="com.ssafy.forpawchain.model.domain.AdoptDTO" />
 
     </data>
@@ -28,7 +28,7 @@
             android:layout_margin="16dp"
             android:orientation="horizontal"
             android:weightSum="5"
-            android:background="@drawable/shadow"
+            android:background="@drawable/background_layout_search_result_redius"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -83,7 +83,6 @@
                         android:layout_margin="4dp"
                         android:layout_weight="1"
                         android:background="#F3F0FD"
-
                         android:fontFamily="@font/kakao_bold"
 
                         android:text="종" />
@@ -119,7 +118,7 @@
                     android:weightSum="5">
 
                     <TextView
-                        android:id="@+id/SearchResultItemName"
+                        android:id="@+id/SearchResultName"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
@@ -127,10 +126,10 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{MyPawDetailItem.name}" />
+                        android:text="@{searchResultVM.name}" />
 
                     <TextView
-                        android:id="@+id/SearchResultItemSex"
+                        android:id="@+id/SearchResultSex"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
@@ -138,10 +137,10 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{MyPawDetailItem.sex}" />
+                        android:text="@{searchResultVM.sex}" />
 
                     <TextView
-                        android:id="@+id/SearchResultItemSpecies"
+                        android:id="@+id/SearchResultSpecies"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
@@ -149,10 +148,10 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{MyPawDetailItem.species}" />
+                        android:text="@{searchResultVM.species}" />
 
                     <TextView
-                        android:id="@+id/SearchResultItemKind"
+                        android:id="@+id/SearchResultKind"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
@@ -160,10 +159,10 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{MyPawDetailItem.kind}" />
+                        android:text="@{searchResultVM.kind}" />
 
                     <TextView
-                        android:id="@+id/SearchResultItemNeutered"
+                        android:id="@+id/SearchResultNeutered"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
@@ -171,7 +170,7 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:text="@{MyPawDetailItem.neutered}" />
+                        android:text="@{searchResultVM.neutered}" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -215,7 +214,7 @@
             android:layout_margin="16dp"
             android:orientation="horizontal"
             android:weightSum="5"
-            android:background="@drawable/shadow"
+            android:background="@drawable/background_layout_search_result_redius"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
