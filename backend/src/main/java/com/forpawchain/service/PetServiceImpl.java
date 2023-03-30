@@ -66,10 +66,8 @@ public class PetServiceImpl implements PetService {
 		}
 
 		// 이미 등록되어 있는지 체크
-		PetInfoEntity petInfoEntity = petInfoRepository.findByPid(registPetInfoReqDto.getPid());
-		if (petInfoEntity != null) {
-			throw new BaseException(ErrorMessage.EXIST_CONTENT);
-		}
+		PetInfoEntity petInfoEntity = petInfoRepository.findByPid(registPetInfoReqDto.getPid())
+			.orElseThrow(() -> new BaseException(ErrorMessage.EXIST_CONTENT));
 
 		// 모든 내용을 null이나 공백만 사용하여 등록하는 경우
 		if ((registPetInfoReqDto.getEtc() == null || registPetInfoReqDto.getEtc().stripLeading().stripTrailing().equals(""))

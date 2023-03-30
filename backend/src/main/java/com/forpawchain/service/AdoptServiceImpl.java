@@ -83,11 +83,12 @@ public class AdoptServiceImpl implements AdoptService {
 			throw new BaseException(ErrorMessage.EXIST_CONTENT);
 		}
 
-		PetEntity petEntity = petRepository.findByPid(pid);
+		PetEntity petEntity = petRepository.findByPid(pid)
+			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_EXIST_CONTENT));
 		UserEntity userEntity = userRepository.findByUid(uid);
 
-		//존재하지 않는 pid 이거나 uid
-		if (petEntity == null || userEntity == null) {
+		// 존재하지 않는 pid 이거나 uid
+		if (userEntity == null) {
 			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
 		}
 
@@ -153,7 +154,8 @@ public class AdoptServiceImpl implements AdoptService {
 		}
 
 		// Pet의 lost 여부 변경
-		PetEntity petEntity = petRepository.findByPid(pid);
+		PetEntity petEntity = petRepository.findByPid(pid)
+			.orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
 		petEntity.updatePetLost(false);
 		petRepository.save(petEntity);
 

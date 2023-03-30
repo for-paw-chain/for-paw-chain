@@ -45,7 +45,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             UserEntity userEntity = userRepository.findByUid(target);
 
-            PetEntity petEntity = petRepository.findByPid(pid);
+            PetEntity petEntity = petRepository.findByPid(pid)
+                .orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
 
             AuthenticationEntity newEntity = AuthenticationEntity
                     .builder()
@@ -132,7 +133,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             AuthenticationType senderAuthentication = authenticationRepository.findAuthenticationTypeByUidAndPid(uid, pid);
             Optional<String> uidWa = userRepository.findWaByUid(uid);
-            PetEntity petEntity = petRepository.findByPid(pid);
+            PetEntity petEntity = petRepository.findByPid(pid)
+                .orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
 
             // 의사일 경우
             if (!uidWa.isEmpty()) {
