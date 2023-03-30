@@ -73,17 +73,21 @@ public class UserController {
 	// 로그아웃
 	@GetMapping("/logout")
 	@ApiOperation(value = "로그아웃", notes = "refreshToken 삭제")
-	public void logout(@RequestHeader("Authorization") String accessToken) {
-		String id = getCurrentUserId();
-		userService.logout(resolveToken(accessToken), id);
+	public void logout() {
+		UserInfoResDto userInfoResDto = getCurrentUserInfo();
+		userService.logout(userInfoResDto.getId());
 	}
 
 	// accessToken 재발급
 	@PostMapping("/reissue")
 	@ApiOperation(value = "accessToken 재발급", notes = "accessToken과 refreshToken 재발급")
 	public ResponseEntity<TokenInfo> reissue(@RequestHeader("RefreshToken") String refreshToken) {
-		String id = getCurrentUserId();
-		TokenInfo tokenInfo = userService.reissue(resolveToken(refreshToken), id);
+		UserInfoResDto userInfoResDto = getCurrentUserInfo();
+
+		// TODO: Social 타입 추출
+		String social = "KAKAO";
+
+		TokenInfo tokenInfo = userService.reissue(resolveToken(refreshToken), userInfoResDto.getId(), social);
 		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
 	}
 
@@ -91,15 +95,16 @@ public class UserController {
 	@GetMapping("/")
 	@ApiOperation("로그인한 회원 정보 조회")
 	public ResponseEntity<?> getUserInfo() {
-		UserInfoResDto userInfo = userService.getUserInfo(getCurrentUserId());
-		return ResponseEntity.status(HttpStatus.OK).body(userInfo);
+		UserInfoResDto userInfoResDto = getCurrentUserInfo();
+		return ResponseEntity.status(HttpStatus.OK).body(userInfoResDto);
 	}
 
 	// 회원 탈퇴
 	@DeleteMapping("/")
 	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴 여부 true 변경, refreshToken 삭제")
 	public ResponseEntity<?> removeUser() {
-		userService.removeUser(getCurrentUserId());
+		UserInfoResDto userInfoResDto = getCurrentUserInfo();
+		userService.removeUser(userInfoResDto.getUid());
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
@@ -117,7 +122,7 @@ public class UserController {
 	}
 
 	// 토큰 정보 조회
-	public String getCurrentUserId() {
+	public UserInfoResDto getCurrentUserInfo() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication == null || authentication.getName() == null) {
 			throw new BaseException(ErrorMessage.ACCESS_TOKEN_INVALID_SIGNATURE);
@@ -126,8 +131,12 @@ public class UserController {
 		Object principal = authentication.getPrincipal();
 		UserDetails userDetails = (UserDetails)principal;
 
-		// TO DO: SOCIAL 값도 가져와서 UNIQUE 예외 처리
-		return userDetails.getUsername();
+		String id = userDetails.getUsername();
+		// TODO: SOCIAL 값도 가져와서 UNIQUE 예외 처리
+
+		UserInfoResDto userInfoResDto = userService.getUserInfo(id);
+
+		return userInfoResDto;
 	}
 
 	// 헤더에서 토큰 추출
