@@ -72,7 +72,6 @@ public class Web3Controller {
 	@PostMapping("eth")
 	@ApiOperation(value = "이더 충전", notes = "로그인 유저의 지갑으로 이더를 충전해준다.")
 	public void sendEth() throws Exception {
-		// String toAddress = "0x4ba7a38538d48f05816909e572fedc18cc3ab7bb";
 		// authorization으로 uid 값 받아와야됨
 		Long uid = 1L;
 
