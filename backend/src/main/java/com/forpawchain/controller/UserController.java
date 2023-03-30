@@ -38,6 +38,7 @@ public class UserController {
 
 	// 소셜 회원가입 & 로그인
 	@PostMapping("/")
+	@ApiOperation(value = "SNS 회원가입 & 로그인", notes = "DB 정보가 없다면 자동 회원가입 후 로그인하여 토큰 반환")
 	public ResponseEntity<TokenInfo> sns(@RequestBody RegistUserReqDto registUserReqDto) {
 		String id = registUserReqDto.getId();
 		TokenInfo tokenInfo = null;
@@ -50,6 +51,20 @@ public class UserController {
 			tokenInfo = login(new LoginUserDto(registUserReqDto.getId(), registUserReqDto.getSocial()));
 		}
 
+		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
+	}
+
+	@PostMapping("/regist")
+	@ApiOperation(value = "일반 회원가입")
+	public ResponseEntity<?> commonRegist(@RequestBody RegistUserReqDto registUserReqDto) {
+		boolean result = registUser(registUserReqDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(result);
+	}
+
+	@PostMapping("/login")
+	@ApiOperation(value = "일반 로그인")
+	public ResponseEntity<?> commonLogin(@RequestBody LoginUserDto loginUserDto) {
+		TokenInfo tokenInfo = login(loginUserDto);
 		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
 	}
 
@@ -100,7 +115,7 @@ public class UserController {
 	}
 
 	// 토큰 정보 조회
-	private String getCurrentUserId() {
+	public String getCurrentUserId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication == null || authentication.getName() == null) {
 			throw new BaseException(ErrorMessage.ACCESS_TOKEN_INVALID_SIGNATURE);
