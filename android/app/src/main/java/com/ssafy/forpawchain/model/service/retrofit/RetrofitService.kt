@@ -1,11 +1,8 @@
 package com.ssafy.forpawchain.model.service.retrofit
 
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -51,11 +48,9 @@ interface RetrofitService {
     fun getMyPets(): Call<JsonObject>
 
     @GET("auth")
-    fun getPetAuth(@Query("pid") pid: String): Call<JsonArray>
+    fun getPetAuth(@Query("pid") pid: String): Call<JsonObject>
     @PUT("auth")
-    fun removePetAuth(@Query("receiver") receiver: Int,
-                      @Query("pid") pid: String
-    ): Call<JsonObject>
+    fun removePetAuth(@Query("pid") pid: String): Call<JsonObject>
     @PUT("auth/hand")
     fun handPetAuth(@Query("receiver") receiver: Int,
                       @Query("pid") pid: String

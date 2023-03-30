@@ -17,7 +17,7 @@ public interface AuthenticationService {
      * 권한 삭제 (나의 강아지는 삭제 불가)
      * delete
      */
-    void removeAuthentication(long uid, long target, String pid);
+    void removeAuthentication(long uid, String pid);
 
     /**
      * 반려동물에게 권한이 있는 사용자 목록 조회
