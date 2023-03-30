@@ -183,6 +183,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return authenticationType;
     }
 
+    @Override
+    public String getRegDate(Long uid, String pid) {
+        LocalDate regDate = authenticationRepository.findRegDateByAuthIdUidAndAuthIdPid(uid, pid);
+        if (regDate == null) {
+            throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
+        }
+        return regDate.toString();
+    }
+
     // 주인의 권한이 제거되는 경우
     public void moveAuthentication(long frm, long to, String pid, AuthenticationType type) {
         try {

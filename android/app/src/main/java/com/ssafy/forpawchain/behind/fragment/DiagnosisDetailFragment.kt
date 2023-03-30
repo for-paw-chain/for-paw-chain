@@ -73,7 +73,7 @@ class DiagnosisDetailFragment : Fragment() {
 
         val bundle = arguments
         if (bundle != null) {
-            val value = bundle.getSerializable("item") as HistoryDTO
+            val value = bundle.getSerializable("item") as HistoryDTO // bundle 로 의료기록 불러오기
             viewModel.title.postValue(value.title)
             viewModel.body.postValue(value.body)
             viewModel.date.postValue(value.date)

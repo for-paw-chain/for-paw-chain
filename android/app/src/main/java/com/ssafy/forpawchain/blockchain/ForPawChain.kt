@@ -43,7 +43,7 @@ class ForPawChain {
             this.credentials = Credentials.create(cred)
         }
 
-        fun createHistory(
+        fun createHistory( // 의료기록 작성
             title: String,
             body: String,
             items: ArrayList<Data>,
@@ -54,7 +54,7 @@ class ForPawChain {
 
 
                 val contract =
-                    Forpawchain_sol_ForPawChain.load(
+                    Forpawchain_sol_ForPawChain.load( // contract 정보 load
                         contractAddress,
                         web3,
                         transactionManager,
@@ -66,7 +66,7 @@ class ForPawChain {
                 val formatted = currentDateTime.format(formatter)
                 val data = contract.addHistory(title, body, formatted, hash).send()
 
-                data.blockNumber
+                data.blockNumber // 채굴해도 사이즈가 안맞는 경우가 있기 때문에 대기
 
                 val size = contract.size.toInt() - 1
                 for (item in items) {
@@ -80,7 +80,7 @@ class ForPawChain {
             return true
         }
 
-        fun getHistory(): ArrayList<HistoryDTO> {
+        fun getHistory(): ArrayList<HistoryDTO> { // 의료 기록 읽기
             var result: ArrayList<HistoryDTO> = ArrayList()
             val contract =
                 Forpawchain_sol_ForPawChain.load(
@@ -112,6 +112,7 @@ class ForPawChain {
                         )
                     }
                     val hash = history[5] as Utf8String
+                    
                     result.add(
                         HistoryDTO(
                             title.value.toString(),
@@ -123,7 +124,7 @@ class ForPawChain {
                         )
                     )
                 }
-            }.join()
+            }.join() // thread
             return result
         }
         /*
