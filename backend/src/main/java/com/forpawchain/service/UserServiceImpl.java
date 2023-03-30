@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
 		// TODO: SOCIAL 값도 가져와서 UNIQUE 예외 처리
 		UserEntity userEntity = userRepository.findById(id)
 			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
-		UserInfoResDto userInfo = new UserInfoResDto(userEntity);
 
+		UserInfoResDto userInfo = new UserInfoResDto(userEntity);
 		// 의사인 경우
 		if (userEntity.getWa() != null) {
 			userInfo.setDoctor(true);
@@ -91,14 +91,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public TokenInfo reissue(String refreshToken, String id, String social) {
-		RefreshToken redisRefreshToken = refreshTokenRedisRepository.findById(id)
-			.orElseThrow(() -> new BaseException(ErrorMessage.REFRESH_TOKEN_NOT_MATCH));
+		RefreshToken redisRefreshToken = refreshTokenRedisRepository.findById(id).orElse(null);
 
 		if(refreshToken.equals(redisRefreshToken.getRefreshToken())) {
 			return reissueRefreshToken(id, social);
 		}
 
-		throw new IllegalArgumentException("토큰이 일치하지 않습니다.");
+		throw new BaseException(ErrorMessage.REFRESH_TOKEN_NOT_MATCH);
 	}
 
 	private TokenInfo reissueRefreshToken(String id, String social) {

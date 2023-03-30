@@ -46,7 +46,9 @@ public class UserController {
 			String id = registUserReqDto.getId();
 			userService.getUserInfo(id); // 유저 가입 유뮤 검사
 		} catch (Exception e) {
-			registUser(registUserReqDto);
+			if(!registUser(registUserReqDto)) {
+				return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+			}
 		} finally {
 			tokenInfo = login(new LoginUserDto(registUserReqDto.getId(), registUserReqDto.getSocial()));
 		}
@@ -58,8 +60,10 @@ public class UserController {
 	@PostMapping("/regist")
 	@ApiOperation(value = "일반 회원가입")
 	public ResponseEntity<?> commonRegist(@RequestBody RegistUserReqDto registUserReqDto) {
-		boolean result = registUser(registUserReqDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(result);
+		if(registUser(registUserReqDto)) {
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 	}
 
 	// 일반 로그인 (테스트용)
@@ -87,8 +91,13 @@ public class UserController {
 		// TODO: Social 타입 추출
 		String social = "KAKAO";
 
-		TokenInfo tokenInfo = userService.reissue(resolveToken(refreshToken), userInfoResDto.getId(), social);
-		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
+		try {
+			TokenInfo tokenInfo = userService.reissue(resolveToken(refreshToken), userInfoResDto.getId(), social);
+
+			return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+		}
 	}
 
 	// 회원 정보 조회 (회원 프로필)
@@ -104,13 +113,25 @@ public class UserController {
 	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴 여부 true 변경, refreshToken 삭제")
 	public ResponseEntity<?> removeUser() {
 		UserInfoResDto userInfoResDto = getCurrentUserInfo();
-		userService.removeUser(userInfoResDto.getUid());
+
+		try {
+			userService.removeUser(userInfoResDto.getUid());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+		}
+
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	private boolean registUser(RegistUserReqDto registUserReqDto) {
+		// userDetails cating을 위해 Social을 암호화
 		registUserReqDto.setSocial(passwordEncoder.encode(registUserReqDto.getSocial()));
-		userService.registUser(registUserReqDto);
+
+		try {
+			userService.registUser(registUserReqDto);
+		} catch (Exception e) {
+			return false;
+		}
 
 		return true;
 	}
