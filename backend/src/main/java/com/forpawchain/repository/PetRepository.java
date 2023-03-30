@@ -12,5 +12,5 @@ public interface PetRepository extends JpaRepository<PetEntity, String> {
 	 * @param pid
 	 * @return PetEntity
 	 */
-	PetEntity findByPid(String pid);
+	Optional<PetEntity> findByPid(String pid);
 }

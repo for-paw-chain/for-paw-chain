@@ -21,37 +21,22 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private PetRepository petRepository;
     @Autowired
     private PetInfoRepository petInfoRepository;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws BaseException {
-        String token = request.getHeader("Authorization");
-        long uid = 1;
         String pid = request.getParameter("pid");
 
-        UserEntity userEntity = userRepository.findByUid(uid);
-        PetEntity petEntity = petRepository.findByPid(pid);
-        
-        // 아직 가입하지 않은 유저이거나 탈퇴한 유저
-        if (userEntity == null || userEntity.isDel()) {
-            throw new BaseException(ErrorMessage.USER_NOT_FOUND);
-        }
+        PetEntity petEntity = petRepository.findByPid(pid)
+            .orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
 
-        // 아직 가입하지 않은 유저이거나 탈퇴한 유저
-        if (petEntity == null) {
-            throw new BaseException(ErrorMessage.PET_NOT_FOUND);
-        }
-
-        PetInfoEntity petInfoEntity = petInfoRepository.findByPid(pid);
-        if (petInfoEntity == null) {
-            throw new BaseException(ErrorMessage.PET_NOT_FOUND);
-        }
+        PetInfoEntity petInfoEntity = petInfoRepository.findByPid(pid)
+            .orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
 
         String receiver = request.getParameter("receiver");
-
         if (receiver != null) {
-
             UserEntity receiverEntity = userRepository.findByUid(Long.parseLong(receiver));
 
-            if (userEntity == null || userEntity.isDel()) {
+            if (receiverEntity == null || receiverEntity.isDel()) {
                 throw new BaseException(ErrorMessage.USER_NOT_FOUND);
             }
         }
