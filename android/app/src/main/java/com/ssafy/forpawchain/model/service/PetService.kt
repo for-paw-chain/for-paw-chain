@@ -22,7 +22,7 @@ class PetService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun getMyPets(): Call<JsonArray> {
+    fun getMyPets(): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer qwerqwer")

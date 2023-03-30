@@ -6,8 +6,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "UserInfoResDto", description = "반환되는 회원 정보 (회원 프로필)")
 public class UserInfoResDto {
@@ -22,4 +24,11 @@ public class UserInfoResDto {
 
 	@ApiModelProperty(name = "doctor", value = "의사 인증 여부", required = true, example = "false")
 	private Boolean doctor;
+
+	public UserInfoResDto(UserEntity userEntity) {
+		this.uid = userEntity.getUid();
+		this.profile = userEntity.getProfile();
+		this.name = userEntity.getName();
+		this.doctor = false;
+	}
 }

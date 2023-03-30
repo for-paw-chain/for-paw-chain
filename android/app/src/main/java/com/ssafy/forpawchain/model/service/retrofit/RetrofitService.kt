@@ -48,7 +48,7 @@ interface RetrofitService {
     fun setUpload(@Part filePart: MultipartBody.Part): Call<JsonObject>
 
     @GET("pet/")
-    fun getMyPets(): Call<JsonArray>
+    fun getMyPets(): Call<JsonObject>
 
     @GET("auth")
     fun getPetAuth(@Query("pid") pid: String): Call<JsonArray>

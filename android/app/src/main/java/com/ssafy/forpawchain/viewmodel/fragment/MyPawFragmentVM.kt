@@ -46,13 +46,14 @@ class MyPawFragmentVM : ViewModel() {
     suspend fun initData() {
         val response = withContext(Dispatchers.IO) {
             PetService().getMyPets().enqueue(object :
-                Callback<JsonArray> {
-                override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
+                Callback<JsonObject> {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성고된 경우
-                        var result: JsonArray? = response.body()
+                        var result: JsonObject? = response.body()
+                        val items = result?.get("content") as JsonArray
                         if (result != null) {
-                            for (item in result) {
+                            for (item in items.asJsonArray) {
                                 var item1 = item as JsonObject
                                 if (item1["profile"].toString() == "null") {
                                     addTask(
@@ -81,7 +82,6 @@ class MyPawFragmentVM : ViewModel() {
                                         )
                                     }
                                 }
-
                             }
                         }
                         Log.d(PawFragmentVM.TAG, "onResponse 성공: $result");
@@ -91,7 +91,7 @@ class MyPawFragmentVM : ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                     // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
                     Log.d(TAG, "onFailure 에러: " + t.message.toString());
                 }
