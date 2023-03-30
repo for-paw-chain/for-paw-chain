@@ -3,8 +3,8 @@ import android.graphics.drawable.Drawable
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
+import java.io.Serializable
 
-@Parcelize
 data class SearchResultDTO(
     // 코드 db에서는 pid
     var code: String,
@@ -29,4 +29,4 @@ data class SearchResultDTO(
     // 특이사항
     var etc : String?,
 
-): Parcelable
+): Serializable

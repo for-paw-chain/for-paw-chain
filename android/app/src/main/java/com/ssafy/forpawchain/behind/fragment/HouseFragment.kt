@@ -111,11 +111,24 @@ class HouseFragment : Fragment() {
 //
 //                dialog.show()
 //                viewModel.deleteTask(it)
-            }, {
+            },{
                 // detail
                 val bundle = Bundle()
-                bundle.putSerializable("searchResultVM", it)
-//                navController.navigate(R.id.navigation_permission_paw, bundle)
+                // MyPawListDTO를 > SearchResultDTO로 변경
+                val tempSearchResultDTO = SearchResultDTO(
+                    code = it.code.value!!,
+                    profile = it.profile?.value,
+                    name = it.name.value!!,
+                    sex = it.sex.value!!,
+                    species = it.species.value!!,
+                    kind = it.kind.value!!,
+                    neutered = it.neutered.value!!,
+                    birth = it.neutered.value,
+                    region = it.neutered.value,
+                    tel = it.neutered.value,
+                    etc = it.neutered.value
+                )
+                bundle.putSerializable("searchResultVM", tempSearchResultDTO)
                 navController.navigate(R.id.navigation_search_result, bundle)
             },
         )

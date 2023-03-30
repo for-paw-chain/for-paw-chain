@@ -58,15 +58,14 @@ class SearchResultAdapter(
             holder.binding.qrBtn.setOnClickListener {
                 onClickQrButton.invoke(listposition) //눌렀을때 listposition를 전달하면서 함수를 실행한다.
             }
-            holder.binding.idPawInfo.setOnClickListener{
-                Log.d(TAG,"여긴 어댑터 bindviewholder정보 ${mydataSet.get(holder.adapterPosition)}")
-                onClickDetailButton.invoke(listposition)
-            }
-            holder.binding.idPawImg.setOnClickListener{
-                Log.d(TAG,"여긴 어댑터 bindviewholder이미지 ${mydataSet.get(holder.adapterPosition)}")
-                onClickDetailButton.invoke(listposition)
-
-            }
+//            holder.binding.idPawInfo.setOnClickListener{
+//                Log.d(TAG,"여긴 어댑터 bindviewholder정보 ${mydataSet.get(holder.adapterPosition)}")
+//                onClickDetailButton.invoke(listposition)
+//            }
+//            holder.binding.idPawImg.setOnClickListener{
+//                Log.d(TAG,"여긴 어댑터 bindviewholder이미지 ${mydataSet.get(holder.adapterPosition)}")
+//                onClickDetailButton.invoke(listposition)
+//            }
         }
     }
 
