@@ -132,7 +132,7 @@ public class Forpawchain_sol_ForPawChain extends Contract {
                         new TypeReference<Uint256>() {
                         }
                 ));
-        return executeCallSingleValueReturn(function, BigInteger.class); // 단일 리턴 타입
+        return executeCallSingleValueReturn(function, BigInteger.class); // 단일  리턴 타입
     }
 
     public BigInteger getSize() throws IOException {

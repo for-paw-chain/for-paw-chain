@@ -15,22 +15,18 @@ import com.ssafy.forpawchain.databinding.DialogWithdrawalAnimalBinding
 import com.ssafy.forpawchain.databinding.DialogWithdrawalBinding
 import com.ssafy.forpawchain.databinding.FragmentAdoptAddBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
-import com.ssafy.forpawchain.model.interfaces.IHandAdaptee
-import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.model.interfaces.IWithdrawalAnimal
 import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.AuthService
-import com.ssafy.forpawchain.util.ImageLoader
-import com.ssafy.forpawchain.viewmodel.dialog.WithdrawalAnimalDialogVM
-import com.ssafy.forpawchain.viewmodel.fragment.AdoptAddFragmentVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 class WithdrawalAnimalDialog(myPawListDTO: MyPawListDTO, context: Context, dialogInterface: IWithdrawalAnimal) :
     Dialog(context) {
@@ -72,9 +68,19 @@ class WithdrawalAnimalDialog(myPawListDTO: MyPawListDTO, context: Context, dialo
                         if (response.isSuccessful) {
                             // 정상적으로 통신이 성공된 경우
                             // call
-                            binding.textView26.setText(response.body()?.get("content").toString())
+                            val date = response.body()?.get("content").toString()
+                            val dateList = date.split("-".toRegex()).dropLastWhile { it.isEmpty() } .toTypedArray()
+
+                            val year = dateList[0].substring(1)
+                            val month = dateList[1]
+                            val day = dateList[2].substring(0, 2)
+
+                            val past: LocalDate = LocalDate.of(year.toInt(), month.toInt(), day.toInt())
+                            val now: LocalDate = LocalDate.now()
+                            val days: Long = ChronoUnit.DAYS.between(past, now)
                             Log.d(TAG, "onResponse 성공");
 
+                            binding.textView26.setText(days.toString())
                         } else {
                             // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                             Log.d(TAG, "onResponse 실패")

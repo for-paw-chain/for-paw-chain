@@ -77,10 +77,10 @@
         tools:layout="@layout/fragment_diagnosis_detail" />
 
     <fragment
-        android:id="@+id/navigation_search_result_auth"
+        android:id="@+id/navigation_search_result"
         android:name="com.ssafy.forpawchain.behind.fragment.SearchResultFragment"
         android:label="SearchResult"
-        tools:layout="@layout/fragment_search_result_auth" />
+        tools:layout="@layout/fragment_search_result" />
 
     <fragment
         android:id="@+id/navigation_search_result_unauth"
