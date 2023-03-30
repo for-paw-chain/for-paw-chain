@@ -102,14 +102,14 @@ class HouseFragment : Fragment() {
 //                viewModel.deleteTask(it)
             }, {
                 // del
-                val dialog = WithdrawalAnimalDialog(requireContext(), object : IPermissionDelete {
-                    override fun onDeleteBtnClick() {
-                        viewModel.deleteTask(it)
-                        Log.d(MyPawFragment.TAG, "반려동물 삭제 완료")
-                    }
-                })
-
-                dialog.show()
+//                val dialog = WithdrawalAnimalDialog(requireContext(), object : IPermissionDelete {
+//                    override fun onDeleteBtnClick() {
+//                        viewModel.deleteTask(it)
+//                        Log.d(MyPawFragment.TAG, "반려동물 삭제 완료")
+//                    }
+//                })
+//
+//                dialog.show()
 //                viewModel.deleteTask(it)
             }, {
                 // detail
@@ -187,11 +187,11 @@ class HouseFragment : Fragment() {
                                                 MutableLiveData<String>(item1["pid"].asString),
                                                 null,
                                                 MutableLiveData<String>(item1["name"].asString),
-                                                MutableLiveData<String>(item1["sex"].asString),
-                                                MutableLiveData<String>(item1["type"].asString),
+                                                MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
+                                                MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                                 MutableLiveData<String>(item1["kind"].asString),
-                                                MutableLiveData<String>(item1["spayed"].asString))
-                                            )
+                                                MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
+                                            ))
                                         } else {
                                             ImageLoader().loadDrawableFromUrl(item1["profile"].asString) { drawable ->
                                                 viewModel.addTask(
@@ -199,10 +199,10 @@ class HouseFragment : Fragment() {
                                                         MutableLiveData<String>(item1["pid"].asString),
                                                         MutableLiveData<Drawable>(drawable),
                                                         MutableLiveData<String>(item1["name"].asString),
-                                                        MutableLiveData<String>(item1["sex"].asString),
-                                                        MutableLiveData<String>(item1["type"].asString),
+                                                        MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
+                                                        MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                                         MutableLiveData<String>(item1["kind"].asString),
-                                                        MutableLiveData<String>(item1["spayed"].asString)
+                                                        MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
                                                     )
                                                 )
                                             }

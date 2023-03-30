@@ -41,7 +41,7 @@ class UserService {
     fun setDoctor(doctorDTO: RequestDoctorDTO): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Access-Token", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer qwerqwer")
                 .build()
             chain.proceed(newRequest)
         }.build()

@@ -1,6 +1,7 @@
 package com.forpawchain.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,11 @@ public class PetController {
 		long userId = 1L;
 
 		List<PetDefaultInfoResDto> myPetList = petService.getMyPetList(userId);
-		return ResponseEntity.status(HttpStatus.OK).body(myPetList);
+
+		HashMap<String, List> map = new HashMap<>();
+		map.put("content", myPetList);
+
+		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
 	/**

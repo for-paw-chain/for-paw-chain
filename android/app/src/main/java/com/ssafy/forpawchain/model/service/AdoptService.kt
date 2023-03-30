@@ -59,7 +59,7 @@ class AdoptService {
     fun createAdopt(
         image: MultipartBody.Part,
         payload: MultipartBody.Part
-    ): Call<ResponseBody> {
+    ): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer qwerqwer")
@@ -78,7 +78,7 @@ class AdoptService {
         return service.createAdopt(image, payload)
     }
 
-    fun deleteAdopt(pid: String): Call<ResponseBody> {
+    fun deleteAdopt(pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("Access-Token", "Bearer qwerqwer")
