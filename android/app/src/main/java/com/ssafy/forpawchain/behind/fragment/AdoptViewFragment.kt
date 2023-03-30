@@ -107,7 +107,7 @@ class AdoptViewFragment : Fragment() {
 
             val user = userDao.getUserById("private")
             // TODO: 수정 필요
-            user.privateKey = "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
+//            user.privateKey = "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
             if (user != null) {
                 lifecycleScope.launch {
                     bundle?.getString("pid")?.let {

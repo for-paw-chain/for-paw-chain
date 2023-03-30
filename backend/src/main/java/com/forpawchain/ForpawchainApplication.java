@@ -24,6 +24,16 @@ public class ForpawchainApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ForpawchainApplication.class, args);
 
+		String date = "2023-1-28";
+		String[] dateList = date.split("-");
+
+		String year = dateList[0];
+		String month = dateList[1];
+		String day = dateList[2];
+
+		val past: LocalDate = LocalDate.of(year.toInt(), month.toInt(), day.toInt())
+		val now: LocalDate = LocalDate.now()
+		val days: Long = ChronoUnit.DAYS.between(past, now)
 	}
 
 	 // @Bean

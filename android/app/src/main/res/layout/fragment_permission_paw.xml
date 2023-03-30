@@ -13,7 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="32dp">
+        android:layout_margin="32dp"
+        android:background="@drawable/box_radius_03">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout4"
@@ -27,9 +28,9 @@
 
             <ImageView
                 android:id="@+id/imageView5"
-                android:layout_width="64dp"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_paw_solid"
+                android:src="@drawable/icon_default_pet"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -68,7 +69,7 @@
                         android:gravity="bottom"
                         android:text="@{viewModel.name}"
                         android:textColor="@color/black"
-                        android:textSize="30sp" />
+                        android:textSize="26sp" />
 
                     <TextView
                         android:id="@+id/textView10"
@@ -79,13 +80,14 @@
                         android:gravity="top"
                         android:text="@{viewModel.code}"
                         android:textColor="@color/gray"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:layout_marginTop="5dp"/>
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/adoptBtn"
                     android:layout_width="75dp"
-                    android:layout_height="50dp"
+                    android:layout_height="42dp"
                     android:layout_gravity="bottom"
                     android:background="@drawable/background_doctor_cert_summit_button"
                     android:fontFamily="@font/kakao_bold"
@@ -101,7 +103,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"
-            android:background="@color/gray"
+            android:background="#E8E8E8"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
