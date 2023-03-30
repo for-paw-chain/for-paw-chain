@@ -41,10 +41,10 @@ public class PetServiceImpl implements PetService {
 	public List<PetDefaultInfoResDto> getMyPetList(Long userId) {
 		List<PetDefaultInfoResDto> myPetList = petRegRepository.findAuthAndInfo(userId);
 
-		// 반려동물이 없는 경우
-		if (myPetList.size() == 0) {
-			throw new BaseException(ErrorMessage.PETLIST_NOT_FOUND);
-		}
+		// // 반려동물이 없는 경우
+		// if (myPetList.size() == 0) {
+		// 	throw new BaseException(ErrorMessage.PETLIST_NOT_FOUND);
+		// }
 
 		return myPetList;
 	}
