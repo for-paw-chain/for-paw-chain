@@ -140,14 +140,14 @@ public class Web3ServiceImpl implements Web3Service {
 
 		setting();
 
-		UserEntity userEntity = userRepository.findByUid(uid);
+		UserEntity userEntity = userRepository.findByUid(uid).orElse(null);
 		String privateKey = null;
 		String address = null;
 
 		// 이미 지갑을 생성한 의사임
-		if (userEntity.getWa() != null) {
-			throw new BaseException(ErrorMessage.EXIST_WALLET);
-		}
+		// if (userEntity.getWa() != null) {
+		// 	throw new BaseException(ErrorMessage.EXIST_WALLET);
+		// }
 
 		// 의사 계정이 맞는지 확인
 		if (checkLicense(licenseReqDto)) {
@@ -186,7 +186,7 @@ public class Web3ServiceImpl implements Web3Service {
 	 */
 	public String getAddress(long uid) {
 		setting();
-		UserEntity userEntity = userRepository.findByUid(uid);
+		UserEntity userEntity = userRepository.findByUid(uid).orElse(null);
 		return userEntity.getWa();
 	}
 

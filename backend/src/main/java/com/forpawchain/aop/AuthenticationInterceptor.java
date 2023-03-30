@@ -34,7 +34,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
         String receiver = request.getParameter("receiver");
         if (receiver != null) {
-            UserEntity receiverEntity = userRepository.findByUid(Long.parseLong(receiver));
+            UserEntity receiverEntity = userRepository.findByUid(Long.parseLong(receiver)).orElseThrow(null);
 
             if (receiverEntity == null || receiverEntity.isDel()) {
                 throw new BaseException(ErrorMessage.USER_NOT_FOUND);
