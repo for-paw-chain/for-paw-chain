@@ -2,21 +2,17 @@ package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Layout.Directions
 import android.util.Log
 import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
 import com.ssafy.forpawchain.R
