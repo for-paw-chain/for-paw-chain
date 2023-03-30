@@ -114,10 +114,11 @@ class HouseFragment : Fragment() {
             }, {
                 // detail
                 val bundle = Bundle()
-                bundle.putSerializable("item", it)
-                navController.navigate(R.id.navigation_permission_paw, bundle)
-
-            })
+                bundle.putSerializable("searchResultVM", it)
+//                navController.navigate(R.id.navigation_permission_paw, bundle)
+                navController.navigate(R.id.navigation_search_result, bundle)
+            },
+        )
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -177,7 +178,7 @@ class HouseFragment : Fragment() {
                         Callback<JsonArray> {
                         override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                             if (response.isSuccessful) {
-                                // 정상적으로 통신이 성고된 경우
+                                // 정상적으로 통신이 성공한 경우
                                 var result: JsonArray? = response.body()
                                 if (result != null) {
                                     for (item in result) {
