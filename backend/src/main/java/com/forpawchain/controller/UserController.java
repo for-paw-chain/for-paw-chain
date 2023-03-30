@@ -40,12 +40,12 @@ public class UserController {
 	@PostMapping("/")
 	@ApiOperation(value = "SNS 회원가입 & 로그인", notes = "DB 정보가 없다면 자동 회원가입 후 로그인하여 토큰 반환")
 	public ResponseEntity<TokenInfo> sns(@RequestBody RegistUserReqDto registUserReqDto) {
-		String id = registUserReqDto.getId();
 		TokenInfo tokenInfo = null;
 
 		try {
+			String id = registUserReqDto.getId();
 			userService.getUserInfo(id); // 유저 가입 유뮤 검사
-		} catch (BaseException e) {
+		} catch (Exception e) {
 			registUser(registUserReqDto);
 		} finally {
 			tokenInfo = login(new LoginUserDto(registUserReqDto.getId(), registUserReqDto.getSocial()));

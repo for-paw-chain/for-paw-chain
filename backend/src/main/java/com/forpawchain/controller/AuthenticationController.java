@@ -70,6 +70,7 @@ public class AuthenticationController {
         try {
             UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
             authService.giveMasterAuthentication(userInfoResDto.getUid(), receiver, pid);
+
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
@@ -79,23 +80,32 @@ public class AuthenticationController {
     @GetMapping("/pet")
     @ApiOperation(value = "동물에 대한 권한 조회", notes = "어떤 동물에 대해서, 내가 어떤 권한을 갖고 있는지 조회한다.")
     public ResponseEntity<HashMap<String, String>> getAuthenticationOfPid(String pid) {
-        UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
-        HashMap<String, String> map = new HashMap<>();
+        try {
+            UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
+            HashMap<String, String> map = new HashMap<>();
 
-        AuthenticationType authenticationType = authService.getAuthenticationOfPid(userInfoResDto.getUid(), pid);
-        map.put("content", authenticationType.toString());
+            AuthenticationType authenticationType = authService.getAuthenticationOfPid(userInfoResDto.getUid(), pid);
+            map.put("content", authenticationType.toString());
 
-        return new ResponseEntity<>(map, HttpStatus.OK);
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
     }
 
     @GetMapping("/date")
     @ApiOperation(value = "동물과 함께한 날 조회", notes = "어떤 동물과 함께하기 시작한 날짜를 조회한다.")
     public ResponseEntity<HashMap<String, String>> getRegDate(String pid) {
-        UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
-        HashMap<String, String> map = new HashMap<>();
+        try {
+            UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
+            HashMap<String, String> map = new HashMap<>();
 
-        String regDate = authService.getRegDate(userInfoResDto.getUid(), pid);
-        map.put("content", regDate);
-        return new ResponseEntity<>(map, HttpStatus.OK);
+            String regDate = authService.getRegDate(userInfoResDto.getUid(), pid);
+            map.put("content", regDate);
+
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
     }
 }
