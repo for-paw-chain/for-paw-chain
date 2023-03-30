@@ -1,6 +1,9 @@
 package com.forpawchain.service;
 
 import com.forpawchain.config.IPFSConfig;
+import com.forpawchain.exception.BaseException;
+import com.forpawchain.exception.ErrorMessage;
+
 import io.ipfs.api.IPFS;
 import io.ipfs.api.MerkleNode;
 import io.ipfs.api.NamedStreamable;
@@ -17,8 +20,8 @@ import java.io.InputStream;
 @Service
 @RequiredArgsConstructor
 public class IPFSFileServiceImpl implements IPFSFileService {
-
     final private IPFSConfig ipfsConfig;
+
     @Override
     public String saveFile(MultipartFile file) {
         try {
@@ -28,9 +31,8 @@ public class IPFSFileServiceImpl implements IPFSFileService {
             MerkleNode merkleNode = ipfsConfig.getIPFS().add(inputStreamWrapper).get(0);
 
             return merkleNode.hash.toBase58();
-
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new BaseException(ErrorMessage.IPFS_FILE_EXCEPTION);
         }
     }
 
@@ -40,9 +42,10 @@ public class IPFSFileServiceImpl implements IPFSFileService {
         try {
             return ipfsConfig.getIPFS().cat(filePointer);
         } catch (IOException e) {
-            throw new RuntimeException("Error whilst communication wit the IPFS node", e);
+            throw new BaseException(ErrorMessage.IPFS_CONNECTION_EXCEPTION);
         }
     }
+
 //    public MultipartFile convertByteArrayToMultipartFile(String fileName, byte[] fileBytes) throws IOException {
 //        // 파일 이름이나 바이트 배열이 null이거나 빈 문자열이면 MultipartFile을 생성할 수 없습니다.
 //        if(StringUtils.isEmpty(fileName) || fileBytes == null || fileBytes.length == 0) {

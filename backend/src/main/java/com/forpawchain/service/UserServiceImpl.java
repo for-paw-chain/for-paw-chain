@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.forpawchain.auth.JwtTokenProvider;
 import com.forpawchain.domain.Entity.RefreshToken;
-import com.forpawchain.domain.dto.token.LoginUserDto;
+import com.forpawchain.domain.dto.request.LoginUserReqDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.domain.Entity.UserEntity;
-import com.forpawchain.domain.dto.token.TokenInfo;
+import com.forpawchain.domain.dto.response.TokenResDto;
 import com.forpawchain.exception.BaseException;
 import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.repository.RefreshTokenRedisRepository;
@@ -78,8 +78,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public TokenInfo login(LoginUserDto loginUserDto) {
-		return generateToken(loginUserDto.getId(), loginUserDto.getSocial());
+	public TokenResDto login(LoginUserReqDto loginUserReqDto) {
+		return generateToken(loginUserReqDto.getId(), loginUserReqDto.getSocial());
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public TokenInfo reissue(String refreshToken, String id, String social) {
+	public TokenResDto reissue(String refreshToken, String id, String social) {
 		RefreshToken redisRefreshToken = refreshTokenRedisRepository.findById(id).orElse(null);
 
 		if(refreshToken.equals(redisRefreshToken.getRefreshToken())) {
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 		throw new BaseException(ErrorMessage.REFRESH_TOKEN_NOT_MATCH);
 	}
 
-	private TokenInfo reissueRefreshToken(String id, String social) {
+	private TokenResDto reissueRefreshToken(String id, String social) {
 		// TODO: 기존 REFRESH EXPIRATION에 따라서 재발급되는 토큰 구분
 		return generateToken(id, social);
 	}
@@ -113,16 +113,16 @@ public class UserServiceImpl implements UserService {
 		return refreshTokenRedisRepository.save(refreshTokenEntity);
 	}
 
-	private TokenInfo generateToken(String id, String social) {
+	private TokenResDto generateToken(String id, String social) {
 		// id와 social 정보를 통해서 Authentication 생성
 		UsernamePasswordAuthenticationToken authenticationToken =
 			new UsernamePasswordAuthenticationToken(id, social);
 		// 사용자 확인
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 		// jwt 토큰 생성
-		TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-		registRefreshToken(id, tokenInfo.getRefreshToken());
+		TokenResDto tokenResDto = jwtTokenProvider.generateToken(authentication);
+		registRefreshToken(id, tokenResDto.getRefreshToken());
 
-		return tokenInfo;
+		return tokenResDto;
 	}
 }

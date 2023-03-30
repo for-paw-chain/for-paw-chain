@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	Optional<UserEntity> findById(String id);
-	// Optional<UserEntity> findByIdAndSocial(String id, String social);
+
 	Optional<UserEntity> findByUid(long uid);
 
 	// ui의 의사 지갑 주소 반환

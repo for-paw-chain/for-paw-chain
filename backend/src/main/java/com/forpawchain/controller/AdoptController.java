@@ -5,12 +5,9 @@ import static com.forpawchain.exception.ErrorMessage.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,9 +16,7 @@ import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
 import com.forpawchain.exception.BaseException;
-import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.service.AdoptService;
-import com.forpawchain.service.AdoptServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,13 +28,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/adopt")
 @Api(tags = "입양 공고 API")
 public class AdoptController {
-
     private final AdoptService adoptService;
 
     @GetMapping("/ad")
 	@ApiOperation(value = "입양 광고 랜덤 목록 10개 조회", notes = "랜덤으로 입양 공고문 10개 리스트를 반환한다. 광고용이다.")
     public ResponseEntity<HashMap<String, List>> getAdoptAd() {
-
         HashMap<String, List> map = new HashMap<>();
         List<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptAd();
 

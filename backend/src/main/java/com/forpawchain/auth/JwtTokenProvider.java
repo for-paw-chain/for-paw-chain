@@ -26,7 +26,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 import com.forpawchain.domain.Entity.JwtExpirationEnums;
-import com.forpawchain.domain.dto.token.TokenInfo;
+import com.forpawchain.domain.dto.response.TokenResDto;
 
 @Slf4j
 @Component
@@ -40,7 +40,7 @@ public class JwtTokenProvider {
 	}
 
 	// 유저 정보를 통해 accessToken, refreshToken 생성
-	public TokenInfo generateToken(Authentication authentication) {
+	public TokenResDto generateToken(Authentication authentication) {
 		// 권한
 		String authorities = authentication.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority)
@@ -67,7 +67,7 @@ public class JwtTokenProvider {
 			.signWith(key, SignatureAlgorithm.HS256)
 			.compact();
 
-		return new TokenInfo("Bearer", accessToken, refreshToken);
+		return new TokenResDto("Bearer", accessToken, refreshToken);
 	}
 
 	// 토큰 정보 조회
