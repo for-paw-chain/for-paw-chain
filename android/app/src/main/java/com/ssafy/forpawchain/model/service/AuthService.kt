@@ -3,9 +3,7 @@ package com.ssafy.forpawchain.model.service
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -22,7 +20,7 @@ class AuthService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun getPetAuth(pid: String): Call<JsonArray> {
+    fun getPetAuth(pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer qwerqwer")
@@ -40,7 +38,7 @@ class AuthService {
 
         return service.getPetAuth(pid)
     }
-    fun removePetAuth(receiver: Int, pid: String): Call<JsonObject> {
+    fun removePetAuth(pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer qwerqwer")
@@ -56,7 +54,7 @@ class AuthService {
 
         service = retrofit.create(RetrofitService::class.java);
 
-        return service.removePetAuth(receiver, pid);
+        return service.removePetAuth(pid);
     }
     fun handPetAuth(receiver: Int, pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
