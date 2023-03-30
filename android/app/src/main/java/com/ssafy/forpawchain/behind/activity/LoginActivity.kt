@@ -106,6 +106,7 @@ class LoginActivity : AppCompatActivity() {
                             Log.d("[카카오톡 로그인]", "유저 정보. ${user}")
                             Log.d("[카카오톡 로그인]", "토큰 정보. ${token}")
                             UserInfo.parseUser(user!!)
+
                         }
                     }
 
