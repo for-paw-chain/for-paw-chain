@@ -43,9 +43,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class Web3ServiceImpl implements Web3Service {
-
 	private final Logger LOGGER = LoggerFactory.getLogger(Web3ServiceImpl.class);
-
 	private final DoctorLicenseRepository doctorLicenseRepository;
 	private final UserRepository userRepository;
 	private final PetRepository petRepository;

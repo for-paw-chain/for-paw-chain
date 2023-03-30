@@ -1,13 +1,11 @@
 package com.forpawchain.service;
 
 import com.forpawchain.domain.Entity.AuthenticationType;
-import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.domain.dto.response.UserResDto;
 
 import java.util.List;
 
 public interface AuthenticationService {
-
     /**
      * 타인에게 권한을 주는 경우
      * 타인의 권한 값 변경 -> save
@@ -30,7 +28,7 @@ public interface AuthenticationService {
     /**
      *  주인권한양도
      *  1. 의사에 의해
-     * 2. 주인의 권한 넘겨주기
+     *  2. 주인의 권한 넘겨주기
      * save 2번
      */
     void giveMasterAuthentication(long uid, long target, String pid);

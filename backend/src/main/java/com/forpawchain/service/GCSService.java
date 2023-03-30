@@ -19,7 +19,6 @@ import com.google.cloud.storage.StorageOptions;
 
 @Service
 public class GCSService {
-
 	// private final Logger LOGGER = LoggerFactory.getLogger(GCSService.class);
 
 	@Value("${spring.cloud.gcp.storage.bucket}")
@@ -30,20 +29,16 @@ public class GCSService {
 	private String projectId;
 
 	public Blob uploadFileToGCS(MultipartFile file) throws IOException {
-
 		ClassPathResource resource = new ClassPathResource("for-paw-chain-c2d3ba7aaab6.json");
 
 		StorageOptions storageOptions = StorageOptions.newBuilder()
 			.setProjectId(projectId)
 			.setCredentials(GoogleCredentials.fromStream(resource.getInputStream())).build();
 		Storage storage = storageOptions.getService();
-
 		// Storage storage = StorageOptions.getDefaultInstance().getService();
 
 		String fileName = UUID.randomUUID().toString();
-
 		BlobInfo blobInfo = BlobInfo.newBuilder(bucket, fileName).build();
-
 		Blob blob = storage.create(blobInfo, file.getBytes());
 
 		return blob;

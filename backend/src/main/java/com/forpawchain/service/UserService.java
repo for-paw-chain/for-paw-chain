@@ -6,7 +6,6 @@ import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.domain.dto.response.TokenResDto;
 
 public interface UserService {
-
 	void registUser(RegistUserReqDto registUserReqDto);
 
 	UserInfoResDto getUserInfo(String id);

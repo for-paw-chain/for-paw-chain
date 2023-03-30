@@ -11,7 +11,6 @@ import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
 
 public interface AdoptService {
-
 	PageImpl<AdoptListResDto> getAdoptList(int pageNo, String type, Integer spayed, String sex);
 
 	List<AdoptListResDto> getAdoptAd();

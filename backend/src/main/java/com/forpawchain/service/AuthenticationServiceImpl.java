@@ -104,6 +104,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
         }
     }
+
     /**
      *  주인권한양도
      *  1. 의사에 의해

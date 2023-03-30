@@ -23,6 +23,7 @@ public class IPFSFileServiceImpl implements IPFSFileService {
     final private IPFSConfig ipfsConfig;
 
     @Override
+    // IPFS에 파일 저장 후 Hash 반환
     public String saveFile(MultipartFile file) {
         try {
             InputStream stream = new ByteArrayInputStream(file.getBytes());
@@ -37,6 +38,7 @@ public class IPFSFileServiceImpl implements IPFSFileService {
     }
 
     @Override
+    // IPFS파일의 해쉬값으로 파일 반환
     public byte[] loadFile(String hash) {
         Multihash filePointer = Multihash.fromBase58(hash);
         try {
@@ -45,17 +47,4 @@ public class IPFSFileServiceImpl implements IPFSFileService {
             throw new BaseException(ErrorMessage.IPFS_CONNECTION_EXCEPTION);
         }
     }
-
-//    public MultipartFile convertByteArrayToMultipartFile(String fileName, byte[] fileBytes) throws IOException {
-//        // 파일 이름이나 바이트 배열이 null이거나 빈 문자열이면 MultipartFile을 생성할 수 없습니다.
-//        if(StringUtils.isEmpty(fileName) || fileBytes == null || fileBytes.length == 0) {
-//            return null;
-//        }
-//
-//        // 바이트 배열을 사용하여 MultipartFile 생성
-//        MultipartFile multipartFile = new MockMultipartFile(fileName, fileName,
-//                ContentType.APPLICATION_OCTET_STREAM.toString(), new ByteArrayInputStream(fileBytes));
-//
-//        return multipartFile;
-//    }
 }
