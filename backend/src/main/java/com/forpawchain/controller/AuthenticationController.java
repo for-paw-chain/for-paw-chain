@@ -34,11 +34,10 @@ public class AuthenticationController {
     }
     @PutMapping
     @ApiOperation(value = "권한 삭제", notes = "요청한 동물과 사용자 사이의 관계를 끊는다.")
-    // receiver 삭제
-    public ResponseEntity<?> removeAuthentication(@RequestHeader("Authorization") String authorization, long receiver, String pid) {
+    public ResponseEntity<?> removeAuthentication(@RequestHeader("Authorization") String authorization, String pid) {
         try {
             long uid = 1;
-            authService.removeAuthentication(uid, receiver, pid);
+            authService.removeAuthentication(uid, pid);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
