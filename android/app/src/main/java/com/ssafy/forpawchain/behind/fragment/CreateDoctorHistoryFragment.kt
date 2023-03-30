@@ -123,7 +123,7 @@ class CreateDoctorHistoryFragment : Fragment() {
                         requireContext().contentResolver,
                         currentImageUrl
                     )
-                    Log.d(AdoptAddFragment.TAG, "이미지 불러오기 완료$currentImageUrl")
+                    Log.d(TAG, "이미지 불러오기 완료$currentImageUrl")
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
