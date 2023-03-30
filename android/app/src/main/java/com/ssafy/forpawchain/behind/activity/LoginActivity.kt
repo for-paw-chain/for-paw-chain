@@ -16,6 +16,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
+import com.ssafy.forpawchain.model.room.UserInfo
 
 
 class LoginActivity : AppCompatActivity() {
@@ -104,8 +105,10 @@ class LoginActivity : AppCompatActivity() {
                         UserApiClient.instance.me { user, error ->
                             Log.d("[카카오톡 로그인]", "유저 정보. ${user}")
                             Log.d("[카카오톡 로그인]", "토큰 정보. ${token}")
+                            UserInfo.parseUser(user!!)
                         }
                     }
+
                     nextMainActivity()
                 } else {
                     Log.d("카카오 로그인", "토큰==null error==null")

@@ -19,6 +19,7 @@ import com.ssafy.forpawchain.behind.fragment.UserFragment
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.blockchain.Test_sol_ForPawChain
 import com.ssafy.forpawchain.blockchain.Test_sol_MyContract
+import com.ssafy.forpawchain.model.room.UserInfo
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.infura.InfuraHttpService
