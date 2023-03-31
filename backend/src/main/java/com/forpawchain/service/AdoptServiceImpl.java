@@ -17,6 +17,7 @@ import com.forpawchain.domain.dto.response.AdoptListResDto;
 import com.forpawchain.domain.Entity.AdoptEntity;
 import com.forpawchain.domain.Entity.PetEntity;
 import com.forpawchain.domain.Entity.UserEntity;
+import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.exception.BaseException;
 import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.repository.AdoptRepository;
@@ -62,23 +63,19 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public AdoptDetailResDto getAdoptDetail(String pid) {
-		AdoptDetailResDto adoptDetailResDto = adoptRepository.findDetailByPid(pid);
-
-		//존재하지 않는 pid 이거나, 해당 pid에 쓰인 입양 공고가 없을 경우
-		if (adoptDetailResDto == null) {
-			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
-		}
+		AdoptDetailResDto adoptDetailResDto = adoptRepository.findDetailByPid(pid)
+			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_EXIST_CONTENT));
 
 		return adoptDetailResDto;
 	}
 
 	@Override
 	public void registAdopt(AdoptDetailReqDto adoptDetailReqDto, long uid, MultipartFile imageFile) throws IOException {
-
 		String pid = adoptDetailReqDto.getPid();
-		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
+		AdoptEntity adoptEntity = adoptRepository.findByPid(pid)
+			.orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
 
-		//이미 입양 공고글이 작성되어 있을 경우
+		// 이미 입양 공고글이 작성되어 있을 경우
 		if (adoptEntity != null) {
 			throw new BaseException(ErrorMessage.EXIST_CONTENT);
 		}
@@ -103,28 +100,28 @@ public class AdoptServiceImpl implements AdoptService {
 			.user(userEntity)
 			.build();
 
-		petEntity.updatePetLost(true);
-		petRepository.save(petEntity);
+		PetEntity newPetEntity = PetEntity.builder()
+			.pid(petEntity.getPid())
+			.ca(petEntity.getCa())
+			.lost(true)
+			.build();
+		petRepository.save(newPetEntity);
 
 		adoptRepository.save(adoptEntity);
 	}
 
 	@Override
-	public void modifyAdopt(AdoptDetailReqDto adoptDetailReqDto, long uid, MultipartFile imageFile) throws IOException {
+	public void modifyAdopt(AdoptDetailReqDto adoptDetailReqDto, UserInfoResDto userInfoResDto, MultipartFile imageFile) throws IOException {
 		String pid = adoptDetailReqDto.getPid();
-		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
+		AdoptEntity adoptEntity = adoptRepository.findByPid(pid)
+			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_EXIST_CONTENT));
 
-		//글이 존재해야 수정할 수 있다.
-		if (adoptEntity == null) {
-			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
-		}
-
-		//글을 쓴 본인만이 수정할 수 있다.
-		if (adoptEntity.getUid() != uid) {
+		// 글을 쓴 본인만이 수정 가능
+		if (adoptEntity.getUid() != userInfoResDto.getUid()) {
 			throw new BaseException(ErrorMessage.NOT_PERMISSION_EXCEPTION);
 		}
 
-		//파일 업로드
+		// 파일 업로드
 		Blob blob = gcsService.uploadFileToGCS(imageFile);
 		String imageUrl = blob.getMediaLink();
 
@@ -135,25 +132,25 @@ public class AdoptServiceImpl implements AdoptService {
 	}
 
 	@Override
-	public void removeAdopt(String pid, long uid) {
+	public void removeAdopt(String pid, UserInfoResDto userInfoResDto) {
+		AdoptEntity adoptEntity = adoptRepository.findByPid(pid)
+			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_EXIST_CONTENT));
 
-		AdoptEntity adoptEntity = adoptRepository.findByPid(pid);
-
-		//글이 존재해야 삭제할 수 있다.
-		if (adoptEntity == null) {
-			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
-		}
-
-		//글을 쓴 본인만이 수정할 수 있다.
-		if (adoptEntity.getUid() != uid) {
+		// 글을 쓴 본인만이 수정 가능
+		if (adoptEntity.getUid() != userInfoResDto.getUid()) {
 			throw new BaseException(ErrorMessage.NOT_PERMISSION_EXCEPTION);
 		}
 
 		// Pet의 lost 여부 변경
 		PetEntity petEntity = petRepository.findByPid(pid)
 			.orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
-		petEntity.updatePetLost(false);
-		petRepository.save(petEntity);
+
+		PetEntity newPetEntity = PetEntity.builder()
+			.pid(petEntity.getPid())
+			.ca(petEntity.getCa())
+			.lost(false)
+			.build();
+		petRepository.save(newPetEntity);
 
 		// 분양 공고 삭제
 		adoptRepository.deleteByPid(pid);
@@ -165,9 +162,9 @@ public class AdoptServiceImpl implements AdoptService {
 		UserEntity userEntity = userRepository.findByUid(uid)
 			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 
-		//존재하지 않는 유저일 경우
+		// 탈퇴한 유저일 경우
 		if (userEntity.isDel()) {
-			throw new BaseException(ErrorMessage.USER_NOT_FOUND);
+			throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
 		}
 
 		List<AdoptListResDto> list = adoptRepository.findByUid(uid);

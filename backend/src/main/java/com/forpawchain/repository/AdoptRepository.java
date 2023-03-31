@@ -22,7 +22,7 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 		+ "LIMIT 10", nativeQuery = true)
 	Optional<List<AdoptListResDto>> findTop10ByRand();
 
-	AdoptEntity findByPid(String pid);
+	Optional<AdoptEntity> findByPid(String pid);
 
 	@Query(value = "SELECT a.pid, a.profile, pr.type, pr.kind, pr.spayed\n"
 		+ "FROM adopt a, pet_reg pr\n"
@@ -32,7 +32,7 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, String> {
 	@Query(value = "SELECT pr.name, pr.sex, a.profile, pr.type, pr.kind, pr.spayed, a.tel, a.etc\n"
 		+ "FROM adopt a, pet_reg pr\n"
 		+ "WHERE a.pid = pr.pid and a.pid = :pid", nativeQuery = true)
-	AdoptDetailResDto findDetailByPid(@Param("pid") String pid);
+	Optional<AdoptDetailResDto> findDetailByPid(@Param("pid") String pid);
 
 	void deleteByPid(String pid);
 

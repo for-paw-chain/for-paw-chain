@@ -1,8 +1,5 @@
 package com.forpawchain.controller;
-
-import static com.forpawchain.exception.ErrorMessage.*;
-
-import java.io.IOException;
+;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.forpawchain.domain.dto.request.AdoptDetailReqDto;
 import com.forpawchain.domain.dto.response.AdoptDetailResDto;
 import com.forpawchain.domain.dto.response.AdoptListResDto;
-import com.forpawchain.exception.BaseException;
+import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.service.AdoptService;
 
 import io.swagger.annotations.Api;
@@ -28,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/adopt")
 @Api(tags = "입양 공고 API")
 public class AdoptController {
+    private final UserController userController;
     private final AdoptService adoptService;
 
     @GetMapping
@@ -60,7 +58,7 @@ public class AdoptController {
 
             return new ResponseEntity<>(adoptListResDtoList, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE);
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
 
@@ -83,51 +81,74 @@ public class AdoptController {
     @GetMapping("/{pid}")
 	@ApiOperation(value = "입양 공고 상세 조회", notes = "동물등록번호(pid)를 요청하면 해당 동물의 입양 공고 상세 내용을 반환한다.")
     public ResponseEntity<AdoptDetailResDto> getAdoptDetail(@PathVariable("pid") String pid) {
-        AdoptDetailResDto adoptDetailResDto = adoptService.getAdoptDetail(pid);
+        try {
+            AdoptDetailResDto adoptDetailResDto = adoptService.getAdoptDetail(pid);
 
-        return new ResponseEntity<>(adoptDetailResDto, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(adoptDetailResDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
     }
 
     @PostMapping
 	@ApiOperation(value = "입양 공고 작성", notes = "입양 공고를 작성한다. 누가 작성했는지는 access token으로 파악한다.")
-    public ResponseEntity<Void> registAdopt(@RequestHeader("Authorization") String authorization,
-        @RequestPart(name = "content") AdoptDetailReqDto adoptDetailReqDto, @RequestPart(name = "profile") MultipartFile imageFile) throws IOException {
-        long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
-        adoptService.registAdopt(adoptDetailReqDto, uid, imageFile);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<?> registAdopt(@RequestPart(name = "content") AdoptDetailReqDto adoptDetailReqDto,
+        @RequestPart(name = "profile") MultipartFile imageFile) {
+
+        UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
+
+        try {
+            adoptService.registAdopt(adoptDetailReqDto, userInfoResDto.getUid(), imageFile);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
     }
 
     @PutMapping
 	@ApiOperation(value = "입양 공고 수정", notes = "입양 공고의 내용을 수정한다.")
-    public ResponseEntity<Void> modifyAdopt(@RequestHeader("Authorization") String authorization,
-        @RequestPart(name = "content") AdoptDetailReqDto adoptDetailReqDto, @RequestPart(name = "profile") MultipartFile imageFile) throws IOException {
+    public ResponseEntity<?> modifyAdopt(@RequestPart(name = "content") AdoptDetailReqDto adoptDetailReqDto,
+        @RequestPart(name = "profile") MultipartFile imageFile) {
 
-        long uid = 1L;
+        UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
 
-        // 글을 쓴 본인이 맞는지 검증하는 과정 필요
-        adoptService.modifyAdopt(adoptDetailReqDto, uid, imageFile);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        try {
+            adoptService.modifyAdopt(adoptDetailReqDto, userInfoResDto, imageFile);
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
     }
 
     @DeleteMapping("/{pid}")
 	@ApiOperation(value = "입양 공고 삭제", notes = "동물등록번호(pid)를 입력하면 해당 동물의 분양 공고를 삭제한다.")
-    public ResponseEntity<Void> removeAdopt(@RequestHeader("Authorization") String authorization,
-        @PathVariable("pid") String pid) {
+    public ResponseEntity<?> removeAdopt(@PathVariable("pid") String pid) {
+        UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
 
-        long uid = 1L;
+        try {
+            adoptService.removeAdopt(pid, userInfoResDto);
 
-        adoptService.removeAdopt(pid, uid);
-        return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
     }
 
     @GetMapping("/article")
 	@ApiOperation(value = "내가 쓴 입양 공고 조회", notes = "access token에서 uid 값을 추출해서, 해당 사용자가 쓴 분양 공고글 리스트를 반환한다.")
-    public ResponseEntity<HashMap<String, List<AdoptListResDto>>> getAdoptMyList(@RequestHeader("Authorization") String authorization) {
-        long uid = 1L;  // 액세스 토큰에서 uid 뽑아내는 코드 필요함!
-        List<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptMyList(uid);
-
+    public ResponseEntity<HashMap<String, List<AdoptListResDto>>> getAdoptMyList() {
+        UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
         HashMap<String, List<AdoptListResDto>> map = new HashMap<>();
-        map.put("content", adoptListResDtoList);
-        return new ResponseEntity<>(map, HttpStatus.OK);
+
+        try {
+            List<AdoptListResDto> adoptListResDtoList = adoptService.getAdoptMyList(userInfoResDto.getUid());
+            map.put("content", adoptListResDtoList);
+
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }
     }
 }

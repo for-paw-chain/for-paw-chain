@@ -221,7 +221,13 @@ public class TestDataInit {
 						.user(userRepository.findByUid(1).orElse(null))
 						.build();
 
-					petEntity.updatePetLost(true);
+					PetEntity newPetEntity = PetEntity.builder()
+						.pid(petEntity.getPid())
+						.ca(petEntity.getCa())
+						.lost(true)
+						.build();
+					petRepository.save(newPetEntity);
+
 					adoptRepository.save(adoptEntity);
 				} else if (i % 3 == 1) { // 펫 부가정보 추가 -> 3으로 나눈 나머지가 1인 애들은 petInfo 존재
 					PetInfoEntity petInfoEntity = PetInfoEntity.builder()
@@ -236,7 +242,6 @@ public class TestDataInit {
 
 					petInfoRepository.save(petInfoEntity);
 				}
-				petRepository.save(petEntity);
 			}
 		}
 
