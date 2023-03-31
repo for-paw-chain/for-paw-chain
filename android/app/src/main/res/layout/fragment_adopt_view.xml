@@ -287,6 +287,8 @@
                     android:fontFamily="@font/kakao_regular"
                     android:gravity="center_horizontal"
                     android:text="@{viewModel.extra}"
+                    android:textAlignment="textStart"
+                    android:layout_marginLeft="10dp"
                     android:textColor="@color/black" />
             </LinearLayout>
 

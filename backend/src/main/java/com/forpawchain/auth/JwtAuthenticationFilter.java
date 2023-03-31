@@ -15,7 +15,6 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.internal.http2.ErrorCode;
 
 @Slf4j
 @RequiredArgsConstructor

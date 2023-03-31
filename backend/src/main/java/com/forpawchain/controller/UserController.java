@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.forpawchain.domain.dto.token.LoginUserDto;
+import com.forpawchain.domain.dto.request.LoginUserReqDto;
 import com.forpawchain.domain.dto.request.RegistUserReqDto;
 import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.exception.BaseException;
 import com.forpawchain.exception.ErrorMessage;
 import com.forpawchain.service.UserService;
-import com.forpawchain.domain.dto.token.TokenInfo;
+import com.forpawchain.domain.dto.response.TokenResDto;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,41 +36,44 @@ public class UserController {
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
 
-	// 소셜 회원가입 & 로그인
 	@PostMapping("/")
 	@ApiOperation(value = "SNS 회원가입 & 로그인", notes = "DB 정보가 없다면 자동 회원가입 후 로그인하여 토큰 반환")
-	public ResponseEntity<TokenInfo> sns(@RequestBody RegistUserReqDto registUserReqDto) {
-		String id = registUserReqDto.getId();
-		TokenInfo tokenInfo = null;
+	public ResponseEntity<TokenResDto> sns(@RequestBody RegistUserReqDto registUserReqDto) {
+		TokenResDto tokenResDto = null;
 
 		try {
 			log.info("유저 가입 유무 검사");
+			String id = registUserReqDto.getId();
 			userService.getUserInfo(id); // 유저 가입 유뮤 검사
 		} catch (Exception e) {
 			log.info("회원가입");
-			registUser(registUserReqDto);
-		} finally {
-			log.info("로그인");
-			tokenInfo = login(new LoginUserDto(registUserReqDto.getId(), registUserReqDto.getSocial()));
+			if(!registUser(registUserReqDto)) {
+				return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+			}
 		}
 
-		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
+		log.info("로그인");
+		// TODO: 다른 SOCIAL 타입도 추가
+		LoginUserReqDto loginUserReqDto = new LoginUserReqDto(registUserReqDto.getId(), "KAKAO");
+		tokenResDto = login(loginUserReqDto);
+
+		return ResponseEntity.status(HttpStatus.OK).body(tokenResDto);
 	}
 
-	// 일반 회원가입 (테스트용)
 	@PostMapping("/regist")
-	@ApiOperation(value = "일반 회원가입")
-	public ResponseEntity<?> commonRegist(@RequestBody RegistUserReqDto registUserReqDto) {
-		boolean result = registUser(registUserReqDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(result);
+	@ApiOperation(value = "테스트용 일반 회원가입")
+	public ResponseEntity<?> registCommon(@RequestBody RegistUserReqDto registUserReqDto) {
+		if(registUser(registUserReqDto)) {
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 	}
 
-	// 일반 로그인 (테스트용)
 	@PostMapping("/login")
-	@ApiOperation(value = "일반 로그인")
-	public ResponseEntity<?> commonLogin(@RequestBody LoginUserDto loginUserDto) {
-		TokenInfo tokenInfo = login(loginUserDto);
-		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
+	@ApiOperation(value = "테스트용 일반 로그인")
+	public ResponseEntity<?> loginCommon(@RequestBody LoginUserReqDto loginUserReqDto) {
+		TokenResDto tokenResDto = login(loginUserReqDto);
+		return ResponseEntity.status(HttpStatus.OK).body(tokenResDto);
 	}
 
 	// 로그아웃
@@ -81,20 +84,23 @@ public class UserController {
 		userService.logout(userInfoResDto.getId());
 	}
 
-	// accessToken 재발급
 	@PostMapping("/reissue")
 	@ApiOperation(value = "accessToken 재발급", notes = "accessToken과 refreshToken 재발급")
-	public ResponseEntity<TokenInfo> reissue(@RequestHeader("RefreshToken") String refreshToken) {
+	public ResponseEntity<TokenResDto> reissue(@RequestHeader("RefreshToken") String refreshToken) {
 		UserInfoResDto userInfoResDto = getCurrentUserInfo();
 
 		// TODO: Social 타입 추출
 		String social = "KAKAO";
 
-		TokenInfo tokenInfo = userService.reissue(resolveToken(refreshToken), userInfoResDto.getId(), social);
-		return ResponseEntity.status(HttpStatus.OK).body(tokenInfo);
+		try {
+			TokenResDto tokenResDto = userService.reissue(resolveToken(refreshToken), userInfoResDto.getId(), social);
+
+			return ResponseEntity.status(HttpStatus.OK).body(tokenResDto);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+		}
 	}
 
-	// 회원 정보 조회 (회원 프로필)
 	@GetMapping("/")
 	@ApiOperation("로그인한 회원 정보 조회")
 	public ResponseEntity<?> getUserInfo() {
@@ -102,26 +108,39 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userInfoResDto);
 	}
 
-	// 회원 탈퇴
 	@DeleteMapping("/")
 	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴 여부 true 변경, refreshToken 삭제")
 	public ResponseEntity<?> removeUser() {
 		UserInfoResDto userInfoResDto = getCurrentUserInfo();
-		userService.removeUser(userInfoResDto.getUid());
+
+		try {
+			userService.removeUser(userInfoResDto.getUid());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+		}
+
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
+	// 회원가입
 	private boolean registUser(RegistUserReqDto registUserReqDto) {
+		// userDetails cating을 위해 Social을 암호화
 		registUserReqDto.setSocial(passwordEncoder.encode(registUserReqDto.getSocial()));
-		userService.registUser(registUserReqDto);
+
+		try {
+			userService.registUser(registUserReqDto);
+		} catch (Exception e) {
+			return false;
+		}
 
 		return true;
 	}
 
-	private TokenInfo login(LoginUserDto loginUserReqDto) {
+	// 로그인
+	private TokenResDto login(LoginUserReqDto loginUserReqDto) {
 		// 로그인 시마다 정보 일치하면 새로운 token 발급
-		TokenInfo tokenInfo = userService.login(loginUserReqDto);
-		return tokenInfo;
+		TokenResDto tokenResDto = userService.login(loginUserReqDto);
+		return tokenResDto;
 	}
 
 	// 토큰 정보 조회

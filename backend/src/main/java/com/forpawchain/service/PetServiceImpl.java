@@ -34,33 +34,32 @@ public class PetServiceImpl implements PetService {
 
 	/**
 	 * 나의 반려동물 목록 조회
-	 * @param userId
+	 * @param uid
 	 * @return List<PetDefaultInfoResDto>
 	 */
 	@Override
-	public List<PetDefaultInfoResDto> getMyPetList(Long userId) {
-		List<PetDefaultInfoResDto> myPetList = petRegRepository.findAuthAndInfo(userId);
+	public List<PetDefaultInfoResDto> getMyPetList(long uid) {
+		try {
+			List<PetDefaultInfoResDto> myPetList = petRegRepository.findAuthAndInfo(uid);
 
-		// // 반려동물이 없는 경우
-		// if (myPetList.size() == 0) {
-		// 	throw new BaseException(ErrorMessage.PETLIST_NOT_FOUND);
-		// }
-
-		return myPetList;
+			return myPetList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
+		}
 	}
 
 	/**
 	 * 견적사항 등록
-	 * @param userId
+	 * @param uid
 	 * @param registPetInfoReqDto
 	 * @param image
 	 */
 	@Override
 	@Transactional
-	public void registPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws
-		IOException {
+	public void registPetInfo(long uid, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws IOException {
 		// 견적사항 등록 권한 체크 (주인만 가능)
-		String type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
+		String type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(uid, registPetInfoReqDto.getPid());
 		if (type == null || !type.equals("MASTER")){
 			throw new BaseException(ErrorMessage.NOT_PERMISSION_EXCEPTION);
 		}
@@ -75,6 +74,7 @@ public class PetServiceImpl implements PetService {
 			&& (registPetInfoReqDto.getRegion() == null || registPetInfoReqDto.getRegion().stripLeading().stripTrailing().equals(""))
 			&& (registPetInfoReqDto.getBirth() == null || registPetInfoReqDto.getBirth() == null)
 			&& image == null){
+
 			throw new BaseException(ErrorMessage.NOT_EXIST_REGISTCONTENT);
 		}
 
@@ -90,16 +90,15 @@ public class PetServiceImpl implements PetService {
 
 	/**
 	 * 동물의 견적사항 수정
-	 * @param userId
+	 * @param uid
 	 * @param registPetInfoReqDto
 	 * @param image
 	 */
 	@Override
 	@Transactional
-	public void modifyPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws
-		IOException {
+	public void modifyPetInfo(long uid, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws IOException {
 		// 견적사항 등록 권한 체크 (주인만 가능)
-		String type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(userId, registPetInfoReqDto.getPid());
+		String type = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(uid, registPetInfoReqDto.getPid());
 		if (type == null || !type.equals("MASTER")){
 			throw new BaseException(ErrorMessage.NOT_PERMISSION_EXCEPTION);
 		}
@@ -110,6 +109,7 @@ public class PetServiceImpl implements PetService {
 			&& (registPetInfoReqDto.getRegion() == null || registPetInfoReqDto.getRegion().stripLeading().stripTrailing().equals(""))
 			&& (registPetInfoReqDto.getBirth() == null || registPetInfoReqDto.getBirth() == null)
 			&& image == null){
+
 			throw new BaseException(ErrorMessage.NOT_EXIST_REGISTCONTENT);
 		}
 

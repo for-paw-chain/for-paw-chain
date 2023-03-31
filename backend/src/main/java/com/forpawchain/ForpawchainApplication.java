@@ -1,8 +1,5 @@
 package com.forpawchain;
 
-import java.time.LocalDate;
-import java.time.Period;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -20,11 +17,11 @@ import com.forpawchain.service.Web3ServiceImpl;
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass=true)
 public class ForpawchainApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(ForpawchainApplication.class, args);
 	}
 
+	// // TEST DATA
 	// @Bean
 	// public TestDataInit testDataInit(DoctorLicenseRepository doctorLicenseRepository, PetRepository petRepository,
 	// 	UserRepository userRepository, AdoptRepository adoptRepository, PetRegRepository petRegRepository,

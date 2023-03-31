@@ -14,9 +14,6 @@ public class AdoptDetailReqDto {
 	@Schema(description = "동물등록번호")
 	private String pid;
 
-	// @Schema(description = "프로필 사진")
-	// private String profile;
-
 	@Schema(description = "동물 특이사항")
 	private String etc;
 
