@@ -51,10 +51,10 @@ public class UserController {
 			if(!registUser(registUserReqDto)) {
 				return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 			}
-		} finally {
-			log.info("로그인");
-			tokenResDto = login(new LoginUserReqDto(registUserReqDto.getId(), registUserReqDto.getSocial()));
 		}
+
+		log.info("로그인");
+		tokenResDto = login(new LoginUserReqDto(registUserReqDto.getId(), registUserReqDto.getSocial()));
 
 		return ResponseEntity.status(HttpStatus.OK).body(tokenResDto);
 	}
