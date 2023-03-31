@@ -62,9 +62,9 @@ class PawFragmentVM : ViewModel() {
                                     AdoptDTO(
                                         MutableLiveData(item["pid"].asString),
                                         MutableLiveData(drawable),
-                                        MutableLiveData(item["type"].asString),
+                                        MutableLiveData(if (item["type"].asString.equals("DOG")) "개과" else if(item["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                         MutableLiveData(item["kind"].asString),
-                                        MutableLiveData(item["spayed"].asString)
+                                        MutableLiveData(if (item["spayed"].asString.equals("false")) "Ⅹ" else "○")
                                     )
                                 )
                             }
