@@ -41,13 +41,12 @@ public class AdoptServiceImpl implements AdoptService {
 		PageRequest pageRequest = PageRequest.of(pageNo, 10, Sort.by("regTime").descending());
 		PageImpl<AdoptListResDto> adoptListResDtos = null;
 
-		// 중성화여부가 null 일 때
-		if (spayed == null) {
-			adoptListResDtos = adoptRepository.findByTypeAndSex(type, sex, pageRequest);
-		}
-		// 중성화여부 조건 검색을 할 때
-		else {
-			adoptListResDtos = adoptRepository.findByTypeAndSexAndSpayed(type, sex, spayed, pageRequest);
+		if (spayed == null) { // 중성화여부가 null 일 때
+			adoptListResDtos = adoptRepository.findByTypeAndSex(type, sex, pageRequest)
+				.orElseThrow(() -> new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION));
+		} else { // 중성화여부 조건 검색을 할 때
+			adoptListResDtos = adoptRepository.findByTypeAndSexAndSpayed(type, sex, spayed, pageRequest)
+				.orElseThrow(() -> new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION));
 		}
 
 		return adoptListResDtos;
@@ -55,13 +54,14 @@ public class AdoptServiceImpl implements AdoptService {
 
 	@Override
 	public List<AdoptListResDto> getAdoptAd() {
-		List<AdoptListResDto> list = adoptRepository.findTop10ByRand();
+		List<AdoptListResDto> list = adoptRepository.findTop10ByRand()
+			.orElseThrow(() -> new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION));
+
 		return list;
 	}
 
 	@Override
 	public AdoptDetailResDto getAdoptDetail(String pid) {
-
 		AdoptDetailResDto adoptDetailResDto = adoptRepository.findDetailByPid(pid);
 
 		//존재하지 않는 pid 이거나, 해당 pid에 쓰인 입양 공고가 없을 경우

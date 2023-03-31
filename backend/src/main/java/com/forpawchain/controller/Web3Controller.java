@@ -96,6 +96,7 @@ public class Web3Controller {
 
 			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
+			map.put("content", "익명의 의사");
 			return new ResponseEntity<>(map, HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}

@@ -51,22 +51,15 @@ public class Web3ServiceImpl implements Web3Service {
 	private Credentials credentials;
 	private TransactionManager transactionManager;
 
-	// Web3j, Credentials, TransactionManager를 초기화
-	private void setting() {
-		if (web3j == null || credentials == null || transactionManager == null) {
-			web3j = Web3j.build(new HttpService(NETWORK));
-			credentials = Credentials.create(fromPrivateKey);
-			transactionManager = new RawTransactionManager(web3j, credentials, Long.parseLong(CHAINID));
-		}
-	}
-
 	// 현재 블록 번호
+	@Override
 	public EthBlockNumber getBlockNumber() throws ExecutionException, InterruptedException {
 		setting();
 		return web3j.ethBlockNumber().sendAsync().get();
 	}
 
 	// 스마트 컨트랙트 배포
+	@Override
 	public String deployContract(String pid) throws Exception {
 		setting();
 
@@ -95,6 +88,7 @@ public class Web3ServiceImpl implements Web3Service {
 	}
 
 	// 의사가 맞는지 확인
+	@Override
 	public boolean checkLicense(LicenseReqDto licenseReqDto) {
 		setting();
 		String name = licenseReqDto.getName();
@@ -118,6 +112,7 @@ public class Web3ServiceImpl implements Web3Service {
 	 * private key만 있으면 사용 가능.
 	 * private key를 프론트에 전달해주기. db에는 저장 안함
 	 */
+	@Override
 	public String createWallet(long uid, LicenseReqDto licenseReqDto) throws Exception {
 		setting();
 
@@ -150,6 +145,7 @@ public class Web3ServiceImpl implements Web3Service {
 	}
 
 	// eth 전달
+	@Override
 	public void sendEth(String toAddress) throws Exception {
 		setting();
 
@@ -162,10 +158,20 @@ public class Web3ServiceImpl implements Web3Service {
 	}
 
 	// 지갑 주소로 찾은 의사 이름 반환
+	@Override
 	public String findDoctor(String wa) {
 		UserEntity userEntity = userRepository.findByWa(wa)
 			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 
 		return userEntity.getName();
+	}
+
+	// Web3j, Credentials, TransactionManager를 초기화
+	private void setting() {
+		if (web3j == null || credentials == null || transactionManager == null) {
+			web3j = Web3j.build(new HttpService(NETWORK));
+			credentials = Credentials.create(fromPrivateKey);
+			transactionManager = new RawTransactionManager(web3j, credentials, Long.parseLong(CHAINID));
+		}
 	}
 }
