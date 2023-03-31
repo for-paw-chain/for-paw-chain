@@ -212,7 +212,7 @@ public class TestDataInit {
 						.etc(petEtc)
 						.tel("01012341234")
 						.pet(petEntity)
-						.user(userRepository.findByUid(1))
+						.user(userRepository.findByUid(1).orElse(null))
 						.build();
 
 					petEntity.updatePetLost(true);

@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserInfoResDto getUserInfo(String id) {
+		// TODO: SOCIAL 값도 가져와서 UNIQUE 예외 처리
 		UserEntity userEntity = userRepository.findById(id)
 			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 		UserInfoResDto userInfo = new UserInfoResDto(userEntity);
@@ -54,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void removeUser(String id) {
-		UserEntity userEntity = userRepository.findById(id)
+	public void removeUser(long uid) {
+		UserEntity userEntity = userRepository.findByUid(uid)
 			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 
 		// user 정보 변경
@@ -71,7 +72,8 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(newUserEntity);
 
 		// 토큰 정보 삭제
-		RefreshToken refreshToken = refreshTokenRedisRepository.findById(id).orElseThrow(() -> new RuntimeException());
+		RefreshToken refreshToken = refreshTokenRedisRepository.findById(userEntity.getId())
+			.orElseThrow(() -> new BaseException(ErrorMessage.REFRESH_TOKEN_NOT_MATCH));
 		refreshTokenRedisRepository.delete(refreshToken);
 	}
 
@@ -82,26 +84,26 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	// @CacheEvict(value = "user", key = "#username")
-	public void logout(String accessToken, String id) {
-		// TO DO: logoutAccessToken
+	public void logout(String id) {
+		// TODO: logoutAccessToken
 		refreshTokenRedisRepository.deleteById(id);
 	}
 
 	@Override
-	public TokenInfo reissue(String refreshToken, String id) {
+	public TokenInfo reissue(String refreshToken, String id, String social) {
 		RefreshToken redisRefreshToken = refreshTokenRedisRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException());
+			.orElseThrow(() -> new BaseException(ErrorMessage.REFRESH_TOKEN_NOT_MATCH));
 
 		if(refreshToken.equals(redisRefreshToken.getRefreshToken())) {
-			return reissueRefreshToken(refreshToken, id);
+			return reissueRefreshToken(id, social);
 		}
 
 		throw new IllegalArgumentException("토큰이 일치하지 않습니다.");
 	}
 
-	private TokenInfo reissueRefreshToken(String refreshToken, String id) {
-		// TO DO: 기존 REFRESH EXPIRATION에 따라서 재발급되는 토큰 구분
-		return generateToken(id, "KAKAO");
+	private TokenInfo reissueRefreshToken(String id, String social) {
+		// TODO: 기존 REFRESH EXPIRATION에 따라서 재발급되는 토큰 구분
+		return generateToken(id, social);
 	}
 
 	private RefreshToken registRefreshToken(String id, String refreshToken) {

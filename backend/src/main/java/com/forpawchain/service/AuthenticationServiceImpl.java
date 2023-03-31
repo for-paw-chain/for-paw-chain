@@ -1,5 +1,6 @@
 package com.forpawchain.service;
 
+import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.domain.dto.response.UserResDto;
 import com.forpawchain.domain.Entity.*;
 import com.forpawchain.exception.BaseException;
@@ -43,7 +44,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             AuthenticationId authID = new AuthenticationId(target, pid);
 
-            UserEntity userEntity = userRepository.findByUid(target);
+            UserEntity userEntity = userRepository.findByUid(target)
+                .orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
 
             PetEntity petEntity = petRepository.findByPid(pid)
                 .orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
@@ -76,7 +78,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             // uid, pid인 권한 삭제
             authenticationRepository.deleteByAuthIdUidAndAuthIdPid(uid, pid);
-
         } catch (Exception e) {
             e.printStackTrace();
             throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
@@ -96,6 +97,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             if (!targetWa.isEmpty()) {
                 throw new BaseException(ErrorMessage.AUTH_NOT_NEEDED);
             }
+
             return authenticationRepository.findUserAllByPid(pid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +140,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
                 // 유기견인 경우
                 if (sender.isEmpty()) {
-                    UserEntity targetEntity = userRepository.findByUid(target);
+                    UserEntity targetEntity = userRepository.findByUid(target)
+                        .orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 
                     AuthenticationEntity authenticationEntity = AuthenticationEntity
                             .builder()
@@ -183,14 +186,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public String getRegDate(Long uid, String pid) {
         LocalDate regDate = authenticationRepository.findRegDateByAuthIdUidAndAuthIdPid(uid, pid);
+
         if (regDate == null) {
             throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
         }
+
         return regDate.toString();
     }
 
     // 주인의 권한이 제거되는 경우
-    public void moveAuthentication(long frm, long to, String pid, AuthenticationType type) {
+    private void moveAuthentication(long frm, long to, String pid, AuthenticationType type) {
         try {
             // 권한을 주는 사람의 권한
             Optional<AuthenticationEntity> frmAuthentication = authenticationRepository.findByAuthId(new AuthenticationId(frm, pid));
@@ -204,11 +209,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             AuthenticationEntity toAuthentication = AuthenticationEntity
                     .builder()
                     .authId(new AuthenticationId(to, pid))
-                    .user(userRepository.findByUid(to))
+                    .user(userRepository.findByUid(to).orElse(null))
                     .pet(frmAuthentication.get().getPet())
                     .regTime(LocalDate.now())
                     .type(type)
                     .build();
+
+            authenticationRepository.save(toAuthentication);
 
         } catch (Exception e) {
             e.printStackTrace();
