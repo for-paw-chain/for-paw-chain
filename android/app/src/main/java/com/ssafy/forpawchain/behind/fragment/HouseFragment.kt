@@ -148,6 +148,10 @@ class HouseFragment : Fragment() {
                 EditorInfo.IME_ACTION_DONE -> {
                     // 엔터키가 눌렸을 때 처리할 코드 작성
 
+                    var bundle = Bundle()
+                    bundle.putSerializable("code",binding.searchEditText.text.toString())
+
+                    navController.navigate(R.id.navigation_diagnosis_detail, bundle)
                     Log.d(TAG, "오 눌렸어~")
                     true
                 }

@@ -1,6 +1,5 @@
 package com.forpawchain.service;
 
-import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.domain.dto.response.UserResDto;
 import com.forpawchain.domain.Entity.*;
 import com.forpawchain.exception.BaseException;
@@ -25,7 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PetRepository petRepository;
 
     /**
-     *
+     * 타인에게 권한을 주는 경우
      * @param target: 권한을 받는 사람의 uid
      * @param pid: 권한과 관련된 동물의 pid
      */
@@ -69,7 +68,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      }
 
     /**
-     *
+     * 권한 삭제 (나의 강아지는 삭제 불가)
      * @param uid: 지워질 권한을 갖고 있는 사람의 uid
      * @param pid: 지워질 권한과 관련된 동물의 pid
      */
@@ -85,7 +84,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     /**
-     *
+     * 반려동물에게 권한이 있는 사용자 목록 조회
+     * 주체: 반려동물
      * @param pid: pid와 관련된 모든 권한 조회
      * @return pid에 대한 권한 모두 반환
      */
@@ -104,20 +104,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);
         }
     }
+
     /**
      *  주인권한양도
      *  1. 의사에 의해
-     * 2. 주인의 권한 넘겨주기
-     * save 2번
-     */
-    /**
+     *  2. 주인의 권한 넘겨주기
+     *  @param uid: 권한을 주는 사람의 uid
+     *  @param target: 권한을 받는 사람의 uid
+     *  @param pid: 권한과 관련된 동물 pid
      *
-     * @param uid: 권한을 주는 사람의 uid
-     * @param target: 권한을 받는 사람의 uid
-     * @param pid: 권한과 관련된 동물 pid
-     *
-     * 1. 의사가 주인에게 권한을 주는 경우 -> 주인은 1명이어야 한다.
-     * 2. 주인이 주인 권한을 다른이에게 넘겨주는 경우
+     *  1. 의사가 주인에게 권한을 주는 경우 -> 주인은 1명이어야 한다.
+     *  2. 주인이 주인 권한을 다른이에게 넘겨주는 경우
      */
     @Override
     public void giveMasterAuthentication(long uid, long target, String pid) {
@@ -170,6 +167,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    // 반려동물에 대해 어떤 권한을 가졌는지 반환
     @Override
     public AuthenticationType getAuthenticationOfPid(Long uid, String pid) {
         String authentication = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(uid, pid);
@@ -183,6 +181,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return authenticationType;
     }
 
+    // 권한이 등록된 날을 반환
     @Override
     public String getRegDate(Long uid, String pid) {
         LocalDate regDate = authenticationRepository.findRegDateByAuthIdUidAndAuthIdPid(uid, pid);

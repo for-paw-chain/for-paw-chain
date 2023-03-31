@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.model.service
 
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
+import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -24,7 +25,7 @@ class IpfsService {
     fun uploadImage(image: MultipartBody.Part): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()

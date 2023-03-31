@@ -1,6 +1,5 @@
 package com.ssafy.forpawchain.behind.fragment
 
-import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -8,18 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
-import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.User
 import com.ssafy.forpawchain.model.room.AppDatabase
 import com.ssafy.forpawchain.model.room.UserDao
