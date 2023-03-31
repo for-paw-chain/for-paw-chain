@@ -12,19 +12,31 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.JsonObject
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.behind.activity.LoginActivity
 import com.ssafy.forpawchain.behind.activity.MainActivity
+import com.ssafy.forpawchain.behind.activity.SplashActivity
 import com.ssafy.forpawchain.behind.dialog.WithdrawalDialog
 import com.ssafy.forpawchain.databinding.FragmentUserBinding
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
+import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.viewmodel.adapter.MyPageMenuAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.UserFragmentVM
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import retrofit2.Callback
+import retrofit2.Call
+import retrofit2.Response
 
 
 class UserFragment : Fragment() {
@@ -76,6 +88,36 @@ class UserFragment : Fragment() {
                                 } else {
                                     // 로그아웃이 성공한 경우 처리합니다.
                                     Log.d(UserFragment.TAG, "회원 탈퇴 완료")
+                                    GlobalScope.launch {
+                                        val response = withContext(Dispatchers.IO) {
+                                            UserService().signOutUser().enqueue(object :
+                                                Callback<JsonObject> {
+                                                override fun onResponse(
+                                                    call: Call<JsonObject>,
+                                                    response: Response<JsonObject>
+                                                ) {
+                                                    if (response.isSuccessful) {
+                                                        // 정상적으로 통신이 성공된 경우
+                                                        lifecycleScope.launch {
+                                                            requireActivity().finish()
+                                                            startActivity(Intent(context, SplashActivity::class.java))
+                                                        }
+                                                        // call
+                                                        Log.d(TAG, "회원탈퇴 성공 " + response);
+
+                                                    } else {
+                                                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                                        Log.d(TAG, "회원탈퇴 실패 " + response)
+                                                    }
+                                                }
+                                                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                                    Log.d(SplashActivity.TAG, "onFailure 에러: " + t.message.toString());
+                                                }
+                                            })
+                                        }
+                                    }
+
                                 }
                             }
                         }
@@ -83,40 +125,73 @@ class UserFragment : Fragment() {
                     dialog.show()
                 } else if (it.title.equals("로그아웃")) {
                     Log.d(UserFragment.TAG, "로그아웃 누름")
-                    UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-                        if (error != null) {
-                            // 액세스 토큰 정보를 가져오는 중 에러가 발생한 경우 처리합니다.
-                            Log.d(UserFragment.TAG, "액세스 토큰 정보를 가져오는 중 에러가 발생")
-                            requireActivity().finish()
-                            var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
-                            startActivity(intent)
-                        } else if (tokenInfo != null) {
-                            // 액세스 토큰 정보를 가져왔고, 로그인한 사용자인 경우 로그아웃을 수행합니다.
-                            UserApiClient.instance.logout { error ->
-                                if (error != null) {
-                                    // 에러가 발생한 경우 처리합니다.
-                                    Log.d(UserFragment.TAG, "에러 발생")
-                                } else {
-                                    // 로그아웃이 성공한 경우 처리합니다.
-                                    Log.d(UserFragment.TAG, "정상적인 로그아웃")
-                                    requireActivity().finish()
-                                    var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
-                                    startActivity(intent)
-//                                    dialog = new ProgressDialog(this);
-//                                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//                                    //dialog.setIndeterminate(true);
-//                                    dialog.setCancelable(true);
-//                                    //dialog.setCancelable(false); ProcessDialog를 취소할 수 있는지를 결정한다.
-//                                    // 디폴트는 true인듯하다
-//                                    dialog.setMessage("Checking Data");
-//                                    dialog.show();
+
+                    GlobalScope.launch {
+                        val response = withContext(Dispatchers.IO) {
+                            UserService().logoutUser().enqueue(object :
+                                Callback<JsonObject> {
+                                override fun onResponse(
+                                    call: Call<JsonObject>,
+                                    response: Response<JsonObject>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        // 정상적으로 통신이 성공된 경우
+                                        lifecycleScope.launch {
+                                            requireActivity().finish()
+                                            startActivity(Intent(context, LoginActivity::class.java))
+                                        }
+                                        // call
+                                        Log.d(TAG, "로그 아웃 성공 " + response);
+
+                                    } else {
+                                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                        Log.d(TAG, "로그 아웃 실패 " + response)
+                                    }
                                 }
-                            }
-                        } else {
-                            // 로그인하지 않은 사용자인 경우 처리합니다.
-                            Log.d(UserFragment.TAG, "로그인하지 않은 사용자의 로그아웃")
+                                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d(SplashActivity.TAG, "onFailure 에러: " + t.message.toString());
+                                }
+                            })
                         }
                     }
+
+
+//                    UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+//                        if (error != null) {
+//                            // 액세스 토큰 정보를 가져오는 중 에러가 발생한 경우 처리합니다.
+//                            Log.d(UserFragment.TAG, "액세스 토큰 정보를 가져오는 중 에러가 발생")
+//                            requireActivity().finish()
+//                            var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
+//                            startActivity(intent)
+//                        } else if (tokenInfo != null) {
+//                            // 액세스 토큰 정보를 가져왔고, 로그인한 사용자인 경우 로그아웃을 수행합니다.
+////                            UserApiClient.instance.logout { error ->
+////                                if (error != null) {
+////                                    // 에러가 발생한 경우 처리합니다.
+////                                    Log.d(UserFragment.TAG, "에러 발생")
+////                                } else {
+////                                    // 로그아웃이 성공한 경우 처리합니다.
+////                                    Log.d(UserFragment.TAG, "정상적인 로그아웃")
+////                                    requireActivity().finish()
+////                                    var intent: Intent? = Intent(requireContext(), LoginActivity::class.java)
+////                                    startActivity(intent)
+//////                                    dialog = new ProgressDialog(this);
+//////                                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//////                                    //dialog.setIndeterminate(true);
+//////                                    dialog.setCancelable(true);
+//////                                    //dialog.setCancelable(false); ProcessDialog를 취소할 수 있는지를 결정한다.
+//////                                    // 디폴트는 true인듯하다
+//////                                    dialog.setMessage("Checking Data");
+//////                                    dialog.show();
+////                                }
+////                            }
+//                        } else {
+//                            // 로그인하지 않은 사용자인 경우 처리합니다.
+//                            Log.d(UserFragment.TAG, "로그인하지 않은 사용자의 로그아웃")
+//                        }
+//                    }
+
                 } else if (it.title.equals("내가 쓴 글")) {
                     navController.navigate(R.id.navigation_my_paw_history)
                 }

@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.model.service
 
 import android.util.Log
 import com.google.gson.JsonObject
+import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -26,7 +27,7 @@ class TestService {
     fun test(@Field("msg") msg: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()

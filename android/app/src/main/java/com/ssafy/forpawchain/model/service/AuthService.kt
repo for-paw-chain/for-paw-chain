@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.model.service
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -23,7 +24,7 @@ class AuthService {
     fun getPetAuth(pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -41,7 +42,7 @@ class AuthService {
     fun removePetAuth(pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -59,7 +60,7 @@ class AuthService {
     fun handPetAuth(receiver: Int, pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -77,7 +78,7 @@ class AuthService {
     fun giveFriendAuth(receiver: Int, pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -95,7 +96,7 @@ class AuthService {
     fun getRegDateAuth(uid: Int, pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()

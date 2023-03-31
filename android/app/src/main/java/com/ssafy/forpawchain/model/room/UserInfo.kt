@@ -13,20 +13,20 @@ class UserInfo {
             var token: String = ""
             lateinit var privateKey: String
 
-            // 정상 코드
-//            fun parseUser(user: User, Otoken: OAuthToken) {
-//                uid = user.id.toString()
-//                name = user.properties!!["nickname"] ?: ""
-//                profile = user.properties!!["profile_image"] ?: ""
+             //정상 코드
+            fun setUserInfo(user: User, Otoken: OAuthToken) {
+                uid = user.id.toString()
+                name = user.properties!!["nickname"] ?: ""
+                profile = user.properties!!["profile_image"] ?: ""
+                token = Otoken.accessToken
+            }
+
+//            // 더미 데이터
+//            fun setUserInfo(user: User, Otoken: OAuthToken) {
+//                uid = "6"
+//                name = "포포체인"
+//                profile = "https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_640x640.jpg"
 //                token = Otoken.accessToken
 //            }
-
-            // 더미 데이터
-            fun setUserInfo(user: User, Otoken: OAuthToken) {
-                uid = "6"
-                name = "포포체인"
-                profile = "https://k.kakaocdn.net/dn/dpk9l1/btqmGhA2lKL/Oz0wDuJn1YV2DIn92f6DVK/img_640x640.jpg"
-                token = "5PBgM3RWZ8iBfD8zJbqyjY_yGcJesmP8WMbUebYgCj11nAAAAYcxMlnV"
-            }
         }
 }
