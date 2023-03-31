@@ -40,8 +40,8 @@ class SearchResultFragment : Fragment() {
         }
 
         val bundle = arguments
-        bundle?.getParcelable<SearchResultDTO>("searchResultVM")?.let {
-            binding.searchResultVM = it
+        bundle?.getSerializable("searchResultVM")?.let {
+            binding.searchResultVM = it as SearchResultDTO
         }
         initObserve()
     }

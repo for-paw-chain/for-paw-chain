@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.JsonObject
+import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.FragmentDiagnosisDetailBinding
 import com.ssafy.forpawchain.model.domain.DianosisNewDTO
 import com.ssafy.forpawchain.model.domain.HistoryDTO
@@ -20,6 +21,7 @@ import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.model.service.IpfsService
 import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisNewRecyclerViewAdapter
+import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.DiagnosisDetailFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
@@ -72,7 +74,7 @@ class DiagnosisDetailFragment : Fragment() {
 
 
         val bundle = arguments
-        if (bundle != null) {
+        if (bundle != null && bundle.getSerializable("item") != null) {
             val value = bundle.getSerializable("item") as HistoryDTO // bundle 로 의료기록 불러오기
             viewModel.title.postValue(value.title)
             viewModel.body.postValue(value.body)
@@ -86,14 +88,10 @@ class DiagnosisDetailFragment : Fragment() {
                     )
                 )
             }
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-
-                    ImageLoader().loadDrawableFromUrl("http://j8a207.p.ssafy.io:8080/api/file/${value.hash}") { drawable ->
-                        viewModel.image.postValue(drawable)
-                    }
-                }
-            }
+        }
+        if (bundle != null && bundle.getSerializable("code") != null) {
+            val code = bundle.getSerializable("code") as String
+            viewModel.searchEditText.postValue(code.toString())
         }
 
 

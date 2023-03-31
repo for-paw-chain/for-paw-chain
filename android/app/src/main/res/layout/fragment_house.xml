@@ -67,7 +67,8 @@
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:background="@drawable/background_layout_redius"
-
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
                         android:baselineAligned="false"
                         android:orientation="horizontal"
 
@@ -82,6 +83,7 @@
                             android:id="@+id/imageView13"
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
                             android:src="@drawable/logo_img_color_shadow"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -95,6 +97,7 @@
                             android:background="@color/white"
                             android:fontFamily="@font/kakao_regular"
                             android:gravity="center"
+                            android:layout_marginLeft="15dp"
                             android:hint="@string/search_edit_text_hint"
                             android:imeOptions="actionDone"
                             android:singleLine="true"

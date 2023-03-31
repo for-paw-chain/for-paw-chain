@@ -111,13 +111,27 @@ class HouseFragment : Fragment() {
 //
 //                dialog.show()
 //                viewModel.deleteTask(it)
-            }, {
+            },{
                 // detail
                 val bundle = Bundle()
-                bundle.putSerializable("item", it)
-                navController.navigate(R.id.navigation_permission_paw, bundle)
-
-            })
+                // MyPawListDTO를 > SearchResultDTO로 변경
+                val tempSearchResultDTO = SearchResultDTO(
+                    code = it.code.value!!,
+                    profile = it.profile?.value,
+                    name = it.name.value!!,
+                    sex = it.sex.value!!,
+                    species = it.species.value!!,
+                    kind = it.kind.value!!,
+                    neutered = it.neutered.value!!,
+                    birth = it.neutered.value,
+                    region = it.neutered.value,
+                    tel = it.neutered.value,
+                    etc = it.neutered.value
+                )
+                bundle.putSerializable("searchResultVM", tempSearchResultDTO)
+                navController.navigate(R.id.navigation_search_result, bundle)
+            },
+        )
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -134,6 +148,10 @@ class HouseFragment : Fragment() {
                 EditorInfo.IME_ACTION_DONE -> {
                     // 엔터키가 눌렸을 때 처리할 코드 작성
 
+                    var bundle = Bundle()
+                    bundle.putSerializable("code",binding.searchEditText.text.toString())
+
+                    navController.navigate(R.id.navigation_diagnosis_detail, bundle)
                     Log.d(TAG, "오 눌렸어~")
                     true
                 }

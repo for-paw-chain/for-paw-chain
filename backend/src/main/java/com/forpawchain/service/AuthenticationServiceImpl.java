@@ -214,6 +214,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .type(type)
                     .build();
 
+            authenticationRepository.save(toAuthentication);
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new BaseException(ErrorMessage.QUERY_FAIL_EXCEPTION);

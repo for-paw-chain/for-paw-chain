@@ -22,7 +22,7 @@ class DiagnosisDetailFragmentVM : ViewModel() {
     val title = MutableLiveData<String>()
     val body = MutableLiveData<String>()
     val date = MutableLiveData<String>()
-    val searchEditText = MutableLiveData<String>("410087800324555")
+    val searchEditText = MutableLiveData<String>()
     var image = MutableLiveData<Drawable>()
 
     //추가 시작

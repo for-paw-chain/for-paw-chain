@@ -1,6 +1,7 @@
 package com.ssafy.forpawchain.model.service
 
 import com.google.gson.JsonObject
+import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -47,7 +48,6 @@ class AdoptService {
         return service.getDetailAdopt(pid)
     }
 
-
     /*
         @Multipart
     @POST("profile")
@@ -62,7 +62,7 @@ class AdoptService {
     ): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -81,7 +81,7 @@ class AdoptService {
     fun deleteAdopt(pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Access-Token", "Bearer qwerqwer")
+                .addHeader("Access-Token", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -100,7 +100,7 @@ class AdoptService {
     fun getCA(pid: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Access-Token", "Bearer qwerqwer")
+                .addHeader("Access-Token", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()

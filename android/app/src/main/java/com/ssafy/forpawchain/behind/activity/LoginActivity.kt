@@ -10,12 +10,26 @@ import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.google.gson.JsonObject
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.ssafy.forpawchain.behind.fragment.PermissionPawFragment
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
+import com.ssafy.forpawchain.model.domain.UserDTO
+import com.ssafy.forpawchain.model.room.UserInfo
+import com.ssafy.forpawchain.model.service.AuthService
+import com.ssafy.forpawchain.model.service.UserService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class LoginActivity : AppCompatActivity() {
@@ -104,9 +118,60 @@ class LoginActivity : AppCompatActivity() {
                         UserApiClient.instance.me { user, error ->
                             Log.d("[카카오톡 로그인]", "유저 정보. ${user}")
                             Log.d("[카카오톡 로그인]", "토큰 정보. ${token}")
+                            // 첫 로그인인지 아닌지 구분, signUpUser해야함
+                            GlobalScope.launch {
+                                val response = withContext(Dispatchers.IO) {
+                                    val userDTO = UserDTO(
+                                        user!!.id.toString(),
+                                        user.properties!!["nickname"] ?: "",
+                                        user.properties!!["profile_image"] ?: "",
+                                        "KAKAO"
+                                    )
+
+                                    Log.d(TAG, "카카오 톡 첫 로그인 ${userDTO}")
+
+                                    UserService().signUpUser(userDTO)
+                                        .enqueue(object :
+                                        Callback<JsonObject> {
+                                        override fun onResponse(
+                                            call: Call<JsonObject>,
+                                            response: Response<JsonObject>
+                                        ) {
+                                            if (response.isSuccessful) {
+//                                              정상적으로 통신이 성공된 경우
+
+                                                /**
+                                                CoroutineScope에서 비동기적인 작업을 수행하면 해당 작업은 백그라운드 스레드에서 실행
+                                                그리고 비동기를 안할 경우 해당 작업이 UI 스레드에서 실행되어 느린 응답과
+                                                ANR(Application Not Responding) 문제 발생
+
+                                                따라서, 비동기적인 작업을 수행하는 것이 좋으며
+                                                이는 UI 스레드가 블록되지 않고, 빠른 앱 응답으로 더 나은 사용자 경험 제공
+                                                CoroutineScope는 비동기 작업을 보다 쉽고 안전하게 처리할 수 있도록 도와주는 도구
+                                                 **/
+
+                                                lifecycleScope.launch {
+                                                    UserInfo.setUserInfo(user!!, token!!)
+                                                }
+                                                 call
+                                                Log.d(TAG, "회원 가입 성공 " + response);
+                                                nextMainActivity()
+
+                                            } else {
+                                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                                Log.d(TAG, "회원 가입 실패 " + response)
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                            Log.d(TAG, "onFailure 에러: " + t.message.toString());
+                                        }
+                                    })
+                                }
+                            }
                         }
                     }
-                    nextMainActivity()
                 } else {
                     Log.d("카카오 로그인", "토큰==null error==null")
                 }
@@ -135,37 +200,4 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
-
-    // 카카오 웹뷰 로그인을 위한 오버라이딩 함수
-//    fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-//        Log.d(LoginActivity.TAG, "shouldOverrideUrlLoading :: $url")
-//        try {
-//            /**
-//             * 20 12 29
-//             * 카카오링크 오류 수정을 위해 아래 if문을 추가함.
-//             */
-//            if (url != null && url.startsWith("intent:kakaolink:")) {
-//                try {
-//                    val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-//                    val existPackage =
-//                        packageManager.getLaunchIntentForPackage(intent.getPackage()!!)
-//                    if (existPackage != null) {
-//                        startActivity(intent)
-//                    } else {
-//                        val marketIntent = Intent(Intent.ACTION_VIEW)
-//                        marketIntent.data = Uri.parse("market://details?id=" + intent.getPackage())
-//                        startActivity(marketIntent)
-//                    }
-//                    return true
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//            return false
-//        }
-//        return false
-//    }
-
 }

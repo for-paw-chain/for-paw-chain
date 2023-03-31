@@ -80,7 +80,6 @@ class CreateDoctorHistoryFragmentVM : ViewModel() {
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
                         val data = response.body()
-
                         Log.d(AdoptAddFragmentVM.TAG, "onResponse 성공");
                         title.value?.let {
                             body.value?.let { it1 ->
@@ -102,9 +101,16 @@ class CreateDoctorHistoryFragmentVM : ViewModel() {
                 }
             })
         }
-
-
-
+//        else {
+//            title.value?.let {
+//                body.value?.let { it1 ->
+//                    ForPawChain.createHistory(
+//                        it,
+//                        it1, list, "해시없다"
+//                    )
+//                }
+//            }
+//        }
         clearTask()
         _openEvent.value = Event(ActivityCode.DONE)
     }
@@ -117,4 +123,5 @@ class CreateDoctorHistoryFragmentVM : ViewModel() {
     fun imageSelect_onClick() {
 
     }
+
 }

@@ -42,13 +42,16 @@ public class UserController {
 		TokenResDto tokenResDto = null;
 
 		try {
+			log.info("유저 가입 유무 검사");
 			String id = registUserReqDto.getId();
 			userService.getUserInfo(id); // 유저 가입 유뮤 검사
 		} catch (Exception e) {
+			log.info("회원가입");
 			if(!registUser(registUserReqDto)) {
 				return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 			}
 		} finally {
+			log.info("로그인");
 			tokenResDto = login(new LoginUserReqDto(registUserReqDto.getId(), registUserReqDto.getSocial()));
 		}
 

@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String id) {
 		return userRepository.findById(id)
 			.map(this::createUserDetails)
-			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
+			.orElse(null);
 	}
 
 	private UserDetails createUserDetails(UserEntity user) {
