@@ -47,6 +47,9 @@ interface RetrofitService {
     @GET("pet/")
     fun getMyPets(): Call<JsonObject>
 
+    @GET("pet/info")
+    fun getPetInfo(@Query("pid") pid: String): Call<JsonObject>
+
     @GET("auth")
     fun getPetAuth(@Query("pid") pid: String): Call<JsonObject>
     @PUT("auth")

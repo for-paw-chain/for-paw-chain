@@ -76,7 +76,6 @@ class UserService {
         return service.getDoctorName(wa)
     }
 
-
     fun getUser(): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
@@ -163,4 +162,19 @@ class UserService {
 
         return service.renewAccessToken()
     }
+
+//    fun generalLogin(loginUserReqDto: LoginUserReqDto): Call<JsonObject> {
+//        val client = OkHttpClient.Builder().addInterceptor { chain ->
+//            val newRequest = chain.request().newBuilder()
+//                .build()
+//            chain.proceed(newRequest)
+//        }.build()
+//        retrofit = Retrofit.Builder()
+//            .client(client)
+//            .baseUrl(baseUrl)
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
+//        service = retrofit.create(RetrofitService::class.java);
+//        return service.getUser()
+//    }
 }

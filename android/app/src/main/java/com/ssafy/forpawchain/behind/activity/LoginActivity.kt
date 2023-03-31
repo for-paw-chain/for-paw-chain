@@ -69,6 +69,10 @@ class LoginActivity : AppCompatActivity() {
         binding.idKakaoLoginBtn.setOnClickListener {
             btnKakaoLogin(it)
         }
+
+        binding.imageView2.setOnClickListener{
+//            generalLogin()
+        }
     }
 
     fun btnKakaoLogin(view: View) {
@@ -181,6 +185,54 @@ class LoginActivity : AppCompatActivity() {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoCallback)
         }
     }
+
+//    fun generalLogin() {
+//        GlobalScope.launch {
+//            val response = withContext(Dispatchers.IO) {
+//                val loginUserReqDTO = LoginUserReqDto(
+//                    "1234", "KAKAO"
+//                )
+//
+//                Log.d(TAG, "일반 로그인 ${loginUserReqDTO}")
+//
+//                UserService().generalLogin(loginUserReqDTO)
+//                    .enqueue(object :
+//                        Callback<JsonObject> {
+//                        override fun onResponse(
+//                            call: Call<JsonObject>,
+//                            response: Response<JsonObject>
+//                        ) {
+//                            if (response.isSuccessful) {
+//                                //여기에 일반 로그인 응답을 받아서 유저 인포 만들고 싶어요help
+////                                lifecycleScope.launch {
+////                                    UserInfo.setUserInfo(
+////                                        User(
+////                                            "1",
+////                                            "",
+////                                            "",
+////                                            response.body().token
+////                                        )
+////                                    )
+////                                }
+////                                call
+////                                Log.d(TAG, "일반 로그인 성공 " + response);
+////                                nextMainActivity()
+//
+//                            } else {
+//                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+//                                Log.d(TAG, "일반 로그인 실패 " + response)
+//                            }
+//                        }
+//
+//                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+//                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+//                            Log.d(TAG, "onFailure 에러: " + t.message.toString());
+//                        }
+//
+//                    })
+//            }
+//        }
+//    }
 
     override fun onBackPressed() {
         // 뒤로가기 버튼 클릭
