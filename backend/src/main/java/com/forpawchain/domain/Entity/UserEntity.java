@@ -28,7 +28,6 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private String id;
     @Column(nullable = false)
-    // @Enumerated(EnumType.STRING)
     private String social;
     @Column(nullable = false)
     private String name;
@@ -45,7 +44,7 @@ public class UserEntity implements UserDetails {
     // 권한
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
-    private List<String> roles;
+    private List<String> roles = new ArrayList<>();
 
     /**
         UserDetails method
