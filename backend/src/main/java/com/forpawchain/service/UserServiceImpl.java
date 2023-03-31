@@ -123,6 +123,7 @@ public class UserServiceImpl implements UserService {
 
 	// 토큰 생성
 	private TokenResDto generateToken(String id, String social) {
+		log.info("id: "+id+" social: "+social);
 		// id와 social 정보를 통해서 Authentication 생성
 		UsernamePasswordAuthenticationToken authenticationToken =
 			new UsernamePasswordAuthenticationToken(id, social);
