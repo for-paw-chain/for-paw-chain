@@ -12,9 +12,9 @@ import com.forpawchain.domain.dto.response.PetInfoResDto;
 public interface PetService {
 	List<PetDefaultInfoResDto> getMyPetList(long uid);
 
-	void registPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws IOException;
+	void registPetInfo(long uid, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws IOException;
 
-	void modifyPetInfo(Long userId, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws IOException;
+	void modifyPetInfo(long uid, RegistPetInfoReqDto registPetInfoReqDto, MultipartFile image) throws IOException;
 
 	PetInfoResDto getPetInfo(String pid);
 }

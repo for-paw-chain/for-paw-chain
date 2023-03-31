@@ -1,6 +1,5 @@
 package com.forpawchain.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,37 +37,48 @@ public class PetController {
 
 	@GetMapping
 	@ApiOperation(value = "나의 반려동물 목록 조회", notes = "주인 및 권한 있는 타인에 대한 반려동물 목록을 반환하며, 반려동물에 대한 기본 정보도 반환한다.")
-	@ApiResponses({@ApiResponse(code = 200, message = "나의 반려동물 목록 반환 성공")})
 	public ResponseEntity<?> getMyPetList() {
-		UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
-		List<PetDefaultInfoResDto> myPetList = petService.getMyPetList(userInfoResDto.getUid());
+		try {
+			UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
+			List<PetDefaultInfoResDto> myPetList = petService.getMyPetList(userInfoResDto.getUid());
 
-		HashMap<String, List> map = new HashMap<>();
-		map.put("content", myPetList);
+			HashMap<String, List> map = new HashMap<>();
+			map.put("content", myPetList);
 
-		return ResponseEntity.status(HttpStatus.OK).body(map);
+			return ResponseEntity.status(HttpStatus.OK).body(map);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+		}
 	}
 
 	@PostMapping("/info")
 	@ApiOperation(value = "견적사항 등록", notes = "주인이 입력한 반려동물에 대한 정보를 저장한다.")
-	@ApiResponses({@ApiResponse(code = 201, message = "견적사항 등록 성공")})
 	public ResponseEntity<?> registPetInfo(@RequestPart(name = "content") RegistPetInfoReqDto registPetInfoReqDto,
-		@RequestPart(name = "profile", required = false) MultipartFile image) throws IOException {
-		UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
-		petService.registPetInfo(userInfoResDto.getUid(), registPetInfoReqDto, image);
+		@RequestPart(name = "profile", required = false) MultipartFile image) {
 
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		try {
+			UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
+			petService.registPetInfo(userInfoResDto.getUid(), registPetInfoReqDto, image);
+
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+		}
 	}
 
 	@PutMapping("/info")
 	@ApiOperation(value = "견적사항 수정", notes = "주인이 입력한 반려동물에 대한 정보로 수정한다.")
-	@ApiResponses({@ApiResponse(code = 201, message = "견적사항 수정 성공")})
 	public ResponseEntity<?> modifyPetInfo(@RequestPart(name = "content") RegistPetInfoReqDto registPetInfoReqDto,
-		@RequestPart(name = "profile", required = false) MultipartFile image) throws IOException {
-		UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
-		petService.modifyPetInfo(userInfoResDto.getUid(), registPetInfoReqDto, image);
+		@RequestPart(name = "profile", required = false) MultipartFile image) {
 
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		try {
+			UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
+			petService.modifyPetInfo(userInfoResDto.getUid(), registPetInfoReqDto, image);
+
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+		}
 	}
 
 	@GetMapping("/info")
