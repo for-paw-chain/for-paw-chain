@@ -40,6 +40,7 @@ public class UserController {
 	@ApiOperation(value = "SNS 회원가입 & 로그인", notes = "DB 정보가 없다면 자동 회원가입 후 로그인하여 토큰 반환")
 	public ResponseEntity<TokenResDto> sns(@RequestBody RegistUserReqDto registUserReqDto) {
 		TokenResDto tokenResDto = null;
+		log.info("sns 요청");
 
 		try {
 			log.info("유저 가입 유무 검사");

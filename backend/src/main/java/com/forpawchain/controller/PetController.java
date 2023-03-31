@@ -86,17 +86,19 @@ public class PetController {
 	@ApiImplicitParam(name = "pid", value = "동물의 인식칩 번호")
 	@ApiResponses({@ApiResponse(code = 200, message = "견적사항 및 기본 정보 반환 성공"), @ApiResponse(code = 206, message = "기본 정보만 반환 성공")})
 	public ResponseEntity<?> getPetInfo(@RequestParam String pid) {
-		PetInfoResDto petInfoResDto = petService.getPetInfo(pid);
+		try {
+			PetInfoResDto petInfoResDto = petService.getPetInfo(pid);
 
-		// 견적사항이 없는 경우 응답코드 206 반환
-		if (petInfoResDto.getProfile() == null && petInfoResDto.getRegion() == null
-		&& petInfoResDto.getTel() == null && petInfoResDto.getBirth() == null) {
-			return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(petInfoResDto);
-		}
-
-		// 견적사항이 있는 경우 응답코드 200 반환
-		else {
-			return ResponseEntity.status(HttpStatus.OK).body(petInfoResDto);
+			if (petInfoResDto.getProfile() == null && petInfoResDto.getRegion() == null
+				&& petInfoResDto.getTel() == null && petInfoResDto.getBirth() == null) {
+				// 견적사항이 없는 경우 응답코드 206 반환
+				return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(petInfoResDto);
+			} else {
+				// 견적사항이 있는 경우 응답코드 200 반환
+				return ResponseEntity.status(HttpStatus.OK).body(petInfoResDto);
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 		}
 	}
 }
