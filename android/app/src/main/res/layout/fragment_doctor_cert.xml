@@ -22,10 +22,11 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="0dp"
             android:fillViewport="true"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="-27dp"
+            tools:layout_editor_absoluteY="-319dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/main"
@@ -118,11 +119,13 @@
                     android:id="@+id/constraintLayout5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView4">
+                    app:layout_constraintTop_toBottomOf="@+id/imageView4"
+                    app:layout_constraintVertical_bias="0.0">
 
                     <TextView
                         android:id="@+id/textView13"
@@ -145,7 +148,7 @@
                         android:layout_height="45dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
-                        android:background="@drawable/background_layout_redius"
+                        android:background="@drawable/box_radius_05"
                         android:fontFamily="@font/kakao_regular"
                         android:gravity="center"
                         android:hint="이름을 입력해주세요."
@@ -164,7 +167,7 @@
                         android:id="@+id/textView14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="30dp"
                         android:fontFamily="@font/kakao_bold"
                         android:text="주민등록번호"
                         android:textSize="25sp"
@@ -194,7 +197,7 @@
                             android:layout_height="45dp"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:background="@drawable/background_layout_redius"
+                            android:background="@drawable/box_radius_05"
                             android:fontFamily="@font/kakao_regular"
                             android:gravity="center"
                             android:hint="앞 6자리"
@@ -226,7 +229,7 @@
                             android:layout_height="45dp"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:background="@drawable/background_layout_redius"
+                            android:background="@drawable/box_radius_05"
                             android:fontFamily="@font/kakao_regular"
                             android:gravity="center"
                             android:hint="뒤 7자리"
@@ -248,7 +251,7 @@
                         android:id="@+id/textView15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="30dp"
                         android:fontFamily="@font/kakao_bold"
                         android:text="휴대폰 번호"
                         android:textSize="25sp"
@@ -277,8 +280,8 @@
                             android:layout_width="5dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_layout_redius"
+                            android:layout_weight="1.2"
+                            android:background="@drawable/box_radius_05"
                             android:entries="@array/phoneItems"
                             android:fontFamily="@font/kakao_regular"
                             android:gravity="center"
@@ -298,14 +301,14 @@
 
                         <View
                             android:layout_width="10dp"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent" />
 
                         <EditText
                             android:layout_width="100dp"
                             android:layout_height="45dp"
                             android:layout_gravity="center"
-                            android:layout_weight="2"
-                            android:background="@drawable/background_layout_redius"
+                            android:layout_weight="1.8"
+                            android:background="@drawable/box_radius_05"
                             android:fontFamily="@font/kakao_regular"
                             android:gravity="center"
                             android:hint="숫자만 입력하세요"
@@ -326,7 +329,8 @@
                 <Button
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="50dp"
                     android:background="@drawable/background_doctor_cert_summit_button"
                     android:fontFamily="@font/kakao_bold"
                     android:onClick="@{() -> viewModel.summit_onClick()}"

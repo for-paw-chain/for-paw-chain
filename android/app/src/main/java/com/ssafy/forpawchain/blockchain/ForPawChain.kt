@@ -65,7 +65,7 @@ class ForPawChain {
 //                val userDao = db.userDao()
 //                Credentials.create(db.userDao().getUserById("private").privateKey)
 
-                val transactionManager = RawTransactionManager(web3, credentials, 1111)
+                val transactionManager = RawTransactionManager(web3, credentials, 9876)
 
                 val contract =
                     Forpawchain_sol_ForPawChain.load( // contract 정보 load
