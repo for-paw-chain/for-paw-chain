@@ -44,9 +44,9 @@ public class SecurityConfig {
 			.antMatchers("*").permitAll()
 			.and() // 에러핸들링
 			.exceptionHandling()
-			.authenticationEntryPoint(jwtEntryPoint);
-			// .and() // JwtTokenProvider 필터 추가
- 			// .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+			.authenticationEntryPoint(jwtEntryPoint)
+			.and() // JwtTokenProvider 필터 추가
+ 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
