@@ -43,6 +43,12 @@ class ForPawChain {
         fun setBlockChain(ca: String, cred: String) {
             this.contractAddress = ca
             this.credentials = Credentials.create(cred)
+            Log.d(TAG, "지갑주소::::::" + credentials.address)
+        }
+
+        fun setWallet(cred: String) {
+            this.credentials = Credentials.create(cred)
+            Log.d(TAG, "지갑주소::::::" + credentials.address)
         }
 
         fun createHistory( // 의료기록 작성
