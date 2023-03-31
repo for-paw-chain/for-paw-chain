@@ -36,7 +36,6 @@ public class UserController {
 	private final UserService userService;
 	private final PasswordEncoder passwordEncoder;
 
-	// 소셜 회원가입 & 로그인
 	@PostMapping("/")
 	@ApiOperation(value = "SNS 회원가입 & 로그인", notes = "DB 정보가 없다면 자동 회원가입 후 로그인하여 토큰 반환")
 	public ResponseEntity<TokenResDto> sns(@RequestBody RegistUserReqDto registUserReqDto) {
@@ -56,9 +55,8 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(tokenResDto);
 	}
 
-	// 일반 회원가입 (테스트용)
 	@PostMapping("/regist")
-	@ApiOperation(value = "일반 회원가입")
+	@ApiOperation(value = "테스트용 일반 회원가입")
 	public ResponseEntity<?> registCommon(@RequestBody RegistUserReqDto registUserReqDto) {
 		if(registUser(registUserReqDto)) {
 			return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -66,9 +64,8 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 	}
 
-	// 일반 로그인 (테스트용)
 	@PostMapping("/login")
-	@ApiOperation(value = "일반 로그인")
+	@ApiOperation(value = "테스트용 일반 로그인")
 	public ResponseEntity<?> loginCommon(@RequestBody LoginUserReqDto loginUserReqDto) {
 		TokenResDto tokenResDto = login(loginUserReqDto);
 		return ResponseEntity.status(HttpStatus.OK).body(tokenResDto);
@@ -82,7 +79,6 @@ public class UserController {
 		userService.logout(userInfoResDto.getId());
 	}
 
-	// accessToken 재발급
 	@PostMapping("/reissue")
 	@ApiOperation(value = "accessToken 재발급", notes = "accessToken과 refreshToken 재발급")
 	public ResponseEntity<TokenResDto> reissue(@RequestHeader("RefreshToken") String refreshToken) {
@@ -100,7 +96,6 @@ public class UserController {
 		}
 	}
 
-	// 회원 정보 조회 (회원 프로필)
 	@GetMapping("/")
 	@ApiOperation("로그인한 회원 정보 조회")
 	public ResponseEntity<?> getUserInfo() {
@@ -108,7 +103,6 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userInfoResDto);
 	}
 
-	// 회원 탈퇴
 	@DeleteMapping("/")
 	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴 여부 true 변경, refreshToken 삭제")
 	public ResponseEntity<?> removeUser() {
@@ -123,6 +117,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
+	// 회원가입
 	private boolean registUser(RegistUserReqDto registUserReqDto) {
 		// userDetails cating을 위해 Social을 암호화
 		registUserReqDto.setSocial(passwordEncoder.encode(registUserReqDto.getSocial()));
@@ -136,6 +131,7 @@ public class UserController {
 		return true;
 	}
 
+	// 로그인
 	private TokenResDto login(LoginUserReqDto loginUserReqDto) {
 		// 로그인 시마다 정보 일치하면 새로운 token 발급
 		TokenResDto tokenResDto = userService.login(loginUserReqDto);

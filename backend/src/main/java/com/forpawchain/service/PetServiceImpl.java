@@ -38,13 +38,8 @@ public class PetServiceImpl implements PetService {
 	 * @return List<PetDefaultInfoResDto>
 	 */
 	@Override
-	public List<PetDefaultInfoResDto> getMyPetList(Long userId) {
-		List<PetDefaultInfoResDto> myPetList = petRegRepository.findAuthAndInfo(userId);
-
-		// 반려동물이 없는 경우
-		if (myPetList.size() == 0) {
-			throw new BaseException(ErrorMessage.PETLIST_NOT_FOUND);
-		}
+	public List<PetDefaultInfoResDto> getMyPetList(long uid) {
+		List<PetDefaultInfoResDto> myPetList = petRegRepository.findAuthAndInfo(uid);
 
 		return myPetList;
 	}

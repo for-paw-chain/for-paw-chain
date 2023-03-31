@@ -22,8 +22,8 @@ import java.io.InputStream;
 public class IPFSFileServiceImpl implements IPFSFileService {
     final private IPFSConfig ipfsConfig;
 
-    @Override
     // IPFS에 파일 저장 후 Hash 반환
+    @Override
     public String saveFile(MultipartFile file) {
         try {
             InputStream stream = new ByteArrayInputStream(file.getBytes());
@@ -37,8 +37,8 @@ public class IPFSFileServiceImpl implements IPFSFileService {
         }
     }
 
-    @Override
     // IPFS파일의 해쉬값으로 파일 반환
+    @Override
     public byte[] loadFile(String hash) {
         Multihash filePointer = Multihash.fromBase58(hash);
         try {

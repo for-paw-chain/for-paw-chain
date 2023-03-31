@@ -160,7 +160,7 @@ public class AdoptServiceImpl implements AdoptService {
 	}
 
 	@Override
-	public List<AdoptListResDto> getAdoptMyList(Long uid) {
+	public List<AdoptListResDto> getAdoptMyList(long uid) {
 
 		UserEntity userEntity = userRepository.findByUid(uid)
 			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));

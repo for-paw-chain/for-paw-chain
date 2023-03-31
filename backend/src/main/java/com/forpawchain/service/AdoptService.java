@@ -23,5 +23,5 @@ public interface AdoptService {
 
 	void removeAdopt(String pid, long uid);
 
-	List<AdoptListResDto> getAdoptMyList(Long uid);
+	List<AdoptListResDto> getAdoptMyList(long uid);
 }

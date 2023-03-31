@@ -32,12 +32,14 @@ public class UserServiceImpl implements UserService {
 	private AuthenticationManagerBuilder authenticationManagerBuilder;
 	private JwtTokenProvider jwtTokenProvider;
 
+	// 사용자를 DB에 등록
 	@Override
 	@Transactional
 	public void registUser(RegistUserReqDto registUserReqDto) {
 		userRepository.save(registUserReqDto.toEntity());
 	}
 
+	// 사용자 정보 반환
 	@Override
 	public UserInfoResDto getUserInfo(String id) {
 		// TODO: SOCIAL 값도 가져와서 UNIQUE 예외 처리
@@ -53,6 +55,7 @@ public class UserServiceImpl implements UserService {
 		return userInfo;
 	}
 
+	// 사용자 탈퇴 여부를 TRUE로 변경
 	@Override
 	@Transactional
 	public void removeUser(long uid) {
@@ -77,11 +80,13 @@ public class UserServiceImpl implements UserService {
 		refreshTokenRedisRepository.delete(refreshToken);
 	}
 
+	// 로그인 정보를 비교하고 토큰을 생성
 	@Override
 	public TokenResDto login(LoginUserReqDto loginUserReqDto) {
 		return generateToken(loginUserReqDto.getId(), loginUserReqDto.getSocial());
 	}
 
+	// REFRESHTOKEN 정보 삭제
 	@Override
 	// @CacheEvict(value = "user", key = "#username")
 	public void logout(String id) {
@@ -89,6 +94,7 @@ public class UserServiceImpl implements UserService {
 		refreshTokenRedisRepository.deleteById(id);
 	}
 
+	// 토큰 재발급
 	@Override
 	public TokenResDto reissue(String refreshToken, String id, String social) {
 		RefreshToken redisRefreshToken = refreshTokenRedisRepository.findById(id).orElse(null);
@@ -100,11 +106,13 @@ public class UserServiceImpl implements UserService {
 		throw new BaseException(ErrorMessage.REFRESH_TOKEN_NOT_MATCH);
 	}
 
+	// 토큰 재발급
 	private TokenResDto reissueRefreshToken(String id, String social) {
 		// TODO: 기존 REFRESH EXPIRATION에 따라서 재발급되는 토큰 구분
 		return generateToken(id, social);
 	}
 
+	// REFRESHTOKEN 저장
 	private RefreshToken registRefreshToken(String id, String refreshToken) {
 		Long remainingMilliSeconds = 1000L * 60 * 60 * 24 * 7 * 2;
 
@@ -113,6 +121,7 @@ public class UserServiceImpl implements UserService {
 		return refreshTokenRedisRepository.save(refreshTokenEntity);
 	}
 
+	// 토큰 생성
 	private TokenResDto generateToken(String id, String social) {
 		// id와 social 정보를 통해서 Authentication 생성
 		UsernamePasswordAuthenticationToken authenticationToken =
