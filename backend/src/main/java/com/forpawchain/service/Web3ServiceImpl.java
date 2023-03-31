@@ -164,7 +164,7 @@ public class Web3ServiceImpl implements Web3Service {
 	// 지갑 주소로 찾은 의사 이름 반환
 	public String findDoctor(String wa) {
 		UserEntity userEntity = userRepository.findByWa(wa)
-			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND);
+			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 
 		return userEntity.getName();
 	}
