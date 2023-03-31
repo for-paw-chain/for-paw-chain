@@ -22,7 +22,5 @@ public interface Web3Service {
 
 	void sendEth(String toAddress) throws Exception;
 
-	String getAddress(long uid);
-
 	String findDoctor(String wa);
 }
