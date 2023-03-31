@@ -44,10 +44,13 @@ public class UserController {
 		TokenInfo tokenInfo = null;
 
 		try {
+			log.info("유저 가입 유무 검사");
 			userService.getUserInfo(id); // 유저 가입 유뮤 검사
-		} catch (BaseException e) {
+		} catch (Exception e) {
+			log.info("회원가입");
 			registUser(registUserReqDto);
 		} finally {
+			log.info("로그인");
 			tokenInfo = login(new LoginUserDto(registUserReqDto.getId(), registUserReqDto.getSocial()));
 		}
 

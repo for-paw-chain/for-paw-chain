@@ -7,8 +7,8 @@ import com.kakao.sdk.user.model.AccessTokenInfo
 
 class UserInfo {
         companion object {
-            var uid: String = ""
-            var name: String = ""
+            var uid: String = "6"
+            var name: String = "포포체인"
             var profile: String = ""
             var token: String = ""
             lateinit var privateKey: String

@@ -59,6 +59,8 @@ interface RetrofitService {
     fun giveFriendAuth(@Query("receiver") receiver: Int,
                        @Query("pid") pid: String
     ): Call<JsonObject>
+    @GET("web3/wallet/{wa}")
+    fun getDoctorName(@Path("wa") wa: String): Call<JsonObject>
     @GET("auth/date")
     fun getRegDateAuth(@Query("uid") uid: Int,
                        @Query("pid") pid: String

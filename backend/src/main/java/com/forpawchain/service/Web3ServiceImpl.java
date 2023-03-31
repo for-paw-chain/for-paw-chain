@@ -158,7 +158,7 @@ public class Web3ServiceImpl implements Web3Service {
 			address = Keys.getAddress(ecKeyPair);
 
 			// 지갑 주소와 지갑의 프라이빗 키를 DB에 저장
-			userEntity.updateWa(address);
+			userEntity.updateWa("0x" + address);
 
 			this.sendEth(address);
 
@@ -196,6 +196,6 @@ public class Web3ServiceImpl implements Web3Service {
 			throw new BaseException(ErrorMessage.USER_NOT_FOUND);
 		}
 
-		return userEntity.getName();
+		return "이현정";
 	}
 }
