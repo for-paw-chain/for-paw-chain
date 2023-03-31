@@ -1,8 +1,11 @@
 package com.ssafy.forpawchain.blockchain
 
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.room.Room
 import com.ssafy.forpawchain.model.domain.Data
 import com.ssafy.forpawchain.model.domain.HistoryDTO
+import com.ssafy.forpawchain.model.room.AppDatabase
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.DynamicArray
 import org.web3j.abi.datatypes.Utf8String
@@ -40,6 +43,12 @@ class ForPawChain {
         fun setBlockChain(ca: String, cred: String) {
             this.contractAddress = ca
             this.credentials = Credentials.create(cred)
+            Log.d(TAG, "지갑주소::::::" + credentials.address)
+        }
+
+        fun setWallet(cred: String) {
+            this.credentials = Credentials.create(cred)
+            Log.d(TAG, "지갑주소::::::" + credentials.address)
         }
 
         fun createHistory( // 의료기록 작성
@@ -49,6 +58,13 @@ class ForPawChain {
             hash: String
         ): Boolean {
             thread {
+//                val db = Room.databaseBuilder(
+//                    requireContext(),
+//                    AppDatabase::class.java, "database-name"
+//                ).build()
+//                val userDao = db.userDao()
+//                Credentials.create(db.userDao().getUserById("private").privateKey)
+
                 val transactionManager = RawTransactionManager(web3, credentials, 1111)
 
                 val contract =
