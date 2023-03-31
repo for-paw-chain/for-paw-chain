@@ -101,7 +101,16 @@ class CreateDoctorHistoryFragmentVM : ViewModel() {
                 }
             })
         }
-
+//        else {
+//            title.value?.let {
+//                body.value?.let { it1 ->
+//                    ForPawChain.createHistory(
+//                        it,
+//                        it1, list, "해시없다"
+//                    )
+//                }
+//            }
+//        }
         clearTask()
         _openEvent.value = Event(ActivityCode.DONE)
     }
