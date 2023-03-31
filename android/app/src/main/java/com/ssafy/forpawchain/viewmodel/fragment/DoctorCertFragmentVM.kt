@@ -10,6 +10,7 @@ import androidx.room.Room
 import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.Event
+import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
 import com.ssafy.forpawchain.model.domain.User
 import com.ssafy.forpawchain.model.room.AppDatabase
@@ -75,6 +76,7 @@ class DoctorCertFragmentVM(val application: Context) : ViewModel() {
                                 } else {
                                     user.privateKey = privateKey
                                     userDao.updateUser(user)
+                                    ForPawChain.setWallet(privateKey)
                                 }
                                 Log.d(TAG, "onResponse 성공: $result");
                             }

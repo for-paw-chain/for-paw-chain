@@ -1,8 +1,11 @@
 package com.ssafy.forpawchain.blockchain
 
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.room.Room
 import com.ssafy.forpawchain.model.domain.Data
 import com.ssafy.forpawchain.model.domain.HistoryDTO
+import com.ssafy.forpawchain.model.room.AppDatabase
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.DynamicArray
 import org.web3j.abi.datatypes.Utf8String
@@ -27,20 +30,25 @@ class ForPawChain {
 //            Web3j.build(InfuraHttpService("https://sepolia.infura.io/v3/2849717dc6944af6a40ccf1540bdcb91"))
             Web3j.build(HttpService("http://3.39.235.238:8545/"))
 
-
         // gas limit
-        val gasLimit: BigInteger = BigInteger.valueOf(30_000_000)
+        val gasLimit: BigInteger = BigInteger.valueOf(3000000)
 
         // gas price
-        val gasPrice: BigInteger = BigInteger.valueOf(3000)
+        val gasPrice: BigInteger = BigInteger.valueOf(0)
 
         var contractAddress = ""
         var credentials =
-            Credentials.create("6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544")
+            Credentials.create("b7e377ebc8b72d357580dd6b54f43c37649bf3c9d780d461494b323f4dd0b0dd")
 
         fun setBlockChain(ca: String, cred: String) {
             this.contractAddress = ca
             this.credentials = Credentials.create(cred)
+            Log.d(TAG, "지갑주소::::::" + credentials.address)
+        }
+
+        fun setWallet(cred: String) {
+            this.credentials = Credentials.create(cred)
+            Log.d(TAG, "지갑주소::::::" + credentials.address)
         }
 
         fun createHistory( // 의료기록 작성
@@ -50,8 +58,14 @@ class ForPawChain {
             hash: String
         ): Boolean {
             thread {
-                val transactionManager = RawTransactionManager(web3, credentials, 1111)
+//                val db = Room.databaseBuilder(
+//                    requireContext(),
+//                    AppDatabase::class.java, "database-name"
+//                ).build()
+//                val userDao = db.userDao()
+//                Credentials.create(db.userDao().getUserById("private").privateKey)
 
+                val transactionManager = RawTransactionManager(web3, credentials, 1111)
 
                 val contract =
                     Forpawchain_sol_ForPawChain.load( // contract 정보 load
