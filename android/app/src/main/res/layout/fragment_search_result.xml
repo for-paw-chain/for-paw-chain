@@ -280,7 +280,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-                        android:text="@{}" />
+                        android:text="@{searchResultVM.region}" />
 
                     <TextView
                         android:id="@+id/phone_number"
@@ -290,7 +290,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-                        android:text="@{}" />
+                        android:text="@{searchResultVM.tel}" />
 
                     <TextView
                         android:id="@+id/age"
@@ -300,7 +300,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-                        android:text="@{}" />
+                        android:text="@{searchResultVM.birth}" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -335,7 +335,7 @@
                         android:layout_weight="2.1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-                        android:text="@{}" />
+                        android:text="@{searchResultVM.etc}" />
                 </LinearLayout>
 
             </LinearLayout>

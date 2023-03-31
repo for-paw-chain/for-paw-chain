@@ -21,12 +21,14 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.activity.LoginActivity
 import com.ssafy.forpawchain.behind.activity.MainActivity
 import com.ssafy.forpawchain.behind.activity.SplashActivity
 import com.ssafy.forpawchain.behind.dialog.QRCreateDialog
@@ -51,11 +53,16 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class HouseFragment : Fragment() {
     private lateinit var viewModel: HouseFragmentVM
     private var _binding: FragmentHouseBinding? = null
     private lateinit var navController: NavController
+    private lateinit var response : retrofit2.Response<JsonObject>
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -150,6 +157,16 @@ class HouseFragment : Fragment() {
 
             })
 
+        /**
+         * "E/ImeBackDispatcher: Ime callback not found. Ignoring unregisterReceivedCallback. callbackId: XXX"
+         * 에러가 발생하는 경우에는 일반적으로 소프트 키보드에 대한 이벤트 처리 관련 문제가 발생한 경우
+         * 이 에러는 문제를 일으키지 않지만 사용자에게 혼란을 주거나 로그를 지저분하게 함
+         * 해결책
+         * IME 액션 처리를 수행하는 EditText의 소프트 키보드 이벤트 리스너를 등록할 때,
+         * 이벤트 리스너를 등록하는 부분을 UI 스레드에서 실행하도록 변경
+         * binding.searchEditText.post를 사용하여 UI 스레드에서 실행되도록 코드 변경
+         **/
+
         //동물 등록 검색 번호 창 번호 입력 버튼
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             var input = binding.searchEditText.text.toString();
@@ -158,18 +175,45 @@ class HouseFragment : Fragment() {
                 EditorInfo.IME_ACTION_DONE -> {
                     // 엔터키가 눌렸을 때 처리할 코드 작성
                     GlobalScope.launch {
-                        response = getPetInfo(input)
-                        when (response.code) {
+                        when (getPetInfo(input)) {
                             "200" -> {
+                                Log.d(TAG, "response 객체 내부는 = ${response.body()}")
+
+                                val profileUrl = response.body()!!.get("profile").asString
+                                // Glide로 이미지 다운로드 및 ImageView에 로딩
+                                val drawable = Glide.with(requireContext())
+                                    .load(profileUrl)
+                                    .submit()
+                                    .get()
+
+                                val birthStr = response.body()!!.get("birth")?.asString
+                                val birthDate: Date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(birthStr)
+                                val diffInMillis = System.currentTimeMillis() - birthDate!!.time
+                                val diffInYears = TimeUnit.MILLISECONDS.toDays(diffInMillis) / 365
+
+                                val searchResultDTO = SearchResultDTO(
+                                    code = response.body()!!.get("pid").asString ?: "",
+                                    profile = drawable,
+                                    name = response.body()!!.get("name").asString ?: "",
+                                    sex = response.body()!!.get("sex").asString ?: "",
+                                    species = response.body()!!.get("type").asString ?: "",
+                                    kind = response.body()!!.get("kind").asString ?: "",
+                                    neutered = response.body()!!.get("spayed").asString ?: "",
+                                    birth = "$diffInYears 살",
+                                    region = response.body()?.get("region")?.asString,
+                                    tel = response.body()?.get("tel")?.asString,
+                                    etc = response.body()?.get("etc")?.asString
+                                )
+
+                                /**
+                                 * setCurrentState 메서드는 메인 스레드에서 호출해야함.
+                                 * 그러나 현재 setCurrentState가 호출되는 시점은 GlobalScope.launch 블록 내부에서 실행 중인 백그라운드 스레드에서입니다.
+                                 * 따라서 navController.navigate 메서드를 메인 스레드에서 실행되도록 withContext(Dispatchers.Main)안에서 사용되게 함
+                                 **/
                                 withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "있는 동물입니다",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    bundle.putSerializable("searchResultVM", searchResultDTO)
+                                    navController.navigate(R.id.navigation_search_result, bundle)
                                 }
-//                                bundle.putSerializable("code", binding.searchEditText.text.toString())
-//                                navController.navigate(R.id.navigation_search_result, bundle)
                             }
                             "206" -> {
                                 withContext(Dispatchers.Main) {
@@ -179,8 +223,7 @@ class HouseFragment : Fragment() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-//                                bundle.putSerializable("code", binding.searchEditText.text.toString())
-//                                navController.navigate(R.id.navigation_search_result, bundle)
+                                return@launch // launch 블록에서 반환하여 함수를 빠져나감
                             }
                             else -> {
                                 withContext(Dispatchers.Main) {
@@ -366,8 +409,7 @@ class HouseFragment : Fragment() {
 //    }
 
     suspend fun getPetInfo(input: String): String = withContext(Dispatchers.IO) {
-        val response = PetService().getPetInfo(input).execute()
-
+        response = PetService().getPetInfo(input).execute()
         when {
             response.isSuccessful && response.code() == 200 -> {
                 Log.d(TAG, "검색바 응답 200 $response")
