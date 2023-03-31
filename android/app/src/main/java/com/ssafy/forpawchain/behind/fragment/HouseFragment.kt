@@ -158,7 +158,8 @@ class HouseFragment : Fragment() {
                 EditorInfo.IME_ACTION_DONE -> {
                     // 엔터키가 눌렸을 때 처리할 코드 작성
                     GlobalScope.launch {
-                        when (getPetInfo(input)) {
+                        response = getPetInfo(input)
+                        when (response.code) {
                             "200" -> {
                                 withContext(Dispatchers.Main) {
                                     Toast.makeText(
