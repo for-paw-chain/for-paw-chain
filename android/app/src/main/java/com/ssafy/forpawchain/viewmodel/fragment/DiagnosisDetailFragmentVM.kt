@@ -36,6 +36,9 @@ class DiagnosisDetailFragmentVM : ViewModel() {
     }
 
     fun addTask(todo: DianosisNewDTO) {
+
+//        if (todo.title == null) todo.title = MutableLiveData("진료 내용")
+//        Log.d(TAG, "----------" + todo.body)
         data.add(todo)
         todoLiveData.value = data //todoLiveData를 add된 데이터로 변경
     }

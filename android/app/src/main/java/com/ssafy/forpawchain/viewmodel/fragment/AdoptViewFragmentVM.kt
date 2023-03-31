@@ -72,10 +72,10 @@ class AdoptViewFragmentVM : ViewModel() {
                         ImageLoader().loadDrawableFromUrl(result!!["profile"].asString) { drawable ->
                             pawInfo.profile?.postValue(drawable)
                             pawInfo.name.postValue(result["name"].asString)
-                            pawInfo.sex.postValue(result["sex"].asString)
-                            pawInfo.species.postValue(result["type"].asString)
+                            pawInfo.sex.postValue(if (result["sex"].asString.equals("MALE")) {"남아"} else {"여아"})
+                            pawInfo.species.postValue(if (result["type"].asString.equals("DOG")) "개과" else if (result["type"].asString.equals("CAT")) "고양이과" else "기타")
                             pawInfo.kind.postValue(result["kind"].asString)
-                            pawInfo.neutered.postValue(result["spayed"].asString)
+                            pawInfo.neutered.postValue(if (result["spayed"].asString.equals("false")) "Ⅹ" else "○")
                             extra.postValue(result["etc"].asString)
                         }
 
