@@ -43,5 +43,5 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
 
     @Query(value = "select a.regTime from AuthenticationEntity a " +
             "where uid = :uid and pid = :pid", nativeQuery = false)
-    LocalDate findRegDateByAuthIdUidAndAuthIdPid(Long uid, String pid);
+    LocalDate findRegDateByAuthIdUidAndAuthIdPid(long uid, String pid);
 }

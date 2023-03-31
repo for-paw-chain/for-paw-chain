@@ -1,23 +1,14 @@
 package com.forpawchain.service;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigInteger;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.Keys;
-import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthBlockNumber;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -39,13 +30,12 @@ import com.forpawchain.repository.PetRepository;
 import com.forpawchain.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class Web3ServiceImpl implements Web3Service {
-
-	private final Logger LOGGER = LoggerFactory.getLogger(Web3ServiceImpl.class);
-
 	private final DoctorLicenseRepository doctorLicenseRepository;
 	private final UserRepository userRepository;
 	private final PetRepository petRepository;
@@ -61,30 +51,18 @@ public class Web3ServiceImpl implements Web3Service {
 	private Credentials credentials;
 	private TransactionManager transactionManager;
 
-	/**
-	 * Web3j, Credentials, TransactionManager를 초기화
-	 */
-	private void setting() {
-		if (web3j == null || credentials == null || transactionManager == null) {
-			web3j = Web3j.build(new HttpService(NETWORK));
-			credentials = Credentials.create(fromPrivateKey);
-			transactionManager = new RawTransactionManager(web3j, credentials, Long.parseLong(CHAINID));
-		}
-	}
-
-	/**
-	 * 현재 블록 번호
- 	 */
+	// 현재 블록 번호
+	@Override
 	public EthBlockNumber getBlockNumber() throws ExecutionException, InterruptedException {
 		setting();
 		return web3j.ethBlockNumber().sendAsync().get();
 	}
 
-	/**
-	 * 스마트 컨트랙트 배포
-	 */
+	// 스마트 컨트랙트 배포
+	@Override
 	public String deployContract(String pid) throws Exception {
 		setting();
+
 		PetEntity petEntity = petRepository.findByPid(pid)
 			.orElseThrow(() -> new BaseException(ErrorMessage.NOT_EXIST_CONTENT));
 
@@ -99,19 +77,23 @@ public class Web3ServiceImpl implements Web3Service {
 
 			String invalidAddr = contract.getContractAddress();
 			String validAddr = Keys.toChecksumAddress(invalidAddr);
-			LOGGER.info("컨트랙트 주소 : " + validAddr);
+			log.info("컨트랙트 주소 : " + validAddr);
 
 			//배포된 컨트랙트 주소를 Pet DB에 저장
-			petEntity.updatePetCa(validAddr);
-			petRepository.save(petEntity);
+			PetEntity newPetNewEntity = PetEntity.builder()
+				.pid(petEntity.getPid())
+				.ca(validAddr)
+				.lost(petEntity.isLost())
+				.build();
+
+			petRepository.save(newPetNewEntity);
 		}
 
 		return petEntity.getCa();
 	}
 
-	/**
-	 * 의사가 맞는지 확인
-	 */
+	// 의사가 맞는지 확인
+	@Override
 	public boolean checkLicense(LicenseReqDto licenseReqDto) {
 		setting();
 		String name = licenseReqDto.getName();
@@ -135,9 +117,8 @@ public class Web3ServiceImpl implements Web3Service {
 	 * private key만 있으면 사용 가능.
 	 * private key를 프론트에 전달해주기. db에는 저장 안함
 	 */
-	public String createWallet(long uid, LicenseReqDto licenseReqDto) throws
-		Exception {
-
+	@Override
+	public String createWallet(long uid, LicenseReqDto licenseReqDto) throws Exception {
 		setting();
 
 		UserEntity userEntity = userRepository.findByUid(uid).orElse(null);
@@ -145,9 +126,9 @@ public class Web3ServiceImpl implements Web3Service {
 		String address = null;
 
 		// 이미 지갑을 생성한 의사임
-		// if (userEntity.getWa() != null) {
-		// 	throw new BaseException(ErrorMessage.EXIST_WALLET);
-		// }
+		if (userEntity.getWa() != null) {
+			throw new BaseException(ErrorMessage.EXIST_WALLET);
+		}
 
 		// 의사 계정이 맞는지 확인
 		if (checkLicense(licenseReqDto)) {
@@ -158,7 +139,15 @@ public class Web3ServiceImpl implements Web3Service {
 			address = Keys.getAddress(ecKeyPair);
 
 			// 지갑 주소와 지갑의 프라이빗 키를 DB에 저장
-			userEntity.updateWa("0x" + address);
+			UserEntity newUserEntity = UserEntity.builder()
+				.uid(userEntity.getUid())
+				.id(userEntity.getId())
+				.social(userEntity.getSocial())
+				.name(userEntity.getName())
+				.profile(userEntity.getProfile())
+				.wa(address)
+				.del(userEntity.isDel())
+				.build();
 
 			this.sendEth(address);
 
@@ -168,6 +157,8 @@ public class Web3ServiceImpl implements Web3Service {
 		return privateKey;
 	}
 
+	// eth 전달
+	@Override
 	public void sendEth(String toAddress) throws Exception {
 		setting();
 
@@ -175,27 +166,25 @@ public class Web3ServiceImpl implements Web3Service {
 		BigInteger value = Convert.toWei("1.0", Convert.Unit.ETHER).toBigInteger();
 		
 		// 트랜잭션(이더) 전송
-		EthSendTransaction ethSendTransaction = transactionManager.sendTransaction(DefaultGasProvider.GAS_PRICE,
-			DefaultGasProvider.GAS_LIMIT, toAddress, "",
-			value);
+		EthSendTransaction ethSendTransaction = transactionManager.sendTransaction
+			(DefaultGasProvider.GAS_PRICE, DefaultGasProvider.GAS_LIMIT, toAddress, "", value);
 	}
 
-	/**
-	 * 해당 유저의 지갑 주소를 DB에서 조회한다.
-	 * @param uid
-	 */
-	public String getAddress(long uid) {
-		setting();
-		UserEntity userEntity = userRepository.findByUid(uid).orElse(null);
-		return userEntity.getWa();
-	}
-
+	// 지갑 주소로 찾은 의사 이름 반환
+	@Override
 	public String findDoctor(String wa) {
-		UserEntity userEntity = userRepository.findByWa(wa);
-		if (userEntity == null) {
-			throw new BaseException(ErrorMessage.USER_NOT_FOUND);
-		}
+		UserEntity userEntity = userRepository.findByWa(wa)
+			.orElseThrow(() -> new BaseException(ErrorMessage.USER_NOT_FOUND));
 
-		return "이현정";
+		return userEntity.getName();
+	}
+
+	// Web3j, Credentials, TransactionManager를 초기화
+	private void setting() {
+		if (web3j == null || credentials == null || transactionManager == null) {
+			web3j = Web3j.build(new HttpService(NETWORK));
+			credentials = Credentials.create(fromPrivateKey);
+			transactionManager = new RawTransactionManager(web3j, credentials, Long.parseLong(CHAINID));
+		}
 	}
 }

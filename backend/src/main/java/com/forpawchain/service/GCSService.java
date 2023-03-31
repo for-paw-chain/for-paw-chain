@@ -1,11 +1,8 @@
 package com.forpawchain.service;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -19,9 +16,6 @@ import com.google.cloud.storage.StorageOptions;
 
 @Service
 public class GCSService {
-
-	// private final Logger LOGGER = LoggerFactory.getLogger(GCSService.class);
-
 	@Value("${spring.cloud.gcp.storage.bucket}")
 	private String bucket;
 	@Value("${spring.cloud.gcp.credentials.location}")
@@ -30,7 +24,6 @@ public class GCSService {
 	private String projectId;
 
 	public Blob uploadFileToGCS(MultipartFile file) throws IOException {
-
 		ClassPathResource resource = new ClassPathResource("for-paw-chain-c2d3ba7aaab6.json");
 
 		StorageOptions storageOptions = StorageOptions.newBuilder()
@@ -38,12 +31,8 @@ public class GCSService {
 			.setCredentials(GoogleCredentials.fromStream(resource.getInputStream())).build();
 		Storage storage = storageOptions.getService();
 
-		// Storage storage = StorageOptions.getDefaultInstance().getService();
-
 		String fileName = UUID.randomUUID().toString();
-
 		BlobInfo blobInfo = BlobInfo.newBuilder(bucket, fileName).build();
-
 		Blob blob = storage.create(blobInfo, file.getBytes());
 
 		return blob;

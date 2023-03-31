@@ -12,12 +12,12 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	Optional<UserEntity> findById(String id);
-	// Optional<UserEntity> findByIdAndSocial(String id, String social);
+
 	Optional<UserEntity> findByUid(long uid);
 
 	// ui의 의사 지갑 주소 반환
 	@Query("select u.wa from UserEntity u where u.uid = :uid")
 	Optional<String> findWaByUid(@Param("uid") long uid);
 
-	UserEntity findByWa(String wa);
+	Optional<UserEntity> findByWa(String wa);
 }
