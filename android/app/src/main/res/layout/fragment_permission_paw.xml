@@ -13,13 +13,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="32dp"
         android:background="@drawable/box_radius_03">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout4"
             android:layout_width="match_parent"
             android:layout_height="120dp"
+            android:layout_margin="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,6 +103,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"
+            android:layout_margin="25dp"
             android:background="#E8E8E8"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
             app:layout_constraintEnd_toEndOf="parent"
@@ -115,6 +116,7 @@
             android:id="@+id/linearLayout5"
             android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_margin="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -155,6 +157,7 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_margin="25dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -167,6 +170,7 @@
             android:id="@+id/floating_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="25dp"
             android:layout_gravity="bottom|end"
             android:backgroundTint="#743FFF"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -13,7 +13,7 @@ data class HistoryDTO (
     val title: String,
     val body: String,
     val extra: ArrayList<Data>,
-    val writer: String,
+    var writer: String,
     val hash: String,
     val date: String
 ): Serializable

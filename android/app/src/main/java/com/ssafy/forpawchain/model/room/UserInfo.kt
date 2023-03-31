@@ -5,7 +5,7 @@ import com.kakao.sdk.user.model.User
 
 class UserInfo {
         companion object {
-            var uid: String = ""
+            var uid: String = "6"
             var name: String = "포포체인"
             var profile: String = ""
             lateinit var privateKey: String

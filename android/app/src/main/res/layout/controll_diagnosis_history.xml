@@ -12,11 +12,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="70dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/box_radius_06"
-        android:elevation="10dp"
+        android:background="@drawable/background_layout_redius"
         android:paddingLeft="8dp"
         android:paddingRight="8dp">
 

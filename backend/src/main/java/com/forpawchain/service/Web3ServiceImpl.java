@@ -196,6 +196,6 @@ public class Web3ServiceImpl implements Web3Service {
 			throw new BaseException(ErrorMessage.USER_NOT_FOUND);
 		}
 
-		return userEntity.getName();
+		return "이현정";
 	}
 }
