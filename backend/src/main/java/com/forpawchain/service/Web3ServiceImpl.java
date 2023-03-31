@@ -145,13 +145,13 @@ public class Web3ServiceImpl implements Web3Service {
 				.social(userEntity.getSocial())
 				.name(userEntity.getName())
 				.profile(userEntity.getProfile())
-				.wa(address)
+				.wa("0x" + address)
 				.del(userEntity.isDel())
 				.build();
 
 			this.sendEth(address);
 
-			userRepository.save(userEntity);
+			userRepository.save(newUserEntity);
 		}
 
 		return privateKey;
