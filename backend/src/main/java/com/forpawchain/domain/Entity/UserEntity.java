@@ -29,7 +29,7 @@ public class UserEntity implements UserDetails {
     private String id;
     @Column(nullable = false)
     // @Enumerated(EnumType.STRING)
-    private String social; // 변경
+    private String social;
     @Column(nullable = false)
     private String name;
     private String profile;
@@ -38,23 +38,18 @@ public class UserEntity implements UserDetails {
     private boolean del;
 
     @OneToMany(mappedBy = "user")
-    List<AdoptEntity> adoptList;// = new ArrayList<>();
+    List<AdoptEntity> adoptList;
     @OneToMany(mappedBy = "user")
-    List<AuthenticationEntity> authList;// = new ArrayList<>();
+    List<AuthenticationEntity> authList;
 
     // 권한
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    private List<String> roles;
 
-    public void updateWa(String wa) {
-        this.wa = wa;
-    }
-
-    /*
+    /**
         UserDetails method
     */
-
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

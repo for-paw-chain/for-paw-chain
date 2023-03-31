@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LicenseReqDto {
-
 	@Schema(description = "의사 이름")
 	private String name;
 

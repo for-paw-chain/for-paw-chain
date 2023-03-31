@@ -1,6 +1,5 @@
 package com.forpawchain.domain.Entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;

@@ -4,13 +4,11 @@ import com.forpawchain.config.IPFSConfig;
 import com.forpawchain.exception.BaseException;
 import com.forpawchain.exception.ErrorMessage;
 
-import io.ipfs.api.IPFS;
 import io.ipfs.api.MerkleNode;
 import io.ipfs.api.NamedStreamable;
 import io.ipfs.multihash.Multihash;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;

@@ -80,8 +80,13 @@ public class Web3ServiceImpl implements Web3Service {
 			log.info("컨트랙트 주소 : " + validAddr);
 
 			//배포된 컨트랙트 주소를 Pet DB에 저장
-			petEntity.updatePetCa(validAddr);
-			petRepository.save(petEntity);
+			PetEntity newPetNewEntity = PetEntity.builder()
+				.pid(petEntity.getPid())
+				.ca(validAddr)
+				.lost(petEntity.isLost())
+				.build();
+
+			petRepository.save(newPetNewEntity);
 		}
 
 		return petEntity.getCa();
@@ -134,7 +139,15 @@ public class Web3ServiceImpl implements Web3Service {
 			address = Keys.getAddress(ecKeyPair);
 
 			// 지갑 주소와 지갑의 프라이빗 키를 DB에 저장
-			userEntity.updateWa(address);
+			UserEntity newUserEntity = UserEntity.builder()
+				.uid(userEntity.getUid())
+				.id(userEntity.getId())
+				.social(userEntity.getSocial())
+				.name(userEntity.getName())
+				.profile(userEntity.getProfile())
+				.wa(address)
+				.del(userEntity.isDel())
+				.build();
 
 			this.sendEth(address);
 

@@ -30,7 +30,6 @@ public class GCSService {
 			.setProjectId(projectId)
 			.setCredentials(GoogleCredentials.fromStream(resource.getInputStream())).build();
 		Storage storage = storageOptions.getService();
-		// Storage storage = StorageOptions.getDefaultInstance().getService();
 
 		String fileName = UUID.randomUUID().toString();
 		BlobInfo blobInfo = BlobInfo.newBuilder(bucket, fileName).build();

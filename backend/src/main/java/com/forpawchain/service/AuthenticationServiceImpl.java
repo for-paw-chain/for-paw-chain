@@ -1,6 +1,5 @@
 package com.forpawchain.service;
 
-import com.forpawchain.domain.dto.response.UserInfoResDto;
 import com.forpawchain.domain.dto.response.UserResDto;
 import com.forpawchain.domain.Entity.*;
 import com.forpawchain.exception.BaseException;
