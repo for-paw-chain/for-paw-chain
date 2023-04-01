@@ -32,6 +32,7 @@ public class AuthenticationController {
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -44,6 +45,7 @@ public class AuthenticationController {
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -60,6 +62,7 @@ public class AuthenticationController {
 
             return ResponseEntity.accepted().body(map);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -73,6 +76,7 @@ public class AuthenticationController {
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -89,6 +93,7 @@ public class AuthenticationController {
 
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -105,6 +110,7 @@ public class AuthenticationController {
 
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
