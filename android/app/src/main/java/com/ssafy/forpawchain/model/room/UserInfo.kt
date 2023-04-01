@@ -21,6 +21,13 @@ class UserInfo {
                 token = Otoken.accessToken
             }
 
+            // 테스트 로그인
+            fun setTestUserInfo(Otoken: String) {
+                uid = "2729484551"
+                name = "윤혜진"
+                token = Otoken
+            }
+
 //            // 더미 데이터
 //            fun setUserInfo(user: User, Otoken: OAuthToken) {
 //                uid = "6"
