@@ -38,7 +38,7 @@ class ForPawChain {
 
         var contractAddress = ""
         var credentials =
-            Credentials.create("b7e377ebc8b72d357580dd6b54f43c37649bf3c9d780d461494b323f4dd0b0dd")
+            Credentials.create("51fcaf4a508e2bcf86fef45b70445e8e7fdd60f91d84fb81cc28c0e64d1d6929")
 
         fun setBlockChain(ca: String, cred: String) {
             this.contractAddress = ca
