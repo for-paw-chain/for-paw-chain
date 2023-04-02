@@ -83,7 +83,7 @@ class DoctorCertFragmentVM(val application: Context) : ViewModel() {
                             _openEvent.value = Event(ActivityCode.FRAGMENT_USER)
                         } else {
                             // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                            Log.d(TAG, "onResponse 실패")
+                            Log.d(TAG, "onResponse 실패 " + response.errorBody()?.string()!!)
                         }
                     }
 

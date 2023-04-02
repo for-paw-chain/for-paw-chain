@@ -20,6 +20,7 @@ import com.ssafy.forpawchain.model.domain.HistoryDTO
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.model.service.IpfsService
 import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisDetailRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisNewRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
@@ -60,7 +61,7 @@ class DiagnosisDetailFragment : Fragment() {
         val root: View = binding.root
         val recyclerView = binding.recycler
 
-        recyclerView.adapter = DiagnosisNewRecyclerViewAdapter()
+        recyclerView.adapter = DiagnosisDetailRecyclerViewAdapter()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
@@ -68,7 +69,7 @@ class DiagnosisDetailFragment : Fragment() {
         viewModel.todoLiveData.observe(
             requireActivity()
         ) { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
-            (binding.recycler.adapter as DiagnosisNewRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
+            (binding.recycler.adapter as DiagnosisDetailRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
 
         }
 

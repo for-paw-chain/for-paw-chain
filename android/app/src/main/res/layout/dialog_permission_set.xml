@@ -60,13 +60,13 @@
     <Button
         android:id="@+id/doneBtn"
         android:layout_width="150dp"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:layout_weight="1"
         android:background="#743FFF"
         android:fontFamily="@font/kakao_bold"
         android:text="권한 부여"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="26sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
