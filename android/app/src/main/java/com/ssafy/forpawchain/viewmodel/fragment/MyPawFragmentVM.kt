@@ -84,10 +84,10 @@ class MyPawFragmentVM : ViewModel() {
                                 }
                             }
                         }
-                        Log.d(PawFragmentVM.TAG, "onResponse 성공: $result");
+                        Log.d(TAG, "onResponse 성공: $result");
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        Log.d(TAG, "onResponse 실패")
+                        Log.d(TAG, "onResponse 실패 ${response}")
                     }
                 }
 

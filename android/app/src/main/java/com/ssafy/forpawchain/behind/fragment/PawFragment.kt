@@ -22,6 +22,7 @@ import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.interfaces.IAdoptCRUD
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.model.service.AdoptService
+import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.AdoptRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
@@ -62,6 +63,8 @@ class PawFragment : Fragment() {
 
         val recyclerView = binding.recycler
 
+        val token =  PreferenceManager().getString(requireContext(), "token")!!
+
         recyclerView.adapter = AdoptRecyclerViewAdapter(
             {
                 val bundle = Bundle()
@@ -82,7 +85,7 @@ class PawFragment : Fragment() {
                         // 공고 삭제
                         lifecycleScope.launch() {
                             val response = withContext(Dispatchers.IO) {
-                                AdoptService().deleteAdopt(it.pid.value!!).enqueue(object :
+                                AdoptService().deleteAdopt(it.pid.value!!, token).enqueue(object :
                                     Callback<JsonObject> {
                                     override fun onResponse(
                                         call: Call<JsonObject>,

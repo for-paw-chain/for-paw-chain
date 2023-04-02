@@ -5,7 +5,6 @@
     android:background="@drawable/background_main">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM" />

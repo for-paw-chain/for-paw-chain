@@ -21,10 +21,10 @@ class AuthService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun getPetAuth(pid: String): Call<JsonObject> {
+    fun getPetAuth(pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()

@@ -1,6 +1,7 @@
 package com.ssafy.forpawchain.behind.fragment
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,7 @@ import com.ssafy.forpawchain.databinding.FragmentUserBinding
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.model.service.UserService
+import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.MyPageMenuAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.UserFragmentVM
 import kotlinx.coroutines.Dispatchers
@@ -69,6 +71,8 @@ class UserFragment : Fragment() {
         val recyclerView = binding.recycler
         val searchList = mutableListOf<MyPageMenuDTO>()
 
+        val token =  PreferenceManager().getString(requireContext(), "token")!!
+
         recyclerView.adapter = MyPageMenuAdapter(
             onClickEnterButton = {
                 if (it.title.equals("의사 면허 등록")) {
@@ -88,9 +92,10 @@ class UserFragment : Fragment() {
                                 } else {
                                     // 로그아웃이 성공한 경우 처리합니다.
                                     Log.d(UserFragment.TAG, "회원 탈퇴 완료")
+
                                     GlobalScope.launch {
                                         val response = withContext(Dispatchers.IO) {
-                                            UserService().signOutUser().enqueue(object :
+                                            UserService().signOutUser(token).enqueue(object :
                                                 Callback<JsonObject> {
                                                 override fun onResponse(
                                                     call: Call<JsonObject>,
@@ -128,7 +133,7 @@ class UserFragment : Fragment() {
 
                     GlobalScope.launch {
                         val response = withContext(Dispatchers.IO) {
-                            UserService().logoutUser().enqueue(object :
+                            UserService().logoutUser(token).enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
                                     call: Call<JsonObject>,

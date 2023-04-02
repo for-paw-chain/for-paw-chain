@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,8 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-class MyPawHistoryFragmentVM : ViewModel() {
+class MyPawHistoryFragmentVM(private val context: Context) : ViewModel() {
     val selectedKind = MutableLiveData<Int>()
     val selectedNeutered = MutableLiveData<Int>()
     val selectedSex = MutableLiveData<Int>()
@@ -48,7 +48,10 @@ class MyPawHistoryFragmentVM : ViewModel() {
 
     suspend fun initData() {
         val response = withContext(Dispatchers.IO) {
-            UserService().getPawHistory().enqueue(object :
+            val sharedPreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+            val token = sharedPreferences.getString("token", "")!!
+
+            UserService().getPawHistory(token).enqueue(object :
                 Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     if (response.isSuccessful) {

@@ -1,8 +1,8 @@
 package com.ssafy.forpawchain.model.service.retrofit
 
 import com.google.gson.JsonObject
+import com.ssafy.forpawchain.model.domain.signUpRequestDTO
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
-import com.ssafy.forpawchain.model.domain.UserDTO
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -82,14 +82,14 @@ interface RetrofitService {
     @POST("web3/contract/{pid}")
     fun getCA(@Path("pid") pid: String): Call<JsonObject>
 
-    //로그인 한 회원 정보
+    //로그인 한 회원 정보 조회
     @GET("user/")
     fun getUser() : Call<JsonObject>
 
     //SNS 회원가입 & 로그인
     @POST("user/")
     fun signUpUser(
-        @Body userDTO : UserDTO
+        @Body signUpRequestDTO: signUpRequestDTO
     ): Call<JsonObject>
 
     //회원 탈퇴

@@ -1,6 +1,7 @@
 package com.ssafy.forpawchain.behind.activity
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -23,7 +24,6 @@ import com.ssafy.forpawchain.blockchain.Test_sol_ForPawChain
 import com.ssafy.forpawchain.blockchain.Test_sol_MyContract
 import com.ssafy.forpawchain.model.domain.UserDTO
 import com.ssafy.forpawchain.model.room.UserInfo
-import com.ssafy.forpawchain.model.room.UserInfo.Companion.token
 import com.ssafy.forpawchain.model.service.UserService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -111,9 +111,16 @@ class SplashActivity : AppCompatActivity() {
 //            }
 
             // 포포체인 서비스 로그인 테스트를 위해 매번 로그아웃
+
+            val sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putString("uid", null)
+
+            val token = sharedPreferences.getString("token", "")!!
+
             GlobalScope.launch {
                 val response = withContext(Dispatchers.IO) {
-                    UserService().logoutUser().enqueue(object :
+                    UserService().logoutUser(token).enqueue(object :
                         Callback<JsonObject> {
                         override fun onResponse(
                             call: Call<JsonObject>,
@@ -141,10 +148,28 @@ class SplashActivity : AppCompatActivity() {
                 }
             }
 
+            startActivity(Intent(applicationContext, LoginActivity::class.java))
+            /**
             // 처음 로그인인지 아닌지 확인
+            val sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+
+            // 처음 로그인인 경우, sharedPreferences는 null 인 경우가 없으므로 다르게 판단
+            val uid = sharedPreferences.getString("uid", null)
+            if (uid == null) {  // uid가 없는 경우 -> 처음 로그인
+                Log.d(TAG, "처음 로그인")
+                startActivity(Intent(applicationContext, LoginActivity::class.java))
+            } else {  // uid가 있는 경우 -> 로그인 이력이 있는 경우
+                Log.d(TAG, "이전 로그인 정보가 존재함")
+                Log.d(TAG, "uid: $uid")
+                nextMainActivity()
+            }
+             **/
+
+            /**
+
             GlobalScope.launch {
                 val response = withContext(Dispatchers.IO) {
-                    UserService().getUser().enqueue(object :
+                    UserService().getUser(applicationContext).enqueue(object :
                         Callback<JsonObject> {
                         override fun onResponse(
                             call: Call<JsonObject>,
@@ -153,15 +178,15 @@ class SplashActivity : AppCompatActivity() {
                             if (response.isSuccessful) {
                                 // 처음 로그인이 아닌 경우
                                 lifecycleScope.launch {
-
+                                    UserInfo.setUserInfo(response.body().toString())
                                 }
                                 // call
-                                Log.d(TAG, "로그인 성공");
+                                Log.d(TAG, "로그인 성공 ${response.body()}" );
                                 nextMainActivity()
 
                             } else {
                                 // 처음 로그인 한 경우 (응답코드 3xx, 4xx 등)
-                                Log.d(TAG, "로그인 실패")
+                                Log.d(TAG, "로그인 실패 ${response.body()}" )
                                 startActivity(Intent(applicationContext, LoginActivity::class.java))
                             }
                         }
@@ -172,12 +197,7 @@ class SplashActivity : AppCompatActivity() {
                         }
                     })
                 }
-            }
+            }**/
         }, 2000)
-    }
-
-    private fun nextMainActivity() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
     }
 }

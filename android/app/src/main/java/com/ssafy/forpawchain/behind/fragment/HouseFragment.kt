@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.core.os.bundleOf
@@ -34,6 +35,7 @@ import com.ssafy.forpawchain.behind.activity.SplashActivity
 import com.ssafy.forpawchain.behind.dialog.QRCreateDialog
 import com.ssafy.forpawchain.behind.dialog.WithdrawalAnimalDialog
 import com.ssafy.forpawchain.databinding.FragmentHouseBinding
+import com.ssafy.forpawchain.databinding.FragmentSearchResultBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
@@ -63,6 +65,7 @@ class HouseFragment : Fragment() {
     private var _binding: FragmentHouseBinding? = null
     private lateinit var navController: NavController
     private lateinit var response : retrofit2.Response<JsonObject>
+    private lateinit var searchResultBinding: FragmentSearchResultBinding
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -98,6 +101,7 @@ class HouseFragment : Fragment() {
 
         val recyclerView = binding.recycler
         val searchList = mutableListOf<MyPawListDTO>()
+//        searchResultBinding = FragmentSearchResultBinding.bind(view)
 
         recyclerView.adapter = MyPawListAdapter(searchList,
             {
@@ -140,7 +144,7 @@ class HouseFragment : Fragment() {
                     birth = it.neutered.value,
                     region = it.neutered.value,
                     tel = it.neutered.value,
-                    etc = it.neutered.value
+                    etc = it.neutered.value,
                 )
                 bundle.putSerializable("searchResultVM", searchResultDTO)
                 navController.navigate(R.id.navigation_search_result, bundle)
@@ -211,9 +215,25 @@ class HouseFragment : Fragment() {
                                  * 따라서 navController.navigate 메서드를 메인 스레드에서 실행되도록 withContext(Dispatchers.Main)안에서 사용되게 함
                                  **/
                                 withContext(Dispatchers.Main) {
+
                                     bundle.putSerializable("searchResultVM", searchResultDTO)
+                                    val navController = Navigation.findNavController(requireView())
                                     navController.navigate(R.id.navigation_search_result, bundle)
+
+                                    // navigation_search_result로 이동 후 ImageView visibility 변경
+                                    val searchResultFragment = SearchResultFragment()
+                                    searchResultFragment.view?.findViewById<ImageView>(R.id.idAddPawInfoDetailButton)?.visibility = View.GONE
+
+
+                                    navController.navigate(R.id.navigation_search_result, bundle)
+
+                                    // navigation_search_result로 이동 후 ImageView visibility 변경
+//                                    val imageView = viewfindViewById<ImageView>(R.id.idAddPawInfoDetailButton)
+//                                    imageView.visibility = View.GONE
+
                                 }
+
+
                             }
                             "206" -> {
                                 withContext(Dispatchers.Main) {
@@ -313,10 +333,10 @@ class HouseFragment : Fragment() {
                                     }
 
                                 }
-                                Log.d(PawFragmentVM.TAG, "onResponse 성공: $result");
+                                Log.d(TAG, "onResponse 성공: $result");
                             } else {
                                 // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                                Log.d(MyPawFragmentVM.TAG, "onResponse 실패")
+                                Log.d(TAG, "onResponse 실패 ${response}")
                             }
                         }
 

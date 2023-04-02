@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.model.service
 
+import android.util.Log
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
@@ -24,6 +25,8 @@ class PetService {
     }
 
     fun getMyPets(): Call<JsonObject> {
+        Log.d(TAG, "getMyPets 의 UserInfo.token = ${UserInfo.token}")
+
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer " + UserInfo.token)

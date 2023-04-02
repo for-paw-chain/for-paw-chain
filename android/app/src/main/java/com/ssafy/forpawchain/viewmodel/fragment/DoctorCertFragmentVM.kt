@@ -15,22 +15,20 @@ import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
 import com.ssafy.forpawchain.model.domain.User
 import com.ssafy.forpawchain.model.room.AppDatabase
 import com.ssafy.forpawchain.model.service.UserService
+import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class DoctorCertFragmentVM(val application: Context) : ViewModel() {
+class DoctorCertFragmentVM(val context : Context) : ViewModel() {
     companion object {
         val TAG: String? = this::class.qualifiedName
 
     }
-
-
     private val _openEvent = MutableLiveData<Event<ActivityCode>>()
     val openEvent: LiveData<Event<ActivityCode>> get() = _openEvent
-
 
     val name = MutableLiveData<String>()
 
@@ -42,6 +40,8 @@ class DoctorCertFragmentVM(val application: Context) : ViewModel() {
 
     val phoneCompany = MutableLiveData<Int>()
 
+    val token = PreferenceManager().getString(context,"token")!!
+
     @OptIn(DelicateCoroutinesApi::class)
     fun summit_onClick() {
         GlobalScope.launch {
@@ -52,7 +52,8 @@ class DoctorCertFragmentVM(val application: Context) : ViewModel() {
                         socialSecurityNumberFront.value + socialSecurityNumberBack.value,
                         phoneNumber.value,
                         phoneCompany.value?.plus(1)
-                    )
+                    ),
+                    token
                 ).enqueue(object :
                     Callback<JsonObject> {
                     override fun onResponse(
@@ -65,7 +66,7 @@ class DoctorCertFragmentVM(val application: Context) : ViewModel() {
                             val privateKey: String = result?.get("content")?.asString ?: ""
                             CoroutineScope(Dispatchers.IO).launch {
                                 val db = Room.databaseBuilder(
-                                    application.applicationContext,
+                                    context.applicationContext,
                                     AppDatabase::class.java, "database-name"
                                 ).build()
                                 val userDao = db.userDao()
