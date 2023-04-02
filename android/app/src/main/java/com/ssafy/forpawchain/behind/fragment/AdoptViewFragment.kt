@@ -117,10 +117,51 @@ class AdoptViewFragment : Fragment() {
                                     if (response.isSuccessful) {
                                         // 정상적으로 통신이 성공된 경우
                                         var ca = response.body()?.get("content").toString()
+                                        Log.d(TAG, "컨트랙트 주소 : " + ca)
                                         ca = ca.replace("\"", "")
                                         ForPawChain.setBlockChain(
                                             ca,
                                             user.privateKey
+                                        )
+                                        val history = ForPawChain.getHistory()
+                                        for (item in history) {
+                                            viewModel.addTask(item)
+                                        }
+                                        Log.d(TAG, "onResponse 성공");
+                                    } else {
+                                        Log.d(TAG, "onResponse 실패");
+
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                    Log.d(TAG, "네트워크 에러");
+
+                                }
+                            })
+                    }
+
+
+                }
+            }
+            else {
+                lifecycleScope.launch {
+                    bundle?.getString("pid")?.let {
+                        AdoptService().getCA(it)
+                            .enqueue(object :
+                                Callback<JsonObject> {
+                                override fun onResponse(
+                                    call: Call<JsonObject>,
+                                    response: Response<JsonObject>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        // 정상적으로 통신이 성공된 경우
+                                        var ca = response.body()?.get("content").toString()
+                                        Log.d(TAG, "컨트랙트 주소 : " + ca)
+                                        ca = ca.replace("\"", "")
+                                        ForPawChain.setBlockChain(
+                                            ca,
+                                            "32f246287b10f0e9ac71f6655047b35431f125f97abee915d0244d1cdd74f758"
                                         )
                                         val history = ForPawChain.getHistory()
                                         for (item in history) {

@@ -144,6 +144,7 @@
             android:layout_weight="1"
             android:background="@drawable/box_cancle"
             android:fontFamily="@font/kakao_bold"
+            android:background="#E7E7E7"
             android:text="취소"
             android:textColor="@color/black"
             android:textSize="25sp" />
