@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="item"
             type="com.ssafy.forpawchain.model.domain.AdoptDTO" />
@@ -18,7 +17,7 @@
         android:layout_margin="16dp"
         android:orientation="vertical"
         android:elevation="15dp"
-        android:background="#FAF8FF"
+        android:background="@drawable/rounded_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +122,6 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
                         android:gravity="center_vertical"
-
                         android:text="@{item.species}" />
 
                     <TextView
@@ -135,7 +133,6 @@
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
                         android:gravity="center_vertical"
-
                         android:text="@{item.kind}" />
 
                     <TextView
@@ -148,7 +145,6 @@
                         android:fontFamily="@font/kakao_regular"
                         android:gravity="center_vertical"
                         android:text="@{item.neutered}" />
-
                 </LinearLayout>
             </LinearLayout>
 

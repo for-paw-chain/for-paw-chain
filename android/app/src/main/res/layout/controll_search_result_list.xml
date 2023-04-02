@@ -16,11 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="135dp"
         android:layout_margin="16dp"
-        android:background="@drawable/box_radius_02"
-        android:backgroundTint="@color/whitesmoke"
+        android:elevation="15dp"
+        android:background="@drawable/rounded_bg"
         android:orientation="horizontal"
         android:weightSum="5"
-        android:elevation="25dp"
         android:padding="8dp">
 
         <LinearLayout
@@ -32,6 +31,7 @@
                 android:id="@+id/idPawImg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="4dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/icon_default_pet" />
         </LinearLayout>
@@ -47,7 +47,9 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:orientation="vertical"
                 android:weightSum="5">
 
