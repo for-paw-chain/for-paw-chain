@@ -35,8 +35,8 @@
 
         <ImageView
             android:id="@+id/enterBtn"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="8dp"
             android:src="@drawable/icon_angle_right" />
