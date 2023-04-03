@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_layout_search_result_redius"
-    android:elevation="16dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -17,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="135dp"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/whitesmoke"
+        android:elevation="15dp"
+        android:background="@drawable/rounded_bg"
         android:orientation="horizontal"
         android:weightSum="5"
         android:padding="8dp">

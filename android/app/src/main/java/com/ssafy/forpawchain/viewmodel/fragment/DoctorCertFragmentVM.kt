@@ -14,11 +14,17 @@ import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
 import com.ssafy.forpawchain.model.domain.User
 import com.ssafy.forpawchain.model.room.AppDatabase
+import com.ssafy.forpawchain.model.room.UserInfo
+import com.ssafy.forpawchain.model.service.TestService
 import com.ssafy.forpawchain.model.service.UserService
+import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
 import kotlinx.coroutines.*
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class DoctorCertFragmentVM(val application: Context) : ViewModel() {
@@ -83,7 +89,7 @@ class DoctorCertFragmentVM(val application: Context) : ViewModel() {
                             _openEvent.value = Event(ActivityCode.FRAGMENT_USER)
                         } else {
                             // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                            Log.d(TAG, "onResponse 실패")
+                            Log.d(TAG, "onResponse 실패 " + response.errorBody()?.string()!!)
                         }
                     }
 

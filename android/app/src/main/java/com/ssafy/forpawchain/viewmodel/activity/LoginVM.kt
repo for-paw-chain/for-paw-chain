@@ -63,4 +63,9 @@ class LoginVM : ViewModel() {
         _openEvent.value = Event(ActivityCode.MAIN_ACTIVITY)
     }
 
+    fun generalLogin_onClick() {
+        Log.d(TAG, "일반 로그인")
+        _openEvent.value = Event(ActivityCode.MAIN_ACTIVITY)
+    }
+
 }

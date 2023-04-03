@@ -19,6 +19,7 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.behind.fragment.PermissionPawFragment
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
+import com.ssafy.forpawchain.model.domain.LoginUserReqDTO
 import com.ssafy.forpawchain.model.domain.UserDTO
 import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.AuthService
@@ -68,6 +69,52 @@ class LoginActivity : AppCompatActivity() {
 
         binding.idKakaoLoginBtn.setOnClickListener {
             btnKakaoLogin(it)
+        }
+
+        binding.imageView2.setOnClickListener {
+            generalLogin()
+        }
+    }
+
+    fun generalLogin() {
+        GlobalScope.launch {
+            val response = withContext(Dispatchers.IO) {
+                val loginUserReqDTO = LoginUserReqDTO(
+                    "2729484551", "KAKAO"
+                )
+
+                Log.d(TAG, "일반 로그인 ${loginUserReqDTO}")
+
+                UserService().generalLogin(loginUserReqDTO)
+                    .enqueue(object :
+                        Callback<JsonObject> {
+                        override fun onResponse(
+                            call: Call<JsonObject>,
+                            response: Response<JsonObject>
+                        ) {
+                            if (response.isSuccessful) {
+                                // 여기에 일반 로그인 응답을 받아서 유저 인포 만들고 싶어요 help
+                                lifecycleScope.launch {
+                                    UserInfo.setTestUserInfo(response.body()?.get("accessToken").toString())
+                                }
+                                call
+                                Log.d(TAG, "일반 로그인 시 응답 " + response.body())
+                                Log.d(TAG, "일반 로그인 성공 " + response);
+                                nextMainActivity()
+
+                            } else {
+                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                Log.d(TAG, "일반 로그인 실패 " + response)
+                            }
+                        }
+
+                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                            Log.d(TAG, "onFailure 에러: " + t.message.toString());
+                        }
+
+                    })
+            }
         }
     }
 
@@ -151,7 +198,7 @@ class LoginActivity : AppCompatActivity() {
                                                  **/
 
                                                 lifecycleScope.launch {
-                                                    UserInfo.setUserInfo(user!!, token!!)
+                                                    UserInfo.setUserInfo(user!!, response.body()?.get("accessToken").toString()!!)
                                                 }
                                                  call
                                                 Log.d(TAG, "회원 가입 성공 " + response);

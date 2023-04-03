@@ -94,9 +94,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             Optional<String> targetWa = userRepository.findWaByUid(uid);
             // 받는 사람이 의사라면
-            if (!targetWa.isEmpty()) {
-                throw new BaseException(ErrorMessage.AUTH_NOT_NEEDED);
-            }
+//            if (!targetWa.isEmpty()) {
+//                throw new BaseException(ErrorMessage.AUTH_NOT_NEEDED);
+//            }
 
             return authenticationRepository.findUserAllByPid(pid);
         } catch (Exception e) {
@@ -172,9 +172,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthenticationType getAuthenticationOfPid(Long uid, String pid) {
         String authentication = authenticationRepository.findTypeByAuthIdUidAndAuthIdPid(uid, pid);
 
-        if (authentication == null) {
-            throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
-        }
+//        if (authentication == null) {
+//            throw new BaseException(ErrorMessage.NOT_EXIST_CONTENT);
+//        }
 
         AuthenticationType authenticationType = AuthenticationType.valueOf(authentication);
 
