@@ -14,18 +14,18 @@ class UserInfo {
             lateinit var privateKey: String
 
              //정상 코드
-            fun setUserInfo(user: User, Otoken: OAuthToken) {
+            fun setUserInfo(user: User, Otoken: String) {
                 uid = user.id.toString()
                 name = user.properties!!["nickname"] ?: ""
                 profile = user.properties!!["profile_image"] ?: ""
-                token = Otoken.accessToken
+                token = Otoken.replace("\"", "")
             }
 
             // 테스트 로그인
             fun setTestUserInfo(Otoken: String) {
                 uid = "2729484551"
                 name = "윤혜진"
-                token = Otoken
+                token = Otoken.replace("\"","")
             }
 
 //            // 더미 데이터
