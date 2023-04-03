@@ -169,26 +169,26 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
 
     <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="24dp"
         android:orientation="horizontal"
         android:weightSum="3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView102">
+        app:layout_constraintTop_toBottomOf="@+id/imageView102"
+        app:layout_constraintVertical_bias="0.248">
 
         <Button
             android:id="@+id/deleteBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#FF6262"
+            android:background="@drawable/box_ok"
             android:fontFamily="@font/kakao_bold"
             android:text="삭제"
             android:textColor="@color/white"
-            android:textSize="28sp" />
+            android:textSize="25sp" />
 
         <View
             android:layout_width="0dp"
@@ -200,10 +200,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#E7E7E7"
+            android:background="@drawable/box_cancle"
             android:fontFamily="@font/kakao_bold"
             android:text="취소"
             android:textColor="@color/black"
-            android:textSize="28sp" />
+            android:textSize="25sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
