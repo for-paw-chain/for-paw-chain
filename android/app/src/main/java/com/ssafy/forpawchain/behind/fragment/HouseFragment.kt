@@ -39,6 +39,7 @@ import com.ssafy.forpawchain.databinding.FragmentSearchResultBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
+import com.ssafy.forpawchain.model.room.UserInfo.Companion.token
 import com.ssafy.forpawchain.model.service.PetService
 import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.ImageLoader
@@ -67,7 +68,6 @@ class HouseFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var response : retrofit2.Response<JsonObject>
     private lateinit var searchResultBinding: FragmentSearchResultBinding
-    private lateinit var token: String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -107,6 +107,7 @@ class HouseFragment : Fragment() {
 
 //        token =  PreferenceManager().getString(requireContext(), "token")!!
         token = PreferenceManager().getString(requireActivity(), "token")!!
+        Log.d(TAG, "HouseFragment 토큰 : ${token}")
 
 //        searchResultBinding = FragmentSearchResultBinding.bind(view)
 

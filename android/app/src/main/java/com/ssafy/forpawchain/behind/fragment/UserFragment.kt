@@ -71,7 +71,7 @@ class UserFragment : Fragment() {
         val searchList = mutableListOf<MyPageMenuDTO>()
 
         val preferenceManager = PreferenceManager()
-        val token =  preferenceManager.getString(requireContext(), "token")!!
+        val token = preferenceManager.getString(requireContext(), "token")!!
 
         recyclerView.adapter = MyPageMenuAdapter(
             onClickEnterButton = {

@@ -22,6 +22,7 @@ import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.model.service.AuthService
 import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.PermissionPawListAdapter
+import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.PermissionPawFragmentVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -54,7 +55,7 @@ class PermissionPawFragment : Fragment() {
     ): View {
         _binding = FragmentPermissionPawBinding.inflate(inflater, container, false)
         activity?.let {
-            viewModel = ViewModelProvider(it).get(PermissionPawFragmentVM::class.java)
+            viewModel = ViewModelProvider(this).get(PermissionPawFragmentVM::class.java)
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }

@@ -10,6 +10,7 @@ import android.os.UserManager
 import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.JsonObject
 import com.kakao.sdk.auth.AuthApiClient
@@ -158,6 +159,7 @@ class SplashActivity : AppCompatActivity() {
 
             Log.d(TAG, "초기화 후 모든 값 출력 ");
             PreferenceManager().printAll(applicationContext)
+
 
             startActivity(Intent(applicationContext, LoginActivity::class.java))
             /**
