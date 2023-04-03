@@ -198,7 +198,7 @@ class LoginActivity : AppCompatActivity() {
                                                  **/
 
                                                 lifecycleScope.launch {
-                                                    UserInfo.setUserInfo(user!!, token!!)
+                                                    UserInfo.setUserInfo(user!!, response.body()?.get("accessToken").toString()!!)
                                                 }
                                                  call
                                                 Log.d(TAG, "회원 가입 성공 " + response);
