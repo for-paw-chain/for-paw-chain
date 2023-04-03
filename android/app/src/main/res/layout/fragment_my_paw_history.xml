@@ -18,19 +18,21 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/imageView9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
+            android:id="@+id/textView3"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="32dp"
             android:fontFamily="@font/kakao_bold"
-            android:gravity="center_vertical"
-            android:text="내가 쓴 분양 공고"
-            android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="top"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="0dp"
+            android:text="내가 쓴 글"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.043" />
 
         <LinearLayout
             android:id="@+id/linearLayout7"
@@ -48,12 +50,11 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView9">
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         </androidx.recyclerview.widget.RecyclerView>
 

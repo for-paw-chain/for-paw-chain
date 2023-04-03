@@ -24,6 +24,7 @@
             android:id="@+id/textView20"
             android:layout_width="0dp"
             android:layout_height="50dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="@font/kakao_bold"
             android:gravity="center"
             android:text="새로운 주인이 되어주세요"
@@ -37,7 +38,7 @@
             android:id="@+id/linearLayout8"
             android:layout_width="380dp"
             android:layout_height="135dp"
-            android:layout_margin="16dp"
+            android:layout_margin="20dp"
             android:background="@drawable/box_radius_02"
             android:backgroundTint="@color/whitesmoke"
             android:orientation="horizontal"
@@ -53,9 +54,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
                 android:background="@drawable/box_radius_04">
+
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="105dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="3dp"
                     android:scaleType="centerCrop"
                     android:src="@{item.profile}" />
             </LinearLayout>
