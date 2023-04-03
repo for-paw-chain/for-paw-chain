@@ -38,7 +38,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/kakao_regular"
+                        android:fontFamily="@font/kakao_bold"
                         android:gravity="center"
                         android:text="동물 등록 번호 검색"
                         android:textColor="@{viewModel.isOpenSearch ? #00000000 : @color/white }"

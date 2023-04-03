@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.model.service.retrofit
 
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.signUpRequestDTO
+import com.ssafy.forpawchain.model.domain.LoginUserReqDTO
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -102,4 +103,9 @@ interface RetrofitService {
 
     @POST("user/reissue")
     fun renewAccessToken(): Call<JsonObject>
+
+    @POST("user/login")
+    fun generalLogin(
+        @Body loginUserReqDto: LoginUserReqDTO
+    ): Call<JsonObject>
 }

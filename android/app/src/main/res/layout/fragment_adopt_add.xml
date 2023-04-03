@@ -40,19 +40,21 @@
                     android:fontFamily="@font/kakao_bold"
                     android:text="분양 공고 등록하기"
                     android:textColor="@color/black"
-                    android:textSize="24sp"
+                    android:textSize="25sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:background="#743FFF"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/background_doctor_cert_summit_button"
+                    android:fontFamily="@font/kakao_bold"
                     android:onClick="@{()->viewModel.doneBtn_onClick()}"
                     android:text="등록"
                     android:textColor="@color/white"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,11 +62,11 @@
                     android:id="@+id/imageView1"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="44dp"
 
                     android:src="@drawable/icon_picture_add"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView16" />
 

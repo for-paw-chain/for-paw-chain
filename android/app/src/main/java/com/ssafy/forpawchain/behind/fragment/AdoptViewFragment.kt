@@ -182,8 +182,6 @@ class AdoptViewFragment : Fragment() {
                                 }
                             })
                     }
-
-
                 }
             }
         }

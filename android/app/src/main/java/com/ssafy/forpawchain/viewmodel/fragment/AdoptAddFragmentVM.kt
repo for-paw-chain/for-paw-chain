@@ -63,6 +63,7 @@ class AdoptAddFragmentVM(val context : Context) : ViewModel() {
             "etc" to extra.value,
             "tel" to phone.value
         )
+
         val jsonPayload = Gson().toJson(payload)
         val jsonRequestBody = jsonPayload.toRequestBody("application/json".toMediaTypeOrNull())
         val payloadPart = MultipartBody.Part.createFormData("content", null, jsonRequestBody)

@@ -40,4 +40,5 @@ class IpfsService {
 
         return service.setUpload(image)
     }
+
 }

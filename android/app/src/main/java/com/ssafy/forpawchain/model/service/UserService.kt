@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.behind.activity.LoginActivity
 import com.ssafy.forpawchain.model.domain.signUpRequestDTO
+import com.ssafy.forpawchain.model.domain.LoginUserReqDTO
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
 import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
@@ -175,18 +176,19 @@ class UserService {
         return service.renewAccessToken()
     }
 
-//    fun generalLogin(loginUserReqDto: LoginUserReqDto): Call<JsonObject> {
-//        val client = OkHttpClient.Builder().addInterceptor { chain ->
-//            val newRequest = chain.request().newBuilder()
-//                .build()
-//            chain.proceed(newRequest)
-//        }.build()
-//        retrofit = Retrofit.Builder()
-//            .client(client)
-//            .baseUrl(baseUrl)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-//        service = retrofit.create(RetrofitService::class.java);
-//        return service.getUser()
-//    }
+    fun generalLogin(loginUserReqDto: LoginUserReqDTO): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+        retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        service = retrofit.create(RetrofitService::class.java);
+        return service.generalLogin(loginUserReqDto)
+    }
+
 }

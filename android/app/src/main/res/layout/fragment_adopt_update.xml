@@ -23,7 +23,8 @@
             android:fillViewport="true"
             android:gravity="center"
             android:orientation="vertical"
-            tools:layout_editor_absoluteX="128dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="-34dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,23 +37,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="28dp"
                     android:fontFamily="@font/kakao_bold"
                     android:text="분양 공고 수정하기"
                     android:textColor="@color/black"
-                    android:textSize="24sp"
+                    android:textSize="25sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="28dp"
                     android:layout_marginEnd="24dp"
-                    android:background="#743FFF"
+                    android:background="@drawable/background_doctor_cert_summit_button"
+                    android:fontFamily="@font/kakao_bold"
                     android:onClick="@{() -> viewModel.doneBtn_onClick()}"
                     android:text="수정"
                     android:textColor="@color/white"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,7 +65,7 @@
                     android:layout_width="130dp"
                     android:layout_height="130dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="32dp"
                     android:src="@drawable/icon_paw_solid"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView16" />
@@ -70,7 +74,7 @@
                     android:id="@+id/imageView1"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="24dp"
                     android:onClick="@{() -> viewModel.imageSelected_onClick()}"
                     android:src="@drawable/icon_picture_add"

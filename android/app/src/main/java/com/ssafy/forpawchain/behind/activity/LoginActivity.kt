@@ -17,6 +17,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
+import com.ssafy.forpawchain.model.domain.LoginUserReqDTO
 import com.ssafy.forpawchain.model.domain.UserDTO
 import com.ssafy.forpawchain.model.domain.signUpRequestDTO
 import com.ssafy.forpawchain.model.room.UserInfo
@@ -75,8 +76,48 @@ class LoginActivity : AppCompatActivity() {
             btnKakaoLogin(it)
         }
 
-        binding.imageView2.setOnClickListener{
-//            generalLogin()
+        binding.imageView2.setOnClickListener {
+            generalLogin()
+        }
+    }
+
+    fun generalLogin() {
+        GlobalScope.launch {
+            val response = withContext(Dispatchers.IO) {
+                val loginUserReqDTO = LoginUserReqDTO(
+                    "2729484551", "KAKAO"
+                )
+
+                Log.d(TAG, "일반 로그인 ${loginUserReqDTO}")
+                UserService().generalLogin(loginUserReqDTO)
+                    .enqueue(object :
+                        Callback<JsonObject> {
+                        override fun onResponse(
+                            call: Call<JsonObject>,
+                            response: Response<JsonObject>
+                        ) {
+                            if (response.isSuccessful) {
+                                lifecycleScope.launch {
+                                    UserInfo.setTestUserInfo(response.body()?.get("accessToken").toString())
+                                }
+                                call
+                                Log.d(TAG, "일반 로그인 시 응답 " + response.body())
+                                Log.d(TAG, "일반 로그인 성공 " + response);
+                                nextMainActivity()
+
+                            } else {
+                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                Log.d(TAG, "일반 로그인 실패 " + response)
+                            }
+                        }
+
+                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                            Log.d(TAG, "onFailure 에러: " + t.message.toString());
+                        }
+
+                    })
+            }
         }
     }
 
@@ -246,7 +287,7 @@ class LoginActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             lifecycleScope.launch {
                                 Log.d(TAG, "로그인 성공 ${response.body()}" );
-                                UserInfo.setUserInfo(response.body().toString())
+                                UserInfo.setUserInfo(response.body().toString(), PreferenceManager().getString(applicationContext,"token") ?: "")
 
                                 PreferenceManager().setString(applicationContext, "uid", response.body()?.get("uid")?.asString ?: "")
                                 PreferenceManager().setString(applicationContext, "id", response.body()?.get("id")?.asString ?: "")

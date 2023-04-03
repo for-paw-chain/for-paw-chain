@@ -38,15 +38,17 @@ class ForPawChain {
 
         var contractAddress = ""
         var credentials =
-            Credentials.create("b7e377ebc8b72d357580dd6b54f43c37649bf3c9d780d461494b323f4dd0b0dd")
+            Credentials.create("32f246287b10f0e9ac71f6655047b35431f125f97abee915d0244d1cdd74f758")
 
         fun setBlockChain(ca: String, cred: String) {
+            Log.d(TAG, "setBlockChain 프라이빗키:::::" + cred)
             this.contractAddress = ca
             this.credentials = Credentials.create(cred)
             Log.d(TAG, "지갑주소::::::" + credentials.address)
         }
 
         fun setWallet(cred: String) {
+            Log.d(TAG, "setWallet 프라이빗키:::::" + cred)
             this.credentials = Credentials.create(cred)
             Log.d(TAG, "지갑주소::::::" + credentials.address)
         }
@@ -75,6 +77,9 @@ class ForPawChain {
                         gasPrice,
                         gasLimit
                     )
+
+                Log.d(TAG, "컨트랙트 주소 : " + contractAddress)
+
                 val currentDateTime = LocalDateTime.now()
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                 val formatted = currentDateTime.format(formatter)

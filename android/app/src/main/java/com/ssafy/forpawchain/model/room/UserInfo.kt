@@ -16,23 +16,25 @@ class UserInfo {
             var name: String = ""
             var walletAddress: String = ""
             var isDoctor: Boolean = false
+            var token: String = ""
             lateinit var privateKey: String
 
             //정상 코드
-            fun setUserInfo(jsonResponse: String) {
-                 val gson = Gson()
-                 val jsonObject = gson.fromJson(jsonResponse, JsonObject::class.java)
+            fun setUserInfo(jsonResponse: String, token: String) {
+                val gson = Gson()
+                val jsonObject = gson.fromJson(jsonResponse, JsonObject::class.java)
 
-                uid = jsonObject.get("uid").asString
-                id = jsonObject.get("id").asString
-                profile = jsonObject.get("profile").asString
-                name = jsonObject.get("name").asString
-                if(jsonObject.get("wa").isJsonNull()){
-                    walletAddress = ""
-                }else{
-                    walletAddress = jsonObject.get("wa").asString
+                this.uid = jsonObject.get("uid").asString
+                this.id = jsonObject.get("id").asString
+                this.profile = jsonObject.get("profile").asString
+                this.name = jsonObject.get("name").asString
+                if (jsonObject.get("wa").isJsonNull()) {
+                    this.walletAddress = ""
+                } else {
+                    this.walletAddress = jsonObject.get("wa").asString
                 }
-                isDoctor = jsonObject.get("doctor").asBoolean
+                this.isDoctor = jsonObject.get("doctor").asBoolean
+                this.token = token
 
 //                uid = userDTO.uid
 //                id = userDTO.id
@@ -43,10 +45,10 @@ class UserInfo {
             }
 
             // 테스트 로그인
-//            fun setTestUserInfo(Otoken: String) {
-//                uid = "2729484551"
-//                name = "윤혜진"
-//                token =
-//            }
+            fun setTestUserInfo(Otoken: String) {
+                uid = "2729484551"
+                name = "윤혜진"
+                token = Otoken.replace("\"", "")
+            }
         }
 }
