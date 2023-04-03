@@ -187,6 +187,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="MissingConstraints" />
 
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -194,7 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/jinlyonaeyong" />
-
+                
                 <ImageView
                     android:layout_width="300dp"
                     android:layout_height="300dp"

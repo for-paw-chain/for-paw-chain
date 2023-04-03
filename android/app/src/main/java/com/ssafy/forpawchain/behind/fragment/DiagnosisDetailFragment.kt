@@ -89,7 +89,19 @@ class DiagnosisDetailFragment : Fragment() {
                     )
                 )
             }
+
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+
+                    ImageLoader().loadDrawableFromUrl("http://j8a207.p.ssafy.io:8080/api/file/${value.hash}") { drawable ->
+                        viewModel.image.postValue(drawable)
+                    }
+                }
+            }
         }
+
+
+
         if (bundle != null && bundle.getSerializable("code") != null) {
             val code = bundle.getSerializable("code") as String
             viewModel.searchEditText.postValue(code.toString())
