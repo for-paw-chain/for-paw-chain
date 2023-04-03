@@ -40,7 +40,7 @@
                     android:fontFamily="@font/kakao_bold"
                     android:text="분양 공고 수정하기"
                     android:textColor="@color/black"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,7 +63,7 @@
                     android:id="@+id/imageView0"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="32dp"
                     android:src="@drawable/icon_paw_solid"
                     app:layout_constraintStart_toStartOf="parent"

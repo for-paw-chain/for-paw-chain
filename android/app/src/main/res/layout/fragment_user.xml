@@ -105,7 +105,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/kakao_regular"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:text="@{viewModel.code}"
                     android:textColor="@color/black"
                     android:textSize="25sp" />
