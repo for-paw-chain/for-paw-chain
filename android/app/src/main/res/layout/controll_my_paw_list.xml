@@ -28,8 +28,9 @@
             android:background="@drawable/box_radius_04">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="104dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 android:src="@{item.profile}" />
