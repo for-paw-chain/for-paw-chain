@@ -99,6 +99,7 @@ class LoginActivity : AppCompatActivity() {
                             if (response.isSuccessful) {
                                 lifecycleScope.launch {
                                     UserInfo.setTestUserInfo(response.body()?.get("accessToken").toString())
+                                    PreferenceManager().setString(applicationContext, "token", response.body()?.get("accessToken")?.asString ?: "")
                                 }
                                 call
                                 Log.d(TAG, "일반 로그인 시 응답 " + response.body())
