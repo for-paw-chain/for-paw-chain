@@ -89,7 +89,7 @@ class PermissionPawFragmentVM(application: Application) : AndroidViewModel(appli
                                         )
                                     )
                                 } else {
-                                    ImageLoader().loadDrawableFromUrl(item1["pfofile"].asString) { drawable ->
+                                    ImageLoader().loadDrawableFromUrl(item1["profile"].asString) { drawable ->
                                         addTask(
                                             PermissionUserDTO(
                                                 drawable,
