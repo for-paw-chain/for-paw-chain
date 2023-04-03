@@ -17,7 +17,7 @@
         android:layout_margin="16dp"
         android:orientation="vertical"
         android:elevation="15dp"
-        android:background="@drawable/rounded_bg"
+        android:background="@drawable/box_radius_02"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <data>
         <variable
@@ -19,6 +20,8 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="5dp"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -26,15 +29,15 @@
             android:layout_width="match_parent"
             android:layout_height="125dp"
             android:layout_margin="16dp"
+            android:background="@drawable/box_radius_02"
+            android:elevation="50dp"
             android:orientation="horizontal"
+            android:padding="5dp"
             android:weightSum="5"
-            android:background="@drawable/background_layout_search_result_redius"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:layout_width="0dp"
@@ -62,7 +65,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:text="이름" />
 
@@ -71,8 +73,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
-
                         android:fontFamily="@font/kakao_bold"
 
                         android:text="성별" />
@@ -82,9 +82,7 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
-
                         android:text="종" />
 
                     <TextView
@@ -92,10 +90,7 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
-
                         android:fontFamily="@font/kakao_bold"
-
                         android:text="종류" />
 
                     <TextView
@@ -103,10 +98,7 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
-
                         android:fontFamily="@font/kakao_bold"
-
                         android:text="중성화" />
                 </LinearLayout>
 
@@ -190,30 +182,53 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.1" />
 
-                <!-- TODO: 통화 이모티콘 필요 -->
-
-                <Button
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/qr_btn"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/icon_qr"
-                    android:gravity="bottom"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/box_radius_03"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.84" />
+                    tools:ignore="MissingConstraints">
+
+                    <ImageView
+                        android:id="@+id/imageView12"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="3dp"
+                        android:src="@drawable/icon_qr"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="MissingConstraints" />
+
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:fontFamily="@font/kakao_regular"
+                        android:text="QR생성"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="MissingConstraints" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/idSearchResultDetail"
             android:layout_width="match_parent"
-            android:layout_height="127dp"
+            android:layout_height="100dp"
             android:layout_margin="16dp"
             android:orientation="horizontal"
             android:weightSum="5"
-            android:background="@drawable/background_layout_search_result_redius"
+            android:background="@drawable/box_radius_02"
+            android:elevation="50dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -226,6 +241,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.5"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -241,7 +258,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:text="지역" />
 
@@ -250,7 +266,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:text="연락처" />
 
@@ -259,7 +274,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="1"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:text="나이" />
 
@@ -315,6 +329,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:orientation="vertical"
                     android:weightSum="3">
 
@@ -323,7 +339,6 @@
                         android:layout_height="0dp"
                         android:layout_margin="4dp"
                         android:layout_weight="0.9"
-                        android:background="#F3F0FD"
                         android:fontFamily="@font/kakao_bold"
                         android:text="특이사항" />
 
@@ -345,17 +360,15 @@
         <ImageView
             android:id="@+id/idAddPawInfoDetailButton"
             android:layout_width="match_parent"
-            android:layout_height="127dp"
+            android:layout_height="103dp"
             android:layout_margin="16dp"
-            android:orientation="horizontal"
             android:background="@drawable/logo_add_pawinfo_button"
+            android:orientation="horizontal"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/idSearchResultDetail"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintTop_toBottomOf="@+id/idSearchResultDetail" />
 
 
         <include
