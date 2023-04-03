@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.model.User
 import com.kakao.sdk.user.model.AccessTokenInfo
+import com.ssafy.forpawchain.util.PreferenceManager
 
 //import com.ssafy.forpawchain.model.domain.User
 
@@ -21,12 +22,24 @@ class UserInfo {
             fun setUserInfo(jsonResponse: String) {
                  val gson = Gson()
                  val jsonObject = gson.fromJson(jsonResponse, JsonObject::class.java)
+
                 uid = jsonObject.get("uid").asString
                 id = jsonObject.get("id").asString
                 profile = jsonObject.get("profile").asString
                 name = jsonObject.get("name").asString
-                walletAddress= jsonObject.get("wa").asString
+                if(jsonObject.get("wa").isJsonNull()){
+                    walletAddress = ""
+                }else{
+                    walletAddress = jsonObject.get("wa").asString
+                }
                 isDoctor = jsonObject.get("doctor").asBoolean
+
+//                uid = userDTO.uid
+//                id = userDTO.id
+//                profile = userDTO.profile
+//                name = userDTO.name
+//                walletAddress= userDTO.walletAddress
+//                isDoctor = userDTO.isDoctor
             }
 
             // 테스트 로그인

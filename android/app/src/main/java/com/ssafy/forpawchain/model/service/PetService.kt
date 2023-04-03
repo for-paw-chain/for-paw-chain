@@ -24,12 +24,12 @@ class PetService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun getMyPets(): Call<JsonObject> {
-        Log.d(TAG, "getMyPets 의 UserInfo.token = ${UserInfo.token}")
+    fun getMyPets(token : String): Call<JsonObject> {
+        Log.d(TAG, "getMyPets 의 UserInfo.token = ${token}")
 
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -45,10 +45,10 @@ class PetService {
         return service.getMyPets()
     }
 
-    fun getPetInfo(pid: String): Call<JsonObject> {
+    fun getPetInfo(pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()

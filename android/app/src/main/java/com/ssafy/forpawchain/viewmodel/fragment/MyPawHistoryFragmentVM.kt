@@ -1,7 +1,9 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonArray
@@ -10,16 +12,16 @@ import com.ssafy.forpawchain.model.domain.AdoptDTO
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MyPawHistoryFragmentVM(private val context: Context) : ViewModel() {
-    val selectedKind = MutableLiveData<Int>()
-    val selectedNeutered = MutableLiveData<Int>()
-    val selectedSex = MutableLiveData<Int>()
+class MyPawHistoryFragmentVM(application: Application) : AndroidViewModel(application){
+
+    private val context = application.applicationContext
 
     companion object {
         val TAG: String? = this::class.qualifiedName
@@ -48,8 +50,7 @@ class MyPawHistoryFragmentVM(private val context: Context) : ViewModel() {
 
     suspend fun initData() {
         val response = withContext(Dispatchers.IO) {
-            val sharedPreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
-            val token = sharedPreferences.getString("token", "")!!
+            val token = PreferenceManager().getString(context, "token")!!
 
             UserService().getPawHistory(token).enqueue(object :
                 Callback<JsonObject> {

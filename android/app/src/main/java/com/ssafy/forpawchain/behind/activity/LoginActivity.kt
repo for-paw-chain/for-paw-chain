@@ -20,6 +20,8 @@ import com.ssafy.forpawchain.databinding.ActivityLoginBinding
 import com.ssafy.forpawchain.model.domain.UserDTO
 import com.ssafy.forpawchain.model.domain.signUpRequestDTO
 import com.ssafy.forpawchain.model.room.UserInfo
+import com.ssafy.forpawchain.model.room.UserInfo.Companion.setUserInfo
+import com.ssafy.forpawchain.model.room.UserInfo.Companion.walletAddress
 import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +36,7 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity() {
     //뒤로가기 연속 클릭 대기 시간
     private var backPressedTime: Long = 0
-    private lateinit var context: Context
+//    private lateinit var context: Context
 
     companion object {
         val TAG: String? = this::class.qualifiedName
@@ -60,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // context 초기화
-        context = this
+//        context = this
 
         // 안드로이드 기본 메뉴 바 숨기는 코드, 있으면 이상함
         val actionBar: ActionBar? = supportActionBar
@@ -82,11 +84,13 @@ class LoginActivity : AppCompatActivity() {
         // 처음 로그인인지 아닌지 확인
         // 처음 로그인인 경우, sharedPreferences는 null 인 경우가 없으므로 다르게 판단
 
-        val sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+        val uid = PreferenceManager().getString(applicationContext, "uid")
+        Log.d(TAG, "uid = ? ${uid}")
 
-        val uid = sharedPreferences.getString("uid", null)  // uid가 없으면 null로 반환
+        Log.d(TAG, "printAll")
+        PreferenceManager().printAll(applicationContext)
 
-        if (uid == null) {  // uid가 없는 경우 -> 처음 로그인
+        if (uid.isNullOrEmpty()) {  // uid가 없는 경우 -> 처음 로그인
             Log.d(TAG, "처음 로그인")
             // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오 계정으로 로그인
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
@@ -144,6 +148,8 @@ class LoginActivity : AppCompatActivity() {
                                             "KAKAO"
                                         )
                                         Log.d(TAG, "카카오 톡 첫 로그인 ${signUpRequestDTO}")
+                                        //처음 로그인
+
                                         UserService().signUpAndLoginUser(signUpRequestDTO)
                                             .enqueue(object :
                                                 Callback<JsonObject> {
@@ -170,11 +176,13 @@ class LoginActivity : AppCompatActivity() {
 
                                                             // PreferenceManager 클래스 인스턴스 생성
                                                             val preferenceManager = PreferenceManager()
-                                                            // 문자열 데이터 저장
-                                                            preferenceManager.setString(context, "token", response.body()?.get("accessToken")?.asString ?: "")
-                                                            Log.d(TAG, "getString 토큰 저장 잘 됨?" + preferenceManager.getString(context,"token"));
 
-                                                            login(preferenceManager.getString(context,"token")!!)
+                                                            // 문자열 데이터 저장
+                                                            preferenceManager.setString(applicationContext, "token", response.body()?.get("accessToken")?.asString ?: "")
+                                                            Log.d(TAG, "getString 토큰 저장 잘 됨?" + preferenceManager.getString(applicationContext,"token"));
+
+                                                            //회원가입에서 얻은 액세스 토큰으로 로그인 진행
+                                                            login(preferenceManager.getString(applicationContext,"token")!!)
                                                         }
                                                     } else {
                                                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -199,8 +207,6 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("카카오 계정 로그인", "잘 나옴?")
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoCallback)
             }
-
-
 
         } else {  // uid가 있는 경우 -> 로그인 이력이 있는 경우
             Log.d(TAG, "이전 로그인 정보가 존재함")
@@ -238,36 +244,32 @@ class LoginActivity : AppCompatActivity() {
                         response: Response<JsonObject>
                     ) {
                         if (response.isSuccessful) {
-                            // 처음 로그인이 아닌 경우
                             lifecycleScope.launch {
                                 Log.d(TAG, "로그인 성공 ${response.body()}" );
-//                                UserInfo.setUserInfo(response.body().toString())
-                                PreferenceManager().setString(context, "uid", response.body()?.get("uid")?.asString ?: "")
-                                PreferenceManager().setString(context, "id", response.body()?.get("id")?.asString ?: "")
-                                PreferenceManager().setString(context, "profile", response.body()?.get("profile")?.asString ?: "")
-                                PreferenceManager().setString(context, "name", response.body()?.get("name")?.asString ?: "")
-                                PreferenceManager().setString(context, "walletAddress", response.body()?.get("wa")?.asString ?: "")
-                                PreferenceManager().setBoolean(context, "isDoctor", response.body()?.get("doctor")?.asBoolean ?: false)
+                                UserInfo.setUserInfo(response.body().toString())
 
+                                PreferenceManager().setString(applicationContext, "uid", response.body()?.get("uid")?.asString ?: "")
+                                PreferenceManager().setString(applicationContext, "id", response.body()?.get("id")?.asString ?: "")
+                                PreferenceManager().setString(applicationContext, "profile", response.body()?.get("profile")?.asString ?: "")
+                                PreferenceManager().setString(applicationContext, "name", response.body()?.get("name")?.asString ?: "")
 
-                                PreferenceManager().getString(context, "uid")
-                                    ?.let { Log.d(TAG, "잘 들어가냐" + it) }
+                                if(walletAddress.isNullOrEmpty()){
+                                    PreferenceManager().setString(applicationContext, "walletAddress", "")
+                                }else{
+                                    PreferenceManager().setString(applicationContext, "walletAddress", response.body()?.get("wa")?.asString ?: "")
+                                }
 
-                                PreferenceManager().getString(context, "id")
-                                    ?.let { Log.d(TAG, "잘 들어가냐" + it) }
+                                PreferenceManager().setBoolean(applicationContext, "isDoctor", response.body()?.get("doctor")?.asBoolean ?: false)
 
-                                PreferenceManager().getString(context, "profile")
-                                    ?.let { Log.d(TAG, it) }
-
-                                PreferenceManager().getString(context, "name")
-                                    ?.let { Log.d(TAG, "잘 들어가냐" + it) }
+                                Log.d(TAG, "값 다 잘 들어갔냐 모든 값 출력 ");
+                                PreferenceManager().printAll(applicationContext)
 
                                 nextMainActivity()
                             }
                             call
 
                         } else {
-                            // 처음 로그인 한 경우 (응답코드 3xx, 4xx 등)
+                            // 로그인 실패 (응답코드 3xx, 4xx 등)
                             Log.d(TAG, "로그인 실패 response ${response}" )
                             Log.d(TAG, "로그인 실패 response.body() ${response.body()}" )
                             startActivity(Intent(applicationContext, LoginActivity::class.java))

@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,7 @@ import com.ssafy.forpawchain.model.domain.Data
 import com.ssafy.forpawchain.model.domain.DianosisNewDTO
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.model.service.IpfsService
+import com.ssafy.forpawchain.util.PreferenceManager
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -22,13 +24,15 @@ import retrofit2.Response
 import java.io.File
 
 
-class CreateDoctorHistoryFragmentVM : ViewModel() {
+class CreateDoctorHistoryFragmentVM(private val context: Context) : ViewModel() {
     private val _openEvent = MutableLiveData<Event<ActivityCode>>()
     val openEvent: LiveData<Event<ActivityCode>> get() = _openEvent
     val number = MutableLiveData<String>()
     val title = MutableLiveData<String>()
     val body = MutableLiveData<String>()
     val path = MutableLiveData<String>()
+
+    val token = PreferenceManager().getString(context, "token")!!
 
     //추가 시작
     val todoLiveData = MutableLiveData<List<DianosisNewDTO>>() //변경/관찰가능한 List
@@ -71,7 +75,7 @@ class CreateDoctorHistoryFragmentVM : ViewModel() {
             )
         }
         if (imagePart != null) {
-            IpfsService().uploadImage(imagePart).enqueue(object :
+            IpfsService().uploadImage(imagePart, token).enqueue(object :
                 retrofit2.Callback<JsonObject> {
                 override fun onResponse(
                     call: Call<JsonObject>,

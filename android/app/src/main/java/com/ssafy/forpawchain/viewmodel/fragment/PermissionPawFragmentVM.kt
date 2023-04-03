@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.ssafy.forpawchain.model.domain.PermissionUserDTO
 import com.ssafy.forpawchain.model.service.AuthService
 import com.ssafy.forpawchain.model.service.PetService
 import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -16,7 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class PermissionPawFragmentVM : ViewModel() {
+class PermissionPawFragmentVM(private val context: Context): ViewModel() {
     companion object {
         val TAG: String? = this::class.qualifiedName
 
@@ -24,6 +26,7 @@ class PermissionPawFragmentVM : ViewModel() {
 
     val name = MutableLiveData<String>()
     val code = MutableLiveData<String>()
+    val token = PreferenceManager().getString(context, "token")!!
 
     //추가 시작
     val todoLiveData = MutableLiveData<List<PermissionUserDTO>>() //변경/관찰가능한 List
@@ -63,7 +66,7 @@ class PermissionPawFragmentVM : ViewModel() {
 
     suspend fun initData(pid: String) {
         val response = withContext(Dispatchers.IO) {
-            AuthService().getPetAuth(pid).enqueue(object :
+            AuthService().getPetAuth(pid, token).enqueue(object :
                 Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     if (response.isSuccessful) {

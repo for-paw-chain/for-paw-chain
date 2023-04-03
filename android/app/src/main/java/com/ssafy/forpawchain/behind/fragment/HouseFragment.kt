@@ -43,6 +43,7 @@ import com.ssafy.forpawchain.model.service.PetService
 import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.util.ImageSave
+import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
@@ -66,6 +67,7 @@ class HouseFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var response : retrofit2.Response<JsonObject>
     private lateinit var searchResultBinding: FragmentSearchResultBinding
+    private lateinit var token: String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -91,6 +93,7 @@ class HouseFragment : Fragment() {
 
         val root: View = binding.root
         initObserve()
+
         return root
     }
 
@@ -101,6 +104,10 @@ class HouseFragment : Fragment() {
 
         val recyclerView = binding.recycler
         val searchList = mutableListOf<MyPawListDTO>()
+
+//        token =  PreferenceManager().getString(requireContext(), "token")!!
+        token = PreferenceManager().getString(requireActivity(), "token")!!
+
 //        searchResultBinding = FragmentSearchResultBinding.bind(view)
 
         recyclerView.adapter = MyPawListAdapter(searchList,
@@ -179,7 +186,7 @@ class HouseFragment : Fragment() {
                 EditorInfo.IME_ACTION_DONE -> {
                     // 엔터키가 눌렸을 때 처리할 코드 작성
                     GlobalScope.launch {
-                        when (getPetInfo(input)) {
+                        when (getPetInfo(input, token)) {
                             "200" -> {
                                 Log.d(TAG, "response 객체 내부는 = ${response.body()}")
 
@@ -284,7 +291,6 @@ class HouseFragment : Fragment() {
             //Log.d(TAG, "${verticalOffset}, ${appBarLayout.totalScrollRange}, ${appBarLayout.height}")
             if (-verticalOffset >= appBarLayout.totalScrollRange-1) {
                 if (!viewModel.isOpenSearch.value!!) {
-                    Log.d(TAG, "열림")
                     // TODO: DUMMY DATA
 //                    viewModel.addTask(SearchResultDTO("별이1", "여아", "견과", "말티즈", "X"))
 //                    viewModel.addTask(SearchResultDTO("별이2", "여아", "견과", "말티즈", "O"))
@@ -295,7 +301,7 @@ class HouseFragment : Fragment() {
 
                     /////
 
-                    PetService().getMyPets().enqueue(object :
+                    PetService().getMyPets(token).enqueue(object :
                         Callback<JsonObject> {
                         override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                             if (response.isSuccessful) {
@@ -428,8 +434,8 @@ class HouseFragment : Fragment() {
 //        }
 //    }
 
-    suspend fun getPetInfo(input: String): String = withContext(Dispatchers.IO) {
-        response = PetService().getPetInfo(input).execute()
+    suspend fun getPetInfo(input: String, token: String): String = withContext(Dispatchers.IO) {
+        response = PetService().getPetInfo(input, token).execute()
         when {
             response.isSuccessful && response.code() == 200 -> {
                 Log.d(TAG, "검색바 응답 200 $response")

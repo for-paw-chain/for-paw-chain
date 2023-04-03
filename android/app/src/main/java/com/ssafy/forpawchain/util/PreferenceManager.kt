@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.util
 
 import android.content.Context
 import android.content.SharedPreferences;
+import android.util.Log
 
 class PreferenceManager {
 
@@ -175,5 +176,18 @@ class PreferenceManager {
         val edit = prefs.edit()
         edit.clear()
         edit.apply()
+    }
+
+    /**
+     * 모든 데이터 출력
+     * @param context
+     * */
+
+    fun printAll(context: Context) {
+        val prefs = getPreferences(context)
+        val keys: Map<String, *> = prefs.all
+        for ((key, value) in keys) {
+            Log.d("printAll", "$key: $value")
+        }
     }
 }

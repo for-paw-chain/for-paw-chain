@@ -18,6 +18,7 @@ import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.interfaces.IWithdrawalAnimal
 import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.AuthService
+import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ class WithdrawalAnimalDialog(myPawListDTO: MyPawListDTO, context: Context, dialo
         this.dialogInterface = dialogInterface
         this.mMyPawListDTO = myPawListDTO;
     }
+    var token = PreferenceManager().getString(context, "token")!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +60,8 @@ class WithdrawalAnimalDialog(myPawListDTO: MyPawListDTO, context: Context, dialo
         GlobalScope.launch {
             val response = withContext(Dispatchers.IO) {
                 AuthService().getRegDateAuth(
-                    UserInfo.uid.toInt(), mMyPawListDTO?.code?.value.toString()
+                    UserInfo.uid.toInt(), mMyPawListDTO?.code?.value.toString(),
+                    token
                 ).enqueue(object :
                     Callback<JsonObject> {
                     override fun onResponse(

@@ -1,7 +1,10 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.app.Application
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonArray
@@ -9,6 +12,7 @@ import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.service.PetService
 import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -16,10 +20,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class MyPawFragmentVM : ViewModel() {
+class MyPawFragmentVM(application: Application) : AndroidViewModel(application){
+    private val context = application.applicationContext
     companion object {
         val TAG: String? = this::class.qualifiedName
-
     }
 
     //추가 시작
@@ -44,8 +48,9 @@ class MyPawFragmentVM : ViewModel() {
     }
 
     suspend fun initData() {
+        val token = PreferenceManager().getString(context, "token")!!
         val response = withContext(Dispatchers.IO) {
-            PetService().getMyPets().enqueue(object :
+            PetService().getMyPets(token).enqueue(object :
                 Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     if (response.isSuccessful) {

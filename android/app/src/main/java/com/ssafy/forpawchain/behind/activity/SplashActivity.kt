@@ -3,6 +3,7 @@ package com.ssafy.forpawchain.behind.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.UserManager
@@ -25,6 +26,7 @@ import com.ssafy.forpawchain.blockchain.Test_sol_MyContract
 import com.ssafy.forpawchain.model.domain.UserDTO
 import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.UserService
+import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -147,6 +149,15 @@ class SplashActivity : AppCompatActivity() {
                     })
                 }
             }
+
+            Log.d(TAG, "초기화 전 모든 값 출력 ");
+            PreferenceManager().printAll(applicationContext)
+
+            //매번 초기화
+            PreferenceManager().clear(applicationContext)
+
+            Log.d(TAG, "초기화 후 모든 값 출력 ");
+            PreferenceManager().printAll(applicationContext)
 
             startActivity(Intent(applicationContext, LoginActivity::class.java))
             /**
