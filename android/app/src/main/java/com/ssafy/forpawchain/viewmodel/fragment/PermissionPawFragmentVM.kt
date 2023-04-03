@@ -1,12 +1,15 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.PermissionUserDTO
+import com.ssafy.forpawchain.model.room.UserInfo.Companion.token
 import com.ssafy.forpawchain.model.service.AuthService
 import com.ssafy.forpawchain.model.service.PetService
 import com.ssafy.forpawchain.util.ImageLoader
@@ -18,7 +21,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class PermissionPawFragmentVM(private val context: Context): ViewModel() {
+class PermissionPawFragmentVM(application: Application) : AndroidViewModel(application) {
+    private val context = application.applicationContext
     companion object {
         val TAG: String? = this::class.qualifiedName
 
@@ -26,7 +30,6 @@ class PermissionPawFragmentVM(private val context: Context): ViewModel() {
 
     val name = MutableLiveData<String>()
     val code = MutableLiveData<String>()
-    val token = PreferenceManager().getString(context, "token")!!
 
     //추가 시작
     val todoLiveData = MutableLiveData<List<PermissionUserDTO>>() //변경/관찰가능한 List
@@ -65,6 +68,7 @@ class PermissionPawFragmentVM(private val context: Context): ViewModel() {
     }
 
     suspend fun initData(pid: String) {
+        val token = PreferenceManager().getString(context, "token")!!
         val response = withContext(Dispatchers.IO) {
             AuthService().getPetAuth(pid, token).enqueue(object :
                 Callback<JsonObject> {

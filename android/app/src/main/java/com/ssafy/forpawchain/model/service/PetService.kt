@@ -25,7 +25,7 @@ class PetService {
     }
 
     fun getMyPets(token : String): Call<JsonObject> {
-        Log.d(TAG, "getMyPets 의 UserInfo.token = ${token}")
+        Log.d(TAG, "getMyPets 의 token = ${token}")
 
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
