@@ -25,8 +25,8 @@
             android:fillViewport="true"
             android:gravity="center"
             android:orientation="vertical"
-            tools:layout_editor_absoluteX="-27dp"
-            tools:layout_editor_absoluteY="-319dp">
+            tools:layout_editor_absoluteX="-162dp"
+            tools:layout_editor_absoluteY="-62dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/main"
@@ -43,9 +43,10 @@
                     android:textSize="40sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.505"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.125" />
+                    app:layout_constraintVertical_bias="0.105" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout3"
@@ -53,9 +54,10 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.51"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView5"
-                    app:layout_constraintVertical_bias="0.1">
+                    app:layout_constraintVertical_bias="0.044">
 
 
                     <LinearLayout
@@ -97,6 +99,7 @@
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/view"
                         app:layout_constraintVertical_bias="0.0" />
@@ -111,9 +114,10 @@
                     android:src="@drawable/logo_doctor_cert_body"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
-                    app:layout_constraintVertical_bias="0.15" />
+                    app:layout_constraintVertical_bias="0.055" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout5"
