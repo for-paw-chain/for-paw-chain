@@ -1,6 +1,9 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonArray
@@ -9,17 +12,16 @@ import com.ssafy.forpawchain.model.domain.AdoptDTO
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+class MyPawHistoryFragmentVM(application: Application) : AndroidViewModel(application){
 
-class MyPawHistoryFragmentVM : ViewModel() {
-    val selectedKind = MutableLiveData<Int>()
-    val selectedNeutered = MutableLiveData<Int>()
-    val selectedSex = MutableLiveData<Int>()
+    private val context = application.applicationContext
 
     companion object {
         val TAG: String? = this::class.qualifiedName
@@ -48,7 +50,9 @@ class MyPawHistoryFragmentVM : ViewModel() {
 
     suspend fun initData() {
         val response = withContext(Dispatchers.IO) {
-            UserService().getPawHistory().enqueue(object :
+            val token = PreferenceManager().getString(context, "token")!!
+
+            UserService().getPawHistory(token).enqueue(object :
                 Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     if (response.isSuccessful) {

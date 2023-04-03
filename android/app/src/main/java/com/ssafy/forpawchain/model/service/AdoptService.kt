@@ -58,11 +58,12 @@ class AdoptService {
      */
     fun createAdopt(
         image: MultipartBody.Part,
-        payload: MultipartBody.Part
+        payload: MultipartBody.Part,
+        token: String
     ): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -78,10 +79,10 @@ class AdoptService {
         return service.createAdopt(image, payload)
     }
 
-    fun deleteAdopt(pid: String): Call<JsonObject> {
+    fun deleteAdopt(pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Access-Token", "Bearer " + UserInfo.token)
+                .addHeader("Access-Token", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -97,10 +98,10 @@ class AdoptService {
         return service.deleteAdopt(pid)
     }
 
-    fun getCA(pid: String): Call<JsonObject> {
+    fun getCA(pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Access-Token", "Bearer " + UserInfo.token)
+                .addHeader("Access-Token", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()

@@ -92,8 +92,8 @@ dependencies {
     // Retrofit 라이브러리
     implementation 'com.squareup.retrofit2:retrofit:2.6.4'
 
-    // Gson 변환기 라이브러리
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.4'
+    // Gson 라이브러리
+    implementation 'com.google.code.gson:gson:2.8.8'
 
     // Scalars 변환기 라이브러리
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
@@ -118,6 +118,14 @@ dependencies {
 
     //Circle ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //동물 사진 문자열을 직접 Drawable 객체로 파싱하기 위한 라이브러리
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //sharedPreferences 대신 DataStore 사용하기 위해
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 
     // default
     implementation 'androidx.core:core-ktx:1.7.0'
