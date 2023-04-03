@@ -22,6 +22,7 @@ import com.ssafy.forpawchain.model.interfaces.IWithdrawalAnimal
 import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.AuthService
 import com.ssafy.forpawchain.util.ImageSave
+import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +33,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 class MyPawFragment : Fragment() {
     private lateinit var viewModel: MyPawFragmentVM
@@ -55,7 +55,7 @@ class MyPawFragment : Fragment() {
     ): View {
         _binding = FragmentMyPawBinding.inflate(inflater, container, false)
         activity?.let {
-            viewModel = ViewModelProvider(it).get(MyPawFragmentVM::class.java)
+            viewModel = ViewModelProvider(this).get(MyPawFragmentVM::class.java)
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }
@@ -83,9 +83,11 @@ class MyPawFragment : Fragment() {
                 val dialog = WithdrawalAnimalDialog(it, requireContext(), object : IWithdrawalAnimal {
                     override fun onDeleteBtnClick(pid: String, myPawListDTO: MyPawListDTO) {
                         GlobalScope.launch {
+                            val token = PreferenceManager().getString(requireContext(), "token")!!
                             val response = withContext(Dispatchers.IO) {
                                 AuthService().removePetAuth(
-                                    pid.substring(1)
+                                    pid.substring(1),
+                                    token
                                 ).enqueue(object :
                                     Callback<JsonObject> {
                                     override fun onResponse(
@@ -115,7 +117,6 @@ class MyPawFragment : Fragment() {
                         Log.d(TAG, "반려동물 삭제")
                     }
                 })
-
                 dialog.show()
 //                viewModel.deleteTask(it)
             }, {

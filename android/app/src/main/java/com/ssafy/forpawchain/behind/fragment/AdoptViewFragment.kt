@@ -21,6 +21,7 @@ import com.ssafy.forpawchain.model.room.AppDatabase
 import com.ssafy.forpawchain.model.room.UserDao
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
@@ -53,8 +54,6 @@ class AdoptViewFragment : Fragment() {
     ): View {
         _binding = FragmentAdoptViewBinding.inflate(inflater, container, false)
 
-
-
         activity?.let {
             viewModel = ViewModelProvider(it).get(AdoptViewFragmentVM::class.java)
             binding.viewModel = viewModel
@@ -64,6 +63,8 @@ class AdoptViewFragment : Fragment() {
         val root: View = binding.root
 
         val bundle = arguments
+
+        val token =  PreferenceManager().getString(requireContext(), "token")!!
 
         lifecycleScope.launch {
             bundle?.getString("pid")?.let {
@@ -80,6 +81,7 @@ class AdoptViewFragment : Fragment() {
             navController.navigate(R.id.navigation_diagnosis_detail, bundle)
             Log.d(TAG, "의료기록 상세 조회")
         }
+
 
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -107,7 +109,7 @@ class AdoptViewFragment : Fragment() {
             if (user != null) {
                 lifecycleScope.launch {
                     bundle?.getString("pid")?.let {
-                        AdoptService().getCA(it)
+                        AdoptService().getCA(it, token)
                             .enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
@@ -147,7 +149,7 @@ class AdoptViewFragment : Fragment() {
             else {
                 lifecycleScope.launch {
                     bundle?.getString("pid")?.let {
-                        AdoptService().getCA(it)
+                        AdoptService().getCA(it, token)
                             .enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
@@ -180,8 +182,6 @@ class AdoptViewFragment : Fragment() {
                                 }
                             })
                     }
-
-
                 }
             }
         }

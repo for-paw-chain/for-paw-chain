@@ -36,7 +36,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayout8"
-            android:layout_width="380dp"
+            android:layout_width="360dp"
             android:layout_height="135dp"
             android:layout_margin="20dp"
             android:background="@drawable/box_radius_02"
@@ -245,7 +245,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout9"
-            android:layout_width="380dp"
+            android:layout_width="360dp"
             android:layout_height="100dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="24dp"
@@ -259,12 +259,11 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
 
             <TextView
-                android:layout_width="75sp"
+                android:layout_width="50sp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
                 android:fontFamily="@font/kakao_regular"
-                android:gravity="center_horizontal"
-                android:text="특이사항"
+                android:gravity="center"
+                android:text="특이 \n사항"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout12"
                 app:layout_constraintTop_toTopOf="parent"
@@ -274,6 +273,7 @@
                 android:id="@+id/linearLayout12"
                 android:layout_width="300dp"
                 android:layout_height="84dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/box_radius_03"
                 app:layout_constraintBottom_toBottomOf="parent"

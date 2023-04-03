@@ -22,10 +22,10 @@ class IpfsService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun uploadImage(image: MultipartBody.Part): Call<JsonObject> {
+    fun uploadImage(image: MultipartBody.Part, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()

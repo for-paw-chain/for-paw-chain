@@ -21,10 +21,10 @@ class AuthService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun getPetAuth(pid: String): Call<JsonObject> {
+    fun getPetAuth(pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -39,10 +39,10 @@ class AuthService {
 
         return service.getPetAuth(pid)
     }
-    fun removePetAuth(pid: String): Call<JsonObject> {
+    fun removePetAuth(pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -57,10 +57,10 @@ class AuthService {
 
         return service.removePetAuth(pid);
     }
-    fun handPetAuth(receiver: Int, pid: String): Call<JsonObject> {
+    fun handPetAuth(receiver: Int, pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -75,10 +75,10 @@ class AuthService {
 
         return service.handPetAuth(receiver, pid);
     }
-    fun giveFriendAuth(receiver: Int, pid: String): Call<JsonObject> {
+    fun giveFriendAuth(receiver: Int, pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -93,10 +93,10 @@ class AuthService {
 
         return service.giveFriendAuth(receiver, pid);
     }
-    fun getRegDateAuth(uid: Int, pid: String): Call<JsonObject> {
+    fun getRegDateAuth(uid: Int, pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
