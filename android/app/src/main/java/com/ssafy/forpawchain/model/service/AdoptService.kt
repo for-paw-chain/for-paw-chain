@@ -37,6 +37,18 @@ class AdoptService {
 
     }
 
+    fun getAdoptAd(): Call<JsonObject> {
+        retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        service = retrofit.create(RetrofitService::class.java);
+
+        return service.getAdoptAd()
+
+    }
+
     fun getDetailAdopt(pid: String): Call<JsonObject> {
         retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -70,7 +82,7 @@ class AdoptService {
 
         retrofit = Retrofit.Builder()
             .client(client)
-            .baseUrl(PetService.baseUrl)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -82,14 +94,14 @@ class AdoptService {
     fun deleteAdopt(pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Access-Token", "Bearer " + token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
 
         retrofit = Retrofit.Builder()
             .client(client)
-            .baseUrl(PetService.baseUrl)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -101,14 +113,14 @@ class AdoptService {
     fun getCA(pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Access-Token", "Bearer " + token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
 
         retrofit = Retrofit.Builder()
             .client(client)
-            .baseUrl(PetService.baseUrl)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

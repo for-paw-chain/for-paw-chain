@@ -22,6 +22,9 @@ interface RetrofitService {
     @GET("query/{msg}")
     fun test(@Path("msg") msg: String): Call<JsonObject>
 
+    @GET("adopt/ad")
+    fun getAdoptAd(): Call<JsonObject>
+
     @GET("adopt")
     fun getAdoptList(
         @Query("pageno") pageno: Int,
@@ -79,8 +82,8 @@ interface RetrofitService {
     @Multipart
     @POST("adopt")
     fun createAdopt(
-        @Part image: MultipartBody.Part,
-        @Part payload: MultipartBody.Part
+        @Part profile: MultipartBody.Part,
+        @Part content: MultipartBody.Part
     ): Call<JsonObject>
 
     @POST("web3/contract/{pid}")
@@ -115,7 +118,7 @@ interface RetrofitService {
     @Multipart
     @POST("pet/info")
     fun createPawInfo(
-        @Part image: MultipartBody.Part? = null,
-        @Part payload: MultipartBody.Part
+        @Part profile: MultipartBody.Part? = null,
+        @Part content: MultipartBody.Part
     ): Call<JsonObject>
 }

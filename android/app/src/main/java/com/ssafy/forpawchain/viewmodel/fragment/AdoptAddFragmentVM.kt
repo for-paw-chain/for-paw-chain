@@ -1,8 +1,10 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.core.view.accessibility.AccessibilityEventCompat.ContentChangeType
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,12 +28,12 @@ import retrofit2.Response
 import java.io.File
 
 
-class AdoptAddFragmentVM(val context : Context) : ViewModel() {
+class AdoptAddFragmentVM(application: Application) : AndroidViewModel(application) {
     val number = MutableLiveData<String>()
     val phone = MutableLiveData<String>()
     val extra = MutableLiveData<String>()
     val path = MutableLiveData<String>()
-    val token = PreferenceManager().getString(context,"token")!!
+    val token = PreferenceManager().getString(application,"token")!!
 
     private val _openEvent = MutableLiveData<Event<ActivityCode>>()
     val openEvent: LiveData<Event<ActivityCode>> get() = _openEvent

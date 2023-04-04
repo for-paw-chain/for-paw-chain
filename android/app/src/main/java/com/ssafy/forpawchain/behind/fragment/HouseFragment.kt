@@ -94,7 +94,6 @@ class HouseFragment : Fragment() {
 
         val root: View = binding.root
         initObserve()
-
         return root
     }
 
@@ -439,7 +438,7 @@ class HouseFragment : Fragment() {
     }
 
     suspend fun getPetInfo(input: String, token: String): String = withContext(Dispatchers.IO) {
-        response = PetService().getPetInfo(input, token).execute()
+        val response = PetService().getPetInfo(input, token).execute()
 
         when {
             response.isSuccessful && response.code() == 200 -> {

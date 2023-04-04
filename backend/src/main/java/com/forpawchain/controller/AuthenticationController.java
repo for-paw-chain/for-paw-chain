@@ -30,10 +30,7 @@ public class AuthenticationController {
             UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
             authService.giveFriendAuthentication(userInfoResDto.getUid(), receiver, pid);
 
-            HashMap<String, String> map = new HashMap<>();
-            map.put("content", "OK");
-
-            return ResponseEntity.accepted().body(map);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
@@ -44,11 +41,8 @@ public class AuthenticationController {
         try {
             UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
             authService.removeAuthentication(receiver, pid);
-            HashMap<String, String> map = new HashMap<>();
-            map.put("content", "OK");
 
-            return ResponseEntity.accepted().body(map);
-
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
@@ -77,10 +71,7 @@ public class AuthenticationController {
             UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
             authService.giveMasterAuthentication(userInfoResDto.getUid(), receiver, pid);
 
-            HashMap<String, String> map = new HashMap<>();
-            map.put("content", "OK");
-
-            return ResponseEntity.accepted().body(map);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }

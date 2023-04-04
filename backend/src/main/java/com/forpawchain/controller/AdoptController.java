@@ -102,6 +102,7 @@ public class AdoptController {
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
