@@ -2,6 +2,7 @@ package com.forpawchain.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -72,11 +73,11 @@ public class AdoptServiceImpl implements AdoptService {
 	@Override
 	public void registAdopt(AdoptDetailReqDto adoptDetailReqDto, long uid, MultipartFile imageFile) throws IOException {
 		String pid = adoptDetailReqDto.getPid();
-		AdoptEntity adoptEntity = adoptRepository.findByPid(pid)
-			.orElseThrow(() -> new BaseException(ErrorMessage.PET_NOT_FOUND));
+		Optional<AdoptEntity> adoptEntity = adoptRepository.findByPid(pid);
+
 
 		// 이미 입양 공고글이 작성되어 있을 경우
-		if (adoptEntity != null) {
+		if (adoptEntity.isPresent()) {
 			throw new BaseException(ErrorMessage.EXIST_CONTENT);
 		}
 
@@ -90,7 +91,7 @@ public class AdoptServiceImpl implements AdoptService {
 		String imageUrl = blob.getMediaLink();
 
 		// 분양 공고 추가
-		adoptEntity = AdoptEntity.builder()
+		AdoptEntity newAdoptEntity = AdoptEntity.builder()
 			.pid(adoptDetailReqDto.getPid())
 			.uid(uid)
 			.profile(imageUrl)
@@ -107,7 +108,7 @@ public class AdoptServiceImpl implements AdoptService {
 			.build();
 		petRepository.save(newPetEntity);
 
-		adoptRepository.save(adoptEntity);
+		adoptRepository.save(newAdoptEntity);
 	}
 
 	@Override

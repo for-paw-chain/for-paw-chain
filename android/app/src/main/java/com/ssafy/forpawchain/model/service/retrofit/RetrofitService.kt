@@ -22,6 +22,9 @@ interface RetrofitService {
     @GET("query/{msg}")
     fun test(@Path("msg") msg: String): Call<JsonObject>
 
+    @GET("adopt/ad")
+    fun getAdoptAd(): Call<JsonObject>
+
     @GET("adopt")
     fun getAdoptList(
         @Query("pageno") pageno: Int,
