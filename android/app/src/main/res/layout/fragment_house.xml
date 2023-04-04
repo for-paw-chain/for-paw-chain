@@ -50,30 +50,9 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.993" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-
-
-            <!-- 뷰페이저와 연결할 탭 -->
-            <!--            <com.google.android.material.tabs.TabLayout-->
-            <!--                android:id="@+id/tabLayout"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content" />-->
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- 뷰페이저 (layout_behavior를 "@string/appbar_scrolling_view_behavior"로 설정해야함! ) -->
-<!--            <TextView-->
-<!--                android:id="@+id/textView25"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:fontFamily="@font/kakao_bold"-->
-<!--                android:text="나의 반려동물"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="25sp"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                tools:ignore="MissingConstraints" />-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
