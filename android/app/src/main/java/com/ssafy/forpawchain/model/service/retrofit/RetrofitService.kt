@@ -56,7 +56,8 @@ interface RetrofitService {
     @GET("auth/pet")
     fun getPetAuth(@Query("pid") pid: String): Call<JsonObject>
     @PUT("auth")
-    fun removePetAuth(@Query("pid") pid: String): Call<JsonObject>
+    fun removePetAuth(@Query("receiver") receiver: Int,
+                      @Query("pid") pid: String): Call<JsonObject>
     @PUT("auth/hand")
     fun handPetAuth(@Query("receiver") receiver: Int,
                       @Query("pid") pid: String
@@ -109,5 +110,12 @@ interface RetrofitService {
     @POST("user/login")
     fun generalLogin(
         @Body loginUserReqDto: LoginUserReqDTO
+    ): Call<JsonObject>
+
+    @Multipart
+    @POST("pet/info")
+    fun createPawInfo(
+        @Part image: MultipartBody.Part? = null,
+        @Part payload: MultipartBody.Part
     ): Call<JsonObject>
 }

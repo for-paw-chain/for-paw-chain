@@ -173,7 +173,7 @@
                         android:id="@+id/bodyText"
                         android:layout_width="260dp"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
 
                         android:fontFamily="@font/kakao_regular"
                         android:gravity="center_vertical"

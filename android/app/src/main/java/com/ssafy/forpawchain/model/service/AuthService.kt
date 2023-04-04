@@ -56,7 +56,7 @@ class AuthService {
 
         return service.getPetAuth(pid)
     }
-    fun removePetAuth(pid: String, token: String): Call<JsonObject> {
+    fun removePetAuth(receiver: Int, pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer " + token)
@@ -72,7 +72,7 @@ class AuthService {
 
         service = retrofit.create(RetrofitService::class.java);
 
-        return service.removePetAuth(pid);
+        return service.removePetAuth(receiver, pid);
     }
     fun handPetAuth(receiver: Int, pid: String, token: String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->

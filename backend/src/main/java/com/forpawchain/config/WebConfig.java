@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor())
                 .addPathPatterns("/api/auth/**")
-                .addPathPatterns("/auth/**");
+                .excludePathPatterns("/api/auth/pet");
     }
     @Bean
     public AuthenticationInterceptor authenticationInterceptor(){
