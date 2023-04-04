@@ -40,7 +40,7 @@ public class AuthenticationController {
     public ResponseEntity<?> removeAuthentication(long receiver, String pid) {
         try {
             UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
-            authService.removeAuthentication(userInfoResDto.getUid(), pid);
+            authService.removeAuthentication(receiver, pid);
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
