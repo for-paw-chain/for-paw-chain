@@ -64,8 +64,9 @@ class PawFragmentVM : ViewModel() {
                                         MutableLiveData(drawable),
                                         MutableLiveData(if (item["type"].asString.equals("DOG")) "개과" else if(item["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                         MutableLiveData(item["kind"].asString),
-                                        MutableLiveData(if (item["spayed"].asString.equals("false")) "Ⅹ" else "○")
-                                    )
+                                        MutableLiveData<String>(if (item["spayed"].asString.equals("false")) "Ⅹ" else if(item["spayed"].asString.equals("true")) "○" else ""),
+
+                                        )
                                 )
                             }
 

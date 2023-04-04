@@ -35,13 +35,6 @@ class UserInfo {
                 }
                 this.isDoctor = jsonObject.get("doctor").asBoolean
                 this.token = token
-
-//                uid = userDTO.uid
-//                id = userDTO.id
-//                profile = userDTO.profile
-//                name = userDTO.name
-//                walletAddress= userDTO.walletAddress
-//                isDoctor = userDTO.isDoctor
             }
 
             // 테스트 로그인

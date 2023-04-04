@@ -31,10 +31,13 @@ class SearchResultAdapter(
         viewGroup: ViewGroup,
         viewType: Int
     ): SearchRestulViewHolder {
+
+        //리사이클 뷰에서 각 아이템에 사용하는 view
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.controll_search_result_list, viewGroup, false) //내가 각아이템에 사용하는 view
+            .inflate(R.layout.controll_search_result_list, viewGroup, false)
         val bind = ControllSearchResultListBinding.bind(view)
         val holder = SearchRestulViewHolder(bind)
+
 //        view.setOnClickListener({
 //            if(holder.adapterPosition != -1){
 //                onClickDetailButton.invoke(mydataSet.get(holder.adapterPosition))

@@ -69,7 +69,7 @@ class MyPawFragmentVM(application: Application) : AndroidViewModel(application){
                                             MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
                                             MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                             MutableLiveData<String>(item1["kind"].asString),
-                                            MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
+                                            MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else if(item1["spayed"].asString.equals("true")) "○" else ""),
                                         )
                                     )
                                 } else {
@@ -82,7 +82,7 @@ class MyPawFragmentVM(application: Application) : AndroidViewModel(application){
                                                 MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
                                                 MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                                 MutableLiveData<String>(item1["kind"].asString),
-                                                MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
+                                                MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else if(item1["spayed"].asString.equals("true")) "○" else ""),
                                             )
                                         )
                                     }
