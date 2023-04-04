@@ -43,12 +43,12 @@ class AdoptRecyclerViewAdapter(
 
         val holder = BaseRecyclerViewHolder(bind)
 
-        view.setOnLongClickListener {
-            if (holder.adapterPosition != -1) {
-                onClickCRUEButton.invoke(mydataSet.get(holder.adapterPosition))
-            }
-            return@setOnLongClickListener true
-        }
+//        view.setOnLongC`lickListener {
+//            if (holder.adapterPosition != -1) {
+//                onClickCRUEButton.invoke(mydataSet.get(holder.adapterPosition))
+//            }
+//            return@setOnLongClickListener true
+//        }`
         return holder
     }
 
