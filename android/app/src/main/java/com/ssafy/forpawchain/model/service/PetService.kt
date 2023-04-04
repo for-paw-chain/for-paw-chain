@@ -1,6 +1,5 @@
 package com.ssafy.forpawchain.model.service
 
-import android.util.Log
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
@@ -25,11 +24,9 @@ class PetService {
     }
 
     fun getMyPets(token : String): Call<JsonObject> {
-        Log.d(TAG, "getMyPets 의 token = ${token}")
-
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + token)
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -62,5 +59,27 @@ class PetService {
         service = retrofit.create(RetrofitService::class.java);
 
         return service.getPetInfo(pid)
+    }
+    fun createPawInfo(
+        image: MultipartBody.Part? = null,
+        payload: MultipartBody.Part,
+        token: String
+    ): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
+        PetService.retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(PetService.baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        PetService.service = PetService.retrofit.create(RetrofitService::class.java);
+
+        return PetService.service.createPawInfo(image, payload)
     }
 }

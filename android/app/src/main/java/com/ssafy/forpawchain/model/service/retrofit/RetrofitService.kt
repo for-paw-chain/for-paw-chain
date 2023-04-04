@@ -109,4 +109,11 @@ interface RetrofitService {
     fun generalLogin(
         @Body loginUserReqDto: LoginUserReqDTO
     ): Call<JsonObject>
+
+    @Multipart
+    @POST("pet/info")
+    fun createPawInfo(
+        @Part image: MultipartBody.Part? = null,
+        @Part payload: MultipartBody.Part
+    ): Call<JsonObject>
 }

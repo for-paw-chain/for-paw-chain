@@ -62,14 +62,12 @@ class PermissionPawFragment : Fragment() {
 
         val bundle = arguments
         var pid = ""
-        var uid = ""
 
         val token =  PreferenceManager().getString(requireContext(), "token")!!
         lifecycleScope.launch {
             bundle?.getSerializable("item")?.let {
                 val item = it as (MyPawListDTO)
                 pid = item.code.value.toString()
-                uid = item.code.value.toString()
 
                 viewModel.name.postValue(item.name.value)
                 viewModel.code.postValue("#" + item.code.value.toString())
