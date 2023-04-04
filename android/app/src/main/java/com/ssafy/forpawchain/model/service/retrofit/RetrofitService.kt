@@ -22,6 +22,9 @@ interface RetrofitService {
     @GET("query/{msg}")
     fun test(@Path("msg") msg: String): Call<JsonObject>
 
+    @GET("adopt/ad")
+    fun getAdoptAd(): Call<JsonObject>
+
     @GET("adopt")
     fun getAdoptList(
         @Query("pageno") pageno: Int,
@@ -52,6 +55,8 @@ interface RetrofitService {
     fun getPetInfo(@Query("pid") pid: String): Call<JsonObject>
 
     @GET("auth")
+    fun getAuth(@Query("pid") pid: String): Call<JsonObject>
+    @GET("auth/pet")
     fun getPetAuth(@Query("pid") pid: String): Call<JsonObject>
     @PUT("auth")
     fun removePetAuth(@Query("receiver") receiver: Int,
