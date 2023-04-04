@@ -303,7 +303,7 @@ class HouseFragment : Fragment() {
 
                     /////
 
-                    PetService().getMyPets().enqueue(object :
+                    PetService().getMyPets(token).enqueue(object :
                         Callback<JsonObject> {
                         override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                             if (response.isSuccessful) {
@@ -436,8 +436,8 @@ class HouseFragment : Fragment() {
 //        }
 //    }
 
-    suspend fun getPetInfo(input: String): String = withContext(Dispatchers.IO) {
-        val response = PetService().getPetInfo(input).execute()
+    suspend fun getPetInfo(input: String, token: String): String = withContext(Dispatchers.IO) {
+        response = PetService().getPetInfo(input, token).execute()
 
         when {
             response.isSuccessful && response.code() == 200 -> {

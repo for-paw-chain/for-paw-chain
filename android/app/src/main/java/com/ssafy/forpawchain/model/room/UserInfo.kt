@@ -46,7 +46,7 @@ class UserInfo {
 
             // 테스트 로그인
             fun setTestUserInfo(Otoken: String) {
-                uid = "2729484551"
+                uid = "54"
                 name = "윤혜진"
                 token = Otoken.replace("\"", "")
             }
