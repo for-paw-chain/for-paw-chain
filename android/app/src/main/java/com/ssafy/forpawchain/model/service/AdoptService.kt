@@ -37,6 +37,18 @@ class AdoptService {
 
     }
 
+    fun getAdoptAd(): Call<JsonObject> {
+        retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        service = retrofit.create(RetrofitService::class.java);
+
+        return service.getAdoptAd()
+
+    }
+
     fun getDetailAdopt(pid: String): Call<JsonObject> {
         retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)

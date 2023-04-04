@@ -286,7 +286,6 @@
                     android:layout_height="80dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-
                     android:layout_weight="1"
                     android:fontFamily="@font/kakao_regular"
                     android:gravity="center_horizontal"
