@@ -47,6 +47,7 @@ public class PetController {
 
 			return ResponseEntity.status(HttpStatus.OK).body(map);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 		}
 	}
@@ -62,6 +63,7 @@ public class PetController {
 
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 		}
 	}
@@ -77,6 +79,7 @@ public class PetController {
 
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 		}
 	}
@@ -98,6 +101,7 @@ public class PetController {
 				return ResponseEntity.status(HttpStatus.OK).body(petInfoResDto);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 		}
 	}
