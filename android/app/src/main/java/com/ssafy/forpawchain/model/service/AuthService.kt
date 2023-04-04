@@ -1,8 +1,6 @@
 package com.ssafy.forpawchain.model.service
 
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -19,6 +17,25 @@ class AuthService {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
         var service = retrofit.create(RetrofitService::class.java);
+    }
+
+    fun getAuth(pid: String, token: String): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
+        retrofit = Retrofit.Builder()
+            .client(client)
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        service = retrofit.create(RetrofitService::class.java);
+
+        return service.getAuth(pid)
     }
 
     fun getPetAuth(pid: String, token: String): Call<JsonObject> {

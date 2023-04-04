@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -222,42 +223,50 @@ class HouseFragment : Fragment() {
                                  * 그러나 현재 setCurrentState가 호출되는 시점은 GlobalScope.launch 블록 내부에서 실행 중인 백그라운드 스레드에서입니다.
                                  * 따라서 navController.navigate 메서드를 메인 스레드에서 실행되도록 withContext(Dispatchers.Main)안에서 사용되게 함
                                  **/
+
                                 withContext(Dispatchers.Main) {
 
                                     bundle.putSerializable("searchResultVM", searchResultDTO)
                                     val navController = Navigation.findNavController(requireView())
                                     navController.navigate(R.id.navigation_search_result, bundle)
-
-                                    // navigation_search_result로 이동 후 ImageView visibility 변경
-                                    val searchResultFragment = SearchResultFragment()
-                                    searchResultFragment.view?.findViewById<ImageView>(R.id.idAddPawInfoDetailButton)?.visibility = View.GONE
-
-
-                                    navController.navigate(R.id.navigation_search_result, bundle)
-
-                                    // navigation_search_result로 이동 후 ImageView visibility 변경
-//                                    val imageView = viewfindViewById<ImageView>(R.id.idAddPawInfoDetailButton)
-//                                    imageView.visibility = View.GONE
-
                                 }
-
-
                             }
                             "206" -> {
+                                Log.d(TAG, "response 객체 내부는 = ${response.body()}")
+
+                                // 기본 견적 사항 이미지 파일 가져오기
+                                val imageResId = resources.getIdentifier("icon_default_pet", "drawable", context?.packageName)
+
+                                // Drawable 객체 생성
+                                val drawable = ContextCompat.getDrawable(requireContext(), imageResId)
+
+                                val searchResultDTO = SearchResultDTO(
+                                    code = response.body()!!.get("pid").asString ?: "",
+                                    profile = drawable,
+                                    name = response.body()!!.get("name").asString ?: "",
+                                    sex = response.body()!!.get("sex").asString ?: "",
+                                    species = response.body()!!.get("type").asString ?: "",
+                                    kind = response.body()!!.get("kind").asString ?: "",
+                                    neutered = response.body()!!.get("spayed").asString ?: "",
+                                    birth = "",
+                                    region = "",
+                                    tel = "",
+                                    etc = ""
+                                )
+
                                 withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "있는 동물입니다22",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    bundle.putSerializable("searchResultVM", searchResultDTO)
+                                    val navController = Navigation.findNavController(requireView())
+                                    navController.navigate(R.id.navigation_search_result, bundle)
                                 }
-                                return@launch // launch 블록에서 반환하여 함수를 빠져나감
+
+                                //return@launch // launch 블록에서 반환하여 함수를 빠져나감
                             }
                             else -> {
                                 withContext(Dispatchers.Main) {
                                     Toast.makeText(
                                         requireContext(),
-                                        "없는 동물입니다",
+                                        "${input}은 없는 동물입니다",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
