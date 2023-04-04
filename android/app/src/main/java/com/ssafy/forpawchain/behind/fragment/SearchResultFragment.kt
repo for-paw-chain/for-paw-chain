@@ -4,17 +4,23 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
 import com.ssafy.forpawchain.databinding.FragmentSearchResultBinding
+import com.ssafy.forpawchain.model.domain.AdoptDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 import com.ssafy.forpawchain.model.room.UserInfo
+import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.model.service.AuthService
+import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM
 import kotlinx.coroutines.*
 import okhttp3.internal.wait
@@ -59,6 +65,7 @@ class SearchResultFragment : Fragment() {
                 binding.searchResultVM = searchResultDTO
             }
 
+
             //강아지의 주인인지
             //await() 함수를 사용하여 Deferred 객체를 해결해야 함
 //            val auth : String = runBlocking {
@@ -71,23 +78,23 @@ class SearchResultFragment : Fragment() {
 
             thread {
 
-            val auth: String? = runBlocking { getPetAuth(searchResultDTO.code) }
+                val auth: String? = runBlocking { getPetAuth(searchResultDTO.code) }
 
-            if (auth != null) {
-                auth.replace("\"", "")
-            }
-            isMatser = auth.equals("MASTER")
-            isFriend = auth.equals("FRIEND")
+                if (auth != null) {
+                    auth.replace("\"", "")
+                }
+                isMatser = auth.equals("MASTER")
+                isFriend = auth.equals("FRIEND")
 
-            Log.d(TAG, searchResultDTO.code + " 권한 출력" + auth)
-            Log.d(TAG,  "주인이니? " + isMatser)
-            Log.d(TAG, "친구니? " + isFriend)
+                Log.d(TAG, searchResultDTO.code + " 권한 출력" + auth)
+                Log.d(TAG,  "주인이니? " + isMatser)
+                Log.d(TAG, "친구니? " + isFriend)
 
-            //견적사항 있는지,
-            isPawInfoDetail = !searchResultDTO.birth.isNullOrBlank()
-                    || !searchResultDTO.region.isNullOrBlank()
-                    || !searchResultDTO.tel.isNullOrBlank()
-                    || !searchResultDTO.etc.isNullOrBlank()
+                //견적사항 있는지,
+                isPawInfoDetail = !searchResultDTO.birth.isNullOrBlank()
+                        || !searchResultDTO.region.isNullOrBlank()
+                        || !searchResultDTO.tel.isNullOrBlank()
+                        || !searchResultDTO.etc.isNullOrBlank()
 
             }.join()
 
@@ -121,6 +128,25 @@ class SearchResultFragment : Fragment() {
 
             // 의사도 아니고, 아무 권한도 없다 -> 의료내역 안보이고 유기동물 공고만 보인다.
             else {
+                thread {
+                    val adoptAd = runBlocking {getAdoptAd()}
+
+                    val image = Glide.with(requireContext())
+                        .load(adoptAd?.get("profile")?.asString)
+                        .submit()
+                        .get()
+
+                    val adoptDTO : AdoptDTO = AdoptDTO(
+                        MutableLiveData(adoptAd?.get("pid")?.asString ?: ""),
+                        MutableLiveData(image),
+                        MutableLiveData(if (adoptAd?.get("type")?.asString.equals("DOG")) "개과" else if(adoptAd?.get("type")?.asString.equals("CAT")) "고양이과" else "기타"),
+                        MutableLiveData(adoptAd?.get("kind")?.asString),
+                        MutableLiveData(if (adoptAd?.get("spayed")?.asString.equals("false")) "Ⅹ" else "○")
+                    )
+
+                    binding.adoptVM = adoptDTO
+                }.join()
+
                 binding.dignosisTitle.visibility = View.GONE
                 binding.recycler.visibility = View.GONE
             }
@@ -143,6 +169,26 @@ class SearchResultFragment : Fragment() {
                     null
                 }
             }
+        }
+    }
+
+    suspend fun getAdoptAd() : JsonObject? = withContext(Dispatchers.IO) {
+        val response = AdoptService().getAdoptAd().execute()
+
+        if (response.isSuccessful) {
+            var items = response.body()?.get("content") as JsonArray
+
+            // 정상적으로 통신이 성공된 경우
+            Log.d(TAG, "onResponse 성공 광고 " + items.get(0).asJsonObject.toString()?: "")
+
+
+            return@withContext items.get(0).asJsonObject
+
+
+        } else {
+            // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+            Log.d(TAG, "onResponse 실패 " + response.errorBody()?.string())
+            return@withContext null ?: null
         }
     }
 
