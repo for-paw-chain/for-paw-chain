@@ -32,7 +32,6 @@ public class AuthenticationController {
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -41,11 +40,10 @@ public class AuthenticationController {
     public ResponseEntity<?> removeAuthentication(long receiver, String pid) {
         try {
             UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
-            authService.removeAuthentication(receiver, pid);
+            authService.removeAuthentication(userInfoResDto.getUid(), pid);
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -62,7 +60,6 @@ public class AuthenticationController {
 
             return ResponseEntity.accepted().body(map);
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -76,7 +73,6 @@ public class AuthenticationController {
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -93,7 +89,6 @@ public class AuthenticationController {
 
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
@@ -110,7 +105,6 @@ public class AuthenticationController {
 
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }

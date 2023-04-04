@@ -61,16 +61,13 @@ class PermissionPawFragment : Fragment() {
         }
 
         val bundle = arguments
-
         var pid = ""
-        var uid = ""
 
         val token =  PreferenceManager().getString(requireContext(), "token")!!
         lifecycleScope.launch {
             bundle?.getSerializable("item")?.let {
                 val item = it as (MyPawListDTO)
                 pid = item.code.value.toString()
-                uid = item.code.value.toString()
 
                 viewModel.name.postValue(item.name.value)
                 viewModel.code.postValue("#" + item.code.value.toString())
@@ -128,7 +125,7 @@ class PermissionPawFragment : Fragment() {
                     GlobalScope.launch {
                         val response = withContext(Dispatchers.IO) {
                             AuthService().handPetAuth(
-                                Integer.parseInt(uid), pid, token
+                                receiver, pid, token
                             ).enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
@@ -198,11 +195,11 @@ class PermissionPawFragment : Fragment() {
                     }
 
                     Log.d(TAG,"권한 삭제")
-//                }
+                }
 //            })
 //
 //            dialog.show()
-        }
+//        }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 

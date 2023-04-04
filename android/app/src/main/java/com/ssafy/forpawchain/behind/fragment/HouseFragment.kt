@@ -151,7 +151,7 @@ class HouseFragment : Fragment() {
                     birth = it.neutered.value,
                     region = it.neutered.value,
                     tel = it.neutered.value,
-                    etc = it.neutered.value
+                    etc = it.neutered.value,
                 )
                 bundle.putSerializable("searchResultVM", searchResultDTO)
                 navController.navigate(R.id.navigation_search_result, bundle)
