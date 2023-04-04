@@ -20,7 +20,9 @@ import com.ssafy.forpawchain.model.domain.PermissionUserDTO
 import com.ssafy.forpawchain.model.interfaces.IHandAdaptee
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.model.service.AuthService
+import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.PermissionPawListAdapter
+import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.PermissionPawFragmentVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -53,7 +55,7 @@ class PermissionPawFragment : Fragment() {
     ): View {
         _binding = FragmentPermissionPawBinding.inflate(inflater, container, false)
         activity?.let {
-            viewModel = ViewModelProvider(it).get(PermissionPawFragmentVM::class.java)
+            viewModel = ViewModelProvider(this).get(PermissionPawFragmentVM::class.java)
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }
@@ -62,6 +64,8 @@ class PermissionPawFragment : Fragment() {
 
         var pid = ""
         var uid = ""
+
+        val token =  PreferenceManager().getString(requireContext(), "token")!!
         lifecycleScope.launch {
             bundle?.getSerializable("item")?.let {
                 val item = it as (MyPawListDTO)
@@ -81,7 +85,7 @@ class PermissionPawFragment : Fragment() {
                     GlobalScope.launch {
                         val response = withContext(Dispatchers.IO) {
                             AuthService().giveFriendAuth(
-                                receiver, pid
+                                receiver, pid, token
                             ).enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
@@ -124,7 +128,7 @@ class PermissionPawFragment : Fragment() {
                     GlobalScope.launch {
                         val response = withContext(Dispatchers.IO) {
                             AuthService().handPetAuth(
-                                Integer.parseInt(uid), pid
+                                Integer.parseInt(uid), pid, token
                             ).enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
@@ -168,7 +172,7 @@ class PermissionPawFragment : Fragment() {
                     GlobalScope.launch {
                         val response = withContext(Dispatchers.IO) {
                             AuthService().removePetAuth(
-                                pid
+                                pid, token
                             ).enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(

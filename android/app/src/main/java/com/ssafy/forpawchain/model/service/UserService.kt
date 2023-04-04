@@ -1,11 +1,15 @@
 package com.ssafy.forpawchain.model.service
 
+import android.content.Context
+import android.util.Log
 import com.google.gson.JsonObject
+import com.ssafy.forpawchain.behind.activity.LoginActivity
+import com.ssafy.forpawchain.model.domain.signUpRequestDTO
 import com.ssafy.forpawchain.model.domain.LoginUserReqDTO
 import com.ssafy.forpawchain.model.domain.RequestDoctorDTO
-import com.ssafy.forpawchain.model.domain.UserDTO
 import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.retrofit.RetrofitService
+import com.ssafy.forpawchain.util.PreferenceManager
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -14,8 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 class UserService {
     companion object {
         val TAG: String? = this::class.qualifiedName
-
         const val baseUrl: String = "http://j8a207.p.ssafy.io:8080/api/"
+
         var retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -23,10 +27,10 @@ class UserService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun getPawHistory(): Call<JsonObject> {
+    fun getPawHistory(token : String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -41,10 +45,10 @@ class UserService {
         return service.getMyPawHistoryList()
     }
 
-    fun setDoctor(doctorDTO: RequestDoctorDTO): Call<JsonObject> {
+    fun setDoctor(doctorDTO: RequestDoctorDTO, token : String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -59,10 +63,13 @@ class UserService {
         return service.setDoctor(doctorDTO)
     }
 
-    fun getDoctorName(wa: String): Call<JsonObject> {
+    fun getDoctorName(wa: String, token : String): Call<JsonObject> {
+//        val sharedPreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+//        val token: String = sharedPreferences.getString("token", "") ?: ""
+
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer qwerqwer")
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -77,12 +84,16 @@ class UserService {
         return service.getDoctorName(wa)
     }
 
+    fun getUser(token : String): Call<JsonObject> {
+//        val sharedPreferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+//        val token: String = sharedPreferences.getString("token", "") ?: ""
+//
+//        Log.d(TAG, "sharedPreferences에 token 잘 가져 옴?" + sharedPreferences.getString("token", "")?:"")
 
-    fun getUser(): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
-      .build()
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
             chain.proceed(newRequest)
         }.build()
         retrofit = Retrofit.Builder()
@@ -94,7 +105,7 @@ class UserService {
         return service.getUser()
     }
 
-    fun signUpUser(userDTO: UserDTO): Call<JsonObject> {
+    fun signUpAndLoginUser(signUpRequestDTO: signUpRequestDTO): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
                 .build()
@@ -108,13 +119,13 @@ class UserService {
             .build()
         service = retrofit.create(RetrofitService::class.java);
 
-        return service.signUpUser(userDTO)
+        return service.signUpUser(signUpRequestDTO)
     }
 
-    fun signOutUser(): Call<JsonObject> {
+    fun signOutUser(token : String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -129,10 +140,10 @@ class UserService {
         return service.signOutUser()
     }
 
-    fun logoutUser(): Call<JsonObject> {
+    fun logoutUser(token : String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -147,10 +158,10 @@ class UserService {
         return service.logoutUser()
     }
 
-    fun reissue(): Call<JsonObject> {
+    fun reissue(token : String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
@@ -179,4 +190,5 @@ class UserService {
         service = retrofit.create(RetrofitService::class.java);
         return service.generalLogin(loginUserReqDto)
     }
+
 }

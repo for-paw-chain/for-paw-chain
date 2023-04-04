@@ -32,81 +32,79 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout7"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView9"
-            app:layout_constraintVertical_bias="0.013">
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/linearLayout7"-->
+<!--            android:layout_width="350dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="3"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.491"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/imageView9"-->
+<!--            app:layout_constraintVertical_bias="0.013">-->
 
-            <Spinner
-                android:layout_width="110dp"
-                android:layout_height="35dp"
-                android:background="@drawable/background_layout_redius"
-                android:entries="@array/sexItems"
-                android:fontFamily="@font/kakao_regular"
-                android:gravity="center"
-                android:imeOptions="actionDone"
-                android:selectedItemPosition="@={viewModel.selectedSex}"
-                android:singleLine="true"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintTop_toBottomOf="@+id/textView13"
-                app:layout_constraintVertical_bias="0.0" />
+<!--            <Spinner-->
+<!--                android:layout_width="110dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:background="@drawable/background_layout_redius"-->
+<!--                android:entries="@array/sexItems"-->
+<!--                android:fontFamily="@font/kakao_regular"-->
+<!--                android:gravity="center"-->
+<!--                android:imeOptions="actionDone"-->
+<!--                android:selectedItemPosition="@={viewModel.selectedSex}"-->
+<!--                android:singleLine="true"-->
+<!--                android:textSize="15sp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.0"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/textView13"-->
+<!--                app:layout_constraintVertical_bias="0.0" />-->
 
-            <Spinner
-                android:layout_width="110dp"
-                android:layout_height="35dp"
-                android:background="@drawable/background_layout_redius"
-                android:entries="@array/kindItems"
-                android:fontFamily="@font/kakao_regular"
-                android:gravity="center"
-                android:imeOptions="actionDone"
-                android:selectedItemPosition="@={viewModel.selectedNeutered}"
-                android:singleLine="true"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+<!--            <Spinner-->
+<!--                android:layout_width="110dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:background="@drawable/background_layout_redius"-->
+<!--                android:entries="@array/kindItems"-->
+<!--                android:fontFamily="@font/kakao_regular"-->
+<!--                android:gravity="center"-->
+<!--                android:imeOptions="actionDone"-->
+<!--                android:selectedItemPosition="@={viewModel.selectedNeutered}"-->
+<!--                android:singleLine="true"-->
+<!--                android:textSize="15sp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintVertical_bias="0.0" />-->
 
-            <Spinner
-                android:layout_width="110dp"
-                android:layout_height="35dp"
-                android:background="@drawable/background_layout_redius"
-                android:entries="@array/neuteredItems"
-                android:fontFamily="@font/kakao_regular"
-                android:gravity="center"
-                android:imeOptions="actionDone"
-                android:selectedItemPosition="@={viewModel.selectedKind}"
-                android:singleLine="true"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <Spinner-->
+<!--                android:layout_width="110dp"-->
+<!--                android:layout_height="35dp"-->
+<!--                android:background="@drawable/background_layout_redius"-->
+<!--                android:entries="@array/neuteredItems"-->
+<!--                android:fontFamily="@font/kakao_regular"-->
+<!--                android:gravity="center"-->
+<!--                android:imeOptions="actionDone"-->
+<!--                android:selectedItemPosition="@={viewModel.selectedKind}"-->
+<!--                android:singleLine="true"-->
+<!--                android:textSize="15sp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="394dp"
-            android:layout_height="480dp"
+            android:layout_height="530dp"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.529"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
             app:layout_constraintVertical_bias="0.8">
-
         </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -1,14 +1,19 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.model.domain.PermissionUserDTO
+import com.ssafy.forpawchain.model.room.UserInfo.Companion.token
 import com.ssafy.forpawchain.model.service.AuthService
 import com.ssafy.forpawchain.model.service.PetService
 import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -16,7 +21,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class PermissionPawFragmentVM : ViewModel() {
+class PermissionPawFragmentVM(application: Application) : AndroidViewModel(application) {
+    private val context = application.applicationContext
     companion object {
         val TAG: String? = this::class.qualifiedName
 
@@ -62,8 +68,9 @@ class PermissionPawFragmentVM : ViewModel() {
     }
 
     suspend fun initData(pid: String) {
+        val token = PreferenceManager().getString(context, "token")!!
         val response = withContext(Dispatchers.IO) {
-            AuthService().getPetAuth(pid).enqueue(object :
+            AuthService().getPetAuth(pid, token).enqueue(object :
                 Callback<JsonObject> {
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     if (response.isSuccessful) {
@@ -82,7 +89,7 @@ class PermissionPawFragmentVM : ViewModel() {
                                         )
                                     )
                                 } else {
-                                    ImageLoader().loadDrawableFromUrl(item1["pfofile"].asString) { drawable ->
+                                    ImageLoader().loadDrawableFromUrl(item1["profile"].asString) { drawable ->
                                         addTask(
                                             PermissionUserDTO(
                                                 drawable,

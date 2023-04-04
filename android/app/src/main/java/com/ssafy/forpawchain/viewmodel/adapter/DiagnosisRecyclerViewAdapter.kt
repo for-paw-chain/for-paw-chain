@@ -1,44 +1,53 @@
 package com.ssafy.forpawchain.viewmodel.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.R
+import com.ssafy.forpawchain.behind.activity.LoginActivity
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.ControllDiagnosisHistoryBinding
-import com.ssafy.forpawchain.model.domain.Data
 import com.ssafy.forpawchain.model.domain.HistoryDTO
 import com.ssafy.forpawchain.model.service.UserService
+import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.web3j.abi.datatypes.DynamicArray
-import org.web3j.abi.datatypes.Utf8String
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.math.BigInteger
 
 class DiagnosisRecyclerViewAdapter(
     val onClickDetailButton: (pos: HistoryDTO) -> Unit,
 ) :
     BaseRecyclerViewAdapter<ControllDiagnosisHistoryBinding, HistoryDTO>(emptyList()) {
 
+    companion object {
+        val TAG: String? = this::class.qualifiedName
+    }
+
     override fun onBindViewHolder(
         holder: BaseRecyclerViewHolder<ControllDiagnosisHistoryBinding>,
-        position: Int
+        position: Int,
     ) {
         //item을 화면에 표시해주는
+        val context : Context = holder.itemView.context
+        val token : String = PreferenceManager().getString(context,"token")!!
+        Log.d(TAG, "어댑터 쓰레기 token 잘 가져옴?" + token);
+
         if (mydataSet.isNotEmpty()) {
             var listposition = mydataSet[position]
-
             val historyDTO: HistoryDTO = mydataSet[position] as HistoryDTO
+
             GlobalScope.launch {
                 val response = withContext(Dispatchers.IO) {
+
                     UserService().getDoctorName(
-                        historyDTO.writer
+                        historyDTO.writer,
+                        token
                     ).enqueue(object :
                         Callback<JsonObject> {
                         override fun onResponse(
@@ -47,7 +56,8 @@ class DiagnosisRecyclerViewAdapter(
                         ) {
                             if (response.isSuccessful) {
                                 // 정상적으로 통신이 성공된 경우
-                                listposition.writer = response.body()?.get("content").toString().replace("\"", "")
+                                listposition.writer =
+                                    response.body()?.get("content").toString().replace("\"", "")
                                 holder.binding.item = listposition
                                 // call
                                 Log.d(ForPawChain.TAG, "onResponse 성공");

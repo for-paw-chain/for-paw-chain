@@ -5,7 +5,6 @@
     android:background="@drawable/background_main">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM" />
@@ -24,14 +23,14 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsingLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="205dp"
                 android:background="#00000000"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <!-- parallax: 스크롤 시 접힘 -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="262dp"
+                    android:layout_height="200dp"
                     android:layout_marginBottom="64dp"
                     android:background="#00000000"
                     app:layout_collapseMode="parallax">
@@ -49,64 +48,7 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.792" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_gravity="bottom"
-                    android:background="#00000000"
-                    android:gravity="center"
-                    app:layout_collapseMode="pin">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/linearLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/background_layout_redius"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal"
-
-                        android:weightSum="1"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="50"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <ImageView
-                            android:id="@+id/imageView13"
-                            android:layout_width="40dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:src="@drawable/logo_img_color_shadow"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <EditText
-                            android:id="@+id/searchEditText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@color/white"
-                            android:fontFamily="@font/kakao_regular"
-                            android:gravity="center"
-                            android:layout_marginLeft="15dp"
-                            android:hint="@string/search_edit_text_hint"
-                            android:imeOptions="actionDone"
-                            android:singleLine="true"
-                            android:text="@={viewModel.searchEditText}"
-                            android:textSize="15sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView13"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        app:layout_constraintVertical_bias="0.993" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -119,17 +61,9 @@
             <!--                android:id="@+id/tabLayout"-->
             <!--                android:layout_width="match_parent"-->
             <!--                android:layout_height="wrap_content" />-->
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- 뷰페이저 (layout_behavior를 "@string/appbar_scrolling_view_behavior"로 설정해야함! ) -->
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
 <!--            <TextView-->
 <!--                android:id="@+id/textView25"-->
 <!--                android:layout_width="match_parent"-->
@@ -140,20 +74,80 @@
 <!--                android:textSize="25sp"-->
 <!--                app:layout_constraintTop_toTopOf="parent"-->
 <!--                tools:ignore="MissingConstraints" />-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="bottom"
+            android:background="#00000000"
+            android:gravity="center"
+            app:layout_anchor="@+id/app_bar_layout"
+            app:layout_anchorGravity="bottom|center"
+            app:layout_collapseMode="pin">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/background_layout_redius"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+
+                android:weightSum="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="50"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView13"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/logo_img_color_shadow"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <EditText
+                    android:id="@+id/searchEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/kakao_regular"
+                    android:gravity="center"
+                    android:hint="@string/search_edit_text_hint"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:text="@={viewModel.searchEditText}"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView13"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="850dp"
+            android:layout_marginTop="110dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent">
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="153dp">
 
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

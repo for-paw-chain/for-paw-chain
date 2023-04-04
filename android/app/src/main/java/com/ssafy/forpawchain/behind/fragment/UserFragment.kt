@@ -1,6 +1,7 @@
 package com.ssafy.forpawchain.behind.fragment
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,7 @@ import com.ssafy.forpawchain.databinding.FragmentUserBinding
 import com.ssafy.forpawchain.model.domain.MyPageMenuDTO
 import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.model.service.UserService
+import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.MyPageMenuAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.UserFragmentVM
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +54,6 @@ class UserFragment : Fragment() {
         val TAG: String? = this::class.qualifiedName
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,6 +70,9 @@ class UserFragment : Fragment() {
         val recyclerView = binding.recycler
         val searchList = mutableListOf<MyPageMenuDTO>()
 
+        val preferenceManager = PreferenceManager()
+        val token = preferenceManager.getString(requireContext(), "token")!!
+
         recyclerView.adapter = MyPageMenuAdapter(
             onClickEnterButton = {
                 if (it.title.equals("의사 면허 등록")) {
@@ -81,54 +85,47 @@ class UserFragment : Fragment() {
                     // dialog는 확인 창
                     val dialog = WithdrawalDialog(requireContext(), object : IPermissionDelete {
                         override fun onDeleteBtnClick() {
-                            UserApiClient.instance.unlink { error ->
-                                if (error != null) {
-                                    // 에러가 발생한 경우 처리합니다.
-                                    Log.d(UserFragment.TAG, "회원 탈퇴 에러 발생")
-                                } else {
-                                    // 로그아웃이 성공한 경우 처리합니다.
-                                    Log.d(UserFragment.TAG, "회원 탈퇴 완료")
-                                    GlobalScope.launch {
-                                        val response = withContext(Dispatchers.IO) {
-                                            UserService().signOutUser().enqueue(object :
-                                                Callback<JsonObject> {
-                                                override fun onResponse(
-                                                    call: Call<JsonObject>,
-                                                    response: Response<JsonObject>
-                                                ) {
-                                                    if (response.isSuccessful) {
-                                                        // 정상적으로 통신이 성공된 경우
-                                                        lifecycleScope.launch {
-                                                            requireActivity().finish()
-                                                            startActivity(Intent(context, SplashActivity::class.java))
-                                                        }
-                                                        // call
-                                                        Log.d(TAG, "회원탈퇴 성공 " + response);
+                            GlobalScope.launch {
+                                val response = withContext(Dispatchers.IO) {
+                                    UserService().signOutUser(token).enqueue(object :
+                                        Callback<JsonObject> {
+                                        override fun onResponse(
+                                            call: Call<JsonObject>,
+                                            response: Response<JsonObject>
+                                        ) {
+                                            if (response.isSuccessful) {
+                                                // 정상적으로 통신이 성공된 경우
+                                                lifecycleScope.launch {
 
-                                                    } else {
-                                                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                                                        Log.d(TAG, "회원탈퇴 실패 " + response)
-                                                    }
+                                                    preferenceManager.clear(context!!)
+                                                    requireActivity().finish()
+                                                    startActivity(Intent(context, SplashActivity::class.java))
+
+                                                    Log.d(TAG, "히원 탈퇴 성공 " + response);
+                                                    Log.d(TAG, "히원 탈퇴 성공 " + response.body());
                                                 }
-                                                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                                                    Log.d(SplashActivity.TAG, "onFailure 에러: " + t.message.toString());
-                                                }
-                                            })
+                                            } else {
+                                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                                                Log.d(TAG, "히원 탈퇴 실패 " + response)
+                                                Log.d(TAG, "히원 탈퇴 실패 " + response.body());
+                                            }
                                         }
-                                    }
-
+                                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                            Log.d(TAG, "회원 탈퇴 onFailure 에러: " + t.message.toString());
+                                        }
+                                    })
                                 }
                             }
                         }
                     })
                     dialog.show()
                 } else if (it.title.equals("로그아웃")) {
-                    Log.d(UserFragment.TAG, "로그아웃 누름")
+                    Log.d(TAG, "로그아웃 누름")
 
                     GlobalScope.launch {
                         val response = withContext(Dispatchers.IO) {
-                            UserService().logoutUser().enqueue(object :
+                            UserService().logoutUser(token).enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
                                     call: Call<JsonObject>,
@@ -235,12 +232,12 @@ class UserFragment : Fragment() {
             )
         )
 
-        viewModel.addTask(
-            MyPageMenuDTO(
-                resources.getDrawable(R.drawable.icon_android_emoji),
-                "버전 확인"
-            )
-        )
+//        viewModel.addTask(
+//            MyPageMenuDTO(
+//                resources.getDrawable(R.drawable.icon_android_emoji),
+//                "버전 확인"
+//            )
+//        )
 
         viewModel.addTask(
             MyPageMenuDTO(

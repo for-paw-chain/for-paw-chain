@@ -24,10 +24,10 @@ class TestService {
         var service = retrofit.create(RetrofitService::class.java);
     }
 
-    fun test(@Field("msg") msg: String): Call<JsonObject> {
+    fun test(@Field("msg") msg: String, token : String): Call<JsonObject> {
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .addHeader("Authorization", "Bearer " + token)
                 .build()
             chain.proceed(newRequest)
         }.build()
