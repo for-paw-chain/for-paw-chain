@@ -7,7 +7,6 @@
         <variable
             name="item"
             type="com.ssafy.forpawchain.model.domain.AdoptDTO" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

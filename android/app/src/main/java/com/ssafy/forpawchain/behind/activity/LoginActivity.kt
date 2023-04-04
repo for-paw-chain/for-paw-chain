@@ -222,6 +222,7 @@ class LoginActivity : AppCompatActivity() {
                                                             // 문자열 데이터 저장
                                                             preferenceManager.setString(applicationContext, "token", response.body()?.get("accessToken")?.asString ?: "")
                                                             Log.d(TAG, "getString 토큰 저장 잘 됨?" + preferenceManager.getString(applicationContext,"token"));
+                                                            UserInfo.token = response.body()?.get("accessToken")?.asString ?: ""
 
                                                             //회원가입에서 얻은 액세스 토큰으로 로그인 진행
                                                             login(preferenceManager.getString(applicationContext,"token")!!)
