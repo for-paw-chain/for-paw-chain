@@ -232,12 +232,12 @@ class UserFragment : Fragment() {
             )
         )
 
-        viewModel.addTask(
-            MyPageMenuDTO(
-                resources.getDrawable(R.drawable.icon_android_emoji),
-                "버전 확인"
-            )
-        )
+//        viewModel.addTask(
+//            MyPageMenuDTO(
+//                resources.getDrawable(R.drawable.icon_android_emoji),
+//                "버전 확인"
+//            )
+//        )
 
         viewModel.addTask(
             MyPageMenuDTO(

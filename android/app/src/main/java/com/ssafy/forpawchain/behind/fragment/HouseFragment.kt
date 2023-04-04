@@ -292,6 +292,7 @@ class HouseFragment : Fragment() {
             //Log.d(TAG, "${verticalOffset}, ${appBarLayout.totalScrollRange}, ${appBarLayout.height}")
             if (-verticalOffset >= appBarLayout.totalScrollRange-1) {
                 if (!viewModel.isOpenSearch.value!!) {
+                    Log.d(TAG, "열림")
                     // TODO: DUMMY DATA
 //                    viewModel.addTask(SearchResultDTO("별이1", "여아", "견과", "말티즈", "X"))
 //                    viewModel.addTask(SearchResultDTO("별이2", "여아", "견과", "말티즈", "O"))
@@ -340,10 +341,10 @@ class HouseFragment : Fragment() {
                                     }
 
                                 }
-                                Log.d(TAG, "onResponse 성공: $result");
+                                Log.d(PawFragmentVM.TAG, "onResponse 성공: $result");
                             } else {
                                 // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                                Log.d(TAG, "onResponse 실패 ${response}")
+                                Log.d(MyPawFragmentVM.TAG, "onResponse 실패")
                             }
                         }
 
@@ -437,6 +438,7 @@ class HouseFragment : Fragment() {
 
     suspend fun getPetInfo(input: String, token: String): String = withContext(Dispatchers.IO) {
         response = PetService().getPetInfo(input, token).execute()
+
         when {
             response.isSuccessful && response.code() == 200 -> {
                 Log.d(TAG, "검색바 응답 200 $response")
