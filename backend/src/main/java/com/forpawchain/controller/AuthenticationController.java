@@ -38,10 +38,10 @@ public class AuthenticationController {
     }
     @PutMapping
     @ApiOperation(value = "권한 삭제", notes = "요청한 동물과 사용자 사이의 관계를 끊는다.")
-    public ResponseEntity<?> removeAuthentication(String pid) {
+    public ResponseEntity<?> removeAuthentication(long receiver, String pid) {
         try {
             UserInfoResDto userInfoResDto = userController.getCurrentUserInfo();
-            authService.removeAuthentication(userInfoResDto.getUid(), pid);
+            authService.removeAuthentication(receiver, pid);
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {

@@ -86,6 +86,7 @@ class MyPawFragment : Fragment() {
                             val token = PreferenceManager().getString(requireContext(), "token")!!
                             val response = withContext(Dispatchers.IO) {
                                 AuthService().removePetAuth(
+                                    UserInfo.uid.toInt(),
                                     pid.substring(1),
                                     token
                                 ).enqueue(object :

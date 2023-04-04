@@ -167,12 +167,12 @@ class PermissionPawFragment : Fragment() {
             searchList
         ) {
             // del
-            val dialog = PermissionDialog(requireContext(), object : IPermissionDelete {
-                override fun onDeleteBtnClick() {
+//            val dialog = PermissionDialog(requireContext(), object : IPermissionDelete {
+//                override fun onDeleteBtnClick() {
                     GlobalScope.launch {
                         val response = withContext(Dispatchers.IO) {
                             AuthService().removePetAuth(
-                                pid, token
+                                it.code.substring(1).toInt(), pid, token
                             ).enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
@@ -198,10 +198,10 @@ class PermissionPawFragment : Fragment() {
                     }
 
                     Log.d(TAG,"권한 삭제")
-                }
-            })
-
-            dialog.show()
+//                }
+//            })
+//
+//            dialog.show()
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
