@@ -66,7 +66,6 @@ class MyPawFragment : Fragment() {
         recyclerView.adapter = MyPawListAdapter(searchList,
             {
                 // qr
-
                 it.code.value?.let { it1 ->
                     QRCreateDialog(requireContext(), it1) {
                         ImageSave().saveImageToGallery(

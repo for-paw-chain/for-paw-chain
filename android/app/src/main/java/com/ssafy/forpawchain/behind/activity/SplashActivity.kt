@@ -160,7 +160,6 @@ class SplashActivity : AppCompatActivity() {
             Log.d(TAG, "초기화 후 모든 값 출력 ");
             PreferenceManager().printAll(applicationContext)
 
-
             startActivity(Intent(applicationContext, LoginActivity::class.java))
             /**
             // 처음 로그인인지 아닌지 확인
