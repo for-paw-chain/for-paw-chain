@@ -32,7 +32,7 @@
             android:layout_gravity="center"
             android:background="@color/white"
             android:fontFamily="@font/kakao_regular"
-            android:gravity="center"
+            android:gravity="left|center"
             android:hint="@string/search_edit_text_hint"
             android:imeOptions="actionDone"
             android:singleLine="true"
