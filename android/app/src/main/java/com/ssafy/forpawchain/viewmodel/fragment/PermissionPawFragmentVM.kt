@@ -2,6 +2,7 @@ package com.ssafy.forpawchain.viewmodel.fragment
 
 import android.app.Application
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -30,6 +31,7 @@ class PermissionPawFragmentVM(application: Application) : AndroidViewModel(appli
 
     val name = MutableLiveData<String>()
     val code = MutableLiveData<String>()
+    val profile = MutableLiveData<Drawable>()
 
     //추가 시작
     val todoLiveData = MutableLiveData<List<PermissionUserDTO>>() //변경/관찰가능한 List
