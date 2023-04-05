@@ -1,6 +1,7 @@
 package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -70,6 +71,19 @@ class HouseFragment : Fragment() {
     private lateinit var response : retrofit2.Response<JsonObject>
     private lateinit var searchResultBinding: FragmentSearchResultBinding
 
+    private var imageResId: Int = 0
+    private lateinit var defaultDrawable: Drawable
+    private lateinit var petDefaultImg: MutableLiveData<Drawable>
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // 기본 견적 사항 이미지 파일 가져오기
+        imageResId = resources.getIdentifier("icon_default_pet", "drawable", context.packageName)
+
+        // Drawable 객체 생성
+        defaultDrawable = ContextCompat.getDrawable(requireContext(), imageResId)!!
+        petDefaultImg = MutableLiveData(defaultDrawable)
+    }
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -108,6 +122,14 @@ class HouseFragment : Fragment() {
         token = PreferenceManager().getString(requireActivity(), "token")!!
         Log.d(TAG, "HouseFragment 토큰 : ${token}")
 
+
+
+        // 값 할당
+//        petImageLiveData.postValue(defaultDrawable)
+
+//        petImageLiveData.observe(viewLifecycleOwner) { petImage: Drawable? ->
+//            val drawable: Drawable = petImage ?: defaultDrawable
+
         recyclerView.adapter = MyPawListAdapter(searchList,
             {
                 // qr
@@ -137,60 +159,7 @@ class HouseFragment : Fragment() {
                 // detail
 
                 val code = it.code.value!!
-                val profile = it.profile?.value
-                val name = it.name.value!!
-                val sex = it.sex.value!!
-                val species = it.species.value!!
-                val kind = it.kind.value!!
-                val neutered = it.neutered.value!!
-                val birth = it.neutered.value?: ""
-                val region = it.neutered.value?: ""
-                val tel = it.neutered.value?: ""
-                val etc = it.neutered.value?: ""
-
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${code}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${profile}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${name}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${sex}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${species}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${kind}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${neutered}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${birth}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${region}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${tel}")
-                Log.d(TAG, "홈에서 클릭했을 때 MyPawListDTO => ${etc}")
-
-                // 기본 견적 사항 이미지 파일 가져오기
-                val imageResId = resources.getIdentifier("icon_default_pet", "drawable", context?.packageName)
-
-                // Drawable 객체 생성, null일때 기본 이미지 로드
-                profile ?: ContextCompat.getDrawable(requireContext(), imageResId)
-
-                if(!birth.isNullOrEmpty()){
-                    val birthStr = response.body()!!.get("birth")?.asString
-                    val birthDate: Date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(birthStr)
-                    val diffInMillis = System.currentTimeMillis() - birthDate!!.time
-                    val diffInYears = TimeUnit.MILLISECONDS.toDays(diffInMillis) / 365
-                }
-
-                // MyPawListDTO를 > SearchResultDTO로 변경
-                val searchResultDTO = SearchResultDTO(
-                    code = code,
-                    profile = profile,
-                    name = name!!,
-                    sex = sex!!,
-                    species = species!!,
-                    kind = kind!!,
-                    neutered = neutered!!,
-                    birth = birth,
-                    region = region,
-                    tel = tel,
-                    etc = etc,
-                )
-
-                val bundle = Bundle()
-                bundle.putSerializable("searchResultVM", searchResultDTO)
-                navController.navigate(R.id.navigation_search_result, bundle)
+                doSearching(code)
             })
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -215,16 +184,14 @@ class HouseFragment : Fragment() {
         //동물 등록 검색 번호 창 번호 입력 버튼
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             var input = binding.searchEditText.text.toString();
-            var bundle = Bundle()
 
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     // 엔터키가 눌렸을 때 처리할 코드 작성
-                    doSearching(input, bundle)
+                    doSearching(input)
                     true
                 }
                 else -> false
-
             }
         }
 
@@ -242,7 +209,7 @@ class HouseFragment : Fragment() {
             }
     }
 
-    private fun doSearching(input: String, bundle: Bundle) {
+    private fun doSearching(input: String) {
         GlobalScope.launch {
             when (getPetInfo(input, token)) {
                 "200" -> {
@@ -281,7 +248,7 @@ class HouseFragment : Fragment() {
                      **/
 
                     withContext(Dispatchers.Main) {
-
+                        var bundle = Bundle()
                         bundle.putSerializable("searchResultVM", searchResultDTO)
                         val navController = Navigation.findNavController(requireView())
                         navController.navigate(R.id.navigation_search_result, bundle)
@@ -290,15 +257,9 @@ class HouseFragment : Fragment() {
                 "206" -> {
                     Log.d(TAG, "response 객체 내부는 = ${response.body()}")
 
-                    // 기본 견적 사항 이미지 파일 가져오기
-                    val imageResId = resources.getIdentifier("icon_default_pet", "drawable", context?.packageName)
-
-                    // Drawable 객체 생성
-                    val drawable = ContextCompat.getDrawable(requireContext(), imageResId)
-
                     val searchResultDTO = SearchResultDTO(
                         code = response.body()!!.get("pid").asString ?: "",
-                        profile = drawable,
+                        profile = defaultDrawable,
                         name = response.body()!!.get("name").asString ?: "",
                         sex = response.body()!!.get("sex").asString ?: "",
                         species = response.body()!!.get("type").asString ?: "",
@@ -311,11 +272,11 @@ class HouseFragment : Fragment() {
                     )
 
                     withContext(Dispatchers.Main) {
+                        var bundle = Bundle()
                         bundle.putSerializable("searchResultVM", searchResultDTO)
                         val navController = Navigation.findNavController(requireView())
                         navController.navigate(R.id.navigation_search_result, bundle)
                     }
-
                     //return@launch // launch 블록에서 반환하여 함수를 빠져나감
                 }
                 else -> {
@@ -361,7 +322,7 @@ class HouseFragment : Fragment() {
                                         if (item1["profile"].toString() == "null") { // 프로필이 없는 경우
                                             viewModel.addTask(MyPawListDTO(
                                                 MutableLiveData<String>(item1["pid"].asString),
-                                                null,
+                                                petDefaultImg,
                                                 MutableLiveData<String>(item1["name"].asString),
                                                 MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
                                                 MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
@@ -380,10 +341,6 @@ class HouseFragment : Fragment() {
                                                         MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                                         MutableLiveData<String>(item1["kind"].asString),
                                                         MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else if(item1["spayed"].asString.equals("true")) "○" else ""),
-                                                        MutableLiveData<String>(item1["pid"].asString),
-                                                        MutableLiveData<String>(item1["pid"].asString),
-                                                        MutableLiveData<String>(item1["pid"].asString),
-                                                        MutableLiveData<String>(item1["pid"].asString),
                                                     )
                                                 )
                                             }
@@ -438,7 +395,7 @@ class HouseFragment : Fragment() {
     }
 
     suspend fun getPetInfo(input: String, token: String): String = withContext(Dispatchers.IO) {
-        val response = PetService().getPetInfo(input, token).execute()
+        response = PetService().getPetInfo(input, token).execute()
 
         when {
             response.isSuccessful && response.code() == 200 -> {

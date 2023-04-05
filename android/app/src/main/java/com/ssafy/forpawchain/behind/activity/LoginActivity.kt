@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.JsonObject
 import com.kakao.sdk.auth.model.OAuthToken
@@ -18,6 +19,7 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.forpawchain.databinding.ActivityLoginBinding
 import com.ssafy.forpawchain.model.domain.LoginUserReqDTO
+import com.ssafy.forpawchain.model.domain.User
 import com.ssafy.forpawchain.model.domain.UserDTO
 import com.ssafy.forpawchain.model.domain.signUpRequestDTO
 import com.ssafy.forpawchain.model.room.UserInfo
@@ -289,7 +291,7 @@ class LoginActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             lifecycleScope.launch {
                                 Log.d(TAG, "로그인 성공 ${response.body()}" );
-                                UserInfo.setUserInfo(response.body().toString(), PreferenceManager().getString(applicationContext,"token") ?: "")
+                                UserInfo.setUserInfo(response.body().toString(), PreferenceManager().getString(applicationContext,"token") ?: "", applicationContext)
 
                                 PreferenceManager().setString(applicationContext, "uid", response.body()?.get("uid")?.asString ?: "")
                                 PreferenceManager().setString(applicationContext, "id", response.body()?.get("id")?.asString ?: "")
