@@ -100,15 +100,36 @@
                         app:layout_constraintVertical_bias="0.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/kakao_regular"
-                    android:gravity="left"
-                    android:text="@{viewModel.code}"
-                    android:textColor="@color/black"
-                    android:textSize="25sp" />
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:fontFamily="@font/kakao_bold"
+                        android:gravity="bottom"
+                        android:text="#"
+                        android:textColor="@color/gray"
+                        android:textSize="25sp"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/kakao_regular"
+                        android:gravity="bottom"
+                        android:text="@{viewModel.code}"
+                        android:textColor="@color/gray"
+                        android:textSize="25sp"
+                        app:layout_constraintHorizontal_bias="0.03"
+                        app:layout_constraintStart_toEndOf="@+id/textView5"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
         </LinearLayout>
 

@@ -1,4 +1,5 @@
 package com.ssafy.forpawchain.model.room
+import android.graphics.drawable.Drawable
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.kakao.sdk.auth.model.OAuthToken
@@ -12,7 +13,7 @@ class UserInfo {
         companion object {
             var uid: String = "" // 서버의 primary key
             var id: String = ""  // socail 로그인이 주는 id
-            var profile: String = ""
+            var profile: Drawable? = null
             var name: String = ""
             var walletAddress: String = ""
             var isDoctor: Boolean = false
@@ -26,7 +27,7 @@ class UserInfo {
 
                 this.uid = jsonObject.get("uid").asString
                 this.id = jsonObject.get("id").asString
-                this.profile = jsonObject.get("profile").asString
+                this.profile = Drawable.createFromPath(jsonObject.get("profile").toString())
                 this.name = jsonObject.get("name").asString
                 if (jsonObject.get("wa").isJsonNull()) {
                     this.walletAddress = ""
