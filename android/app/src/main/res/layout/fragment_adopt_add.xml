@@ -63,7 +63,7 @@
                     android:id="@+id/imageView1"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
-                    android:layout_marginTop="44dp"
+                    android:layout_marginTop="32dp"
 
                     android:src="@drawable/icon_picture_add"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -157,12 +157,11 @@
                 <!-- TODO: 회색 글씨 추후 변경 필요 -->
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_width="347dp"
+                    android:layout_height="140dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="12dp"
-                    android:layout_marginEnd="24dp"
                     android:background="@drawable/background_layout_redius"
                     android:fontFamily="@font/kakao_regular"
                     android:gravity="center"
