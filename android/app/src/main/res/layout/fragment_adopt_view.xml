@@ -145,7 +145,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-
+                        android:gravity="center"
                         android:text="@{item.name}" />
 
                     <TextView
@@ -156,7 +156,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-
+                        android:gravity="center"
                         android:text="@{item.sex}" />
 
                     <TextView
@@ -167,7 +167,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-
+                        android:gravity="center"
                         android:text="@{item.species}" />
 
                     <TextView
@@ -178,7 +178,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-
+                        android:gravity="center"
                         android:text="@{item.kind}" />
 
                     <TextView
@@ -189,7 +189,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-
+                        android:gravity="center"
                         android:text="@{item.neutered}" />
                 </LinearLayout>
             </LinearLayout>
@@ -288,7 +288,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/kakao_regular"
-                    android:gravity="center_horizontal"
+                    android:gravity="left|center"
                     android:text="@{viewModel.extra}"
                     android:textAlignment="textStart"
                     android:layout_marginLeft="10dp"

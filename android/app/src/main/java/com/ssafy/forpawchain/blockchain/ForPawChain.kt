@@ -38,7 +38,7 @@ class ForPawChain {
 
         var contractAddress = ""
         var credentials =
-            Credentials.create("32f246287b10f0e9ac71f6655047b35431f125f97abee915d0244d1cdd74f758")
+            Credentials.create("faee15c534f72212de7f83070c68bade01071d0ca6256a761ea568cbcf832714")
 
         fun setBlockChain(ca: String, cred: String) {
             Log.d(TAG, "setBlockChain 프라이빗키:::::" + cred)
@@ -67,7 +67,7 @@ class ForPawChain {
 //                val userDao = db.userDao()
 //                Credentials.create(db.userDao().getUserById("private").privateKey)
 
-                val transactionManager = RawTransactionManager(web3, credentials, 9876)
+                val transactionManager = RawTransactionManager(web3, credentials, 3333)
 
                 val contract =
                     Forpawchain_sol_ForPawChain.load( // contract 정보 load

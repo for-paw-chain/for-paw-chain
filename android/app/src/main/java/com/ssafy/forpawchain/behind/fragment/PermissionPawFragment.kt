@@ -71,6 +71,7 @@ class PermissionPawFragment : Fragment() {
 
                 viewModel.name.postValue(item.name.value)
                 viewModel.code.postValue("#" + item.code.value.toString())
+                viewModel.profile.postValue(item.profile?.value)
 
                 item.code.value?.let { it1 -> viewModel.initData(it1) }
 //                viewModel.

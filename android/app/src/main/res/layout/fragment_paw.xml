@@ -15,8 +15,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_main"
-        android:padding="8dp">
+        android:background="@drawable/background_main">
 
         <ImageView
             android:id="@+id/imageView9"
@@ -99,13 +98,12 @@
             android:id="@+id/recycler"
             android:layout_width="394dp"
             android:layout_height="530dp"
+            android:layout_marginBottom="0dp"
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.529"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.8">
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintStart_toStartOf="parent"></androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

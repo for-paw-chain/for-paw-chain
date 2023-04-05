@@ -61,11 +61,10 @@
                         android:id="@+id/searchEditText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
                         android:background="@color/white"
                         android:fontFamily="@font/kakao_regular"
 
-                        android:gravity="left"
+                        android:gravity="left|center"
                         android:hint="@string/search_edit_text_hint"
                         android:imeOptions="actionDone"
                         android:singleLine="true"
