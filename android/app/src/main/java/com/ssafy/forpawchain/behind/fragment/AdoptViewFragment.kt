@@ -185,9 +185,10 @@ class AdoptViewFragment : Fragment() {
                 }
             }
         }
+        // 공고 추가
         binding.fab.setOnClickListener { view ->
             navController.navigate(R.id.navigation_adopt_create)
-            Log.d(MyPawHistoryFragment.TAG, "공고 추가")
+            Log.d(TAG, "공고 추가")
         }
         return root
     }

@@ -1,7 +1,9 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,10 +26,12 @@ import retrofit2.Response
 import java.io.File
 
 
-class CreateDoctorHistoryFragmentVM(private val context: Context) : ViewModel() {
+class CreateDoctorHistoryFragmentVM(application: Application) : AndroidViewModel(application) {
+    private val context = application.applicationContext
+
     private val _openEvent = MutableLiveData<Event<ActivityCode>>()
     val openEvent: LiveData<Event<ActivityCode>> get() = _openEvent
-    val number = MutableLiveData<String>()
+    val code = MutableLiveData<String>()
     val title = MutableLiveData<String>()
     val body = MutableLiveData<String>()
     val path = MutableLiveData<String>()
@@ -105,16 +109,6 @@ class CreateDoctorHistoryFragmentVM(private val context: Context) : ViewModel() 
                 }
             })
         }
-//        else {
-//            title.value?.let {
-//                body.value?.let { it1 ->
-//                    ForPawChain.createHistory(
-//                        it,
-//                        it1, list, "해시없다"
-//                    )
-//                }
-//            }
-//        }
         clearTask()
         _openEvent.value = Event(ActivityCode.DONE)
     }
