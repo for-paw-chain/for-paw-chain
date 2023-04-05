@@ -60,9 +60,7 @@ class PawFragment : Fragment() {
         }
 
         val root: View = binding.root
-
         val recyclerView = binding.recycler
-
         val token =  PreferenceManager().getString(requireContext(), "token")!!
 
         recyclerView.adapter = AdoptRecyclerViewAdapter(

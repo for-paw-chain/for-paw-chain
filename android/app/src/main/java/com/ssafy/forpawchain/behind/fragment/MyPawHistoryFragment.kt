@@ -98,6 +98,7 @@ class MyPawHistoryFragment : Fragment() {
 
         }
 
+        //
         binding.fab.setOnClickListener { view ->
             navController.navigate(R.id.navigation_adopt_add)
             Log.d(TAG, "공고 추가")

@@ -40,9 +40,7 @@ class CreateDoctorHistoryFragment : Fragment() {
 
         // 갤러리 권한 요청
         const val OPEN_GALLERY = 1
-
     }
-
 
     @SuppressLint("ResourceAsColor")
     override fun onCreateView(
@@ -58,20 +56,16 @@ class CreateDoctorHistoryFragment : Fragment() {
         }
 
         val root: View = binding.root
-
-
         val recyclerView = binding.recycler
 
         recyclerView.adapter = DiagnosisNewRecyclerViewAdapter()
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-
         viewModel.todoLiveData.observe(
             requireActivity()
         ) { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
             (binding.recycler.adapter as DiagnosisNewRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
-
         }
 
         binding.imageView.setOnClickListener() {
@@ -80,15 +74,11 @@ class CreateDoctorHistoryFragment : Fragment() {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             intent.type = "image/*" // 이미지 파일만 선택 가능하도록 설정
 
-
-            // 이미지 선택 액티비티 실행
-
             // 이미지 선택 액티비티 실행
             startActivityForResult(intent, OPEN_GALLERY)
         }
 
         initObserve()
-
         return root
     }
 
@@ -131,6 +121,16 @@ class CreateDoctorHistoryFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(requireView())
+        val bundle = arguments
+        val code = bundle?.getString("code")
+        code?.let {
+            viewModel.code.value = it
+        }
+    }
+
     private fun initObserve() {
         viewModel.openEvent.eventObserve(this) { obj ->
 
@@ -143,12 +143,6 @@ class CreateDoctorHistoryFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(requireView())
-
     }
 
     override fun onDestroyView() {

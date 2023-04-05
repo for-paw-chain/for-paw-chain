@@ -31,10 +31,7 @@ import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.MyPageMenuAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.UserFragmentVM
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import retrofit2.Callback
 import retrofit2.Call
@@ -85,7 +82,7 @@ class UserFragment : Fragment() {
                     // dialog는 확인 창
                     val dialog = WithdrawalDialog(requireContext(), object : IPermissionDelete {
                         override fun onDeleteBtnClick() {
-                            GlobalScope.launch {
+                            CoroutineScope(Dispatchers.Main).launch {
                                 val response = withContext(Dispatchers.IO) {
                                     UserService().signOutUser(token).enqueue(object :
                                         Callback<JsonObject> {
@@ -101,13 +98,13 @@ class UserFragment : Fragment() {
                                                     requireActivity().finish()
                                                     startActivity(Intent(context, SplashActivity::class.java))
 
-                                                    Log.d(TAG, "히원 탈퇴 성공 " + response);
-                                                    Log.d(TAG, "히원 탈퇴 성공 " + response.body());
+                                                    Log.d(TAG, "회원 탈퇴 성공 " + response);
+                                                    Log.d(TAG, "회원 탈퇴 성공 " + response.body());
                                                 }
                                             } else {
                                                 // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                                                Log.d(TAG, "히원 탈퇴 실패 " + response)
-                                                Log.d(TAG, "히원 탈퇴 실패 " + response.body());
+                                                Log.d(TAG, "회원 탈퇴 실패 " + response)
+                                                Log.d(TAG, "회원 탈퇴 실패 " + response.body());
                                             }
                                         }
                                         override fun onFailure(call: Call<JsonObject>, t: Throwable) {
