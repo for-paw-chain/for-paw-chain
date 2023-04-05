@@ -53,7 +53,7 @@ class AdoptAddFragment : Fragment() {
     ): View {
         _binding = FragmentAdoptAddBinding.inflate(inflater, container, false)
         activity?.let {
-            viewModel = ViewModelProvider(it).get(AdoptAddFragmentVM::class.java)
+            viewModel = ViewModelProvider(this).get(AdoptAddFragmentVM::class.java)
             binding.viewModel = viewModel
             binding.lifecycleOwner = this
         }

@@ -163,7 +163,7 @@ class AdoptViewFragment : Fragment() {
                                         ca = ca.replace("\"", "")
                                         ForPawChain.setBlockChain(
                                             ca,
-                                            "32f246287b10f0e9ac71f6655047b35431f125f97abee915d0244d1cdd74f758"
+                                            "faee15c534f72212de7f83070c68bade01071d0ca6256a761ea568cbcf832714"
                                         )
                                         val history = ForPawChain.getHistory()
                                         for (item in history) {
