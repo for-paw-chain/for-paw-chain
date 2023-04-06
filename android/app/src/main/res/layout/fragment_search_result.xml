@@ -13,6 +13,10 @@
             name="adoptVM"
             type="com.ssafy.forpawchain.model.domain.AdoptDTO" />
 
+        <variable
+            name="viewModel"
+            type="com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM" />
+
     </data>
 
     <!-- 뷰페이저 (layout_behavior를 "@string/appbar_scrolling_view_behavior"로 설정해야함! ) -->

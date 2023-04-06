@@ -1,5 +1,6 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,5 +41,5 @@ class UserFragmentVM : ViewModel() {
 
     val name = MutableLiveData<String>(UserInfo.name)
     val code = MutableLiveData<String>(UserInfo.uid)
-//    val profile = MutableLiveData<String>(UserInfo.uid)
+    val profile = MutableLiveData<Drawable>(UserInfo.profile)
 }

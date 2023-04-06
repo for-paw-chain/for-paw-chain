@@ -83,9 +83,8 @@
         tools:layout="@layout/fragment_search_result" />
 
     <fragment
-        android:id="@+id/navigation_search_result_unauth"
-        android:name="com.ssafy.forpawchain.behind.fragment.SearchResultFragment"
-        android:label="SearchResult"
-        tools:layout="@layout/fragment_search_result_unauth" />
-
+        android:id="@+id/navigation_paw_info_create"
+        android:name="com.ssafy.forpawchain.behind.fragment.CreatePawInfoFragment"
+        android:label="PawFragment"
+        tools:layout="@layout/fragment_create_paw_info" />
 </navigation>

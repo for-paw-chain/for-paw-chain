@@ -1,53 +1,41 @@
 package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
-import android.content.Intent
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.text.Layout.Directions
 import android.util.Log
 import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
 import com.ssafy.forpawchain.R
-import com.ssafy.forpawchain.behind.activity.LoginActivity
 import com.ssafy.forpawchain.behind.activity.MainActivity
-import com.ssafy.forpawchain.behind.activity.SplashActivity
 import com.ssafy.forpawchain.behind.dialog.QRCreateDialog
-import com.ssafy.forpawchain.behind.dialog.WithdrawalAnimalDialog
 import com.ssafy.forpawchain.databinding.FragmentHouseBinding
 import com.ssafy.forpawchain.databinding.FragmentSearchResultBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
-import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.model.room.UserInfo.Companion.token
 import com.ssafy.forpawchain.model.service.PetService
-import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.util.ImageSave
 import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
-import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
@@ -70,6 +58,19 @@ class HouseFragment : Fragment() {
     private lateinit var response : retrofit2.Response<JsonObject>
     private lateinit var searchResultBinding: FragmentSearchResultBinding
 
+    private var imageResId: Int = 0
+    private lateinit var defaultDrawable: Drawable
+    private lateinit var petDefaultImg: MutableLiveData<Drawable>
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // 기본 견적 사항 이미지 파일 가져오기
+        imageResId = resources.getIdentifier("icon_default_pet", "drawable", context.packageName)
+
+        // Drawable 객체 생성
+        defaultDrawable = ContextCompat.getDrawable(requireContext(), imageResId)!!
+        petDefaultImg = MutableLiveData(defaultDrawable)
+    }
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -105,16 +106,20 @@ class HouseFragment : Fragment() {
         val recyclerView = binding.recycler
         val searchList = mutableListOf<MyPawListDTO>()
 
-//        token =  PreferenceManager().getString(requireContext(), "token")!!
         token = PreferenceManager().getString(requireActivity(), "token")!!
         Log.d(TAG, "HouseFragment 토큰 : ${token}")
 
-//        searchResultBinding = FragmentSearchResultBinding.bind(view)
+
+
+        // 값 할당
+//        petImageLiveData.postValue(defaultDrawable)
+
+//        petImageLiveData.observe(viewLifecycleOwner) { petImage: Drawable? ->
+//            val drawable: Drawable = petImage ?: defaultDrawable
 
         recyclerView.adapter = MyPawListAdapter(searchList,
             {
                 // qr
-
                 it.code.value?.let { it1 ->
                     QRCreateDialog(requireContext(), it1) {
                         ImageSave().saveImageToGallery(
@@ -139,25 +144,10 @@ class HouseFragment : Fragment() {
 //                viewModel.deleteTask(it)
             },{
                 // detail
-                val bundle = Bundle()
-                // MyPawListDTO를 > SearchResultDTO로 변경
-                val searchResultDTO = SearchResultDTO(
-                    code = it.code.value!!,
-                    profile = it.profile?.value,
-                    name = it.name.value!!,
-                    sex = it.sex.value!!,
-                    species = it.species.value!!,
-                    kind = it.kind.value!!,
-                    neutered = it.neutered.value!!,
-                    birth = it.neutered.value,
-                    region = it.neutered.value,
-                    tel = it.neutered.value,
-                    etc = it.neutered.value,
-                )
-                bundle.putSerializable("searchResultVM", searchResultDTO)
-                navController.navigate(R.id.navigation_search_result, bundle)
-            },
-        )
+
+                val code = it.code.value!!
+                doSearching(code)
+            })
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -166,7 +156,6 @@ class HouseFragment : Fragment() {
             requireActivity(),
             Observer { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
                 (binding.recycler.adapter as MyPawListAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
-
             })
 
         /**
@@ -182,96 +171,11 @@ class HouseFragment : Fragment() {
         //동물 등록 검색 번호 창 번호 입력 버튼
         binding.searchEditText.setOnEditorActionListener { _, actionId, _ ->
             var input = binding.searchEditText.text.toString();
-            var bundle = Bundle()
+
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     // 엔터키가 눌렸을 때 처리할 코드 작성
-                    GlobalScope.launch {
-                        when (getPetInfo(input, token)) {
-                            "200" -> {
-                                Log.d(TAG, "response 객체 내부는 = ${response.body()}")
-
-                                val profileUrl = response.body()!!.get("profile").asString
-                                // Glide로 이미지 다운로드 및 ImageView에 로딩
-                                val drawable = Glide.with(requireContext())
-                                    .load(profileUrl)
-                                    .submit()
-                                    .get()
-
-                                val birthStr = response.body()!!.get("birth")?.asString
-                                val birthDate: Date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(birthStr)
-                                val diffInMillis = System.currentTimeMillis() - birthDate!!.time
-                                val diffInYears = TimeUnit.MILLISECONDS.toDays(diffInMillis) / 365
-
-                                val searchResultDTO = SearchResultDTO(
-                                    code = response.body()!!.get("pid").asString ?: "",
-                                    profile = drawable,
-                                    name = response.body()!!.get("name").asString ?: "",
-                                    sex = response.body()!!.get("sex").asString ?: "",
-                                    species = response.body()!!.get("type").asString ?: "",
-                                    kind = response.body()!!.get("kind").asString ?: "",
-                                    neutered = response.body()!!.get("spayed").asString ?: "",
-                                    birth = "$diffInYears 살",
-                                    region = response.body()?.get("region")?.asString,
-                                    tel = response.body()?.get("tel")?.asString,
-                                    etc = response.body()?.get("etc")?.asString
-                                )
-
-                                /**
-                                 * setCurrentState 메서드는 메인 스레드에서 호출해야함.
-                                 * 그러나 현재 setCurrentState가 호출되는 시점은 GlobalScope.launch 블록 내부에서 실행 중인 백그라운드 스레드에서입니다.
-                                 * 따라서 navController.navigate 메서드를 메인 스레드에서 실행되도록 withContext(Dispatchers.Main)안에서 사용되게 함
-                                 **/
-
-                                withContext(Dispatchers.Main) {
-
-                                    bundle.putSerializable("searchResultVM", searchResultDTO)
-                                    val navController = Navigation.findNavController(requireView())
-                                    navController.navigate(R.id.navigation_search_result, bundle)
-                                }
-                            }
-                            "206" -> {
-                                Log.d(TAG, "response 객체 내부는 = ${response.body()}")
-
-                                // 기본 견적 사항 이미지 파일 가져오기
-                                val imageResId = resources.getIdentifier("icon_default_pet", "drawable", context?.packageName)
-
-                                // Drawable 객체 생성
-                                val drawable = ContextCompat.getDrawable(requireContext(), imageResId)
-
-                                val searchResultDTO = SearchResultDTO(
-                                    code = response.body()!!.get("pid").asString ?: "",
-                                    profile = drawable,
-                                    name = response.body()!!.get("name").asString ?: "",
-                                    sex = response.body()!!.get("sex").asString ?: "",
-                                    species = response.body()!!.get("type").asString ?: "",
-                                    kind = response.body()!!.get("kind").asString ?: "",
-                                    neutered = response.body()!!.get("spayed").asString ?: "",
-                                    birth = "",
-                                    region = "",
-                                    tel = "",
-                                    etc = ""
-                                )
-
-                                withContext(Dispatchers.Main) {
-                                    bundle.putSerializable("searchResultVM", searchResultDTO)
-                                    val navController = Navigation.findNavController(requireView())
-                                    navController.navigate(R.id.navigation_search_result, bundle)
-                                }
-
-                                //return@launch // launch 블록에서 반환하여 함수를 빠져나감
-                            }
-                            else -> {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "${input}은 없는 동물입니다",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
-                    }
+                    doSearching(input)
                     true
                 }
                 else -> false
@@ -289,8 +193,90 @@ class HouseFragment : Fragment() {
                     //원하는 동작
                     Log.d(TAG, "포커스 아웃")
                 }
-
             }
+    }
+
+    private fun doSearching(input: String) {
+        GlobalScope.launch {
+            when (getPetInfo(input, token)) {
+                "200" -> {
+                    Log.d(TAG, "response 객체 내부는 = ${response.body()}")
+
+                    val profileUrl = response.body()!!.get("profile").asString
+                    // Glide로 이미지 다운로드 및 ImageView에 로딩
+                    val drawable = Glide.with(requireContext())
+                        .load(profileUrl)
+                        .submit()
+                        .get()
+
+                    val birthStr = response.body()!!.get("birth")?.asString
+                    val birthDate: Date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(birthStr)
+                    val diffInMillis = System.currentTimeMillis() - birthDate!!.time
+                    val diffInYears = TimeUnit.MILLISECONDS.toDays(diffInMillis) / 365
+
+                    val searchResultDTO = SearchResultDTO(
+                        code = response.body()!!.get("pid").asString ?: "",
+                        profile = drawable,
+                        name = response.body()!!.get("name").asString ?: "",
+                        sex = response.body()!!.get("sex").asString ?: "",
+                        species = response.body()!!.get("type").asString ?: "",
+                        kind = response.body()!!.get("kind").asString ?: "",
+                        neutered = response.body()!!.get("spayed").asString ?: "",
+                        birth = "$diffInYears 살",
+                        region = response.body()?.get("region")?.asString,
+                        tel = response.body()?.get("tel")?.asString,
+                        etc = response.body()?.get("etc")?.asString
+                    )
+
+                    /**
+                     * setCurrentState 메서드는 메인 스레드에서 호출해야함.
+                     * 그러나 현재 setCurrentState가 호출되는 시점은 GlobalScope.launch 블록 내부에서 실행 중인 백그라운드 스레드에서입니다.
+                     * 따라서 navController.navigate 메서드를 메인 스레드에서 실행되도록 withContext(Dispatchers.Main)안에서 사용되게 함
+                     **/
+
+                    withContext(Dispatchers.Main) {
+                        var bundle = Bundle()
+                        bundle.putSerializable("searchResultVM", searchResultDTO)
+                        val navController = Navigation.findNavController(requireView())
+                        navController.navigate(R.id.navigation_search_result, bundle)
+                    }
+                }
+                "206" -> {
+                    Log.d(TAG, "response 객체 내부는 = ${response.body()}")
+
+                    val searchResultDTO = SearchResultDTO(
+                        code = response.body()!!.get("pid").asString ?: "",
+                        profile = defaultDrawable,
+                        name = response.body()!!.get("name").asString ?: "",
+                        sex = response.body()!!.get("sex").asString ?: "",
+                        species = response.body()!!.get("type").asString ?: "",
+                        kind = response.body()!!.get("kind").asString ?: "",
+                        neutered = response.body()!!.get("spayed").asString ?: "",
+                        birth = "",
+                        region = "",
+                        tel = "",
+                        etc = ""
+                    )
+
+                    withContext(Dispatchers.Main) {
+                        var bundle = Bundle()
+                        bundle.putSerializable("searchResultVM", searchResultDTO)
+                        val navController = Navigation.findNavController(requireView())
+                        navController.navigate(R.id.navigation_search_result, bundle)
+                    }
+                    //return@launch // launch 블록에서 반환하여 함수를 빠져나감
+                }
+                else -> {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            requireContext(),
+                            "${input}은 없는 동물입니다",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
     }
 
     private fun scrollEvent() {
@@ -308,30 +294,30 @@ class HouseFragment : Fragment() {
 //                    viewModel.addTask(SearchResultDTO("별이4", "여아", "견과", "말티즈", "O"))
 //                    viewModel.addTask(SearchResultDTO("별이5", "여아", "견과", "말티즈", "X"))
 //                    viewModel.addTask(SearchResultDTO("별이6", "여아", "견과", "말티즈", "X"))
-
                     /////
 
                     PetService().getMyPets(token).enqueue(object :
                         Callback<JsonObject> {
                         override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                             if (response.isSuccessful) {
-                                // 정상적으로 통신이 성고된 경우
+                                // 정상적으로 통신이 된 경우
                                 var result: JsonObject? = response.body()
                                 val items = result?.get("content") as JsonArray
                                 if (result != null) {
                                     for (item in items.asJsonArray) {
                                         var item1 = item as JsonObject
-                                        if (item1["profile"].toString() == "null") {
+                                        if (item1["profile"].toString() == "null") { // 프로필이 없는 경우
                                             viewModel.addTask(MyPawListDTO(
                                                 MutableLiveData<String>(item1["pid"].asString),
-                                                null,
+                                                petDefaultImg,
                                                 MutableLiveData<String>(item1["name"].asString),
                                                 MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
                                                 MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                                 MutableLiveData<String>(item1["kind"].asString),
-                                                MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
+                                                // false가 중성화 안함, true가 중성화 함
+                                                MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else if(item1["spayed"].asString.equals("true")) "○" else ""),
                                             ))
-                                        } else {
+                                        } else { // 프로필이 있는 경우
                                             ImageLoader().loadDrawableFromUrl(item1["profile"].asString) { drawable ->
                                                 viewModel.addTask(
                                                     MyPawListDTO(
@@ -341,7 +327,7 @@ class HouseFragment : Fragment() {
                                                         MutableLiveData<String>(if (item1["sex"].asString.equals("MALE")) "남아" else "여아"),
                                                         MutableLiveData<String>(if (item1["type"].asString.equals("DOG")) "개과" else if (item1["type"].asString.equals("CAT")) "고양이과" else "기타"),
                                                         MutableLiveData<String>(item1["kind"].asString),
-                                                        MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else "○"),
+                                                        MutableLiveData<String>(if (item1["spayed"].asString.equals("false")) "Ⅹ" else if(item1["spayed"].asString.equals("true")) "○" else ""),
                                                     )
                                                 )
                                             }
@@ -395,57 +381,8 @@ class HouseFragment : Fragment() {
         _binding = null
     }
 
-//    fun getPetInfo(input : String){
-//        GlobalScope.launch {
-//            val response = withContext(Dispatchers.IO) {
-//                PetService().getPetInfo(input).enqueue(object :
-//                    Callback<JsonObject> {
-//                    override fun onResponse(
-//                        call: Call<JsonObject>,
-//                        response: Response<JsonObject>
-//                    ) {
-//                        if (response.isSuccessful) {
-//                            // 정상적으로 통신이 성공된 경우
-//                            var bundle = Bundle()
-//                            when{
-//                                //200 견적사항까지 있는 경우
-//                                response.code().toString() == "200" ->{
-//                                    Log.d(TAG, "검색바 응답 200" + response)
-//                                    return response.code().toString()
-//                                }
-//
-//                                //206 견적사항이 없는 경우
-//                                response.code().toString() == "206" ->{
-//                                    Log.d(TAG, "검색바 응답 206" + response)
-//                                    return response.code().toString()
-//                                }
-//
-//                                //500 없는 번호
-//                                response.code().toString() == "500" ->{
-//                                    Log.d(TAG, "검색바 응답 500" + response)
-//                                    return response.code().toString()
-//                                }
-//                                else -> {
-//                                    Log.d(TAG, "기타 에러" + response)
-//                                    return false
-//                                }
-//                            }
-//                        } else {
-//                            // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-//                            Log.d(UserFragment.TAG, "검색 실패 " + response)
-//                        }
-//                    }
-//                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-//                        // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-//                        Log.d(SplashActivity.TAG, "onFailure 에러: " + t.message.toString());
-//                    }
-//                })
-//            }
-//        }
-//    }
-
     suspend fun getPetInfo(input: String, token: String): String = withContext(Dispatchers.IO) {
-        val response = PetService().getPetInfo(input, token).execute()
+        response = PetService().getPetInfo(input, token).execute()
 
         when {
             response.isSuccessful && response.code() == 200 -> {

@@ -66,7 +66,6 @@ class MyPawFragment : Fragment() {
         recyclerView.adapter = MyPawListAdapter(searchList,
             {
                 // qr
-
                 it.code.value?.let { it1 ->
                     QRCreateDialog(requireContext(), it1) {
                         ImageSave().saveImageToGallery(
@@ -132,6 +131,7 @@ class MyPawFragment : Fragment() {
 
 //        viewModel.addTask(MyPawListDTO("별", "여아", "개과", "말티즈", "O"))
 //        viewModel.addTask(MyPawListDTO("뚱이", "여아", "개과", "비숑", "X"))
+
         lifecycleScope.launch {
             viewModel.initData()
         }
@@ -139,9 +139,7 @@ class MyPawFragment : Fragment() {
             requireActivity(),
             Observer { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
                 (binding.recycler.adapter as MyPawListAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
-
             })
-
 
         val root: View = binding.root
         return root

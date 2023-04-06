@@ -75,7 +75,7 @@ class AdoptViewFragmentVM : ViewModel() {
                             pawInfo.sex.postValue(if (result["sex"].asString.equals("MALE")) {"남아"} else {"여아"})
                             pawInfo.species.postValue(if (result["type"].asString.equals("DOG")) "개과" else if (result["type"].asString.equals("CAT")) "고양이과" else "기타")
                             pawInfo.kind.postValue(result["kind"].asString)
-                            pawInfo.neutered.postValue(if (result["spayed"].asString.equals("false")) "Ⅹ" else "○")
+                            pawInfo.neutered.postValue(if (result["spayed"].asString.equals("false")) "Ⅹ" else if(result["spayed"].asString.equals("true")) "○" else "")
                             extra.postValue(result["etc"].asString)
                         }
 

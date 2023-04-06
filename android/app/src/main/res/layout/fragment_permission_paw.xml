@@ -110,9 +110,9 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/kakao_regular"
                     android:gravity="bottom"
-                    android:text="@{viewModel.code}"
+                    android:text="@={viewModel.code}"
                     android:textColor="@color/black"
-                    android:textSize="25sp" />
+                    android:textSize="10sp" />
 
                 <Button
                     android:id="@+id/adoptBtn"

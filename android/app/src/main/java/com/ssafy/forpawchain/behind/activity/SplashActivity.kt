@@ -160,57 +160,32 @@ class SplashActivity : AppCompatActivity() {
             Log.d(TAG, "초기화 후 모든 값 출력 ");
             PreferenceManager().printAll(applicationContext)
 
+            /**
+             * 카카오 로그인 부분
+             * **/
+
+            // 로그아웃
+//            UserApiClient.instance.logout { error ->
+//                if (error != null) {
+//                    // 에러가 발생한 경우 처리합니다.
+//                    Log.d(UserFragment.TAG, "로그아웃 에러 발생")
+//                } else {
+//                    // 로그아웃이 성공한 경우 처리합니다.
+//                    Log.d(UserFragment.TAG, "로그아웃")
+//                }
+//            }
+//
+//            // unlink는 카카오 회원탈퇴
+//            UserApiClient.instance.unlink { error ->
+//                if (error != null) {
+//                    Log.d(UserFragment.TAG, "회원 탈퇴 에러 발생")
+//                } else {
+//                    Log.d(UserFragment.TAG, "회원 탈퇴")
+//                }
+//            }
 
             startActivity(Intent(applicationContext, LoginActivity::class.java))
-            /**
-            // 처음 로그인인지 아닌지 확인
-            val sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE)
 
-            // 처음 로그인인 경우, sharedPreferences는 null 인 경우가 없으므로 다르게 판단
-            val uid = sharedPreferences.getString("uid", null)
-            if (uid == null) {  // uid가 없는 경우 -> 처음 로그인
-                Log.d(TAG, "처음 로그인")
-                startActivity(Intent(applicationContext, LoginActivity::class.java))
-            } else {  // uid가 있는 경우 -> 로그인 이력이 있는 경우
-                Log.d(TAG, "이전 로그인 정보가 존재함")
-                Log.d(TAG, "uid: $uid")
-                nextMainActivity()
-            }
-             **/
-
-            /**
-
-            GlobalScope.launch {
-                val response = withContext(Dispatchers.IO) {
-                    UserService().getUser(applicationContext).enqueue(object :
-                        Callback<JsonObject> {
-                        override fun onResponse(
-                            call: Call<JsonObject>,
-                            response: Response<JsonObject>
-                        ) {
-                            if (response.isSuccessful) {
-                                // 처음 로그인이 아닌 경우
-                                lifecycleScope.launch {
-                                    UserInfo.setUserInfo(response.body().toString())
-                                }
-                                // call
-                                Log.d(TAG, "로그인 성공 ${response.body()}" );
-                                nextMainActivity()
-
-                            } else {
-                                // 처음 로그인 한 경우 (응답코드 3xx, 4xx 등)
-                                Log.d(TAG, "로그인 실패 ${response.body()}" )
-                                startActivity(Intent(applicationContext, LoginActivity::class.java))
-                            }
-                        }
-
-                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                            Log.d(TAG, "onFailure 에러: " + t.message.toString());
-                        }
-                    })
-                }
-            }**/
         }, 2000)
     }
 }

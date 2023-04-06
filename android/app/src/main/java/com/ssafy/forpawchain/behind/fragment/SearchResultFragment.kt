@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
+import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.databinding.FragmentSearchResultBinding
 import com.ssafy.forpawchain.model.domain.AdoptDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
@@ -33,9 +35,9 @@ class SearchResultFragment : Fragment() {
     private lateinit var viewModel: SearchResultFragmentVM
     private var _binding: FragmentSearchResultBinding? = null
     private lateinit var navController: NavController
-    private var auth: String = ""
 
     // This property is only valid between onCreateView and
+
     // onDestroyView.
     private val binding get() = _binding!!
 
@@ -54,17 +56,18 @@ class SearchResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lateinit var searchResultDTO: SearchResultDTO
+        navController = Navigation.findNavController(view)
+
         activity?.let {
             viewModel = ViewModelProvider(it).get(SearchResultFragmentVM::class.java)
             binding.lifecycleOwner = this
 
             val bundle = arguments
-            lateinit var searchResultDTO: SearchResultDTO
             bundle?.getSerializable("searchResultVM")?.let {
                 searchResultDTO = it as SearchResultDTO
                 binding.searchResultVM = searchResultDTO
             }
-
 
             //강아지의 주인인지
             //await() 함수를 사용하여 Deferred 객체를 해결해야 함
@@ -78,7 +81,7 @@ class SearchResultFragment : Fragment() {
 
             thread {
 
-                val auth: String? = runBlocking { getPetAuth(searchResultDTO.code) }
+                val auth: String? = runBlocking { searchResultDTO.code?.let { it1 -> getPetAuth(it1) } }
 
                 if (auth != null) {
                     auth.replace("\"", "")
@@ -115,9 +118,9 @@ class SearchResultFragment : Fragment() {
             }
 
             // 의사아니다
-            if (!UserInfo.isDoctor) {
-                binding.fab.visibility = View.GONE
-            }
+//            if (!UserInfo.isDoctor) {
+//                binding.fab.visibility = View.GONE
+//            }
 
             //진료내역을 보여줄지 광고를 보여줄지
             // 권한 있거나 주인이거나 의사다
@@ -152,7 +155,24 @@ class SearchResultFragment : Fragment() {
             }
         }
 
+        // 검색 결과에서 의사일 경우 페이지 플로팅 액션 버튼 누르면
+        // 진료기록 작성 페이지 이동
+        binding.fab.setOnClickListener { view ->
+            var bundle = Bundle()
+            bundle.putString("code", searchResultDTO.code)
+            navController.navigate(R.id.navigation_adopt_create, bundle)
+        }
 
+        val bundle = arguments
+        bundle?.getSerializable("searchResultVM")?.let {
+            binding.searchResultVM = it as SearchResultDTO
+        }
+        initObserve()
+
+        navController = Navigation.findNavController(requireView())
+        binding.idAddPawInfoDetailButton.setOnClickListener{view ->
+            navController.navigate(com.ssafy.forpawchain.R.id.navigation_paw_info_create, bundle)
+        }
         initObserve()
     }
 
