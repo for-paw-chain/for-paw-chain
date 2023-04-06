@@ -214,14 +214,18 @@ class HouseFragment : Fragment() {
                     val diffInMillis = System.currentTimeMillis() - birthDate!!.time
                     val diffInYears = TimeUnit.MILLISECONDS.toDays(diffInMillis) / 365
 
+                    val neutered = response.body()!!.get("spayed").asString
+                    val species = response.body()!!.get("type").asString
+                    val sex = response.body()!!.get("sex").asString
+
                     val searchResultDTO = SearchResultDTO(
                         code = response.body()!!.get("pid").asString ?: "",
                         profile = drawable,
                         name = response.body()!!.get("name").asString ?: "",
-                        sex = response.body()!!.get("sex").asString ?: "",
-                        species = response.body()!!.get("type").asString ?: "",
+                        sex =  if (sex.equals("MALE")) "남아" else "여아",
+                        species = if (species.equals("CAT")) "고양이과" else if (species.equals("DOG")) "개과" else "기타",
                         kind = response.body()!!.get("kind").asString ?: "",
-                        neutered = response.body()!!.get("spayed").asString ?: "",
+                        neutered = if (neutered.equals("false")) "Ⅹ" else if (neutered.equals("true")) "○" else "",
                         birth = "$diffInYears 살",
                         region = response.body()?.get("region")?.asString,
                         tel = response.body()?.get("tel")?.asString,
@@ -244,14 +248,18 @@ class HouseFragment : Fragment() {
                 "206" -> {
                     Log.d(TAG, "response 객체 내부는 = ${response.body()}")
 
+                    val neutered = response.body()!!.get("spayed").asString
+                    val species = response.body()!!.get("type").asString
+                    val sex = response.body()!!.get("sex").asString
+
                     val searchResultDTO = SearchResultDTO(
                         code = response.body()!!.get("pid").asString ?: "",
                         profile = defaultDrawable,
                         name = response.body()!!.get("name").asString ?: "",
-                        sex = response.body()!!.get("sex").asString ?: "",
-                        species = response.body()!!.get("type").asString ?: "",
+                        sex =  if (sex.equals("MALE")) "남아" else "여아",
+                        species = if (species.equals("CAT")) "고양이과" else if (species.equals("DOG")) "개과" else "기타",
                         kind = response.body()!!.get("kind").asString ?: "",
-                        neutered = response.body()!!.get("spayed").asString ?: "",
+                        neutered = if (neutered.equals("false")) "Ⅹ" else if (neutered.equals("true")) "○" else "",
                         birth = "",
                         region = "",
                         tel = "",
