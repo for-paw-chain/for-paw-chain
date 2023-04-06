@@ -96,7 +96,6 @@ class DiagnosisRecyclerViewAdapter(
         }
         return holder
     }
-
     fun setData(data: List<HistoryDTO>) {
         mydataSet = data
         notifyDataSetChanged()

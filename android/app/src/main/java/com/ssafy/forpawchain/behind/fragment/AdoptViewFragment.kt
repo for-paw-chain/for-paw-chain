@@ -84,8 +84,6 @@ class AdoptViewFragment : Fragment() {
             Log.d(TAG, "의료기록 상세 조회")
         }
 
-
-
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
         viewModel.todoLiveData.observe(
