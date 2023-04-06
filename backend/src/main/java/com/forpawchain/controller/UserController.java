@@ -119,7 +119,7 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
 		}
 
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.ok().build();
 	}
 
 	// 회원가입
@@ -138,6 +138,9 @@ public class UserController {
 
 	// 로그인
 	private TokenResDto login(LoginUserReqDto loginUserReqDto) {
+		// 회원탈퇴 유저일 시 탈퇴 정보 변경
+		userService.reRegistUser(loginUserReqDto);
+
 		// 로그인 시마다 정보 일치하면 새로운 token 발급
 		TokenResDto tokenResDto = userService.login(loginUserReqDto);
 		return tokenResDto;
