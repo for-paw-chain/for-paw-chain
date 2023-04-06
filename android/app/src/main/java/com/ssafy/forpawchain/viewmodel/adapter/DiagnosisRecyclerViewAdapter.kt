@@ -6,16 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.gson.JsonObject
 import com.ssafy.forpawchain.R
-import com.ssafy.forpawchain.behind.activity.LoginActivity
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.ControllDiagnosisHistoryBinding
 import com.ssafy.forpawchain.model.domain.HistoryDTO
 import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.PreferenceManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +25,24 @@ class DiagnosisRecyclerViewAdapter(
         val TAG: String? = this::class.qualifiedName
     }
 
+    override fun onCreateViewHolder(
+        viewGroup: ViewGroup,
+        viewType: Int
+    ): BaseRecyclerViewHolder<ControllDiagnosisHistoryBinding> {
+
+        val view = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.controll_diagnosis_history, viewGroup, false) //내가 각아이템에 사용하는 view
+        val bind = ControllDiagnosisHistoryBinding.bind(view)
+        val holder = BaseRecyclerViewHolder(bind)
+
+        view.setOnClickListener {
+            if (holder.adapterPosition != -1) {
+                onClickDetailButton.invoke(mydataSet.get(holder.adapterPosition))
+            }
+        }
+        return holder
+    }
+
     override fun onBindViewHolder(
         holder: BaseRecyclerViewHolder<ControllDiagnosisHistoryBinding>,
         position: Int,
@@ -36,15 +50,14 @@ class DiagnosisRecyclerViewAdapter(
         //item을 화면에 표시해주는
         val context : Context = holder.itemView.context
         val token : String = PreferenceManager().getString(context,"token")!!
-        Log.d(TAG, "어댑터 쓰레기 token 잘 가져옴?" + token);
+        Log.d(TAG, "어댑터 token 잘 가져옴?" + token);
 
         if (mydataSet.isNotEmpty()) {
             var listposition = mydataSet[position]
             val historyDTO: HistoryDTO = mydataSet[position] as HistoryDTO
 
-            GlobalScope.launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 val response = withContext(Dispatchers.IO) {
-
                     UserService().getDoctorName(
                         historyDTO.writer,
                         token
@@ -74,30 +87,16 @@ class DiagnosisRecyclerViewAdapter(
                         }
                     })
                 }
-                Log.d(ForPawChain.TAG, "의사 이름 받아오기")
+                Log.d(TAG, "의사 이름 받아오기")
             }
         }
     }
 
-    override fun onCreateViewHolder(
-        viewGroup: ViewGroup,
-        viewType: Int
-    ): BaseRecyclerViewHolder<ControllDiagnosisHistoryBinding> {
-
-        val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.controll_diagnosis_history, viewGroup, false) //내가 각아이템에 사용하는 view
-        val bind = ControllDiagnosisHistoryBinding.bind(view)
-        val holder = BaseRecyclerViewHolder(bind)
-
-        view.setOnClickListener {
-            if (holder.adapterPosition != -1) {
-                onClickDetailButton.invoke(mydataSet.get(holder.adapterPosition))
-            }
-        }
-        return holder
-    }
     fun setData(data: List<HistoryDTO>) {
         mydataSet = data
         notifyDataSetChanged()
     }
+
+
+
 }
