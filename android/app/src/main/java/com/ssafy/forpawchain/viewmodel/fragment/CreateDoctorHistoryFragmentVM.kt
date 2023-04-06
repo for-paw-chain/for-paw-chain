@@ -2,20 +2,24 @@ package com.ssafy.forpawchain.viewmodel.fragment
 
 import android.app.Application
 import android.content.Context
+import android.provider.Settings.Global
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.Event
+import com.ssafy.forpawchain.behind.fragment.AdoptViewFragment
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.model.domain.Data
 import com.ssafy.forpawchain.model.domain.DianosisNewDTO
+import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.model.service.IpfsService
 import com.ssafy.forpawchain.util.PreferenceManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -64,7 +68,7 @@ class CreateDoctorHistoryFragmentVM(application: Application) : AndroidViewModel
         val TAG: String? = this::class.qualifiedName
     }
 
-    fun doneBtn_onClick() {
+    fun doneBtn_onClick(code: String) {
         var list: ArrayList<Data> = ArrayList()
         for (item in data) {
             list.add(Data(item.title.value, item.body.value))
@@ -78,36 +82,71 @@ class CreateDoctorHistoryFragmentVM(application: Application) : AndroidViewModel
                 it
             )
         }
-        if (imagePart != null) {
-            IpfsService().uploadImage(imagePart, token).enqueue(object :
-                retrofit2.Callback<JsonObject> {
-                override fun onResponse(
-                    call: Call<JsonObject>,
-                    response: Response<JsonObject>
-                ) {
-                    if (response.isSuccessful) {
-                        // 정상적으로 통신이 성공된 경우
-                        val data = response.body()
-                        Log.d(AdoptAddFragmentVM.TAG, "onResponse 성공");
-                        title.value?.let {
-                            body.value?.let { it1 ->
-                                ForPawChain.createHistory(
-                                    it,
-                                    it1, list, data!!["content"].toString().replace("\"", "")
-                                )
-                            }
-                        }
-                    } else {
-                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        Log.d(AdoptAddFragmentVM.TAG, "onResponse 실패")
-                    }
-                }
 
-                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                    Log.d(AdoptAddFragmentVM.TAG, "onFailure 에러: " + t.message.toString())
-                }
-            })
+        CoroutineScope(Dispatchers.IO).launch {
+            AdoptService().getCA(code, token)
+                .enqueue(object :
+                    retrofit2.Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        if (response.isSuccessful) {
+                            // 정상적으로 통신이 성공된 경우
+
+                            var ca = response.body()?.get("content").toString()
+                            Log.d(AdoptViewFragment.TAG, code + "의 컨트랙트 주소 : " + ca)
+                            ca = ca.replace("\"", "")
+                            ForPawChain.setBlockChain(
+                                ca,
+                                UserInfo.privateKey
+                            )
+                            Log.d(AdoptViewFragment.TAG, "onResponse 성공");
+                        } else {
+                            Log.d(AdoptViewFragment.TAG, "onResponse 실패");
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        Log.d(AdoptViewFragment.TAG, "네트워크 에러");
+
+                    }
+                })
+        }
+        if (imagePart != null) {
+
+            GlobalScope.launch {
+                IpfsService().uploadImage(imagePart, token).enqueue(object :
+                    retrofit2.Callback<JsonObject> {
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        if (response.isSuccessful) {
+                            // 정상적으로 통신이 성공된 경우
+                            val data = response.body()
+                            Log.d(AdoptAddFragmentVM.TAG, "onResponse 성공");
+                            title.value?.let {
+                                body.value?.let { it1 ->
+                                    ForPawChain.createHistory(
+                                        it,
+                                        it1, list, data!!["content"].toString().replace("\"", "")
+                                    )
+                                }
+                            }
+                        } else {
+                            // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                            Log.d(AdoptAddFragmentVM.TAG, "onResponse 실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                        Log.d(AdoptAddFragmentVM.TAG, "onFailure 에러: " + t.message.toString())
+                    }
+                })
+            }
         }
         clearTask()
         _openEvent.value = Event(ActivityCode.DONE)
