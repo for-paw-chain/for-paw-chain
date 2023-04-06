@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -93,6 +94,25 @@ class UserFragment : Fragment() {
                                             if (response.isSuccessful) {
                                                 // 정상적으로 통신이 성공된 경우
                                                 lifecycleScope.launch {
+                                                    // 카카오 로그아웃 부분
+                                                    UserApiClient.instance.logout { error ->
+                                                        if (error != null) {
+                                                            // 에러가 발생한 경우 처리합니다.
+                                                            Log.d(TAG, " 카카오 로그아웃 에러 발생")
+                                                        } else {
+                                                            // 로그아웃이 성공한 경우 처리합니다.
+                                                            Log.d(TAG, " 카카오 로그아웃 성공")
+                                                        }
+                                                    }
+
+                                                    // unlink는 카카오 회원탈퇴
+                                                    UserApiClient.instance.unlink { error ->
+                                                        if (error != null) {
+                                                            Log.d(UserFragment.TAG, "카카오 회원 탈퇴 에러 발생")
+                                                        } else {
+                                                            Log.d(UserFragment.TAG, "카카오 회원 탈퇴")
+                                                        }
+                                                    }
 
                                                     preferenceManager.clear(context!!)
                                                     requireActivity().finish()
@@ -100,6 +120,7 @@ class UserFragment : Fragment() {
 
                                                     Log.d(TAG, "회원 탈퇴 성공 " + response);
                                                     Log.d(TAG, "회원 탈퇴 성공 " + response.body());
+                                                    Toast.makeText(requireContext(), "회원 탈퇴 되었습니다.", Toast.LENGTH_SHORT).show()
                                                 }
                                             } else {
                                                 // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

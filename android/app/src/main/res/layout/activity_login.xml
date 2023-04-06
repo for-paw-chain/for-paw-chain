@@ -5,7 +5,6 @@
     tools:context=".behind.activity.LoginActivity">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.ssafy.forpawchain.viewmodel.activity.LoginVM" />
@@ -31,15 +30,15 @@
 
         <LinearLayout
             android:layout_width="350dp"
-            android:layout_height="250dp"
+            android:layout_height="80dp"
             android:orientation="vertical"
-            android:weightSum="3"
+            android:weightSum="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="0.321">
+            app:layout_constraintVertical_bias="0.6">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/id_kakao_login_btn"
@@ -71,69 +70,6 @@
                     app:layout_constraintStart_toStartOf="@+id/id_kakao_login_btn" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:background="@drawable/box_naver">
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/icon_naver"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/kakao_bold"
-                    android:gravity="center"
-                    android:text="네이버로 로그인"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/imageView1" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:background="@drawable/box_google">
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:src="@drawable/icon_google"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/kakao_bold"
-                    android:gravity="center"
-                    android:text="구글로 로그인"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/imageView3" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
