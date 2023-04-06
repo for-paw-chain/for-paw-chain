@@ -2,53 +2,40 @@ package com.ssafy.forpawchain.behind.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.text.Layout.Directions
 import android.util.Log
 import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ssafy.basictemplate.util.ActivityCode
 import com.ssafy.basictemplate.util.eventObserve
 import com.ssafy.forpawchain.R
-import com.ssafy.forpawchain.behind.activity.LoginActivity
 import com.ssafy.forpawchain.behind.activity.MainActivity
-import com.ssafy.forpawchain.behind.activity.SplashActivity
 import com.ssafy.forpawchain.behind.dialog.QRCreateDialog
-import com.ssafy.forpawchain.behind.dialog.WithdrawalAnimalDialog
 import com.ssafy.forpawchain.databinding.FragmentHouseBinding
 import com.ssafy.forpawchain.databinding.FragmentSearchResultBinding
 import com.ssafy.forpawchain.model.domain.MyPawListDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
-import com.ssafy.forpawchain.model.interfaces.IPermissionDelete
 import com.ssafy.forpawchain.model.room.UserInfo.Companion.token
 import com.ssafy.forpawchain.model.service.PetService
-import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.util.ImageSave
 import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.MyPawListAdapter
-import com.ssafy.forpawchain.viewmodel.adapter.SearchResultAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.HouseFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
 import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
@@ -227,14 +214,18 @@ class HouseFragment : Fragment() {
                     val diffInMillis = System.currentTimeMillis() - birthDate!!.time
                     val diffInYears = TimeUnit.MILLISECONDS.toDays(diffInMillis) / 365
 
+                    val neutered = response.body()!!.get("spayed").asString
+                    val species = response.body()!!.get("type").asString
+                    val sex = response.body()!!.get("sex").asString
+
                     val searchResultDTO = SearchResultDTO(
                         code = response.body()!!.get("pid").asString ?: "",
                         profile = drawable,
                         name = response.body()!!.get("name").asString ?: "",
-                        sex = response.body()!!.get("sex").asString ?: "",
-                        species = response.body()!!.get("type").asString ?: "",
+                        sex =  if (sex.equals("MALE")) "남아" else "여아",
+                        species = if (species.equals("CAT")) "고양이과" else if (species.equals("DOG")) "개과" else "기타",
                         kind = response.body()!!.get("kind").asString ?: "",
-                        neutered = response.body()!!.get("spayed").asString ?: "",
+                        neutered = if (neutered.equals("false")) "Ⅹ" else if (neutered.equals("true")) "○" else "",
                         birth = "$diffInYears 살",
                         region = response.body()?.get("region")?.asString,
                         tel = response.body()?.get("tel")?.asString,
@@ -257,14 +248,18 @@ class HouseFragment : Fragment() {
                 "206" -> {
                     Log.d(TAG, "response 객체 내부는 = ${response.body()}")
 
+                    val neutered = response.body()!!.get("spayed").asString
+                    val species = response.body()!!.get("type").asString
+                    val sex = response.body()!!.get("sex").asString
+
                     val searchResultDTO = SearchResultDTO(
                         code = response.body()!!.get("pid").asString ?: "",
                         profile = defaultDrawable,
                         name = response.body()!!.get("name").asString ?: "",
-                        sex = response.body()!!.get("sex").asString ?: "",
-                        species = response.body()!!.get("type").asString ?: "",
+                        sex =  if (sex.equals("MALE")) "남아" else "여아",
+                        species = if (species.equals("CAT")) "고양이과" else if (species.equals("DOG")) "개과" else "기타",
                         kind = response.body()!!.get("kind").asString ?: "",
-                        neutered = response.body()!!.get("spayed").asString ?: "",
+                        neutered = if (neutered.equals("false")) "Ⅹ" else if (neutered.equals("true")) "○" else "",
                         birth = "",
                         region = "",
                         tel = "",

@@ -16,5 +16,7 @@ public interface UserService {
 
 	void logout(String id);
 
+	void reRegistUser(LoginUserReqDto loginUserReqDto);
+
 	TokenResDto reissue(String refreshToken, String id, String social);
 }

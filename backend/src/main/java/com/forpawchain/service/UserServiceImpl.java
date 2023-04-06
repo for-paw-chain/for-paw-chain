@@ -94,6 +94,25 @@ public class UserServiceImpl implements UserService {
 		refreshTokenRedisRepository.deleteById(id);
 	}
 
+	@Override
+	public void reRegistUser(LoginUserReqDto loginUserReqDto) {
+		UserEntity userEntity = userRepository.findById(loginUserReqDto.getId()).orElse(null);
+
+		if(userEntity.isDel()) {
+			UserEntity newUserEntity = UserEntity.builder()
+				.uid(userEntity.getUid())
+				.id(userEntity.getId())
+				.social(userEntity.getSocial())
+				.name(userEntity.getName())
+				.profile(userEntity.getProfile())
+				.wa(userEntity.getWa())
+				.del(false)
+				.build();
+
+			userRepository.save(newUserEntity);
+		}
+	}
+
 	// 토큰 재발급
 	@Override
 	public TokenResDto reissue(String refreshToken, String id, String social) {

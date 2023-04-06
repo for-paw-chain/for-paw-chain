@@ -13,6 +13,10 @@
             name="adoptVM"
             type="com.ssafy.forpawchain.model.domain.AdoptDTO" />
 
+        <variable
+            name="viewModel"
+            type="com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM" />
+
     </data>
 
     <!-- 뷰페이저 (layout_behavior를 "@string/appbar_scrolling_view_behavior"로 설정해야함! ) -->
@@ -166,7 +170,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-
+                            android:gravity="center"
                             android:text="@{searchResultVM.name}" />
 
                         <TextView
@@ -177,7 +181,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-
+                            android:gravity="center"
                             android:text="@{searchResultVM.sex}" />
 
                         <TextView
@@ -188,7 +192,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-
+                            android:gravity="center"
                             android:text="@{searchResultVM.species}" />
 
                         <TextView
@@ -199,7 +203,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-
+                            android:gravity="center"
                             android:text="@{searchResultVM.kind}" />
 
                         <TextView
@@ -208,6 +212,7 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
                             android:text="@{searchResultVM.neutered}" />
@@ -341,6 +346,7 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
                             android:text="@{searchResultVM.region}" />
@@ -351,6 +357,7 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
                             android:text="@{searchResultVM.tel}" />
@@ -361,6 +368,7 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
                             android:text="@{searchResultVM.birth}" />
@@ -388,6 +396,7 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="0.9"
+                            android:gravity="center"
                             android:fontFamily="@font/kakao_bold"
                             android:text="특이사항" />
 
@@ -532,7 +541,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             android:text="@{adoptVM.species}" />
 
                         <TextView
@@ -543,7 +552,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             android:text="@{adoptVM.kind}" />
 
                         <TextView
@@ -554,7 +563,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-                            android:gravity="center_vertical"
+                            android:gravity="center"
                             android:text="@{adoptVM.neutered}" />
                     </LinearLayout>
                 </LinearLayout>
