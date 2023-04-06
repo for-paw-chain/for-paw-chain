@@ -39,7 +39,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/kakao_bold"
-                    android:text="분양 공고 등록하기"
+                    android:text="입양 공고 등록하기"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -157,8 +157,8 @@
                 <!-- TODO: 회색 글씨 추후 변경 필요 -->
 
                 <EditText
-                    android:layout_width="347dp"
-                    android:layout_height="140dp"
+                    android:layout_width="327dp"
+                    android:layout_height="139dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="12dp"
