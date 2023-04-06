@@ -372,84 +372,96 @@ class LoginActivity : AppCompatActivity() {
 
     fun login(token: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = withContext(Dispatchers.IO) {
-                UserService().getUser(token).enqueue(object :
-                    Callback<JsonObject> {
-                    override fun onResponse(
-                        call: Call<JsonObject>,
-                        response: Response<JsonObject>,
-                    ) {
-                        if (response.isSuccessful) {
-                            lifecycleScope.launch {
-                                Log.d(TAG, "로그인 성공 ${response.body()}");
-                                UserInfo.setUserInfo(
-                                    response.body().toString(),
-                                    PreferenceManager().getString(applicationContext, "token")
-                                        ?: "",
-                                    applicationContext
-                                )
+            try {
+                val response1 = withContext(Dispatchers.IO) {
+                    UserService().getUser(token).enqueue(object :
+                        Callback<JsonObject> {
+                        override fun onResponse(
+                            call: Call<JsonObject>,
+                            response: Response<JsonObject>,
+                        ) {
+                            Log.d("login 함수의 onResponse 응답1 ", response.body().toString())
+                            Log.d("login 함수의 onResponse 응답2 ", response.toString())
 
-                                PreferenceManager().setString(
-                                    applicationContext,
-                                    "uid",
-                                    response.body()?.get("uid")?.asString ?: ""
-                                )
-                                PreferenceManager().setString(
-                                    applicationContext,
-                                    "id",
-                                    response.body()?.get("id")?.asString ?: ""
-                                )
-                                PreferenceManager().setString(
-                                    applicationContext,
-                                    "profile",
-                                    response.body()?.get("profile")?.asString ?: ""
-                                )
-                                PreferenceManager().setString(
-                                    applicationContext,
-                                    "name",
-                                    response.body()?.get("name")?.asString ?: ""
-                                )
+                            if (response.isSuccessful) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    Log.d("login 함수 response.isSuccessful ", "로그인 성공 ${response.body()}");
+                                    UserInfo.setUserInfo(
+                                        response.body().toString(),
+                                        PreferenceManager().getString(applicationContext, "token")
+                                            ?: "",
+                                        applicationContext
+                                    )
 
-                                if (walletAddress.isNullOrEmpty()) {
                                     PreferenceManager().setString(
                                         applicationContext,
-                                        "walletAddress",
-                                        ""
+                                        "uid",
+                                        response.body()?.get("uid")?.asString ?: ""
                                     )
-                                } else {
                                     PreferenceManager().setString(
                                         applicationContext,
-                                        "walletAddress",
-                                        response.body()?.get("wa")?.asString ?: ""
+                                        "id",
+                                        response.body()?.get("id")?.asString ?: ""
                                     )
+                                    PreferenceManager().setString(
+                                        applicationContext,
+                                        "profile",
+                                        response.body()?.get("profile")?.asString ?: ""
+                                    )
+                                    PreferenceManager().setString(
+                                        applicationContext,
+                                        "name",
+                                        response.body()?.get("name")?.asString ?: ""
+                                    )
+
+                                    if (walletAddress.isNullOrEmpty()) {
+                                        PreferenceManager().setString(
+                                            applicationContext,
+                                            "walletAddress",
+                                            ""
+                                        )
+                                    } else {
+                                        PreferenceManager().setString(
+                                            applicationContext,
+                                            "walletAddress",
+                                            response.body()?.get("wa")?.asString ?: ""
+                                        )
+                                    }
+
+                                    PreferenceManager().setBoolean(
+                                        applicationContext,
+                                        "isDoctor",
+                                        response.body()?.get("doctor")?.asBoolean ?: false
+                                    )
+
+                                    Log.d(TAG, "값 다 잘 들어갔냐 모든 값 출력 ");
+                                    PreferenceManager().printAll(applicationContext)
+                                    nextMainActivity()
                                 }
+//                                call
 
-                                PreferenceManager().setBoolean(
-                                    applicationContext,
-                                    "isDoctor",
-                                    response.body()?.get("doctor")?.asBoolean ?: false
-                                )
-
-                                Log.d(TAG, "값 다 잘 들어갔냐 모든 값 출력 ");
-                                PreferenceManager().printAll(applicationContext)
+                            } else {
+                                // 로그인 실패 (응답코드 3xx, 4xx 등)
+                                Log.d(TAG, "로그인 실패 response ${response}")
+                                Log.d(TAG, "로그인 실패 response.body() ${response.body()}")
+                                startActivity(Intent(applicationContext, LoginActivity::class.java))
                             }
-                            nextMainActivity()
-                            call
-
-                        } else {
-                            // 로그인 실패 (응답코드 3xx, 4xx 등)
-                            Log.d(TAG, "로그인 실패 response ${response}")
-                            Log.d(TAG, "로그인 실패 response.body() ${response.body()}")
-                            startActivity(Intent(applicationContext, LoginActivity::class.java))
                         }
-                    }
 
-                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                        // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                        Log.d(SplashActivity.TAG, "onFailure 에러: " + t.message.toString());
-                    }
-                })
+
+                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                            Log.d(SplashActivity.TAG, "onFailure 에러: " + t.message.toString());
+                        }
+                    })
+                }
+                Log.d("login 함수의 response 로그2 ", response1.toString())
+
+            }catch (e: Exception){
+                Log.d("로그인 함수", "익셉션 에러 " + e.message.toString())
             }
+
+
         }
     }
 }
