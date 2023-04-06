@@ -26,8 +26,16 @@ class AdoptService {
     }
 
     fun getAdoptList(): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
         retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -38,8 +46,16 @@ class AdoptService {
     }
 
     fun getAdoptAd(): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
         retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -50,8 +66,16 @@ class AdoptService {
     }
 
     fun getDetailAdopt(pid: String): Call<JsonObject> {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer " + UserInfo.token)
+                .build()
+            chain.proceed(newRequest)
+        }.build()
+
         retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
