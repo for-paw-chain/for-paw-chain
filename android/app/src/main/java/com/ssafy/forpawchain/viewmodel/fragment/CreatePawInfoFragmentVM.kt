@@ -1,6 +1,9 @@
 package com.ssafy.forpawchain.viewmodel.fragment
 
+import android.app.Application
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,8 +28,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-class CreatePawInfoFragmentVM : ViewModel() {
+class CreatePawInfoFragmentVM(application: Application) : AndroidViewModel(application) {
+    private val context = application.applicationContext
+
     private lateinit var navController: NavController
     private val _openEvent = MutableLiveData<Event<ActivityCode>>()
     val openEvent: LiveData<Event<ActivityCode>> get() = _openEvent
@@ -60,15 +67,17 @@ class CreatePawInfoFragmentVM : ViewModel() {
             )
         }
 
-        val payload = mapOf(
-            "pid" to code,
-//            "birth" to birth,
-//            "birth" to year.value.toString() + month.value.toString() + date.value.toString(),
-            "birth" to year.value + month.value + date.value,
-            "etc" to extra.value,
-            "region" to region.value,
-            "tel" to phone.value,
-        )
+        try {
+            // 예외가 발생할 가능성이 있는 코드
+            val payload = mapOf(
+                "pid" to code,
+    //            "birth" to birth,
+    //            "birth" to year.value.toString() + month.value.toString() + date.value.toString(),
+                "birth" to LocalDate.parse(year.value + "-" + month.value + "-" + date.value, DateTimeFormatter.ISO_DATE),
+                "etc" to extra.value,
+                "region" to region.value,
+                "tel" to phone.value,
+            )
         val jsonPayload = Gson().toJson(payload)
         val jsonRequestBody = jsonPayload.toRequestBody("application/json".toMediaTypeOrNull())
         val payloadPart = MultipartBody.Part.createFormData("content", null, jsonRequestBody)
@@ -95,6 +104,9 @@ class CreatePawInfoFragmentVM : ViewModel() {
                     Log.d(TAG, "onFailure 에러: " + t.message.toString())
                 }
             })
+        }  } catch (e: Exception) {
+            // 예외 처리 코드
+            Toast.makeText(context, "입력 값을 확인해주세요.", Toast.LENGTH_SHORT).show()
         }
 //        _openEvent.value = Event(ActivityCode.DONE)
     }
