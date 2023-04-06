@@ -26,41 +26,43 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.264" />
+            app:layout_constraintVertical_bias="0.401" />
 
         <LinearLayout
             android:layout_width="350dp"
-            android:layout_height="80dp"
+            android:layout_height="90dp"
             android:orientation="vertical"
             android:weightSum="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:layout_constraintVertical_bias="0.6">
+            app:layout_constraintVertical_bias="0.384">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/id_kakao_login_btn"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="317dp"
+                android:layout_height="63dp"
                 android:layout_margin="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/box_kakao">
 
                 <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="66dp"
+                    android:layout_height="43dp"
+                    android:layout_marginBottom="12dp"
                     android:src="@drawable/icon_kakao"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintHorizontal_bias="0.063"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="163dp"
+                    android:layout_height="49dp"
                     android:fontFamily="@font/kakao_bold"
                     android:gravity="center"
                     android:text="카카오로 로그인"

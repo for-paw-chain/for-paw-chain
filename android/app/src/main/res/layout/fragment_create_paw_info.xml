@@ -75,6 +75,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -269,7 +270,7 @@
                         android:background="@drawable/background_layout_redius"
                         android:fontFamily="@font/kakao_regular"
                         android:gravity="center"
-                        android:hint="년도"
+                        android:hint="YYYY"
                         android:imeOptions="actionDone"
                         android:inputType="number"
                         android:text="@={viewModel.year}"
@@ -290,7 +291,7 @@
                         android:background="@drawable/background_layout_redius"
                         android:fontFamily="@font/kakao_regular"
                         android:gravity="center"
-                        android:hint="월"
+                        android:hint="MM"
                         android:imeOptions="actionDone"
                         android:inputType="number"
                         android:text="@={viewModel.month}"
@@ -311,7 +312,7 @@
                         android:background="@drawable/background_layout_redius"
                         android:fontFamily="@font/kakao_regular"
                         android:gravity="center"
-                        android:hint="일"
+                        android:hint="DD"
                         android:imeOptions="actionDone"
                         android:inputType="number"
                         android:text="@={viewModel.date}"

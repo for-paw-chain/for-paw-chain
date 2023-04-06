@@ -120,7 +120,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:text="@{item.species}" />
 
                     <TextView
@@ -131,7 +131,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:text="@{item.kind}" />
 
                     <TextView
@@ -142,7 +142,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_layout_search_result_info_redius"
                         android:fontFamily="@font/kakao_regular"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:text="@{item.neutered}" />
                 </LinearLayout>
             </LinearLayout>
