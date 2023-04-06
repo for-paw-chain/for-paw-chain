@@ -283,15 +283,14 @@
 
                 <TextView
                     android:layout_width="0sp"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="0dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/kakao_regular"
                     android:gravity="left|center"
                     android:text="@{viewModel.extra}"
                     android:textAlignment="textStart"
-                    android:layout_marginLeft="10dp"
                     android:textColor="@color/black" />
             </LinearLayout>
 
