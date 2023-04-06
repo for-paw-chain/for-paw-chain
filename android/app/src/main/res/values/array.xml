@@ -5,4 +5,27 @@
         <item>SKT</item>
         <item>LG</item>
     </string-array>
+
+    <string-array name="kindItems">
+        <item>종류</item>
+
+        <item>개과</item>
+        <item>고양이과</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name="sexItems">
+        <item>성별</item>
+
+        <item>남아</item>
+        <item>여아</item>
+    </string-array>
+
+    <string-array name="neuteredItems">
+        <item>중성화</item>
+
+        <item>O</item>
+        <item>X</item>
+    </string-array>
+
 </resources>

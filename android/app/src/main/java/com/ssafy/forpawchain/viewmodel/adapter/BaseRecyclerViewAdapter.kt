@@ -14,7 +14,7 @@ abstract class BaseRecyclerViewAdapter<BIND : ViewDataBinding, DTO>(
 
     }
 
-    abstract override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): BaseRecyclerViewHolder<BIND>
+    abstract override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int ): BaseRecyclerViewHolder<BIND>
 
     override fun getItemCount(): Int = mydataSet.size
 }

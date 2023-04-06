@@ -2,42 +2,102 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_layout_search_result_redius">
+    >
 
     <data>
         <variable
-            name="item"
+            name="searchResultVM"
             type="com.ssafy.forpawchain.model.domain.SearchResultDTO" />
+
+        <variable
+            name="adoptVM"
+            type="com.ssafy.forpawchain.model.domain.AdoptDTO" />
+
+        <variable
+            name="viewModel"
+            type="com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM" />
 
     </data>
 
-        <!-- 뷰페이저 (layout_behavior를 "@string/appbar_scrolling_view_behavior"로 설정해야함! ) -->
+    <!-- 뷰페이저 (layout_behavior를 "@string/appbar_scrolling_view_behavior"로 설정해야함! ) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
+            android:id="@+id/search_bar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="@drawable/background_layout_redius"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:weightSum="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="50"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView13"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/logo_img_color_shadow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/searchTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:fontFamily="@font/kakao_regular"
+                android:gravity="center"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:text="@={searchResultVM.code}"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/imageView13"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/constraintLayout3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/search_bar"
+            tools:layout_editor_absoluteX="5dp">
 
             <LinearLayout
                 android:id="@+id/idSearchResult"
                 android:layout_width="match_parent"
                 android:layout_height="125dp"
                 android:layout_margin="16dp"
+                android:background="@drawable/box_radius_02_2"
+                android:elevation="10dp"
                 android:orientation="horizontal"
+                android:padding="5dp"
                 android:weightSum="5"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
                     android:layout_weight="1.5"
-                    android:src="@drawable/icon_paw_solid" />
+                    android:src="@{searchResultVM.profile}" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -58,7 +118,6 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:background="#F3F0FD"
                             android:fontFamily="@font/kakao_bold"
                             android:text="이름" />
 
@@ -67,8 +126,6 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:background="#F3F0FD"
-
                             android:fontFamily="@font/kakao_bold"
 
                             android:text="성별" />
@@ -78,10 +135,7 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:background="#F3F0FD"
-
                             android:fontFamily="@font/kakao_bold"
-
                             android:text="종" />
 
                         <TextView
@@ -89,10 +143,7 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:background="#F3F0FD"
-
                             android:fontFamily="@font/kakao_bold"
-
                             android:text="종류" />
 
                         <TextView
@@ -100,10 +151,7 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:background="#F3F0FD"
-
                             android:fontFamily="@font/kakao_bold"
-
                             android:text="중성화" />
                     </LinearLayout>
 
@@ -115,29 +163,29 @@
                         android:weightSum="5">
 
                         <TextView
-                            android:id="@+id/name"
+                            android:id="@+id/SearchResultName"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-
-                            android:text="@{item.name}" />
+                            android:gravity="center"
+                            android:text="@{searchResultVM.name}" />
 
                         <TextView
-                            android:id="@+id/sex"
+                            android:id="@+id/SearchResultSex"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-
-                            android:text="@{item.sex}" />
+                            android:gravity="center"
+                            android:text="@{searchResultVM.sex}" />
 
                         <TextView
-                            android:id="@+id/species"
+                            android:id="@+id/SearchResultSpecies"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
@@ -145,48 +193,96 @@
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
 
-                            android:text="@{item.species}" />
+                            android:text="@{searchResultVM.species}" />
 
                         <TextView
-                            android:id="@+id/kind"
+                            android:id="@+id/SearchResultKind"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-
-                            android:text="@{item.kind}" />
+                            android:gravity="center"
+                            android:text="@{searchResultVM.kind}" />
 
                         <TextView
-                            android:id="@+id/neutered"
+                            android:id="@+id/SearchResultNeutered"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-
-                            android:text="@{item.neutered}" />
+                            android:text="@{searchResultVM.neutered}" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/qr_btn"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:background="@color/white"
-                    android:text="QR" />
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/logo_img_color_shadow"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.1" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/qr_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/box_radius_03"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="MissingConstraints">
+
+                        <ImageView
+                            android:id="@+id/imageView12"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="3dp"
+                            android:src="@drawable/icon_qr"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="MissingConstraints" />
+
+                        <TextView
+                            android:id="@+id/textView23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dp"
+                            android:fontFamily="@font/kakao_regular"
+                            android:text="QR생성"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:ignore="MissingConstraints" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/idSearchResultDetail"
                 android:layout_width="match_parent"
-                android:layout_height="127dp"
+                android:layout_height="100dp"
                 android:layout_margin="16dp"
+                android:background="@drawable/box_radius_02_2"
+                android:elevation="10dp"
                 android:orientation="horizontal"
+                android:visibility="visible"
                 android:weightSum="5"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -198,6 +294,8 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="2.5"
                     android:orientation="horizontal"
                     android:weightSum="3">
@@ -214,7 +312,6 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:background="#F3F0FD"
                             android:fontFamily="@font/kakao_bold"
                             android:text="지역" />
 
@@ -223,7 +320,6 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:background="#F3F0FD"
                             android:fontFamily="@font/kakao_bold"
                             android:text="연락처" />
 
@@ -232,7 +328,6 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
-                            android:background="#F3F0FD"
                             android:fontFamily="@font/kakao_bold"
                             android:text="나이" />
 
@@ -251,9 +346,10 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-                            android:text="@{}" />
+                            android:text="@{searchResultVM.region}" />
 
                         <TextView
                             android:id="@+id/phone_number"
@@ -261,9 +357,10 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-                            android:text="@{}" />
+                            android:text="@{searchResultVM.tel}" />
 
                         <TextView
                             android:id="@+id/age"
@@ -271,9 +368,10 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-                            android:text="@{}" />
+                            android:text="@{searchResultVM.birth}" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -287,6 +385,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:weightSum="3">
@@ -296,7 +396,7 @@
                             android:layout_height="0dp"
                             android:layout_margin="4dp"
                             android:layout_weight="0.9"
-                            android:background="#F3F0FD"
+                            android:gravity="center"
                             android:fontFamily="@font/kakao_bold"
                             android:text="특이사항" />
 
@@ -308,13 +408,233 @@
                             android:layout_weight="2.1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-                            android:text="@{}" />
+                            android:text="@{searchResultVM.etc}" />
                     </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
+
+            <ImageView
+                android:id="@+id/idAddPawInfoDetailButton"
+                android:layout_width="match_parent"
+                android:layout_height="103dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/logo_add_pawinfo_button"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/idSearchResultDetail" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/idAdoptAd"
+            android:layout_width="match_parent"
+            android:layout_height="132dp"
+            android:layout_margin="16dp"
+            android:orientation="vertical"
+            android:elevation="15dp"
+            android:background="@drawable/box_radius_02_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="7dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/kakao_bold"
+                android:gravity="center"
+                android:text="버림 받은 유기동물의 주인이 되어주세요"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="16dp"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/box_radius_04">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@{adoptVM.profile}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2.5"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.9"
+                        android:orientation="vertical"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/kakao_bold"
+                            android:gravity="center_vertical"
+                            android:text="종" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/kakao_bold"
+                            android:gravity="center_vertical"
+
+                            android:text="종류" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/kakao_bold"
+                            android:gravity="center_vertical"
+
+                            android:text="중성화" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:orientation="vertical"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:id="@+id/AdoptItemSpecies"
+                            android:layout_width="80dp"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_layout_search_result_info_redius"
+                            android:fontFamily="@font/kakao_regular"
+                            android:gravity="center"
+                            android:text="@{adoptVM.species}" />
+
+                        <TextView
+                            android:id="@+id/AdoptItemKind"
+                            android:layout_width="80dp"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_layout_search_result_info_redius"
+                            android:fontFamily="@font/kakao_regular"
+                            android:gravity="center"
+                            android:text="@{adoptVM.kind}" />
+
+                        <TextView
+                            android:id="@+id/AdoptItemNeutered"
+                            android:layout_width="80dp"
+                            android:layout_height="0dp"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/background_layout_search_result_info_redius"
+                            android:fontFamily="@font/kakao_regular"
+                            android:gravity="center"
+                            android:text="@{adoptVM.neutered}" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/detail_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:background="@drawable/box_radius_07"
+                        android:gravity="center"
+                        android:text="자세히 >"
+                        android:textSize="11sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.95" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/dignosisTitle"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/kakao_regular"
+            android:gravity="center"
+            android:text="진료 내역"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.555"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dignosisTitle"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="#743FFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/icon_plus">
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

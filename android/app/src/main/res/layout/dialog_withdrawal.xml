@@ -2,25 +2,25 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="400dp"
-    android:layout_height="800dp"
+    android:layout_width="410dp"
+    android:layout_height="730dp"
     android:padding="32dp">
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_width="290dp"
+        android:layout_height="75dp"
         android:src="@drawable/logo_withdraw_delete_body"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.075" />
+        app:layout_constraintVertical_bias="0.047" />
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="287dp"
+        android:layout_height="286dp"
         android:src="@drawable/logo_withdraw_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,36 +30,36 @@
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_width="279dp"
+        android:layout_height="26dp"
         android:src="@drawable/logo_withdraw_delete_check"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView7"
-        app:layout_constraintVertical_bias="0.075" />
+        app:layout_constraintVertical_bias="0.145" />
 
     <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_width="238dp"
+        android:layout_height="42dp"
         android:orientation="horizontal"
         android:weightSum="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintVertical_bias="0.294">
 
         <Button
             android:id="@+id/deleteBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#FF6262"
+            android:background="@drawable/box_ok"
             android:fontFamily="@font/kakao_bold"
             android:text="탈퇴"
             android:textColor="@color/white"
-            android:textSize="28sp" />
+            android:textSize="25sp" />
 
         <View
             android:layout_width="0dp"
@@ -71,9 +71,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/box_cancle"
             android:fontFamily="@font/kakao_bold"
             android:text="취소"
             android:textColor="@color/black"
-            android:textSize="28sp" />
+            android:textSize="25sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
