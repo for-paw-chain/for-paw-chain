@@ -41,6 +41,7 @@ public class SecurityConfig {
 			.antMatchers("/user/regist").permitAll()
 			.antMatchers("/user/login").permitAll()
 			.antMatchers("/user/reissue").permitAll()
+			.antMatchers("/ipfs/file/*").permitAll()
 			.anyRequest().authenticated()
 			// .antMatchers("*").permitAll()
 			.and() // 에러핸들링
