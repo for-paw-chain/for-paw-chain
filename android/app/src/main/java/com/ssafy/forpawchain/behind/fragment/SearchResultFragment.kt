@@ -81,7 +81,7 @@ class SearchResultFragment : Fragment() {
 
             thread {
 
-                val auth: String? = runBlocking { getPetAuth(searchResultDTO.code) }
+                val auth: String? = runBlocking { searchResultDTO.code?.let { it1 -> getPetAuth(it1) } }
 
                 if (auth != null) {
                     auth.replace("\"", "")
@@ -118,9 +118,9 @@ class SearchResultFragment : Fragment() {
             }
 
             // 의사아니다
-            if (!UserInfo.isDoctor) {
-                binding.fab.visibility = View.GONE
-            }
+//            if (!UserInfo.isDoctor) {
+//                binding.fab.visibility = View.GONE
+//            }
 
             //진료내역을 보여줄지 광고를 보여줄지
             // 권한 있거나 주인이거나 의사다
@@ -163,6 +163,16 @@ class SearchResultFragment : Fragment() {
             navController.navigate(R.id.navigation_adopt_create, bundle)
         }
 
+        val bundle = arguments
+        bundle?.getSerializable("searchResultVM")?.let {
+            binding.searchResultVM = it as SearchResultDTO
+        }
+        initObserve()
+
+        navController = Navigation.findNavController(requireView())
+        binding.idAddPawInfoDetailButton.setOnClickListener{view ->
+            navController.navigate(com.ssafy.forpawchain.R.id.navigation_paw_info_create, bundle)
+        }
         initObserve()
     }
 
