@@ -255,9 +255,7 @@ class SearchResultFragment : Fragment() {
             // 정상적으로 통신이 성공된 경우
             Log.d(TAG, "onResponse 성공 광고 " + items.get(0).asJsonObject.toString()?: "")
 
-
             return@withContext items.get(0).asJsonObject
-
 
         } else {
             // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

@@ -94,6 +94,7 @@ class UserFragment : Fragment() {
                                             if (response.isSuccessful) {
                                                 // 정상적으로 통신이 성공된 경우
                                                 lifecycleScope.launch {
+
                                                     // 카카오 로그아웃 부분
                                                     UserApiClient.instance.logout { error ->
                                                         if (error != null) {
