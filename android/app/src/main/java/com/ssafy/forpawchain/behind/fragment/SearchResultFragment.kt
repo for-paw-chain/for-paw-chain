@@ -88,7 +88,7 @@ class SearchResultFragment : Fragment() {
 
         viewModel.todoLiveData.observe(requireActivity()) {
             //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
-//            adapter.setData(it)
+            adapter.setData(it)
             Log.d(TAG, "검색 결과에서 의료기록 상세 조회2 이게 정답인가?")
         }
 
