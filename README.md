@@ -239,13 +239,8 @@ SSAFY 8기 2학기 특화 프로젝트
 
 ## 1. git
 
-- git convention
-<br>
 ![git_convension](/document/git_convention.png)
-- git flow
-<br>
 ![gitflow](document/git_flow.png)
-
 ## 2. Jira
 
 매주 월요일 오전 회의에서 차주에 진행되어야 할 것들을 정리하고 백로그에 등록했습니다. 금주에 완료하지 못한 이슈나, 앞으로 진행할 이슈들을 추가했습니다.
