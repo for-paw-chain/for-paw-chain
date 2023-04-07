@@ -16,20 +16,14 @@ import com.google.gson.JsonObject
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
-import com.ssafy.forpawchain.model.domain.User
 import com.ssafy.forpawchain.model.room.AppDatabase
-import com.ssafy.forpawchain.model.room.UserDao
 import com.ssafy.forpawchain.model.service.AdoptService
-import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
-import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
-import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,12 +57,14 @@ class AdoptViewFragment : Fragment() {
         val root: View = binding.root
 
         val bundle = arguments
+        var code = ""
 
         val token =  PreferenceManager().getString(requireContext(), "token")!!
 
         lifecycleScope.launch {
             bundle?.getString("pid")?.let {
                 viewModel.initInfo(it)
+                code = it.toString()
                 binding.item = viewModel.pawInfo
             }
         }
@@ -81,8 +77,6 @@ class AdoptViewFragment : Fragment() {
             navController.navigate(R.id.navigation_diagnosis_detail, bundle)
             Log.d(TAG, "의료기록 상세 조회")
         }
-
-
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
@@ -187,7 +181,9 @@ class AdoptViewFragment : Fragment() {
         }
         // 공고 추가
         binding.fab.setOnClickListener { view ->
-            navController.navigate(R.id.navigation_adopt_create)
+            var bundle = Bundle()
+            bundle.putString("code", code)
+            navController.navigate(R.id.navigation_adopt_create, bundle)
             Log.d(TAG, "공고 추가")
         }
         return root

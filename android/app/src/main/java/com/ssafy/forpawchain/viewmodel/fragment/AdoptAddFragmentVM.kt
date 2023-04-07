@@ -92,6 +92,7 @@ class AdoptAddFragmentVM(application: Application) : AndroidViewModel(applicatio
                         override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                             // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
                             Log.d(TAG, "onFailure 에러: " + t.message.toString())
+                            _openEvent.value = Event(ActivityCode.DONE)
                         }
                     })
                 }
@@ -101,5 +102,4 @@ class AdoptAddFragmentVM(application: Application) : AndroidViewModel(applicatio
 //        _openEvent.value = Event(ActivityCode.DONE)
 
     }
-
 }

@@ -192,7 +192,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/background_layout_search_result_info_redius"
                             android:fontFamily="@font/kakao_regular"
-
+                            android:gravity="center"
                             android:text="@{searchResultVM.species}" />
 
                         <TextView
