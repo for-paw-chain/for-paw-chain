@@ -95,7 +95,6 @@ class SearchResultFragment : Fragment() {
             Log.d(TAG, "검색 결과에서 의료기록 상세 조회2 이게 정답인가?")
         }
 
-
 //        recyclerView.adapter = DiagnosisRecyclerViewAdapter {
 //            var bundleHistoryDTO = Bundle()
 //            bundleHistoryDTO.putSerializable("item", it)
