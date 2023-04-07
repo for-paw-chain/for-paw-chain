@@ -73,7 +73,7 @@ class CreatePawInfoFragmentVM(application: Application) : AndroidViewModel(appli
                 "pid" to code,
     //            "birth" to birth,
     //            "birth" to year.value.toString() + month.value.toString() + date.value.toString(),
-                "birth" to LocalDate.parse(year.value + "-" + month.value + "-" + date.value, DateTimeFormatter.ISO_DATE),
+                "birth" to year.value + "-" + month.value + "-" + date.value,
                 "etc" to extra.value,
                 "region" to region.value,
                 "tel" to phone.value,

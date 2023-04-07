@@ -63,12 +63,14 @@ class AdoptViewFragment : Fragment() {
         val root: View = binding.root
 
         val bundle = arguments
+        var code = ""
 
         val token =  PreferenceManager().getString(requireContext(), "token")!!
 
         lifecycleScope.launch {
             bundle?.getString("pid")?.let {
                 viewModel.initInfo(it)
+                code = it.toString()
                 binding.item = viewModel.pawInfo
             }
         }
@@ -187,7 +189,9 @@ class AdoptViewFragment : Fragment() {
         }
         // 공고 추가
         binding.fab.setOnClickListener { view ->
-            navController.navigate(R.id.navigation_adopt_create)
+            var bundle = Bundle()
+            bundle.putString("code", code)
+            navController.navigate(R.id.navigation_adopt_create, bundle)
             Log.d(TAG, "공고 추가")
         }
         return root

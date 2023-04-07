@@ -26,6 +26,7 @@ import com.ssafy.forpawchain.blockchain.Test_sol_ForPawChain
 import com.ssafy.forpawchain.blockchain.Test_sol_MyContract
 import com.ssafy.forpawchain.model.domain.UserDTO
 import com.ssafy.forpawchain.model.room.UserInfo
+import com.ssafy.forpawchain.model.room.UserInfo.Companion.token
 import com.ssafy.forpawchain.model.service.UserService
 import com.ssafy.forpawchain.util.PreferenceManager
 import kotlinx.coroutines.Dispatchers
@@ -80,76 +81,43 @@ class SplashActivity : AppCompatActivity() {
              * 카카오 로그인 부분
              * **/
 
-            // unlink는 회원탈퇴
-//            UserApiClient.instance.unlink { error ->
-//                if (error != null) {
-//                    Log.d(UserFragment.TAG, "회원 탈퇴 에러 발생")
-//                } else {
-//                    Log.d(UserFragment.TAG, "회원 탈퇴")
-//                }
-//            }
-//
-//            로그아웃
-//            UserApiClient.instance.logout { error ->
-//                if (error != null) {
-//                    // 에러가 발생한 경우 처리합니다.
-//                    Log.d(UserFragment.TAG, "로그아웃 에러 발생")
-//                } else {
-//                    // 로그아웃이 성공한 경우 처리합니다.
-//                    Log.d(UserFragment.TAG, "로그아웃")
-//                }
-//            }
-//
-//            UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-//                if(error != null){
-//                    Log.d(LoginActivity.TAG, "로그인 토큰 에러>> ${error}")
-////                    startActivity(Intent(applicationContext, LoginActivity::class.java))
-//                    startActivity(Intent(applicationContext, MainActivity::class.java))
-//                    finish()
-//                }else if(tokenInfo != null){
-//                    Log.d(LoginActivity.TAG, "로그인 정상 >> ${tokenInfo}")
-//                    startActivity(Intent(applicationContext, MainActivity::class.java))
-//                    finish()
-//                }
-//            }
-
             // 포포체인 서비스 로그인 테스트를 위해 매번 로그아웃
 
-            val sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.putString("uid", null)
+//            val sharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+//            val editor = sharedPreferences.edit()
+//            editor.putString("uid", null)
 
-            val token = sharedPreferences.getString("token", "")!!
+//            val token = sharedPreferences.getString("token", "")!!
 
-            GlobalScope.launch {
-                val response = withContext(Dispatchers.IO) {
-                    UserService().logoutUser(token).enqueue(object :
-                        Callback<JsonObject> {
-                        override fun onResponse(
-                            call: Call<JsonObject>,
-                            response: Response<JsonObject>
-                        ) {
-                            if (response.isSuccessful) {
-                                // 정상적으로 통신이 성공된 경우
-                                lifecycleScope.launch {
-
-                                }
-                                // call
-                                Log.d(TAG, "로그 아웃 성공 "+ response);
-
-                            } else {
-                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                                Log.d(TAG, "로그 아웃 실패 " + response)
-                            }
-                        }
-
-                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                            Log.d(TAG, "onFailure 에러: " + t.message.toString());
-                        }
-                    })
-                }
-            }
+//            GlobalScope.launch {
+//                val response = withContext(Dispatchers.IO) {
+//                    UserService().logoutUser(token).enqueue(object :
+//                        Callback<JsonObject> {
+//                        override fun onResponse(
+//                            call: Call<JsonObject>,
+//                            response: Response<JsonObject>
+//                        ) {
+//                            if (response.isSuccessful) {
+//                                // 정상적으로 통신이 성공된 경우
+//                                lifecycleScope.launch {
+//
+//                                }
+//                                // call
+//                                Log.d(TAG, "로그 아웃 성공 "+ response);
+//
+//                            } else {
+//                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+//                                Log.d(TAG, "로그 아웃 실패 " + response)
+//                            }
+//                        }
+//
+//                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+//                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+//                            Log.d(TAG, "onFailure 에러: " + t.message.toString());
+//                        }
+//                    })
+//                }
+//            }
 
             Log.d(TAG, "초기화 전 모든 값 출력 ");
             PreferenceManager().printAll(applicationContext)
@@ -163,26 +131,6 @@ class SplashActivity : AppCompatActivity() {
             /**
              * 카카오 로그인 부분
              * **/
-
-            // 로그아웃
-//            UserApiClient.instance.logout { error ->
-//                if (error != null) {
-//                    // 에러가 발생한 경우 처리합니다.
-//                    Log.d(UserFragment.TAG, "로그아웃 에러 발생")
-//                } else {
-//                    // 로그아웃이 성공한 경우 처리합니다.
-//                    Log.d(UserFragment.TAG, "로그아웃")
-//                }
-//            }
-//
-//            // unlink는 카카오 회원탈퇴
-//            UserApiClient.instance.unlink { error ->
-//                if (error != null) {
-//                    Log.d(UserFragment.TAG, "회원 탈퇴 에러 발생")
-//                } else {
-//                    Log.d(UserFragment.TAG, "회원 탈퇴")
-//                }
-//            }
 
             startActivity(Intent(applicationContext, LoginActivity::class.java))
 
