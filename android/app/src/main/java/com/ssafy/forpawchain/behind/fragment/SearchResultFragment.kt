@@ -21,19 +21,15 @@ import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentSearchResultBinding
 import com.ssafy.forpawchain.model.domain.AdoptDTO
-import com.ssafy.forpawchain.model.domain.HistoryDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 import com.ssafy.forpawchain.model.room.AppDatabase
 import com.ssafy.forpawchain.model.room.UserInfo
-import com.ssafy.forpawchain.model.room.UserInfo.Companion.token
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.model.service.AuthService
-import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM
 import kotlinx.coroutines.*
-import okhttp3.internal.wait
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,32 +78,17 @@ class SearchResultFragment : Fragment() {
         val adapter = DiagnosisRecyclerViewAdapter {
             var bundleHistoryDTO = Bundle()
             bundleHistoryDTO.putSerializable("item", it)
+            Log.d(TAG, "검색 결과에서 의료기록 상세 조회 " + bundleHistoryDTO)
             navController.navigate(R.id.navigation_diagnosis_detail, bundleHistoryDTO)
-            Log.d(TAG, "검색 결과에서 의료기록 상세 조회")
         }
+
         recyclerView.adapter = adapter
-
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.setHasFixedSize(true)
-
-        viewModel.todoLiveData.observe(requireActivity()) {
-            adapter.setData(it)
-            Log.d(TAG, "검색 결과에서 의료기록 상세 조회2 이게 정답인가?")
-        }
-
-//        recyclerView.adapter = DiagnosisRecyclerViewAdapter {
-//            var bundleHistoryDTO = Bundle()
-//            bundleHistoryDTO.putSerializable("item", it)
-//            navController.navigate(R.id.navigation_diagnosis_detail, bundleHistoryDTO)
-//            Log.d(TAG, "검색 결과에서 의료기록 상세 조회")
-//        }
-
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
         viewModel.todoLiveData.observe(requireActivity()) {
             //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
-            (binding.recycler.adapter as DiagnosisRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
+//            adapter.setData(it)
             Log.d(TAG, "검색 결과에서 의료기록 상세 조회2 이게 정답인가?")
         }
 
@@ -205,7 +186,7 @@ class SearchResultFragment : Fragment() {
             }
         }
 
-        return binding.root
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
