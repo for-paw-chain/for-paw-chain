@@ -16,20 +16,14 @@ import com.google.gson.JsonObject
 import com.ssafy.forpawchain.R
 import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentAdoptViewBinding
-import com.ssafy.forpawchain.model.domain.User
 import com.ssafy.forpawchain.model.room.AppDatabase
-import com.ssafy.forpawchain.model.room.UserDao
 import com.ssafy.forpawchain.model.service.AdoptService
-import com.ssafy.forpawchain.util.ImageLoader
 import com.ssafy.forpawchain.util.PreferenceManager
 import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.AdoptViewFragmentVM
-import com.ssafy.forpawchain.viewmodel.fragment.MyPawFragmentVM
-import com.ssafy.forpawchain.viewmodel.fragment.PawFragmentVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -83,8 +77,6 @@ class AdoptViewFragment : Fragment() {
             navController.navigate(R.id.navigation_diagnosis_detail, bundle)
             Log.d(TAG, "의료기록 상세 조회")
         }
-
-
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)

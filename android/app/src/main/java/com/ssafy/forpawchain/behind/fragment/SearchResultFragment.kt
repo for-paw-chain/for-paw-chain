@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -23,13 +24,12 @@ import com.ssafy.forpawchain.model.domain.AdoptDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
 import com.ssafy.forpawchain.model.room.AppDatabase
 import com.ssafy.forpawchain.model.room.UserInfo
-import com.ssafy.forpawchain.model.room.UserInfo.Companion.token
 import com.ssafy.forpawchain.model.service.AdoptService
 import com.ssafy.forpawchain.model.service.AuthService
-import com.ssafy.forpawchain.util.ImageLoader
+import com.ssafy.forpawchain.util.PreferenceManager
+import com.ssafy.forpawchain.viewmodel.adapter.DiagnosisRecyclerViewAdapter
 import com.ssafy.forpawchain.viewmodel.fragment.SearchResultFragmentVM
 import kotlinx.coroutines.*
-import okhttp3.internal.wait
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,6 +54,44 @@ class SearchResultFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
+        lateinit var searchResultDTO: SearchResultDTO
+
+        activity?.let {
+            viewModel = ViewModelProvider(it).get(SearchResultFragmentVM::class.java)
+            binding.viewModel = viewModel
+            binding.lifecycleOwner = this
+        }
+
+        val root: View = binding.root
+        var bundle = arguments
+
+        bundle?.getSerializable("searchResultVM")?.let {
+            searchResultDTO = it as SearchResultDTO
+            binding.searchResultVM = searchResultDTO
+        }
+
+        val pid = searchResultDTO.code
+        val token = PreferenceManager().getString(requireContext(), "token")!!
+        val recyclerView = binding.recycler
+
+        val adapter = DiagnosisRecyclerViewAdapter {
+            var bundleHistoryDTO = Bundle()
+            bundleHistoryDTO.putSerializable("item", it)
+            Log.d(TAG, "검색 결과에서 의료기록 상세 조회 " + bundleHistoryDTO)
+            navController.navigate(R.id.navigation_diagnosis_detail, bundleHistoryDTO)
+        }
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
+
+        viewModel.todoLiveData.observe(requireActivity()) {
+            //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
+//            adapter.setData(it)
+            Log.d(TAG, "검색 결과에서 의료기록 상세 조회2 이게 정답인가?")
+        }
+
         CoroutineScope(Dispatchers.IO).launch {
             val db = Room.databaseBuilder(
                 requireContext(),
@@ -68,12 +106,12 @@ class SearchResultFragment : Fragment() {
             val user = userDao.getUserById("private")
             // TODO: 수정 필요
 //            user.privateKey = "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
+
             if (user != null) {
-                val bundle = arguments
-                bundle?.getSerializable("searchResultVM")?.let {
-                    val code = (it as SearchResultDTO).code.toString()
-                    lifecycleScope.launch {
-                        AdoptService().getCA(code, UserInfo.token)
+                lifecycleScope.launch {
+                    Log.d(TAG, "-----pid" + pid)
+                    pid?.let {
+                        AdoptService().getCA(it, token)
                             .enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
@@ -82,16 +120,20 @@ class SearchResultFragment : Fragment() {
                                 ) {
                                     if (response.isSuccessful) {
                                         // 정상적으로 통신이 성공된 경우
-
                                         var ca = response.body()?.get("content").toString()
+                                        Log.d(AdoptViewFragment.TAG, "컨트랙트 주소 : " + ca)
+                                        ca = ca.replace("\"", "")
                                         ForPawChain.setBlockChain(
                                             ca,
                                             user.privateKey
                                         )
-                                        Log.d(TAG, "CA: " + ca)
-                                        Log.d(TAG, "onResponse 성공");
+                                        val history = ForPawChain.getHistory()
+                                        for (item in history) {
+                                            viewModel.addTask(item)
+                                        }
+                                        Log.d(AdoptViewFragment.TAG, "onResponse 성공");
                                     } else {
-                                        Log.d(TAG, "CA onResponse 실패");
+                                        Log.d(AdoptViewFragment.TAG, "onResponse 실패");
 
                                     }
                                 }
@@ -106,10 +148,8 @@ class SearchResultFragment : Fragment() {
             }
             else {
                 lifecycleScope.launch {
-                    val bundle = arguments
-                    bundle?.getSerializable("searchResultVM")?.let {
-                        val code = (it as SearchResultDTO).code.toString()
-                        AdoptService().getCA(code, token)
+                    pid?.let {
+                        AdoptService().getCA(it, token)
                             .enqueue(object :
                                 Callback<JsonObject> {
                                 override fun onResponse(
@@ -129,9 +169,9 @@ class SearchResultFragment : Fragment() {
                                         for (item in history) {
                                             viewModel.addTask(item)
                                         }
-                                        Log.d(TAG, "onResponse 성공");
+                                        Log.d(AdoptViewFragment.TAG, "onResponse 성공");
                                     } else {
-                                        Log.d(TAG, "onResponse 실패");
+                                        Log.d(AdoptViewFragment.TAG, "onResponse 실패");
 
                                     }
                                 }
@@ -146,20 +186,19 @@ class SearchResultFragment : Fragment() {
             }
         }
 
-        _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
-        return binding.root
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lateinit var searchResultDTO: SearchResultDTO
         navController = Navigation.findNavController(view)
+        val bundle = arguments
 
         activity?.let {
             viewModel = ViewModelProvider(it).get(SearchResultFragmentVM::class.java)
             binding.lifecycleOwner = this
 
-            val bundle = arguments
             bundle?.getSerializable("searchResultVM")?.let {
                 searchResultDTO = it as SearchResultDTO
                 binding.searchResultVM = searchResultDTO
@@ -194,7 +233,6 @@ class SearchResultFragment : Fragment() {
                         || !searchResultDTO.region.isNullOrBlank()
                         || !searchResultDTO.tel.isNullOrBlank()
                         || !searchResultDTO.etc.isNullOrBlank()
-
             }.join()
 
             // 견적사항 있다 -> 견적사항 보여주기
@@ -260,15 +298,9 @@ class SearchResultFragment : Fragment() {
             navController.navigate(R.id.navigation_adopt_create, bundle)
         }
 
-        val bundle = arguments
-        bundle?.getSerializable("searchResultVM")?.let {
-            binding.searchResultVM = it as SearchResultDTO
-        }
-        initObserve()
-
         navController = Navigation.findNavController(requireView())
         binding.idAddPawInfoDetailButton.setOnClickListener{view ->
-            navController.navigate(com.ssafy.forpawchain.R.id.navigation_paw_info_create, bundle)
+            navController.navigate(R.id.navigation_paw_info_create, bundle)
         }
         initObserve()
     }
@@ -319,55 +351,12 @@ class SearchResultFragment : Fragment() {
             Log.d(TAG, "onResponse 성공2 " + response.body()?.get("content").toString()?: "")
             return@withContext response.body()?.get("content").toString().replace("\"", "")?: ""
 
-//            if (contentArray != null && contentArray.size() > 0) {
-//                Log.d(TAG, "onResponse 성공3 " + contentArray[0].asString)
-//                contentArray[0].asString
-//            } else {
-//                return@withContext ""
-//            }
         } else {
             // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
             Log.d(TAG, "onResponse 실패 " + response.errorBody()?.string())
             return@withContext null ?: ""
         }
     }
-
-//    suspend fun getPetAuth(pid: String) : String {
-//        GlobalScope.launch {
-//            val token = UserInfo.token
-//            val response = withContext(Dispatchers.IO) {
-//                AuthService().getPetAuth(pid, token)
-//                    .enqueue(object :
-//                        Callback<JsonObject> {
-//                        override fun onResponse(
-//                            call: Call<JsonObject>,
-//                            response: Response<JsonObject>,
-//                        ) {
-//                            if (response.isSuccessful) {
-//                                // 정상적으로 통신이 성공된 경우
-//                                lifecycleScope.launch {
-//                                    Log.d(TAG, "onResponse 성공1 " + response.toString())
-//                                    Log.d(TAG, "onResponse 성공2 " + response.body()?.get("content")?.toString())
-//                                    auth = response.body()?.get("content").toString()?: ""
-//                                }
-//                                // call
-//
-//                            } else {
-//                                // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-//                                Log.d(TAG, "onResponse 실패 " + response.errorBody())
-//                                auth = ""
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-//                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-//                            Log.d(MyPawFragment.TAG, "onFailure 에러: " + t.message.toString());
-//                        }
-//                    })
-//            }
-//        }
-//        return ""
-//    }
 
 }
 
