@@ -240,8 +240,10 @@ SSAFY 8기 2학기 특화 프로젝트
 ## 1. git
 
 - git convention
+<br>
 ![git_convension](/document/git_convention.png)
-
+- git flow
+<br>
 ![gitflow](document/git_flow.png)
 
 ## 2. Jira
