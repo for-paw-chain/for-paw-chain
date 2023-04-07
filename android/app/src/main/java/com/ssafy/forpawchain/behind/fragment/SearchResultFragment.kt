@@ -22,6 +22,7 @@ import com.ssafy.forpawchain.blockchain.ForPawChain
 import com.ssafy.forpawchain.databinding.FragmentSearchResultBinding
 import com.ssafy.forpawchain.model.domain.AdoptDTO
 import com.ssafy.forpawchain.model.domain.SearchResultDTO
+import com.ssafy.forpawchain.model.domain.User
 import com.ssafy.forpawchain.model.room.AppDatabase
 import com.ssafy.forpawchain.model.room.UserInfo
 import com.ssafy.forpawchain.model.service.AdoptService
@@ -73,24 +74,28 @@ class SearchResultFragment : Fragment() {
 
         val pid = searchResultDTO.code
         val token = PreferenceManager().getString(requireContext(), "token")!!
+
+        // 리사이클러 뷰 시작
+
         val recyclerView = binding.recycler
 
-        val adapter = DiagnosisRecyclerViewAdapter {
-            var bundleHistoryDTO = Bundle()
-            bundleHistoryDTO.putSerializable("item", it)
-            Log.d(TAG, "검색 결과에서 의료기록 상세 조회 " + bundleHistoryDTO)
-            navController.navigate(R.id.navigation_diagnosis_detail, bundleHistoryDTO)
+        recyclerView.adapter = DiagnosisRecyclerViewAdapter {
+            val bundle = Bundle()
+            bundle.putSerializable("item", it)
+            navController.navigate(R.id.navigation_diagnosis_detail, bundle)
+            Log.d(AdoptViewFragment.TAG, "의료기록 상세 조회")
         }
 
-        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
+        viewModel.todoLiveData.observe(
+            requireActivity()
+        ) { //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
+            (binding.recycler.adapter as DiagnosisRecyclerViewAdapter).setData(it) //setData함수는 TodoAdapter에서 추가하겠습니다.
 
-        viewModel.todoLiveData.observe(requireActivity()) {
-            //viewmodel에서 만든 변경관찰 가능한todoLiveData를 가져온다.
-            adapter.setData(it)
-            Log.d(TAG, "검색 결과에서 의료기록 상세 조회2 이게 정답인가?")
         }
+
+        // 리사이클러 뷰 끝
 
         CoroutineScope(Dispatchers.IO).launch {
             val db = Room.databaseBuilder(
@@ -106,6 +111,8 @@ class SearchResultFragment : Fragment() {
             val user = userDao.getUserById("private")
             // TODO: 수정 필요
 //            user.privateKey = "6169940ca8cb18384b5000199566c387da4f8d9caed51ffe7921b93c488d2544"
+
+            Log.d(TAG, " userDao의 user는 ? " + user.toString() )
 
             if (user != null) {
                 lifecycleScope.launch {
@@ -131,9 +138,9 @@ class SearchResultFragment : Fragment() {
                                         for (item in history) {
                                             viewModel.addTask(item)
                                         }
-                                        Log.d(AdoptViewFragment.TAG, "onResponse 성공");
+                                        Log.d(TAG, "onResponse user 있을 때 성공");
                                     } else {
-                                        Log.d(AdoptViewFragment.TAG, "onResponse 실패");
+                                        Log.d(TAG, "onResponse user 있을 때 실패");
 
                                     }
                                 }
@@ -169,9 +176,9 @@ class SearchResultFragment : Fragment() {
                                         for (item in history) {
                                             viewModel.addTask(item)
                                         }
-                                        Log.d(AdoptViewFragment.TAG, "onResponse 성공");
+                                        Log.d(TAG, "onResponse user 없을 때 성공 ");
                                     } else {
-                                        Log.d(AdoptViewFragment.TAG, "onResponse 실패");
+                                        Log.d(TAG, "onResponse user 없을 때 실패");
 
                                     }
                                 }
@@ -302,7 +309,13 @@ class SearchResultFragment : Fragment() {
         binding.idAddPawInfoDetailButton.setOnClickListener{view ->
             navController.navigate(R.id.navigation_paw_info_create, bundle)
         }
-        initObserve()
+//        initObserve()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.clearTask()
+//        _binding = null
     }
 
     private fun initObserve() {

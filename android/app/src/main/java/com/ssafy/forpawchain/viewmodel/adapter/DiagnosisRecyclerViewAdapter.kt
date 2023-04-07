@@ -73,17 +73,17 @@ class DiagnosisRecyclerViewAdapter(
                                     response.body()?.get("content").toString().replace("\"", "")
                                 holder.binding.item = listposition
                                 // call
-                                Log.d(ForPawChain.TAG, "onResponse 성공");
+                                Log.d("DiagnosisRecyclerViewAdapter", "onResponse 성공");
 
                             } else {
                                 // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                                Log.d(ForPawChain.TAG, "onResponse 실패")
+                                Log.d("DiagnosisRecyclerViewAdapter", "onResponse 실패")
                             }
                         }
 
                         override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                             // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                            Log.d(ForPawChain.TAG, "onFailure 에러: " + t.message.toString());
+                            Log.d("DiagnosisRecyclerViewAdapter", "onFailure 에러: " + t.message.toString());
                         }
                     })
                 }
