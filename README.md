@@ -16,7 +16,7 @@
     블록체인을 활용한 동물 의료 기록 관리 및 권리 보호 플랫폼 (포토폴리오 ver)
     믿을 수 있는 동물 의료 기록 추적 서비스 (구글 스토어 ver)
     
-    GitLab : https://lab.ssafy.com/s08-blochain-contract-sub1/S08P21A207
+    GitLab : https://lab.ssafy.com/s08-blockchain-contract-sub2/S08P22A207
     Github : https://github.com/forpawchain
     Jira : https://ssafy.atlassian.net/jira/software/c/projects/S08P21A207/boards/1623
     Figma : https://www.figma.com/file/YDdq37Q7uSpQgJaYZOaWVR/포포체인
