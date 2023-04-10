@@ -164,11 +164,31 @@ https://youtu.be/9AmmoUADeQM
 ## 2. IPFS
 >- 기능: 이미지를 분산 네트워크에 저장하고, 반환하는 해쉬값을 이용하여 이미지를 조회
 >- EC2 서버에 존재하는 Docker 위에 kudo ipfs 실행
+<br>
 
 ## 3. Android
+>- 안드로이드 모바일 환경에서 작동하는 OS
+>- 안드로이드 스튜디오에서 SDK, 언어 등을 선택하고 프로젝트를 생성하여 Android 환경 구성
+>- xml, jetpack compose로 화면 구성
+<br>
 
-부연 설명
+## 4. kotlin
+>- 안드로이드 Native 앱 개발 언어 <br>
 
+>- 간결한 문법
+>- 예: Java의 getter, setter 메서드를 직접 구현할 필요 없이 kotlin에서는 간단한 한줄로 메서드 구현 가능
+
+>- Null 안정성
+>- Java에서는 Null이 허용되어 NullPointerException과 같은 런타임 예외가 발생하지만 Kotlin에서는 기본적으로 null 안정성을 지원하므로 null 값으로 인한 예외 발생 방지
+
+>- 확장 함수
+>- Java에서는 클래스를 상속받거나 인터페이스를 구현해야 메서드를 추가할 수 있지만 Kotlin에서는 확장 함수(extension function)를 지원하므로, 기존 클래스에 새로운 메서드를 추가하는 것이 가능
+
+>- 함수형 프로그래밍 지원
+>- Kotlin은 함수형 프로그래밍을 지원하여, 람다식(Lambda expression), 고차 함수(Higher-order function) 등의 기능을 활용하여 간결한 코드 작성이 가능
+
+>- 안드로이드 스튜디오 지원
+>- 안드로이드 스튜디오는 Kotlin을 공식적으로 지원하며, Kotlin 플러그인을 제공. Kotlin 플러그인을 설치하면, Java 코드를 Kotlin 코드로 자동 변환이 됨
 <br>
 
 <div id="3"></div>
@@ -235,6 +255,11 @@ https://youtu.be/9AmmoUADeQM
 - Room Runtime: `2.3.0`
 - Palette: `1.0.0`
 - navigation-safe-args-gradle-plugin: `2.5.3`
+- retrofit : `2.6.4`
+- QR: `3.4.1`
+- glide: `4.12.0`
+- room-runtime: `2.3.0`
+- kakao.sdk: '2.13.0'
 
 ### 블록체인
 
@@ -291,7 +316,8 @@ Certificate: 앱에 대한 메타 데이터 넣기
 5. 카카오 로그인 관련 내용을 설정합니다.
     1. openssl로 release key와 debug key를 모두 발급 받은 후 카카오 디벨로퍼에 등록합니다.
     2. 참고: [https://ranseo.tistory.com/m/386](https://ranseo.tistory.com/m/386)
-6. err_unknown_url_scheme 에러가 발생하는 경우 AndroidManifest.xml에서 kakao Native app key를 넣고 아래의 설정을 추가합니다.
+6. err_unknown_url_scheme 에러가 발생하는 경우 AndroidManifest.xml에서 
+Native app key를 넣고 아래의 설정을 추가합니다.
 
 ```java
 <activity
