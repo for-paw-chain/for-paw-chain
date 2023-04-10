@@ -12,20 +12,6 @@
 6. [**팀원 소개**](#6)
 <br>
 
-    
-    블록체인을 활용한 동물 의료 기록 관리 및 권리 보호 플랫폼 (포토폴리오 ver)
-    믿을 수 있는 동물 의료 기록 추적 서비스 (구글 스토어 ver)
-    
-    GitLab : https://lab.ssafy.com/s08-blockchain-contract-sub2/S08P22A207
-    Github : https://github.com/forpawchain
-    Jira : https://ssafy.atlassian.net/jira/software/c/projects/S08P21A207/boards/1623
-    Figma : https://www.figma.com/file/YDdq37Q7uSpQgJaYZOaWVR/포포체인
-    ERD : https://www.erdcloud.com/d/ZZLz8X56jugq3dGYa
-    PPT : https://www.canva.com/design/DAFdUHSqzPc/yiB8mwm7HqWAX7p2cCuzJA/editutm_content=DAFdUHSqzPc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
-    PPT 최종: https://www.canva.com/design/DAFfNGktUDk/PSpfSdPdIP-PqU9d8NIzWA/edit?analyticsCorrelationId=af6c531c-72a0-49f1-bca1-42402de3e4ae
-
-<div id="1"></div>
-
 # Ⅰ. 서비스 소개
 
 ## 1. 서비스 설명
