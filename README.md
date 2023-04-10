@@ -170,7 +170,7 @@ https://youtu.be/9AmmoUADeQM
 
 ## 4. Redis
 
-유저 online, offline 상태정보와 게임점수는 실시간으로 업데이트 되는 정보이고, DB에 정보를 저장하여 사용하면 유저가 많아짐에 따라 과부하가 걸릴 것입니다. 이러한 데이터의 특성으로 캐싱을 적용하기에 적절하다고 생각을 했습니다. 따라서 Redis에 유저 online, offline 상태 정보와 실시간 게임 점수를 저장하여 DB를 거치지 않고 정보를 가져와 트래픽이 많아질 때 백엔드 부하를 줄이고, 정보 조회 속도를 높였습니다.
+부연 
 
 ## 5. Google Cloud Platform
 
@@ -218,9 +218,353 @@ https://youtu.be/9AmmoUADeQM
 
 <br>
 
+## 버전 정보
+
+---
+
+### Server 설정
+
+- Server: `AWS EC2`
+- Ubuntu: `20.04`
+- Docker: `23.0.2`
+- Nginx: `1.18.0`
+- Redis: `7.0.10`
+- MariaDB: `10.3.38`
+
+### Back-end 설정
+
+- OpenJDK: `11`
+- Build Tool: `Gradle`
+- Spring Framework: `2.7.9`
+- Spring Dependency-management: `1.0.15.RELEASE`
+
+### Front-end 설정
+
+- Kotlin: `1.8.0`
+- Java: `11`
+- Compile SDK: `33`
+- Room Runtime: `2.3.0`
+- Palette: `1.0.0`
+- navigation-safe-args-gradle-plugin: `2.5.3`
+
+### 블록체인 설정
+
+- Geth: `1.11.5`
+- web3j: `4.9.7`
+- Solidity: `latest`
+
+### IDE 설정
+
+- InteliJ: `2022.3`
+- Android Studio: `2022.1`
+- Emulator: `Pixel 2 XL`
+
+### **Management Tool 설정**
+
+- 형상 관리: `GitLab`
+- 이슈 관리: `JIRA`
+- 커뮤니케이션: `Notion`
+- 파일 저장: `Spring Cloud GCP Storage`
+- UI/UX 디자인: `Figma`
+
 <div id="4"></div>
 
-# Ⅳ. 프로젝트 진행
+# Ⅳ. 시작하기
+
+---
+
+아래 방법을 따라 프로젝트를 실행할 수 있습니다.
+
+## 설치하기
+
+---
+
+### 설치 과정
+
+1. Github의 Repository를 clone합니다.
+
+```java
+$ git clone [우리 주소]
+```
+
+1. APK 파일 생성을 참고하여 android 폴더를 APK로 생성하여 안드로이드 환경에 설치합니다.
+
+### APK 파일 생성
+
+1. Android Studio의 `Build > Generate Signed Bundle / APK ...`를 선택합니다.
+2. Create new를 선택합니다.
+3. Key Store Path를 설정합니다.
+
+```java
+Alias: 기본
+Password: (6자) / Confirm 
+Certificate: 앱에 대한 메타 데이터 넣기
+```
+
+1. release 선택합니다.
+2. 카카오 로그인 관련 내용을 설정합니다.
+    1. openssl로 release key와 debug key를 모두 발급 받은 후 카카오 디벨로퍼에 등록합니다.
+    2. 참고: [https://ranseo.tistory.com/m/386](https://ranseo.tistory.com/m/386)
+3. err_unknown_url_scheme 에러가 발생하는 경우 AndroidManifest.xml에서 kakao Native app key를 넣고 아래의 설정을 추가합니다.
+
+```java
+<activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
+                <data android:host="oauth"
+                    android:scheme="kakaoa본인카카오native key" />
+            </intent-filter>
+</activity>
+```
+
+## 실행하기
+
+---
+
+1. AWS EC2 설정을 참고하여 AWS EC2에 접속합니다.
+2. Jenkins 설정을 참고하여 Back-end 이미지를 생성합니다.
+3. IPFS Image를 설치하고 실행합니다.
+4. 네트워크 설정을 참고하여 블록체인 private 네트워크를 구축하고 실행합니다.
+5. 저장소 설정을 참고하여 MariaDB, Redis, GCP를 설치하고 서버 주소와 연결합니다.
+6. 첨부한 덤프 데이터 파일을 이용하여 데이터를 생성합니다.
+7. 설치한 APK를 실행합니다.
+
+### AWS EC2 설정
+
+```java
+remote host: j8a207.p.ssafy.io
+username: ubuntu
+.pem: 첨부 파일
+```
+
+### Jenkins 설정
+
+1. Repository URL을 통해 Git 프로젝트를 연결합니다.
+2. Git의 WebHook 설정을 통해 release branch의 push event를 감지하면 자동으로 프로젝트를 배포하도록 설정합니다.
+3. Shell Script를 Jenkins의 Build Steps에 Execute하여 자동으로 빌드하도록 설정합니다.
+
+```java
+cd backend/
+chmod +x ./gradlew
+./gradlew clean build
+```
+
+1. Shell Script를 Jenkins의 Build Steps에 Execute하여 Docker Image를 자동으로 생성하도록 설정합니다.
+
+```java
+docker build -t backend ./backend
+if (docker ps | grep backend) then docker stop backend; fi
+docker run -d --rm --name backend --network my-network -p 8080:8080 backend
+docker image prune -f
+```
+
+1. 프로젝트 내부에 Dockerfile을 생성합니다.
+
+```java
+# open jdk java 11 버전 환경
+FROM openjdk:11-jdk
+
+# gradle 빌드 시 jar 파일 생성 경로
+ARG JAR_FILE=./build/libs/*.jar
+
+# JAR_FILE을 메인 디렉토리에 복사
+COPY ${JAR_FILE} app.jar
+
+# 8080 port Open
+EXPOSE 8080
+
+# 시스템 진입점
+ENTRYPOINT ["java","-jar","app.jar"]
+```
+
+### IPFS 설정
+
+1. IPFS Docker Image를 설치합니다.
+
+```java
+docker pull ipfs/go-ipfs
+```
+
+1. Run 명령어를 통해 IPFS Image를 실행합니다.
+
+```java
+docker run \
+ -d \
+--restart always \
+--name ipfs-node \
+-v /data/ipfs:/data/ipfs \
+-v /data/ipfs-staging:/staging \
+-p 8001:8080 \
+-p 4001:4001 \
+-p 5001:5001 \
+--network my-network \
+ipfs/go-ipfs:latest \
+
+docker exec ipfs-node ipfs config Addresses.API 127.0.0.1/8001
+```
+
+### 네트워크 설정
+
+1. Geth를 설치합니다.
+
+```java
+sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository -y ppa:ethereum/ethereum
+sudo apt-get install
+```
+
+1. 블록체인 네트워크 폴더를 생성 후 이동합니다.
+
+```java
+mkdir eth
+cd eth
+```
+
+1. ether를 채굴할 계정을 생성합니다.
+
+```java
+geth --datadir . account new
+```
+
+1. genesis.json 파일을 생성합니다.
+
+```java
+{
+	"config": {
+	"chainId": 7167, 
+	"homesteadBlock": 0, 
+	"byzantiumBlock": 0, 
+	"constantinopleBlock": 0, 
+	"eip150Block": 0, 
+	"eip155Block": 0, 
+	"eip158Block": 0 
+	},
+	"difficulty": "0x10", 
+	"coinbase": "지갑주소", 
+	"gasLimit": "9999999", 
+	"alloc": {}, 
+	"extraData": "", 
+	"nonce": "0xdeadbeefdeadbeef", 
+	"mixhash": "0x0000000000000000000000000000000000000000000000000000000000000000", 
+	"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000", 
+	"timestamp": "0x00"
+}
+```
+
+1. 네트워크를 초기화합니다.
+
+```java
+geth --datadir . init genesis.json
+```
+
+1. 초기화한 네트워크를 실행합니다. 
+
+```java
+geth --datadir . --port 30303 --http --http.addr "0.0.0.0" --http.port 8545 --http.corsdomain "*" --networkid 7167 --http.api "admin,db,eth,debug,miner,net,shh,txpool,personal,web3" --unlock 0 --allow-insecure-unlock --mine --miner.threads 1 --miner.etherbase "지갑주소" console 2>>./geth.log
+```
+
+1. application.properties에 구축한 네트워크를 설정합니다.
+
+```java
+web3.network.address=[blockchain private network address]
+web3.network.chainId=[blockchain private network chain id]
+web3.walletPrivateKey=[private key of server's wallet]
+```
+
+### 저장소 설정
+
+1. AWS EC2 환경에 MariaDB를 설치하고 MariaDB의 root 계정으로 프로젝트의 DB를 생성합니다. 필요에 따라 프로젝트만의 계정을 생성하여 사용할 수 있습니다.
+
+```java
+$ sudo apt=get install mariadb-server
+
+$ sudo systemctl start mariadb
+$ sudo systemctl status mariadb
+
+$ sudo mysql -u root
+
+MariaDB [mysql]> CREATE DB [DB 이름]
+```
+
+1. application.properties의 DB 주소를 MariaDB가 설치된 AWS EC2로, JPA 설정을 create로 변경하고 프로젝트를 실행합니다.
+
+```java
+spring.datasource.url=jdbc:mariadb://[DB 주소]/[DB 이름]
+spring.datasource.username=[DB 계정 이름]
+spring.datasource.password=[DB 계정 비밀번호]
+
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+```
+
+1. application.properties의 JPA 설정을 update로 변경하고 첨부한 덤프데이터 sql을 실행합니다.
+
+```java
+spring.jpa.hibernate.ddl-auto=update
+```
+
+1. AWS EC2 환경에 Redis를 설치하고 비밀번호를 설정합니다.
+
+```java
+$ sudo apt-get install redis-server
+
+$ sudo vi /etc/redis/redis.conf
+bind 0.0.0.0
+daemonize yes // default == no
+logfile /var/log/redis_6379.log
+dir /var/redis/6379
+
+$ sudo service redis-server start
+
+$ redis-cli
+
+redis 127.0.0.1:6379> CONFIG SET requirepass "비밀번호"
+redis 127.0.0.1:6379> AUTH "비밀번호"
+
+$ sudo systemctl restart mariadb
+```
+
+1. application.properties의 Redis 주소를 Redis가 설치된 주소로, 비밀번호를 직접 설정한 비밀번호로 변경합니다.
+
+```java
+spring.redis.host=[Redis 설정 주소]
+spring.redis.port=[Redis 설정 포트]
+spring.redis.password=[Redis 설정 비밀번호]
+```
+
+1. GCP 공식 사이트에서 프로젝트에 사용할 Storage를 생성하고, Storage의 정보를 json 파일을 통해 프로젝트에 설정합니다.
+
+```java
+spring.cloud.gcp.credentials.location=classpath:[json 파일 위치]
+spring.cloud.gcp.storage.project-id=[GCP 설정 ID]
+spring.cloud.gcp.storage.bucket=bucket-img-id=[GCP 설정 ID]
+```
+
+```java
+{
+  "type": "service_account",
+  "project_id": "project_id",
+  "private_key_id": private_key_id",
+  "private_key": "private_key",
+  "client_email": "client_email",
+  "client_id": "client_id",
+  "auth_uri": "auth_uri",
+  "token_uri": "token_uri",
+  "auth_provider_x509_cert_url": "auth_provider_x509_cert_url",
+  "client_x509_cert_url": "client_x509_cert_url"
+}
+```
+
+# V. 프로젝트 진행
 
 ## 🕑 프로젝트 진행 기간
 2023.02.20(월) ~ 2023.04.07(금) (47일간 진행) 
@@ -256,7 +600,7 @@ SSAFY 8기 2학기 특화 프로젝트
 
 <div id="5"></div>
 
-# V. 프로젝트 산출물
+# VI. 프로젝트 산출물
 
 ## 🏛 서비스 아키텍처
 
@@ -285,6 +629,6 @@ SSAFY 8기 2학기 특화 프로젝트
 
 <div id="6"></div>
 
-# VI. 팀원 소개
+# VII. 팀원 소개
 
 ![member](/document/member.png)
