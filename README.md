@@ -167,28 +167,8 @@ https://youtu.be/9AmmoUADeQM
 <br>
 
 ## 3. Android
->- 안드로이드 모바일 환경에서 작동하는 OS
->- 안드로이드 스튜디오에서 SDK, 언어 등을 선택하고 프로젝트를 생성하여 Android 환경 구성
->- xml, jetpack compose로 화면 구성
-<br>
-
-## 4. kotlin
->- 안드로이드 Native 앱 개발 언어 <br>
-
->- 간결한 문법
->- 예: Java의 getter, setter 메서드를 직접 구현할 필요 없이 kotlin에서는 간단한 한줄로 메서드 구현 가능
-
->- Null 안정성
->- Java에서는 Null이 허용되어 NullPointerException과 같은 런타임 예외가 발생하지만 Kotlin에서는 기본적으로 null 안정성을 지원하므로 null 값으로 인한 예외 발생 방지
-
->- 확장 함수
->- Java에서는 클래스를 상속받거나 인터페이스를 구현해야 메서드를 추가할 수 있지만 Kotlin에서는 확장 함수(extension function)를 지원하므로, 기존 클래스에 새로운 메서드를 추가하는 것이 가능
-
->- 함수형 프로그래밍 지원
->- Kotlin은 함수형 프로그래밍을 지원하여, 람다식(Lambda expression), 고차 함수(Higher-order function) 등의 기능을 활용하여 간결한 코드 작성이 가능
-
->- 안드로이드 스튜디오 지원
->- 안드로이드 스튜디오는 Kotlin을 공식적으로 지원하며, Kotlin 플러그인을 제공. Kotlin 플러그인을 설치하면, Java 코드를 Kotlin 코드로 자동 변환이 됨
+>- 언제 어디서나 의료기록을 확인할 수 있도록 모바일 환경에서의 서비스 선택
+>- 편하게 등록번호를 공유하기 위해 QR 기능을 제공
 <br>
 
 <div id="3"></div>
