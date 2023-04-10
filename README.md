@@ -220,8 +220,6 @@ https://youtu.be/9AmmoUADeQM
 
 ## 버전 정보
 
----
-
 ### Server 설정
 
 - Server: `AWS EC2`
@@ -271,13 +269,9 @@ https://youtu.be/9AmmoUADeQM
 
 # Ⅳ. 시작하기
 
----
-
 아래 방법을 따라 프로젝트를 실행할 수 있습니다.
 
 ## 설치하기
-
----
 
 ### 설치 과정
 
@@ -324,8 +318,6 @@ Certificate: 앱에 대한 메타 데이터 넣기
 ```
 
 ## 실행하기
-
----
 
 1. AWS EC2 설정을 참고하여 AWS EC2에 접속합니다.
 2. Jenkins 설정을 참고하여 Back-end 이미지를 생성합니다.
