@@ -157,27 +157,17 @@ https://youtu.be/9AmmoUADeQM
 # Ⅱ. 기술 스택
 
 ## 1. 블록체인 네트워크
-
 >- 기능: 지갑 생성, 컨트랙트 배포, 트랜잭션 전송
 >- 구현: EC2 서버에서 geth를 이용하여 gensis.json으로 초기화하는 방식으로 가능한 네트워크 구성 
 <br>
 
 ## 2. IPFS
-
 >- 기능: 이미지를 분산 네트워크에 저장하고, 반환하는 해쉬값을 이용하여 이미지를 조회
 >- EC2 서버에 존재하는 Docker 위에 kudo ipfs 실행
 
 ## 3. Android
 
 부연 설명
-
-## 4. Redis
-
-부연 
-
-## 5. Google Cloud Platform
-
-동물 정보를 등록할 때 입력받는 동물 사진 데이터가 많아져, 기존에 사용하는 mariadb 이외에 별도로 Google Cloud Platform에서 데이터를 효율적으로 관리했습니다.
 
 <br>
 
