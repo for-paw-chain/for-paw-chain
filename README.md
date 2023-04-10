@@ -216,8 +216,6 @@ https://youtu.be/9AmmoUADeQM
 ![Solidity](https://img.shields.io/badge/-Solidity-orange)
 ![Geth](https://img.shields.io/badge/-Geth-yellowgreen)
 
-<br>
-
 ## 버전 정보
 
 ### Server 설정
@@ -265,6 +263,7 @@ https://youtu.be/9AmmoUADeQM
 - 파일 저장: `Spring Cloud GCP Storage`
 - UI/UX 디자인: `Figma`
 
+<br>
 <div id="4"></div>
 
 # Ⅳ. 시작하기
@@ -555,6 +554,7 @@ spring.cloud.gcp.storage.bucket=bucket-img-id=[GCP 설정 ID]
   "client_x509_cert_url": "client_x509_cert_url"
 }
 ```
+<br>
 
 # V. 프로젝트 진행
 
